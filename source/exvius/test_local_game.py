@@ -549,17 +549,78 @@ class LocalGameIntegration(unittest.TestCase):
     def test_existing_ticket_button_spends_ticket_instead_of_lapis(self):
         from player_state import ticket_by_id
         player = self.game.server.State.player
-        kind, item_id, _ = ticket_by_id('12')
+        kind, item_id, _ = ticket_by_id('17')
         player.grant_item(kind, item_id, 1)
         held = player.item_count(kind, item_id)
         player.currencies['lapis_free'] = 0
         before = len(player.data['roster'])
-        result = self.summon('9100203', '91002031', ticket_id='12')
-        self.assertEqual(result['5yLD4dYI'][0]['2RtVPS3b'], '12')
+        result = self.summon('9100203', '91002031', ticket_id='17')
+        self.assertEqual(result['5yLD4dYI'][0]['2RtVPS3b'], '17')
         self.assertEqual(player.item_count(kind, item_id), held - 1)
         self.assertEqual(player.currencies['lapis_free'], 0)
         self.assertEqual(len(player.data['roster']), before + 1)
         self.assertEqual(self.restored_player().item_count(kind, item_id), held - 1)
+
+    def test_shop_tickets_remain_visible_and_usable_after_save_reload(self):
+        from ffbe_gacha import GACHA_DETAIL_TAG
+        from exvius_shop_catalogue import catalogue
+        cases = (
+            ('940000003', '50', '17', '9', '9001', '10020', 3),
+            ('940007013', '70', '18', '9', '9001', '10020', 4),
+            ('940000002', '80', '19', '9', '9001', '10020', 5),
+            ('940000005', '110160', '90001', '60002', '600021', '100101', 3),
+            ('940000004', '110180', '90003', '60002', '600021', '100101', 5),
+        )
+        for product, item, ticket, banner, detail, group, floor in cases:
+            with self.subTest(item=item):
+                player = self.game.server.State.player
+                player.currencies['lapis_free'] = 100000
+                offer = catalogue()[2][product]
+                cost_kind, cost_id = offer['cost']
+                if cost_kind != 50:
+                    player.grant_item(cost_kind, cost_id, offer['price'])
+                owned = player.item_count(23, item)
+                purchase = self.exchange('GachaSelectExchangeExeRequest', {
+                    '4mrD6JuA': [{'jPV7Xc4N': product, 'Qy5EvcK1': '1'}]})
+                bought = player.item_count(23, item)
+                self.assertGreater(bought, owned)
+                self.assertIn({'2dfixko3': item, 'Qy5EvcK1': str(bought)}, purchase['Md0N5abE'])
+                self.game.server.State.player = player = self.restored_player()
+                player.data['summon_archive'] = 'season2' if group == '10020' else 'standard'
+                info = self.exchange('GachaInfoRequest', {})
+                native = next(row for row in info[GACHA_DETAIL_TAG] if row['nqzG3b2v'] == detail)
+                self.assertEqual(native['RZ6z12Dt'], group)
+                lapis = dict(player.currencies)
+                roster = len(player.data['roster'])
+                def lowest(population, weights=None, **kwargs):
+                    return [min(population, key=lambda row: int(row.get('rarity', 0)))]
+                with patch('player_state.random.choices', side_effect=lowest), \
+                        patch('player_state.random.random', return_value=0.999999):
+                    result = self.summon(banner, detail, ticket_id=ticket)
+                self.assertEqual(result['5yLD4dYI'][0]['2RtVPS3b'], ticket)
+                self.assertEqual(player.item_count(23, item), bought - 1)
+                self.assertEqual(player.currencies, lapis)
+                self.assertEqual(len(player.data['roster']), roster + 1)
+                self.assertGreaterEqual(int(player.data['gacha']['last_pull']['awards'][0]['granted_rarity']), floor)
+                self.assertEqual(self.restored_player().item_count(23, item), bought - 1)
+
+    def test_nv_ex_ticket_can_award_nv_and_legacy_ex_ticket_still_works(self):
+        from ffbe_gacha import all_banners
+        from player_state import expand_pool
+        player = self.game.server.State.player
+        banners = {str(b['id']): b for b in all_banners()}
+        nv = [row for row in expand_pool(banners['60002']) if int(row['rarity']) == 7]
+        self.assertGreater(len(nv), 1)
+        self.assertAlmostEqual(min(row['rate'] for row in nv), max(row['rate'] for row in nv))
+        player.grant_item(23, 110160, 1)
+        with patch('player_state.random.random', return_value=0):
+            self.summon('60002', '600021', ticket_id='90001')
+        self.assertEqual(player.item_count(23, 110160), 0)
+        self.assertEqual(int(player.data['gacha']['last_pull']['awards'][0]['granted_rarity']), 7)
+        player.grant_item(23, 180, 1)
+        owned = player.item_count(23, 180)
+        self.summon('60001', '600011', ticket_id='12')
+        self.assertEqual(player.item_count(23, 180), owned - 1)
 
     def test_existing_step_up_continues_next_step_after_reload(self):
         from ffbe_gacha import all_banners

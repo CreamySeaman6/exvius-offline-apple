@@ -41,7 +41,7 @@ def english_art(banner):
 def _ticket_only(banner):
     cost = banner.get('cost')
     cost = cost[0] if isinstance(cost, list) and cost else cost
-    return bool(banner.get('ticket_group_id')) or not cost or (
+    return not cost or (
         isinstance(cost, dict) and cost.get('kind') in ('ticket', 'important', 'item'))
 
 

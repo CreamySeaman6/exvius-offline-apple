@@ -354,6 +354,15 @@ def with_global_buttons(b: dict) -> dict:
     if not cost and not b.get("cost"):
         return b
     draws = b.get("draws", 1)
+    # Rare tickets are group 10020 (items 50/70/80), not the legacy EX
+    # tickets in group 10010. Publish the same group the purchase uses so
+    # the native ticket button counts and spends the player's actual items.
+    if (b.get('type') == 'normal' and cost.get('kind') == 'lapis'
+            and int(cost.get('amount') or 0) == 500 and int(draws or 1) == 1
+            and not b.get('single_only') and not b.get('daily_limit')
+            and not b.get('purchase_limit')
+            and b.get('ticket_group_id') in (None, 10010, '10010')):
+        b['ticket_group_id'] = 10020
     if str(cost.get('kind')) in ('lapis', 'free'):
         b['img_btn_primary'] = _gold_button(cost, draws)
     else:
