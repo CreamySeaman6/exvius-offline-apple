@@ -38,6 +38,34 @@ class SummonTransactions(unittest.TestCase):
         self.assertEqual(self.player.data, before)
         self.assertEqual(self.player.dirty, dirty)
 
+    def test_ticket_only_native_batch_charges_and_awards_each_ticket(self):
+        document = json.loads((PROJECT / 'source/server/gacha_standard.json').read_text(encoding='utf8'))
+        banner = next(b for b in document['banners'] if str(b['id']) == '60002')
+        for ticket, item, floor in [('90001', 110160, 3), ('90002', 110170, 4), ('90003', 110180, 5)]:
+            with self.subTest(ticket=ticket):
+                owned = self.player.item_count(23, item)
+                self.player.grant_item(23, item, 3)
+                roster = len(self.player.data['roster'])
+                currencies = dict(self.player.currencies)
+                with patch('player_state.random.random', return_value=0.999999):
+                    result = self.player.roll_gacha(banner, repeats=3, ticket_id=ticket)
+                self.assertIsNotNone(result)
+                self.assertEqual(result['count'], 3)
+                self.assertEqual(len(result['awards']), 3)
+                self.assertEqual(len(self.player.data['roster']), roster + 3)
+                self.assertEqual(self.player.item_count(23, item), owned)
+                self.assertEqual(self.player.currencies, currencies)
+                self.assertTrue(all(int(award['granted_rarity']) >= floor for award in result['awards']))
+
+    def test_ticket_only_unaffordable_batch_preserves_all_tickets_and_units(self):
+        document = json.loads((PROJECT / 'source/server/gacha_standard.json').read_text(encoding='utf8'))
+        banner = next(b for b in document['banners'] if str(b['id']) == '60002')
+        self.player.grant_item(23, 110160, 2)
+        before, dirty = copy.deepcopy(self.player.data), self.player.dirty
+        self.assertIsNone(self.player.roll_gacha(banner, repeats=3, ticket_id='90001'))
+        self.assertEqual(self.player.data, before)
+        self.assertEqual(self.player.dirty, dirty)
+
     def test_campaign_alias_uses_existing_purchase_and_daily_counters(self):
         banner = self.banner(state_id='9100001', purchase_limit=1)
         existing = self.player.banner_state('9100001')

@@ -4042,7 +4042,12 @@ class PlayerState:
         if isinstance(cost, list):      # the multi-entry costInfo: pick the OFFER this pull asked for
             cost = next((c for c in cost if (repeats > 1) == (int(c.get("draws", 1)) > 1)),
                         cost[0] if cost else {})
-        # `repeats` is NOT a multiplier. The client derives it from the TAPPED ROW's `exeCount`
+        # TicketOnlyGachaDetailScene's Multi-Summon sends the selected number
+        # of tickets in repeatCnt. Paid single/11-pull rows instead encode
+        # their whole offer in costInfo, so keep their existing interpretation.
+        ticket_only = bool(banner.get('ticket_group_id')) and not cost and not steps and not offer
+        ticket_count = repeats if ticket_only else 1
+        # For paid offers, `repeats` is NOT a multiplier. The client derives it from the TAPPED ROW's `exeCount`
         # (`GachaConfirmScene::initialize` -> `GachaDetailMst::getExeCount()` -> `UserState.repeat` ->
         # `GachaExeRequest.2RtVPS3b`), i.e. it describes the transaction the row already encodes -- it is not
         # a count the player picks. So both the CHARGE and the UNIT COUNT come from the offer, never from
@@ -4052,6 +4057,8 @@ class PlayerState:
         draws = int(cost.get("draws") or 0 if isinstance(cost, dict) else 0) \
             or int((offer or {}).get("draws") or 0) \
             or max(1, int(step.get("draws", banner.get("draws", 1))))
+        if ticket_only:
+            draws *= ticket_count
         guarantee = step.get("guarantee") or (offer or {}).get("guarantee") or banner.get("guarantee") or {}
         # An explicit count represents the printed guaranteed slots, not one
         # fallback award for the entire multi-summon. Validate before charging.
@@ -4099,7 +4106,9 @@ class PlayerState:
                       f"group {group!r}", flush=True)
                 return None
             item_type, item_id, _rar = named
-            if not self.spend_item(item_type, item_id, 1):
+            if not any(int(entry.get('rarity') or 0) >= int(_rar or 0) for entry in pool):
+                return None
+            if not self.spend_item(item_type, item_id, ticket_count):
                 print(f"    gacha refused: ticket {ticket_id} (item {item_type}:{item_id}) is not held",
                       flush=True)
                 return None
@@ -4128,7 +4137,9 @@ class PlayerState:
             rows = [named] if named else sorted(ticket_group_items(banner["ticket_group_id"]),
                                                 key=lambda t: t[1], reverse=True)
             for item_type, item_id, _rarity in rows:
-                if self.spend_item(item_type, item_id, 1):   # one ticket per transaction, not per repeat
+                if not any(int(entry.get('rarity') or 0) >= int(_rarity or 0) for entry in pool):
+                    continue
+                if self.spend_item(item_type, item_id, ticket_count):
                     spent_ticket = ticket_id
                     ticket_rar = _rarity
                     break
@@ -4139,11 +4150,17 @@ class PlayerState:
         # the 5-star EX ticket. Without this a 5-star ticket could award a 3-star base -- the one thing such a
         # ticket rules out (operator, 2026-09-23). The existing guarantee machinery below then forces at least
         # one draw of that rarity, which for a 1-draw ticket is exactly one.
-        if spent_ticket and ticket_rar not in (None, "", "0"):
+        if ticket_rar not in (None, "", "0"):
             want = int(ticket_rar)
             have = guarantee.get("rarity")
             if have is None or int(have) < want:
                 guarantee = dict(guarantee, rarity=want)
+            if ticket_only:
+                # Every ticket keeps its rarity guarantee in a batch, rather
+                # than guaranteeing only one unit across the whole batch.
+                pool = [entry for entry in pool if int(entry.get('rarity') or 0) >= want]
+                guaranteed_pool = [entry for entry in guaranteed_pool
+                                   if int(entry.get('rarity') or 0) >= want]
         # --- draws ------------------------------------------------------------------------------------
         rates = [max(0.0, float(e.get("rate", 0))) for e in pool]
         total = sum(rates) or 1.0

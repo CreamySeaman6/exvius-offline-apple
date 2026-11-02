@@ -622,6 +622,23 @@ class LocalGameIntegration(unittest.TestCase):
         self.summon('60001', '600011', ticket_id='12')
         self.assertEqual(player.item_count(23, 180), owned - 1)
 
+    def test_purchased_nv_ex_batch_grants_three_units_and_spends_three_tickets(self):
+        player = self.game.server.State.player
+        player.currencies['lapis_free'] = 10000
+        before_tickets = player.item_count(23, 110160)
+        self.exchange('GachaSelectExchangeExeRequest', {
+            '4mrD6JuA': [{'jPV7Xc4N': '940000005', 'Qy5EvcK1': '1'}]})
+        self.assertEqual(player.item_count(23, 110160), before_tickets + 3)
+        lapis = player.currencies['lapis_free']
+        roster = len(player.data['roster'])
+        reply = self.summon('60002', '600021', repeats=3, ticket_id='90001')
+        self.assertEqual(len(reply['5yLD4dYI'][0]['UJz5QED2'].split(',')), 3)
+        self.assertEqual(player.item_count(23, 110160), before_tickets)
+        self.assertEqual(player.currencies['lapis_free'], lapis)
+        self.assertEqual(len(player.data['roster']), roster + 3)
+        self.assertEqual(self.restored_player().item_count(23, 110160), before_tickets)
+        self.assertEqual(len(self.restored_player().data['roster']), roster + 3)
+
     def test_existing_step_up_continues_next_step_after_reload(self):
         from ffbe_gacha import all_banners
         banner = next(b for b in all_banners() if str(b['id']) == '150')
