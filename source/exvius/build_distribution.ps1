@@ -22,6 +22,8 @@ node source/exvius/test_android_display.js
 if ($LASTEXITCODE -ne 0) { throw 'Display checks failed' }
 node source/exvius/test_home_carousel.js
 if ($LASTEXITCODE -ne 0) { throw 'Home checks failed' }
+node source/exvius/test_summon_art.js
+if ($LASTEXITCODE -ne 0) { throw 'Summon banner checks failed' }
 python source/exvius/test_release_data.py
 if ($LASTEXITCODE -ne 0) { throw 'Data package checks failed' }
 java -cp source/memorial/android/gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain -p source/memorial/android --no-daemon assembleDebug

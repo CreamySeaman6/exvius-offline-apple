@@ -21,6 +21,27 @@ export function installSummonArt(module, note, retained, bridge) {
   const getY = native('_ZNK7cocos2d4Node12getPositionYEv', 'float', ['pointer']);
   const setX = native('_ZN7cocos2d4Node12setPositionXEf', 'void', ['pointer', 'float']);
   const setY = native('_ZN7cocos2d4Node12setPositionYEf', 'void', ['pointer', 'float']);
+  const spriteWidth = native('_ZN10GameSprite8getWidthEv', 'int', ['pointer']);
+  const spriteHeight = native('_ZN10GameSprite9getHeightEv', 'int', ['pointer']);
+  const spriteSize = native('_ZN10GameSprite7setSizeEff', 'void', ['pointer', 'float', 'float']);
+  let listDepth = 0;
+  retained.push(Interceptor.attach(module.getExportByName('_ZN13GachaTopScene13setListLayoutEv'), {
+    onEnter() { listDepth += 1; },
+    onLeave() { listDepth -= 1; }
+  }));
+  retained.push(Interceptor.attach(module.getExportByName(
+    '_ZN12SpriteButton19initForChangeSpriteEiffiP10GameSpriteS1_ib'), {
+    onEnter(args) {
+      // The list builds its touch rectangle and row spacing from the banner
+      // sprite. Its separate pressed overlay uses fixed artwork chosen by
+      // summon type, so fit that overlay to this banner before native init.
+      if (!listDepth || args[2].isNull() || args[3].isNull()) return;
+      const width = spriteWidth(args[2]), height = spriteHeight(args[2]);
+      if (width > 0 && height > 0 &&
+          (spriteWidth(args[3]) !== width || spriteHeight(args[3]) !== height))
+        spriteSize(args[3], width, height);
+    }
+  }));
   let currentObject = null, reports = 0;
   const offsets = new Map();
   function center(object) {
