@@ -228,14 +228,15 @@ class Handler(BaseHTTPRequestHandler):
         # without entering its story scene.
         row = mission_row(mid) if mid else None
         story_only = (row is not None and not menu_resource
-                      and str(row.get('gQR24kST')) == '5'
+                      and str(row.get('gQR24kST')) in ('3', '5')
                       and str(row.get('Y4VoF8yu')) == '1' and mission_wave_count(mid) == 0)
+        story_phases = battle_content.story_mission_phases(mid) if story_only else []
         if ((spec is None or story_only) and mid and reply_id == BATTLE_BUNDLE_REPLY_ID
                 and reply_id in State.replies and mission_wave_count(mid) == 0):
             if row is not None:
                 spec = dict(spec) if isinstance(spec, dict) else battle_content.field_mission_bundle(State.replies[reply_id], row)
-                if story_only:
-                    spec['an6TB4WS'] = battle_content.story_mission_phases(mid)
+                if story_phases:
+                    spec['an6TB4WS'] = story_phases
                     spec['1IfDqR4n'] = battle_content.story_mission_resources(row)
                 spec_key, bundle_source = f"{reply_id}@{mid}", "story"
         if (spec is None and mid and reply_id == BATTLE_BUNDLE_REPLY_ID

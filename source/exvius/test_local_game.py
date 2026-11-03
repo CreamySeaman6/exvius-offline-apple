@@ -1400,6 +1400,17 @@ class LocalGameIntegration(unittest.TestCase):
                 self.assertEqual({r['6uIYE15X'] for r in reply['1IfDqR4n']}, {mid})
                 self.assertNotIn(mid, self.restored_player().data['progress']['cleared_missions'])
 
+    def test_older_story_events_enter_their_original_scenes(self):
+        for mid, scene, filename in [('8830101', '7031001', '883010101.cpk'),
+                                     ('8880101', '7032001', '888010101.cpk')]:
+            with self.subTest(mission=mid):
+                reply = self.load_mission(mid)
+                self.assertEqual([(r['gou39JeI'], r['6uIYE15X'])
+                                  for r in reply.get('an6TB4WS', [])], [('1', scene)])
+                self.assertTrue(reply['1IfDqR4n'])
+                self.assertIn(filename, {r['pJ56sAEo'] for r in reply['1IfDqR4n']})
+                self.assertNotIn(mid, self.restored_player().data['progress']['cleared_missions'])
+
     def test_story_completion_without_combat_log_grants_global_progress_once(self):
         from player_state import switch_position
         mid = '32820208'
