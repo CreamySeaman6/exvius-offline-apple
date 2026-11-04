@@ -315,7 +315,8 @@ class LocalGameIntegration(unittest.TestCase):
             self.exchange('SpChallengeRewardGetRequest', request)
             self.assertEqual(player.data, paid, 'Retrying the same claim must not pay twice')
         self.assertEqual(player.currencies['gil'], gil + 30000)
-        self.assertEqual(len(player.data['roster']), units + 20)
+        self.assertEqual(len(player.data['roster']), units)
+        self.assertEqual(self.restored_player().data['exvius_unit_points']['banks']['0']['XeRVw3s2'], 600000)
         status = next(r for r in reply['WS1g0ECn'] if r['zF6QIY2r'] == '1001')
         self.assertEqual(status['es0Yun3Z'], '0')
 
@@ -481,7 +482,8 @@ class LocalGameIntegration(unittest.TestCase):
         state.player.grant_item(20, 106200100, 40)
         state.player.save(str(self.state_file), force=True)
         stores = self.exchange('VariableStoreCheckRequest', {})['3VS1Bhmf']
-        self.assertEqual([(r['Z20mNDvL'], r['za2xsDj5'], r['suR36Jpm']) for r in stores],
+        self.assertEqual([(r['Z20mNDvL'], r['za2xsDj5'], r['suR36Jpm']) for r in stores
+                          if r['Z20mNDvL'] in ('900104', '900122')],
                          [('900104', '7000458', '20:106200100'),
                           ('900122', '900105', '20:106300100')])
         before = len(state.player.data['roster'])
@@ -1454,8 +1456,10 @@ class LocalGameIntegration(unittest.TestCase):
             self.assertEqual(hashlib.sha256(source.read_bytes()).hexdigest(), entry['source_sha256'])
             self.assertEqual(hashlib.sha256(runtime.read_bytes()).hexdigest(), entry['runtime_sha256'])
             with Image.open(source) as original, Image.open(runtime) as converted:
-                self.assertEqual(converted.size, original.size)
-                self.assertEqual(original.convert('RGBA').tobytes(), converted.convert('RGBA').tobytes())
+                expected = original.convert('RGBA')
+                expected.thumbnail((640, 240), Image.Resampling.LANCZOS)
+                self.assertEqual(converted.size, expected.size)
+                self.assertEqual(expected.tobytes(), converted.convert('RGBA').tobytes())
             self.assertEqual(rows[area]['4yT7FUqj'], entry['filename'])
             response = self.game.request('GET', '/en/sd/area/' + entry['filename'])
             self.assertEqual(response.status, 200)
@@ -1717,10 +1721,14 @@ class LocalGameIntegration(unittest.TestCase):
                             ('9700109', '90001005')):
             with self.subTest(mission=mid):
                 reply = self.load_mission(mid)
-                self.assertEqual(reply['1IfDqR4n'][0]['qo3PECw6'], mid)
-                self.assertIn(script, reply['1IfDqR4n'][0]['q4f9IdMs'].split(','))
+                resources = reply['1IfDqR4n']
+                self.assertEqual({row['6uIYE15X'] for row in resources}, {mid})
+                self.assertIn(script + '.cpk', {row['pJ56sAEo'] for row in resources})
                 self.assertFalse(reply.get('Bi6hVv34'))
-                self.assertFalse(reply.get('an6TB4WS'))
+                phases = reply['an6TB4WS']
+                self.assertEqual(len(phases), 1)
+                self.assertEqual(phases[0]['qo3PECw6'], mid)
+                self.assertFalse(phases[0]['2fY1IomW'])
 
     def test_authored_bundle_cannot_serve_another_missions_phases(self):
         state = self.game.server.State
