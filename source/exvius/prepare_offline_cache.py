@@ -166,9 +166,10 @@ def event_skill_sets(source, target, key):
     target.write_text('\n'.join(lines) + '\n', encoding='ascii')
 
 
-def exbonus_master(source, target, key, table):
-    from player_state import restored_master
-    restored = restored_master(table)
+def exbonus_master(source, target, key, table, restored=None):
+    if restored is None:
+        from player_state import restored_master
+        restored = restored_master(table)
     lines = [line for line in source.read_text(encoding='ascii').splitlines() if line]
     mode, original = decode(source.read_bytes(), key)
     identity = lambda row: row[restored['key']] if restored['key'] else json.dumps(row, sort_keys=True)
@@ -194,7 +195,12 @@ def exbonus_master(source, target, key, table):
             body += bytes([pad]) * pad
         encryptor = Cipher(algorithms.AES(key16(key)), modes.ECB()).encryptor()
         return base64.b64encode(encryptor.update(body) + encryptor.finalize()).decode('ascii')
-    if table == 'F_ABILITY_EXPLAIN_MST':
+    if restored.get('replace'):
+        replacements = {identity(r): r for r in restored['rows']}
+        for index, row in enumerate(original):
+            if identity(row) in replacements:
+                lines[index] = encode(replacements[identity(row)])
+    elif table == 'F_ABILITY_EXPLAIN_MST':
         descriptions = {identity(r): r['T7aEx3Mj'] for r in restored['rows']}
         for index, row in enumerate(original):
             text = str(row.get('T7aEx3Mj', ''))

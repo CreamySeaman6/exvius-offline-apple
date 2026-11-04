@@ -11345,6 +11345,22 @@
         240
       ],
       "conversion": "Original pixels and dimensions retained. PNG encoding only."
+    },
+    "6211": {
+      "filename": "event_6211.png",
+      "source_file": "data/overlay/en/sd/area/event_6211.png",
+      "runtime_file": "data/overlay/en/sd/area/event_6211.png",
+      "source_sha256": "482408012c5f5f488ddc2c93153d95aa20b37301fd401db57b34208ffe203576",
+      "runtime_sha256": "482408012c5f5f488ddc2c93153d95aa20b37301fd401db57b34208ffe203576",
+      "source_page": "https://altema.jp/ffbe/yomigaesiridennsetunotikai",
+      "source_size": [
+        640,
+        240
+      ],
+      "runtime_size": [
+        640,
+        240
+      ]
     }
   },
   "dungeons": {
