@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "revision": 7,
-  "version": "2026.11.04.7",
+  "revision": 8,
+  "version": "2026.11.04.8",
   "minAppVersionCode": 9015,
   "packs": [
     {
@@ -122,10 +122,17 @@
       "size": 37141645,
       "unpackedSize": 89734912,
       "sha256": "587bff9091a99360d21ac63595ae7deb2a7765fa1d9ab307af8e79b7e4fbd965"
+    },
+    {
+      "id": "mitra-forge",
+      "url": "https://github.com/Elvlin/exvius-offline/releases/download/data-r8/exvius-mitra-forge-r8.zip",
+      "size": 3717,
+      "unpackedSize": 61440,
+      "sha256": "cc3950fb7887e2b4e78917bbb6560823277743418a2437f8125361db06f979bc"
     }
   ],
-  "downloadBytes": 14647864489,
-  "installedBytes": 14948568649,
+  "downloadBytes": 14647868206,
+  "installedBytes": 14948630089,
   "files": 12487,
   "app": {
     "version": "0.1.17",
