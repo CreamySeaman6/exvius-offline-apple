@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "revision": 3,
-  "version": "2026.11.01.3",
+  "revision": 4,
+  "version": "2026.11.04.4",
   "minAppVersionCode": 9015,
   "packs": [
     {
@@ -94,10 +94,17 @@
       "size": 96505060,
       "unpackedSize": 101886463,
       "sha256": "704fd85eea44531863a3f7508ac4cf230d8527f112f2e3ca9a0cfdf625788657"
+    },
+    {
+      "id": "mitra-arrival",
+      "url": "https://github.com/Elvlin/exvius-offline/releases/download/data-r4/exvius-mitra-arrival-r4.zip",
+      "size": 3716,
+      "unpackedSize": 61440,
+      "sha256": "0aaa60065e41a05005be0dd477182287e78f3c2b4f8960bc64dd061c6b074e8c"
     }
   ],
-  "downloadBytes": 14610282395,
-  "installedBytes": 14857837051,
+  "downloadBytes": 14610286111,
+  "installedBytes": 14857898491,
   "files": 12483,
   "app": {
     "version": "0.1.14",
