@@ -237,6 +237,7 @@ SWITCH_KEY = "8vAYn3IX"
 SWITCH_TYPE = "5opcUT9t"
 SWITCH_INDEX = "QLfe23bu"
 MISSION_SWITCH_TYPE = "101"      # the switch type mission flags live in (SWITCH_TYPE_MISSION, capture_server)
+MAIN_STORY_CLEAR_SWITCH_TYPES = frozenset(('103', '200', '201', '9002'))
 
 # ---------------------------------------------------------------------------------------------------
 # The authored STORY-UNLOCK sets (`STORY_UNLOCK=vortex,espers`). A synthetic server CHOOSES a world
@@ -903,6 +904,23 @@ def switch_position(switch_id) -> tuple[str, int] | None:
         return str(stype), int(idx)
     except (TypeError, ValueError):
         return None
+
+
+def _main_story_clear_switches(mission_id) -> dict[str, tuple[str, int]]:
+    """Read the additional progression bits awarded by an original world mission."""
+    mission = mission_row(mission_id)
+    if mission is None:
+        return {}
+    world = _load_ndjson('F_WORLD_MST.ndjson', '9Pb24aSy').get(mission.get('9Pb24aSy'), {})
+    if world.get('dw2nvP3r') != '1':
+        return {}
+    switches = {}
+    for value in str(mission.get(MISSION_OPEN_SWITCH) or '').split(','):
+        sid = value.strip()
+        position = switch_position(sid)
+        if position and position[0] in MAIN_STORY_CLEAR_SWITCH_TYPES:
+            switches[sid] = position
+    return switches
 
 
 STORY_BEAST_STATS: dict[str, tuple[int, int]] = {}   # no special cases: every story grant is FRESH
@@ -2113,6 +2131,11 @@ class PlayerState:
             data = _normalise(default_state())
         data.setdefault("meta", {})["slot"] = slot
         ps = cls(data, mode=mode)
+        if mode != 'frozen':
+            for mid in ps.data['progress']['cleared_missions']:
+                for stype, bit in _main_story_clear_switches(mid).values():
+                    if bit not in ps.switches.get(stype, ()):
+                        ps.grant_switch(stype, bit)
         if overlay:
             ps.apply_overlay(overlay)
         for path_, value in (sets or []):
@@ -3786,9 +3809,8 @@ class PlayerState:
         `switch_position` miss on a field no table has a row for, so **every one of those missions granted
         nothing** — including the beat that opens the Esper screen. Found 2026-10-07, before a run.
 
-        Grants mission flags and Global story-event flags (type 9004), and prints other switch types.
-        (a type-820/200/201/720/9002/103 bit is a separate decision — 57 of the 75 pairs name a type-820
-        switch, which nothing serves yet). Returns the granted ids, or None when nothing was granted.
+        Grants mission flags, Global story-event flags and the additional original world progression
+        flags. Returns the granted ids, or None when nothing was granted.
         `frozen` refuses before recording anything, like every op.
         """
         if not self._mutate():
@@ -3799,6 +3821,7 @@ class PlayerState:
         sw = mission_open_switch(mid)
         if not sw:
             return None
+        story_switches = _main_story_clear_switches(mid)
         granted: list[str] = []
         for raw in str(sw).split(","):
             sid = raw.strip()
@@ -3809,7 +3832,7 @@ class PlayerState:
                 print(f"    switch: mission {mid} opens {sid}, which has no F_SWITCH_MST row — not granted",
                       flush=True)
                 continue
-            if pos[0] not in (MISSION_SWITCH_TYPE, '9004'):
+            if pos[0] not in (MISSION_SWITCH_TYPE, '9004') and sid not in story_switches:
                 print(f"    switch: mission {mid} opens {sid} (type {pos[0]} index {pos[1]}) — type not "
                       f"tracked by this op, not granted", flush=True)
                 continue

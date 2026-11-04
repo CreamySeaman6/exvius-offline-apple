@@ -1655,6 +1655,39 @@ class LocalGameIntegration(unittest.TestCase):
         self.assertIn('402220156.cpk', parts['1'])
         self.assertNotIn('402220105.cpk', parts['1'])
 
+    def test_world_story_clear_opens_the_next_mission_or_dungeon(self):
+        from player_state import _load_ndjson, mission_row, switch_position
+
+        player = self.game.server.State.player
+        player.data['rank'].update(level=100, nrg=500)
+        dungeons = _load_ndjson('F_DUNGEON_MST.ndjson', 'U9iHsau3')
+        cases = (
+            ('14017501', mission_row('14017502'), '11280100'),
+            ('14018703', dungeons['140188'], '11293300'),
+            ('14028903', dungeons['140290'], '11401300'),
+            ('1135307', mission_row('1135308'), '25000007'),
+            ('1135608', mission_row('1135307'), '25000003'),
+            ('21010100', mission_row('21010101'), '20010100'),
+        )
+        for mid, gate, sid in cases:
+            with self.subTest(mission=mid):
+                self.assertEqual(gate['juA0Z4m7'], sid)
+                stype, bit = switch_position(sid)
+                self.assertNotIn(bit, player.switches.get(stype, set()))
+                self.load_mission(mid)
+                reply = self.finish_mission(mid)
+                self.assertIn(bit, player.switches[stype])
+                self.assertIn(bit, self.restored_player().switches[stype])
+                for response in (reply, self.exchange('GetUserInfoRequest', {})):
+                    row = next(r for r in response['8J1R5PXG'] if r['5opcUT9t'] == stype)
+                    digit, offset = divmod(bit, 4)
+                    self.assertTrue(int(row['juA0Z4m7'][digit], 16) & (8 >> offset))
+
+        stype, bit = switch_position('11280100')
+        player.switches[stype].remove(bit)
+        player.save(str(self.state_file), force=True)
+        self.assertIn(bit, self.restored_player().switches[stype])
+
     def test_global_story_scenes_have_playable_entry_phases(self):
         for mid, scene, filename in [('9700101', '9002727', '90001001.cpk'),
                                       ('10480101', '10480101', '90001301.cpk'),
