@@ -149,6 +149,53 @@ class LocalGameIntegration(unittest.TestCase):
         self.assertEqual(restored.item_count(20, 250033800), 50)
         self.assertEqual(restored.item_count(20, 293000100), 1)
 
+    def test_unit_exchange_credits_materials_and_preserves_trust_moogle(self):
+        from exvius_actions_shops import POINT_TOKENS
+        player = self.game.server.State.player
+        materials = [player.grant_unit(mid) for mid in
+                     ('900000101', '903001101', '905000103', '900010301', '904000105')]
+        gil = player.currencies['gil']
+        request = {'g6sVon0N': [{'og2GHy49': str(u['instance_id'])} for u in materials]}
+        for _ in range(2):
+            reply = self.exchange('UnitExchangeRequest', request)
+        saved = self.restored_player()
+        self.assertEqual(saved.currencies['gil'], gil + 5000)
+        self.assertTrue(all(saved.roster_row(u['instance_id']) is None for u in materials[:-1]))
+        self.assertIsNotNone(saved.roster_row(materials[-1]['instance_id']))
+        self.assertEqual([reply['z36FApms'][0][POINT_TOKENS[i]] for i in (1, 2, 8)], ['3000', '10', '10'])
+
+    def test_profile_and_inventory_favourites_survive_reload(self):
+        player = self.game.server.State.player
+        player.grant_equipment(301000200)
+        player.grant_item(22, 504228203, 1)
+        player._grant_items([{'kind': 27, 'id': 900020101, 'count': 1}])
+        card = player.data['vision_cards'][-1]['user_vc_id']
+        self.exchange('UpdateUserInfoRequest', {'MZzST52W': [{'9qh17ZUf': 'Lasswell', 'Wk1v6upb': 'Ready'}]})
+        for endpoint, group, key, value in (
+            ('EquipItemFavoriteRequest', 'K8pR0Fvb', 'I3FUD4Mt', '301000200:1'),
+            ('MateriaFavoriteRequest', 'pJ9Eo6cn', '8UJhyb4u', '504228203:1'),
+            ('VisionCardFavoriteRequest', '4I71fGzq', 'E0zptv3J', card),
+        ):
+            reply = self.exchange(endpoint, {group: [{key: value}]})
+            self.assertEqual(reply[group], [{key: value}])
+        self.game.server.State.player = self.restored_player()
+        reply = self.exchange('GetUserInfoRequest', {})
+        self.assertEqual(reply['LhVz6aD2'][0]['9qh17ZUf'], 'Lasswell')
+        self.assertEqual(reply['3oU9Ktb7'][0]['Wk1v6upb'], 'Ready')
+        self.assertEqual(reply['q7NfU6FH'][0]['J1YX9kmM'], '301000200')
+        self.assertEqual(reply['8QNSBeP9'][0]['H5jBL0Vf'], '504228203')
+        self.assertEqual(next(r for r in reply['4hPYneL3'] if r['gXb32xzQ'] == card)['8zE6w9RP'], '1')
+
+    def test_notice_read_mask_survives_reload(self):
+        from exvius_actions import notice_state
+        player = self.game.server.State.player
+        notice_state({'3BI1xSGW': [{'td06MKEX': '102', '1d8R5ajV': '2026-11-04', 'QLfe23bu': '5'}]}, {}, 'CQ4jTm2F')
+        read = self.exchange('NoticeReadUpdateRequest', {'p4U2NosZ': [{'goAiX84L': '102'}]})
+        self.assertEqual(read['Z53gL0RU'], [{'Gs6BT8n5': '2026', 'goAiX84L': '04'}])
+        self.game.server.State.player = self.restored_player()
+        self.assertEqual(self.exchange('GetUserInfoRequest', {})['Z53gL0RU'], read['Z53gL0RU'])
+        self.assertTrue(player.data['notices']['read'])
+
     def test_friend_pages_use_local_profiles_and_search_without_state_changes(self):
         from ffbe_friends import load_friends
         friend = str(load_friends()[0]['friend_id'])
@@ -301,6 +348,75 @@ class LocalGameIntegration(unittest.TestCase):
                 count += 1
         self.assertEqual(count, 49)
 
+    def test_all_twelve_special_challenge_vision_card_claims_pay_once(self):
+        import ffbe_player as quests
+        player = self.game.server.State.player
+        paid = 0
+        expected_cards = 0
+        for gid, rows in quests.sp_challenge_tables()['groups'].items():
+            for row in rows:
+                qid = str(row['V36ygRYs'])
+                rewards = quests._quest_reward(qid) if '27:' in row['dX6cor8j'] else []
+                if not any(reward['kind'] == 27 for reward in rewards):
+                    continue
+                meta = quests._quest_index()[qid]
+                player.bump_progress(quests._progress_key('spchallenge', gid, qid), meta['max'])
+                request = {'Dtw7GU1j': [{'fK3W9qYA': quests.sp_schedule_id(gid),
+                                        'zF6QIY2r': gid, 'V36ygRYs': qid}]}
+                with patch.object(quests, 'sp_challenge_picked', return_value=[(gid, rows)]):
+                    for _ in range(2):
+                        reply = self.exchange('SpChallengeRewardGetRequest', request)
+                expected_cards += sum(r['count'] for r in rewards if r['kind'] == 27)
+                self.assertEqual(len(reply['4hPYneL3']), expected_cards)
+                self.assertEqual(self.restored_player().progress_value(f'claimed/{gid}/{qid}'), 1)
+                paid += 1
+        self.assertEqual(paid, 12)
+
+    def test_mission_challenge_reward_types_are_visible_and_paid_once(self):
+        from exvius_repeat import begin_attempt, complete_attempt
+        from player_state import switch_position
+        player = self.game.server.State.player
+        challenge = {'id': '1000', 'condition': 'test',
+                     'rewards': '27:900020101:1:100:1,28:100037702:4,90:72000003:1,91:18496701:1'}
+        for _ in range(2):
+            begin_attempt(player, '1110101')
+            result = complete_attempt(player, '1110101', True, [challenge], {'test': lambda *_: True}, {})
+            self.assertEqual(result['blocked'], [])
+        self.assertEqual(len(player.vision_card_rows()), 1)
+        self.assertEqual(player.data['exvius_unit_points']['banks']['100037707']['LD4UJaf0'], 120)
+        for iid in ('72000003', '18496701'):
+            stype, index = switch_position(iid)
+            self.assertIn(index, player.switches[stype])
+
+    def test_all_restored_series_point_challenge_rows_pay_once(self):
+        from collections import defaultdict
+        from exvius_repeat import begin_attempt, complete_attempt
+        from exvius_actions_shops import series_point_award
+        from exvius_rewards import parse
+        from player_state import _load_ndjson, restored_master
+        player = self.game.server.State.player
+        ids = {r['RvN2W9Qx'] for r in restored_master('F_UNIT_SERIES_POWER_UP_POINT_MST')['rows']}
+        expected = defaultdict(dict)
+        missions = defaultdict(list)
+        for row in _load_ndjson('F_CHALLENGE_MST.ndjson')['__rows__']:
+            if not row['dX6cor8j'].startswith('28:'):
+                continue
+            for reward in parse(row['dX6cor8j']):
+                iid = str(reward['id'])
+                if reward['kind'] != 28 or iid not in ids:
+                    continue
+                series, stat, points = series_point_award(iid)
+                expected[series][stat] = expected[series].get(stat, 0) + points * reward['count']
+                missions[row['qo3PECw6']].append({
+                    'id': row['V36ygRYs'], 'condition': 'test', 'rewards': row['dX6cor8j']})
+        self.assertEqual(sum(map(len, missions.values())), 36)
+        for mid, rows in missions.items():
+            for _ in range(2):
+                begin_attempt(player, mid)
+                result = complete_attempt(player, mid, True, rows, {'test': lambda *_: True}, {})
+                self.assertEqual(result['blocked'], [])
+        self.assertEqual(player.data['exvius_unit_points']['banks'], expected)
+
     def test_all_visible_panel_quest_rewards_pay_and_keep_other_panels(self):
         import ffbe_player as quests
         player = self.game.server.State.player
@@ -401,6 +517,8 @@ class LocalGameIntegration(unittest.TestCase):
         restored = PlayerState.load(str(state_file))
         self.assertEqual(restored.currencies['friend_point'], 800)
         self.assertEqual(len(restored.data['roster']), before + 1)
+        from ffbe_player import _quest_index, player_progress
+        self.assertEqual(player_progress('100110', _quest_index()['100110']), 1)
 
     def test_existing_content_handler_reads_local_bytes(self):
         response = self.game.request('GET', '/local-fixture.bin')
@@ -1113,21 +1231,51 @@ class LocalGameIntegration(unittest.TestCase):
     def test_special_mode_clear_publishes_unlocks_in_the_same_reply(self):
         from event_archive import menu
         from ffbe_battle import _switch_container
+        from ffbe_player import _satisfied_quests
         player = self.game.server.State.player
         menu(player, 'parade:92001')
         self.load_mission('9200101')
         reply = self.exchange('ParadeMissionEndRequest', {
             'jQsE54Iz': [{'qo3PECw6': '9200101'}],
-            '2urzfX6d': [{'69ieJGhD': '0:123:2', 'Z1p0j9uF': '0'}]})
+            '2urzfX6d': [{'69ieJGhD': '0:123:2', 'Z1p0j9uF': '0'}],
+            '9uzBbMgf': [{'UerDbZzt': '123-100000102@1000:100:6123:99:125:110'}]})
         switches = next(r['juA0Z4m7'] for r in reply['8J1R5PXG'] if r['5opcUT9t'] == '101')
         self.assertIn(4233, player.switches['101'])
         self.assertEqual(switches, _switch_container({}, '101'))
         self.assertIn('9200101', self.restored_player().data['progress']['cleared_missions'])
+        key = next(key for key, _, meta in _satisfied_quests('mission_clear', '9200101') if meta['param'] == '*')
+        self.assertEqual(self.restored_player().progress_value(key), 1)
+        self.assertEqual(self.restored_player().progress_value('panelquest/10303/1030306'), 6000)
+
+    def test_all_seven_named_dark_visions_quests_score_a_real_clear_once(self):
+        from event_archive import menu
+        from ffbe_player import _quest_index, _progress_key
+        from player_state import mission_row
+        player = self.game.server.State.player
+        for qid in ('811901', '811902', '811903', '811904', '811905', '811906', '813401'):
+            meta = _quest_index()[qid]
+            mid = meta['param']
+            menu(player, 'parade:' + mission_row(mid)['U9iHsau3'])
+            self.load_mission(mid)
+            report = {'jQsE54Iz': [{'qo3PECw6': mid}],
+                      '2urzfX6d': [{'69ieJGhD': '1:123:2', 'Z1p0j9uF': '0'}]}
+            for _ in range(2):
+                self.exchange('ParadeMissionEndRequest', report)
+            self.assertEqual(self.restored_player().progress_value(_progress_key('spchallenge', meta['schedule'], qid)), 1)
 
     def test_normal_battle_rewards_pay_once_per_load_and_survive_reload(self):
+        from ffbe_player import _quest_index, _progress_key
         mid = '1110101'
+        digits = '4200006123'
+        atk = format(int(digits + f'{sum(map(int, digits)):02d}'), 'x')
+        quests = {meta['chain']: _progress_key(meta['family'], meta['schedule'], qid)
+                  for qid, meta in _quest_index().items()
+                  if 'chain' in meta and meta['max'] > 30}
         report = {'jQsE54Iz': [{'qo3PECw6': mid}],
-                  '2urzfX6d': [{'69ieJGhD': '1:1:3', 'Z1p0j9uF': '0'}],
+                  '2urzfX6d': [{'69ieJGhD': '1:1:3', 'Z1p0j9uF': '0', 'e6ha3LUX': '3:' + atk},
+                               {'localChn': '22', 'localElm': '12'}],
+                  'nSG9Jb1s': [{'NYb0Cri6': 'MAX_CHAIN_TURN', '6gAX1BpC': '8'},
+                               {'NYb0Cri6': 'MAX_ELEMENT_CHAIN_TURN', '6gAX1BpC': '6'}],
                   'L4i4418y': [{'6q35TL07': '0'}],
                   '09HRWXDf': [{'Wdi3MAs2': '13', 'S4U09svH': '30'}]}
         player = self.game.server.State.player
@@ -1136,6 +1284,10 @@ class LocalGameIntegration(unittest.TestCase):
         self.exchange('MissionEndRequest', report)
         self.assertEqual(player.currencies['gil'], before_gil + 13)
         saved = self.restored_player()
+        self.assertEqual(saved.progress_value('panelquest/10303/1030306'), 6000)
+        for mode, count in ((('all', 'total'), 22), (('element', 'total'), 12),
+                            (('element', 'battle'), 12), (('all', 'turn'), 8)):
+            self.assertEqual(saved.progress_value(quests[mode]), count)
         self.game.server.State.player = player = saved
         rank, roster = json.loads(json.dumps(player.data['rank'])), json.loads(json.dumps(player.data['roster']))
         self.exchange('MissionEndRequest', report)
@@ -1214,6 +1366,9 @@ class LocalGameIntegration(unittest.TestCase):
         report['3uy7DzGB'] = [{'qo3PECw6': '7340104'}]
         self.exchange('MissionEndRequest', report)
         self.assertIn('73401042', self.restored_player().cleared_challenges['7340104'])
+        from ffbe_player import _satisfied_quests
+        key = next(key for key, _, meta in _satisfied_quests('mission_clear', '7340104') if meta['param'] == '*')
+        self.assertEqual(self.restored_player().progress_value(key), 1)
         for raw, expected in [('10020:1,20010:2', True), ('20010:2', False)]:
             ctx = mission_result_from(json.dumps({'2urzfX6d': [{'i1yJ3hmT': raw}]}))
             self.assertEqual(CONDITION_CHECKS['41'](ctx, '2'), expected)

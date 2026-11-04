@@ -279,6 +279,8 @@ def expedition_start(spec, req):
                                 "3JND4wjr": "2", "Sf2m961q": str(bonus),
                                 "mqbn4Gdm": str(_int(quest.get("mqbn4Gdm")) + 1)})
     _put("expedition", block)
+    from ffbe_player import score_quest_action
+    score_quest_action('44')
     return _quest_reply(_refresh(spec))
 
 

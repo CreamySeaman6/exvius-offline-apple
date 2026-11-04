@@ -2,11 +2,12 @@
 
 Wire layouts are from the GL 9 client. Scoring, streaks and medals follow
 https://exvius.fandom.com/wiki/Arena. Local rivals have a neutral 1.00 ratio.
-There is no online leaderboard or weekly placement reward in an offline game.
+Offline weekly participation pays the lowest original ranking reward tier.
 At the turn limit equal surviving counts are settled by damage inflicted, then
 defeat on an exact tie. The original server's hidden tie-break is unavailable.
 """
 import copy
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, ROUND_HALF_UP
 import secrets
 import time
@@ -33,6 +34,38 @@ def _model():
 def _save(model):
     State.player.data['exvius_arena'] = model
     State.player.dirty = True
+
+
+def settle_weekly_reward(model):
+    """Settle one played week at the original Thursday 04:00 UTC boundary."""
+    player = State.player
+    if player.mode == 'frozen':
+        return None
+    now = datetime.now(timezone.utc) - timedelta(hours=4)
+    current = (now.date() - timedelta(days=(now.weekday() - 3) % 7)).isoformat()
+    played = model.get('last_week_played')
+    if played is None and model.get('daily'):
+        day = datetime.fromisoformat(max(model['daily'])).date()
+        played = (day - timedelta(days=(day.weekday() - 3) % 7)).isoformat()
+    if not played or played >= current or model.get('last_week_paid', '') >= played:
+        return current
+    rows = _mst('F_RB_SS_REWARD_MST.ndjson', None)['__rows__']
+    reward = max((r for r in rows if r['6Z9DxQFf'] == model['season_id'] and r['vs48LZrt'] == '0'),
+                 key=lambda r: int(r['XM4Ca3PF']), default=None)
+    if reward is None:
+        return current
+    from exvius_rewards import parse
+    entries = [entry.split(':') for entry in reward['dX6cor8j'].split(',')]
+    for entry in entries:
+        if len(entry) > 3 and entry[3] == '0':
+            entry[3] = '100'  # Deterministic attachments in the original ranking table.
+    items = parse(','.join(':'.join(entry) for entry in entries))
+    if items and all(player._can_credit(item) for item in items):
+        player._grant_items(items)
+        player.deliver_mail('Arena Weekly Reward', [],
+                            message='Your offline Arena participation rewards have been added to your inventory.')
+        model['last_week_paid'] = played
+    return current
 
 
 def _season(req, model):
@@ -280,6 +313,7 @@ def end(spec, req):
                     egayI1s4=str(max(int(user['egayI1s4']), streak)), **{'5svT7qLR': str(streak),
                     'p6H4CNw8': str(int(user['p6H4CNw8']) + consumed),
                     'Ka0Pbz5N': str(int(user['Ka0Pbz5N']) + consumed * int(win))})
+        model['last_week_played'] = settle_weekly_reward(model)
         model['daily'] = {today: count + consumed}
         model['active'] = model['matched'] = None
         model['last_result'] = result

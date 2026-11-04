@@ -46,6 +46,18 @@ class ArenaActions(unittest.TestCase):
         ffbe_state.State.player = self.previous
         ffbe_state.NOTES[:] = self.notes
 
+    def test_closed_week_participation_pays_original_tier_once(self):
+        from exvius_arena import _model, settle_weekly_reward
+        arena = _model()
+        arena['last_week_played'] = '2020-10-01'
+        before = self.player.item_count(23, 60)
+        settle_weekly_reward(arena)
+        self.assertEqual(self.player.item_count(23, 60), before + 5)
+        self.assertEqual(arena['last_week_paid'], arena['last_week_played'])
+        settle_weekly_reward(arena)
+        self.assertEqual(self.player.item_count(23, 60), before + 5)
+        self.assertEqual(sum(m['title'] == 'Arena Weekly Reward' for m in self.player.mailbox), 1)
+
     def call(self, name, req=None, spec=None):
         request = copy.deepcopy(req or {})
         default = copy.deepcopy(spec or {})

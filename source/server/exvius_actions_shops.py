@@ -283,15 +283,17 @@ def item_sell(spec, req):
     _require(_int(node.get("97h4mIQo")) == price, "sale price mismatch")
     equipment = State.player.data.get("inventory", {}).get("equipment", [])
     owned = {r["J1YX9kmM"]: int(r["Qy5EvcK1"]) for r in State.player.equip_item_rows()}
-    worn = {}
+    worn, worn_materia = Counter(), Counter()
     for unit in State.player.data["roster"]:
         normal = Counter(str(iid) for iid in (unit.get('equipment') or {}).values())
         shifted = Counter(str(iid) for iid in (unit.get('shift_equipment') or {}).values())
-        for iid, count in (normal | shifted).items():
-            worn[iid] = worn.get(iid, 0) + count
+        worn.update(normal | shifted)
+        normal_materia = Counter(map(str, unit.get('materia') or []))
+        shifted_materia = Counter(map(str, unit.get('shift_materia') or []))
+        worn_materia.update(normal_materia | shifted_materia)
     for (kind, iid), count in totals.items():
         available = (owned.get(iid, 0) - worn.get(iid, 0) if kind == 21
-                     else State.player.item_count(kind, iid))
+                     else State.player.item_count(kind, iid) - (worn_materia[iid] if kind == 22 else 0))
         _require(available >= count, "insufficient unequipped sale inventory")
     for (kind, iid), count in totals.items():
         if kind == 21:
@@ -597,34 +599,65 @@ def _awakening_cost(node, master):
 POINT_TOKENS = ('XeRVw3s2', 'jWS57HG3', 'LD4UJaf0', 'ui34MYgo', '5sNq90o6',
                 '0xgsDY9E', 'VSL4Wj9z', 'y7Z5AmhC', 'h5s68EtJ', 'eu2DXK4I',
                 '8RUQtk4i', '8cj19yhb', 'rjK5oB1H', '16NCtrGw')
+POINT_TYPES = ('EXP', 'DOPING_LB', 'DOPING_HP', 'DOPING_MP', 'DOPING_ATK', 'DOPING_DEF',
+               'DOPING_INT', 'DOPING_MND', 'MAX_LIMIT_EX_HP', 'MAX_LIMIT_EX_MP',
+               'MAX_LIMIT_EX_ATK', 'MAX_LIMIT_EX_DEF', 'MAX_LIMIT_EX_INT', 'MAX_LIMIT_EX_MND')
 
 
-def convert_exp_materials(player, ids=None):
+def series_point_award(iid):
+    row = _table('F_UNIT_SERIES_POWER_UP_POINT_MST', 'RvN2W9Qx').get(str(iid), {})
+    kind = row.get('K5LEG0Da')
+    if kind not in POINT_TYPES or not str(row.get('Yc8Mm6y7', '')).isdigit():
+        return None
+    return str(row['woghJa61']), POINT_TOKENS[POINT_TYPES.index(kind)], int(row['Yc8Mm6y7'])
+
+
+def convert_material_units(player, ids=None):
     from player_state import unit_mix_exp, unit_mst
 
     if player.mode == 'frozen':
         return set()
-    materials = []
+    deployed = deployed_unit_ids(player)
+    converted = set()
+    points = Counter()
+    gil = 0
     for unit in player.data['roster']:
         iid = str(unit['instance_id'])
-        if (ids is not None and iid not in ids) or unit.get('favourite'):
+        if (ids is not None and iid not in ids) or iid in deployed or unit.get('favourite'):
             continue
         master = unit_mst(unit['master_id']) or {}
-        if master.get('2odVXyT8') == '1' and '9' in master.get('27GkYdEu', '').split(','):
-            materials.append(unit)
-    if not materials:
+        roles = set(master.get('27GkYdEu', '').split(','))
+        if ids is not None and master.get('2odVXyT8') == '2' and '10' in roles:
+            value = int(master.get('u18nfD7p') or 0)
+            if value > 0:
+                gil += value
+                converted.add(iid)
+            continue
+        if master.get('2odVXyT8') != '1':
+            continue
+        credit = {}
+        if '9' in roles:
+            credit[POINT_TOKENS[0]] = unit_mix_exp(unit)
+        elif ids is not None and roles.intersection(('12', '13')):
+            values = [int(value) for value in master.get('Y2X8d5R7', '').split(',') if value.isdigit()]
+            start = 8 if '13' in roles else 2
+            credit.update(zip(POINT_TOKENS[start:start + 6], values))
+            if '12' in roles:
+                credit[POINT_TOKENS[1]] = int(master.get('1Rf2VDoI') or 0)
+        if any(credit.values()):
+            points.update(credit)
+            converted.add(iid)
+    if not converted:
         return set()
-    deployed = deployed_unit_ids(player)
-    materials = [unit for unit in materials if str(unit['instance_id']) not in deployed]
-    amount = sum(unit_mix_exp(unit) for unit in materials)
-    if amount <= 0:
-        return set()
-    converted = {str(unit['instance_id']) for unit in materials}
-    bank = player.data.setdefault('exvius_unit_points', {}).setdefault('banks', {}).setdefault('0', {})
-    token = POINT_TOKENS[0]
-    bank[token] = int(bank.get(token, 0)) + amount
+    if points:
+        bank = player.data.setdefault('exvius_unit_points', {}).setdefault('banks', {}).setdefault('0', {})
+        for token, amount in points.items():
+            if amount:
+                bank[token] = int(bank.get(token, 0)) + amount
+    if gil:
+        player.add_currency('gil', gil)
     player.drop_units(converted)
-    _note(f'unit-exchange: credited {amount} EXP from {len(converted)} material(s)')
+    _note(f'unit-exchange: credited points or gil for {len(converted)} material(s)')
     return converted
 
 
@@ -695,6 +728,7 @@ def unit_use_point(spec, req):
         unit['lb_level'], unit['lb_exp'] = level, exp
     if total[0]:
         State.player.add_unit_exp(target, total[0])
+    State.player.record_archive({'TOTAL_UNIT_MIX': 1})
     unit['stat_pots'], unit['stat_doors'] = pots, doors
     _store('unit_points', state)
     out = _reply(spec)
@@ -1015,12 +1049,19 @@ def sublimation_skill(spec, req):
     root = next((r for r, current in skills.items() if str(current) == before), before)
     if str(skills.get(root, "")) == after:
         return _reply(spec)
-    predecessors = [r for r in recipes.values() if str(r["Q1n9iYgz"]) == before]
-    _require(root in skills or not predecessors, "previous skill tier has not been learned")
+    predecessors = {str(r["Q1n9iYgz"]): str(r["hxu12ZFS"]) for r in recipes.values()}
+    _require(root in skills or before not in predecessors, "previous skill tier has not been learned")
     _require(root not in skills or str(skills[root]) == before, "skill recipe is stale")
+    tier, previous = 1, before
+    while previous != root and tier < 5 and previous in predecessors:
+        previous = predecessors[previous]
+        tier += 1
     _pay(_triples(row["HS7V6Ww1"]), _int(row["7UR4J2SE"]))
     skills[root] = after
     _store("sublimation", state)
+    from ffbe_player import score_quest_action
+    if previous == root:
+        score_quest_action('1', param=str(tier))
     out = _reply(spec)
     out["j0e1xIv9"] = [{"og2GHy49": iid, "1MH7Na23": root, "6bHxDEL0": after}]
     return out
@@ -1330,8 +1371,10 @@ def serve_feature_state(spec, reply_id=None):
     if not isinstance(spec, dict) or State.player is None:
         return spec
     # The native automatic conversion screen can stall before sending its
-    # request. Bank EXP before publishing acquired or previously owned Cactuars.
-    if ('LhVz6aD2' in spec or UNIT_GROUP in spec) and convert_exp_materials(State.player):
+    # request. Bank EXP when inventory is refreshed, leaving fresh summon
+    # awards in the roster so their reveal can resolve the awarded instance.
+    if (reply_id != '9fVIioy1' and ('LhVz6aD2' in spec or UNIT_GROUP in spec)
+            and convert_material_units(State.player)):
         spec = dict(spec, z36FApms=_point_rows())
     if reply_id not in {'75fYdNxq', 'X07iYtp5', '6H1R9WID', 'u7Id4bMg',
                         '9KN5rcwj', 'syKz34cE'} and 'LhVz6aD2' not in spec:

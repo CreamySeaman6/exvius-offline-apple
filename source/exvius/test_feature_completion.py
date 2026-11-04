@@ -348,6 +348,23 @@ class Completion(unittest.TestCase):
         self.assertIn('25,000', page)
         self.assertIn('Received', page)
 
+    def test_parade_vision_card_milestone_grants_and_does_not_block_scoring(self):
+        from event_archive import menu
+        original_mst = modes._mst
+        schedule = {'__rows__': [{'pvS5A4kE': '65000', 'rYGk3Q7t': '1', '1UB3Hqfc': '1',
+                                  'dX6cor8j': '27:900020101:1:100:1'}]}
+        menu(self.p, 'parade:92001')
+        feature = self.p.data['exvius_parade']
+        report = {'jQsE54Iz': [{'qo3PECw6': '9200101'}],
+                  '2urzfX6d': [{'69ieJGhD': '1:123:2', 'Z1p0j9uF': '0'}]}
+        with patch.object(modes, '_mst', side_effect=lambda name, key:
+                          schedule if name == 'F_SEASON_EVENT_REWARD_MST.ndjson' else original_mst(name, key)):
+            for _ in range(2):
+                modes._parade_complete(feature, '9200101', report)
+        self.assertGreater(int(feature['bests']['9200101']['7HSK9eBV']), 0)
+        self.assertEqual(feature['milestones'], ['1'])
+        self.assertEqual(len(self.p.vision_card_rows()), 1)
+
     def test_clash_boss_identity_and_level_scaling_use_global_profiles(self):
         import battle_content
         from pathlib import Path

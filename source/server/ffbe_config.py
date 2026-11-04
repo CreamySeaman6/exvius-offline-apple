@@ -588,7 +588,7 @@ FORCE_TABLE_VERSIONS = os.environ.get(
     # MST parsers, NOT factory replies, so they ship and are never fetched either -- and without them the
     # screen has no rows and no title even with every reply group served (SW-121).
     "F_TEXT_TEXT_EN=265,F_TEXT_MONSTER_NAME=227,F_MONSTER_SKILL_SET_MST=290,"
-    "F_TEXT_TOWN_STORE_OWNER_NAME=85,F_TEXT_NPC_NAME=30,F_LOCALIZED_TEXT_MST=709,"
+    "F_TEXT_TOWN_STORE_OWNER_NAME=85,F_TEXT_TOWN_STORE_COMMENT=77,F_TEXT_NPC_NAME=30,F_LOCALIZED_TEXT_MST=710,"
     "F_LOGIN_BONUS_MST=27,F_LOGIN_BONUS_TOTAL_REWARD_MST=12,"
     "F_LOGIN_BONUS_SP_REWARD_MST=297,F_COMEBACK_LOGIN_MST=27,"
     "F_PANEL_QUEST_MST=16,F_PANEL_QUEST_GROUP_MST=14,F_TEXT_PANEL_QUEST_NAME=10,"
@@ -621,7 +621,7 @@ FORCE_TABLE_VERSIONS = os.environ.get(
     # number this variable advertises MUST match the overlay filename on disk.
     "F_DEFINE_MST=227,F_UNIT_EX_BONUS_MST=3,F_UNIT_SERIES_NV_PIECE_MST=5,"
     "F_SUBLIMATION_RECIPE_MST=276,F_ABILITY_MST=669,F_ABILITY_EXPLAIN_MST=404,"
-    "F_UNIT_SERIES_LV_ACQUIRE_MST=380"
+    "F_UNIT_SERIES_LV_ACQUIRE_MST=380,F_UNIT_SERIES_POWER_UP_POINT_MST=22"
     # ...and F_TEXT_DUNGEON_NAME (APP-7, 2026-09-30), the area-1006 tile's NAME. Token `AyVqkz2B`
     # (`docs/analysis/localized_text_keys.json`), shipped as `Ver223_AyVqkz2B.dat` (247,724 B).
     # WHY A NEW ENTRY IS NEEDED IS NOW PROVEN, not inferred: the client's own shipped registry

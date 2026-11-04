@@ -37,6 +37,8 @@ def parse(raw):
                     reward['affinity_points'][channel] = str(points)
                 elif target:
                     reward['reward_target_master'] = target
+        elif kind == 27 and len(fields) == 5:
+            reward['level'] = max(1, int(fields[4]))
         elif len(fields) > 5 or (len(fields) == 5 and fields[4] not in ('0', '1')):
             raise ValueError('unit metadata attached to a non-unit reward')
         result.append(reward)

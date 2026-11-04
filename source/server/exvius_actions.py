@@ -65,7 +65,7 @@ def unit_class_up(spec, req):
     node = _node(req, "sWc7EH69")
     iid = str(node.get("og2GHy49") or "") if node else ""
     unit = next((u for u in State.player.data["roster"] if str(u["instance_id"]) == iid), None)
-    if unit is None:
+    if unit is None or State.player.mode == 'frozen':
         _note(f"unit-class-up: unit {iid or '?'} not in the roster")
         return spec
     step = _mst("F_UNIT_CLASS_UP_MST.ndjson", "3HriTp6B").get(str(unit["master_id"]))
@@ -85,7 +85,10 @@ def unit_class_up(spec, req):
     before = unit["master_id"]
     unit["master_id"] = str(step["t74crqAL"])
     unit = State.player.renew_unit_instance(iid)
-    State.player.record_archive({'TOTAL_UNIT_CLASS_UP': 1})
+    from player_state import unit_mst
+    destination = unit_mst(unit['master_id']) or {}
+    State.player.record_archive({'TOTAL_UNIT_CLASS_UP': 1, 'TOTAL_UNIT_RARE7_CLASS_UP':
+                                 int(destination.get('9fW0TePj') == '7' and destination.get('JPW8Vs40') == '0')})
     State.player.dirty = True
     print(f"unit: awakened {iid} {before} -> {unit['master_id']} for {gil} gil + {materials}", flush=True)
     out = _refresh(spec)
@@ -139,7 +142,11 @@ def unit_equip(spec, req):
         # Older saves infer the starter copies from the worn slots. Keep those
         # copies in inventory before replacing or clearing the slots.
         _retain_owned_equipment()
+        from ffbe_player import score_quest_action
         for iid, fields in loadouts.items():
+            for field in ('materia', 'shift_materia'):
+                if field in fields and fields[field] != roster[iid].get(field) and any(i != '0' for i in fields[field]):
+                    score_quest_action('13')
             roster[iid].update(fields)
         player.dirty = True
     return _refresh(spec)
@@ -191,7 +198,108 @@ def sacrifice(spec, req, group="6kvFj2Kw"):
     return out
 
 
+def update_profile(spec, req):
+    player = State.player
+    row = _node(req, 'MZzST52W')
+    if player.mode == 'frozen' or row is None:
+        return spec
+    name, message = row.get('9qh17ZUf'), row.get('Wk1v6upb')
+    if isinstance(name, str) and name.strip() and len(name) <= 64 and name.isprintable():
+        player.data['identity']['handle_name'] = name
+        player.dirty = True
+    if isinstance(message, str) and len(message) <= 256 and (not message or message.isprintable()):
+        player.data['profile']['message'] = message
+        player.dirty = True
+    out = _refresh(spec)
+    out['LhVz6aD2'] = [dict((out.get('LhVz6aD2') or [{}])[0],
+                             **{'9qh17ZUf': player.data['identity']['handle_name']})]
+    return out
+
+
+def inventory_favourite(spec, req, group, on_keys, off_keys):
+    player = State.player
+    row = _node(req, group)
+    if player.mode == 'frozen' or row is None:
+        return spec
+    if group == '4I71fGzq':
+        existing = {str(card['user_vc_id']): card for card in player.data.get('vision_cards', [])}
+    else:
+        owned = (player.equip_item_rows() if group == 'K8pR0Fvb' else player.materia_rows())
+        token = 'J1YX9kmM' if group == 'K8pR0Fvb' else 'H5jBL0Vf'
+        existing = {str(item[token]): item for item in owned}
+    saved = dict(player.data.get('inventory_favourites', {}).get(group, {}))
+    changes = {}
+    for enabled, keys in ((True, on_keys), (False, off_keys)):
+        for key in keys:
+            accepted = []
+            for entry in str(row.get(key) or '').split(','):
+                parts = entry.split(':')
+                if (not all(p.isascii() and p.isdigit() for p in parts)
+                        or len(parts) != (1 if group == '4I71fGzq' else 2)
+                        or parts[0] not in existing):
+                    continue
+                accepted.append(entry)
+                if group == '4I71fGzq':
+                    existing[entry]['favourite'] = int(enabled)
+                elif enabled:
+                    saved[parts[0]] = parts[1]
+                else:
+                    saved.pop(parts[0], None)
+            if accepted:
+                changes[key] = ','.join(accepted)
+    if changes:
+        if group != '4I71fGzq':
+            player.data.setdefault('inventory_favourites', {})[group] = saved
+        player.dirty = True
+    return dict(spec or {}, **{group: [changes]})
+
+
+NOTICE_GROUPS = ('3BI1xSGW', 'R17unt2e', 'VKA5urE1', 'fzm3je8p', 'oUk10RXm', 'tN8f0PSB')
+
+
+def notice_state(spec, req, reply_id):
+    player = State.player
+    if not isinstance(spec, dict):
+        spec = {}
+    saved = player.data.get('notices', {})
+    catalogue = dict(saved.get('index', {}))
+    for group in NOTICE_GROUPS:
+        for row in spec.get(group, ()):
+            notice_id = str(row.get('td06MKEX', ''))
+            year = str(row.get('1d8R5ajV', '')).split('-', 1)[0].split('/', 1)[0]
+            index = str(row.get('QLfe23bu', ''))
+            if notice_id.isdigit() and year.isdigit() and len(year) == 4 and index.isdigit() and int(index) < 65536:
+                catalogue[notice_id] = (year, int(index))
+    marked = set(saved.get('read', ()))
+    row = _node(req, 'p4U2NosZ') if reply_id == 'pC3a2JWU' else None
+    if row and player.mode != 'frozen':
+        marked.update(i for i in str(row.get('goAiX84L') or '').split(',') if i.isascii() and i.isdigit())
+    if player.mode != 'frozen' and (set(saved.get('read', ())) != marked or
+                                   any(list(v) != list(saved.get('index', {}).get(k, ())) for k, v in catalogue.items())):
+        player.data['notices'] = dict(saved, index=catalogue, read=sorted(marked))
+        player.dirty = True
+    if not marked or (reply_id not in ('pC3a2JWU', 'CQ4jTm2F') and 'LhVz6aD2' not in spec
+                      and not any(group in spec for group in NOTICE_GROUPS)):
+        return spec
+    masks = {}
+    for notice_id in marked.intersection(catalogue):
+        year, index = catalogue[notice_id]
+        nibbles = masks.setdefault(year, [])
+        slot = index // 4
+        if slot >= len(nibbles):
+            nibbles.extend([0] * (slot + 1 - len(nibbles)))
+        nibbles[slot] |= 8 >> (index % 4)
+    if masks:
+        spec = dict(spec, Z53gL0RU=[{'Gs6BT8n5': year, 'goAiX84L': ''.join(format(n, 'x') for n in mask)}
+                                   for year, mask in sorted(masks.items())])
+    return spec
+
+
 HANDLERS = {
+    'ey8mupb4': update_profile,
+    'cVRHU84e': lambda s, r: inventory_favourite(s, r, 'K8pR0Fvb', ('I3FUD4Mt', 'DWJ3P8cg'), ('aME25KS0', 'Exp2A1u7')),
+    'k5v0hMd8': lambda s, r: inventory_favourite(s, r, 'pJ9Eo6cn', ('8UJhyb4u',), ('85HUgcbK',)),
+    'VTbX14dD': lambda s, r: inventory_favourite(s, r, '4I71fGzq', ('E0zptv3J',), ('N4ikBXn9',)),
     "7kG0JAvE": lambda spec, req: local_friend_action(spec, req, 'detail'),
     "3siZRSU4": lambda spec, req: local_friend_action(spec, req, 'search'),
     "iAs67PhJ": lambda spec, req: local_friend_action(spec, req, 'suggest'),
@@ -234,6 +342,9 @@ def serve_actions(spec, reply_id, plaintext):
     if State.player is None:
         return spec
     from exvius_colosseum import project
+    if (reply_id in ('pC3a2JWU', 'CQ4jTm2F') or isinstance(spec, dict)
+            and ('LhVz6aD2' in spec or any(group in spec for group in NOTICE_GROUPS))):
+        spec = notice_state(spec, _request(plaintext), reply_id)
     if handler is None:
         return project(spec)
     req = _request(plaintext)

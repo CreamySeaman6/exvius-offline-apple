@@ -347,10 +347,8 @@ def _load_ndjson(fname: str, key_token: str | None = None) -> dict:
                 rows.setdefault("__rows__", []).append(row)
     if fname in ('F_UNIT_EX_BONUS_MST.ndjson', 'F_UNIT_SERIES_NV_PIECE_MST.ndjson',
                  'F_SUBLIMATION_RECIPE_MST.ndjson', 'F_ABILITY_MST.ndjson', 'F_ABILITY_EXPLAIN_MST.ndjson',
-                 'F_UNIT_SERIES_LV_ACQUIRE_MST.ndjson'):
-        restored_path = os.path.join(os.path.dirname(__file__), 'content', 'exbonus_masters.json')
-        with open(restored_path, encoding='utf8') as fh:
-            restored = json.load(fh)['tables'][fname[:-7]]
+                 'F_UNIT_SERIES_LV_ACQUIRE_MST.ndjson', 'F_UNIT_SERIES_POWER_UP_POINT_MST.ndjson'):
+        restored = restored_master(fname[:-7])
         identity = lambda row: str(row[restored['key']]) if restored['key'] else json.dumps(row, sort_keys=True)
         if fname == 'F_ABILITY_EXPLAIN_MST.ndjson':
             descriptions = {identity(r): r['T7aEx3Mj'] for r in restored['rows']}
@@ -368,6 +366,13 @@ def _load_ndjson(fname: str, key_token: str | None = None) -> dict:
                     rows.setdefault('__rows__', []).append(row)
     _TABLES[cache_key] = rows
     return rows
+
+
+def restored_master(table):
+    filename = ('series_point_rewards.json' if table == 'F_UNIT_SERIES_POWER_UP_POINT_MST'
+                else 'exbonus_masters.json')
+    with open(os.path.join(os.path.dirname(__file__), 'content', filename), encoding='utf8') as fh:
+        return json.load(fh)['tables'][table]
 
 
 def unit_mst(master_id) -> dict | None:
@@ -3463,6 +3468,32 @@ class PlayerState:
                 if not self._can_credit(it):
                     continue
                 self.grant_emblem(iid)
+            elif kind == 27:
+                if not self._can_credit(it) or not self._mutate():
+                    continue
+                cards = self.data.setdefault('vision_cards', [])
+                occupied = {str(card['user_vc_id']) for card in cards}
+                instance = int(time.time() * 1000)
+                for _ in range(count):
+                    while str(instance) in occupied:
+                        instance += 1
+                    cards.append({'user_vc_id': str(instance), 'vc_id': str(iid),
+                                  'level': int(it.get('level', 1))})
+                    instance += 1
+            elif kind == 28:
+                from exvius_actions_shops import series_point_award
+                award = series_point_award(iid)
+                if award is None or not self._mutate():
+                    continue
+                series, token, value = award
+                banks = self.data.setdefault('exvius_unit_points', {}).setdefault('banks', {})
+                bank = banks.setdefault(series, {})
+                bank[token] = int(bank.get(token, 0)) + value * count
+            elif kind in (90, 91):
+                position = switch_position(iid)
+                if position is None or not self._mutate():
+                    continue
+                self.grant_switch(*position)
             elif str(kind) in {'22', '60'}:
                 if not self._can_credit(it):
                     continue
@@ -3478,10 +3509,6 @@ class PlayerState:
                 self.grant_item(kind, iid, count)
             else:
                 # Unsupported kinds must never become owned-but-invisible bag rows.
-                # Vision-card kind 27 needs its own levelled ownership contract. Bank it here and the player owns
-                # something no screen can show; report it as paid and the log lies. So: do not credit, do
-                # not report, and say so -- the caller's shortfall check then refuses the whole claim, which
-                # is the honest outcome (an unclaimable reward, loudly) rather than a silent one.
                 print(f"grant: REFUSED kind {kind} id {iid} x{count} -- no reply group projects this kind, "
                       f"so crediting it would be invisible to the client", flush=True)
                 continue
@@ -3619,6 +3646,14 @@ class PlayerState:
             return str(iid) in _load_ndjson('F_MATERIA_MST.ndjson', 'H5jBL0Vf')
         if str(kind) == '26':
             return iid != self.EMBLEM_NONE_ID and emblem_mst(iid) is not None
+        if kind == 27:
+            card = vision_card_mst(iid)
+            return bool(card and 1 <= int(row.get('level', 1)) <= int(card.get('aU3o2D4t') or 1))
+        if kind == 28:
+            from exvius_actions_shops import series_point_award
+            return series_point_award(iid) is not None
+        if kind in (90, 91):
+            return switch_position(iid) is not None
         if str(kind) == '60':
             row = _load_ndjson('F_RECIPE_BOOK_MST.ndjson', 'staFu8U1').get(str(iid))
             return bool(row and str(row.get('gJf3zp8a', '')).isdigit())
@@ -4495,6 +4530,8 @@ class PlayerState:
             # `f9400268 ldr x8,[x19]` at libgame `1c7110c` with `x19 = 0` -> SIGSEGV on the GL thread ->
             # libndk cannot process signal 11 -> the reporter aborts -> the coredump/ANR "closed out".
             row["7wV3QZ80"] = str(vc.get("level") or 1)
+            if 'favourite' in vc:
+                row['8zE6w9RP'] = str(int(bool(vc['favourite'])))
             for tok, field in (("B6H34Mea", "exp"), ("X9ABM7En", "total_exp")):
                 if vc.get(field) not in (None, ""):
                     row[tok] = str(vc[field])
@@ -4626,8 +4663,17 @@ class PlayerState:
         out = dict(spec)                      # never mutate the loaded payload (State.replies is shared)
         if "LhVz6aD2" in out:
             # UserGiftInfoList compares FriendID, independently of UserID.
-            out["LhVz6aD2"] = [dict(row, m3Wghr1j=self.friend_id())
+            out["LhVz6aD2"] = [dict(row, m3Wghr1j=self.friend_id(),
+                                         **({'9qh17ZUf': self.data['identity']['handle_name']}
+                                            if '9qh17ZUf' in row else {}))
                                 for row in (out["LhVz6aD2"] or [{}])]
+            favourites = self.data.get('inventory_favourites', {})
+            if favourites.get('K8pR0Fvb'):
+                out['q7NfU6FH'] = [{'J1YX9kmM': iid, 'XjLm3Y0r': '0', 'zF6QIY2r': group}
+                                   for iid, group in favourites['K8pR0Fvb'].items()]
+            if favourites.get('pJ9Eo6cn'):
+                out['8QNSBeP9'] = [{'H5jBL0Vf': iid, 'zF6QIY2r': group}
+                                   for iid, group in favourites['pJ9Eo6cn'].items()]
         for tag, rows in groups.items():
             out[tag] = rows
         if str(reply_id) == "pB3st6Tg":

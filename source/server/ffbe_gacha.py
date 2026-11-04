@@ -782,6 +782,18 @@ def serve_gacha(spec, plaintext: str | None = None, reply_id=None):
             _note(f"gacha: banner {banner['id']} pull x{repeats} (ticket {ticket_id}) refused "
                   f"(cost/affordability, or frozen); no award")
             return decline()
+        from ffbe_player import score_quest_action
+        from player_state import ticket_by_id, unit_mst
+        conditions = [str(banner['id'])]
+        if (banner.get('cost') or {}).get('kind') == 'friend_point':
+            # The original Rookie quest describes condition 51 as a Friend Point summon.
+            conditions.append('51')
+        ticket = ticket_by_id(res.get('ticket_id'))
+        if ticket:
+            conditions.append(f'{ticket[0]}#{ticket[1]}')
+        score_quest_action('5', res['count'], tuple(conditions))
+        State.player.record_archive({'TOTAL_NV_UNIT_GET_CNT': sum(
+            (unit_mst(award['unit_id']) or {}).get('9fW0TePj') == '7' for award in res['awards'])})
         detail_id = res["detail_id"]
         if offer is not None and req_detail:
             detail_id = req_detail                            # echo the row the player tapped

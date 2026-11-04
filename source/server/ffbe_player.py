@@ -14,6 +14,7 @@ from exvius_events import load_policy, apply_availability
 from data_paths import DATA_ROOT
 
 import copy, hashlib, json, os, time
+from functools import lru_cache
 
 from ffbe_config import *          # noqa: F401,F403 -- constants; the table has no behaviour
 import ffbe_state as st           # the REBOUND runtime state; see ffbe_state's docstring
@@ -400,6 +401,10 @@ def apply_party_edit(plaintext: str | None) -> None:
             if special:
                 party.setdefault('beast_decks', {})[str(brow['r21y0YzS'])] = [int(parsed[n]) for n in range(slots)]
             else:
+                previous = State.player.data.get('beast_decks', {}).get(str(brow['r21y0YzS']), [0] * slots)
+                if any(int(esper) and (slot >= len(previous) or int(esper) != int(previous[slot]))
+                       for slot, esper in parsed.items()):
+                    score_quest_action('49')
                 for slot, esper in parsed.items():
                     State.player.link_beast(str(brow.get("r21y0YzS")), slot, int(esper))
             State.player.dirty = True
@@ -600,6 +605,8 @@ def serve_beast_mix(spec, plaintext: str | None):
         return out
     trials_before = set(State.player.switches.get("821", ()))
     result = State.player.mix_beast(esper_id, entries)
+    if result['consumed']:
+        score_quest_action('45')
     for why in result["refused"]:
         _note(f"beast-mix: refused {why}")
     print(f"beast: mix esper {esper_id} exp+{result['exp']} cp+{result['cp']} -> level {result['level']} "
@@ -648,29 +655,17 @@ def serve_unit_exchange(spec, reply_id, plaintext: str | None):
     """Convert the native enhancement materials to the corresponding point balance."""
     if reply_id != UNIT_EXCHANGE_REQUEST or State.player is None or State.player.mode == "frozen":
         return spec
-    from exvius_actions_shops import _point_rows, convert_exp_materials, deployed_unit_ids
-    from player_state import unit_mst
+    from exvius_actions_shops import _point_rows, convert_material_units
     req = _request_json(plaintext)
     rows = req.get("g6sVon0N") if req else None
     ids = [str(r.get("og2GHy49")) for r in rows or [] if isinstance(r, dict) and r.get("og2GHy49")]
     if not ids:
         return spec
     player = State.player
-    materials = convert_exp_materials(player, set(ids))
-    deployed = deployed_unit_ids(player)
-    legacy = []
-    for iid in dict.fromkeys(ids):
-        unit = player.roster_row(iid)
-        if not unit or iid in deployed or unit.get("favourite"):
-            continue
-        master = unit_mst(unit["master_id"]) or {}
-        if master.get("2odVXyT8") in ("1", "2"):
-            legacy.append(iid)
-    if legacy:
-        player.sell_units(legacy, 0)
-    out = dict(spec or {}, z36FApms=_point_rows())
+    materials = convert_material_units(player, set(ids))
+    out = dict(spec or {}, z36FApms=_point_rows(), B71MekS8=[])
     if materials:
-        out["B71MekS8"] = []
+        out['3oU9Ktb7'] = [player._team_row()]
     return out
 
 
@@ -708,12 +703,18 @@ def serve_unit_mix(spec, plaintext: str | None):
             materials.append(x.strip())
     if not base_id or not materials or State.player is None:
         return spec
+    base = State.player.roster_row(base_id) or {}
+    affinity_before = list(base.get('affinity_points') or ('', ''))
     res = State.player.mix_units(base_id, materials)
     out = dict(spec) if isinstance(spec, dict) else {}
     if not res:
         _note(f"unit-mix: refused (base {base_id} or materials not in the roster, or frozen)")
         return out
     base = State.player.roster_row(base_id)
+    State.player.record_archive({'TOTAL_UNIT_MIX': 1})
+    if any(int(after or 0) > int(before or 0) for before, after in
+           zip(affinity_before, base.get('affinity_points') or ())):
+        score_quest_action('31')
     lb_level = int(base.get("lb_level", 0) or 0)
     lb_exp = int(base.get("lb_exp", 0) or 0)
     (b_lv, b_ex), (a_lv, a_ex) = res["before"], res["after"]
@@ -1242,6 +1243,16 @@ def _quest_index() -> dict:
     if _QUEST_INDEX:
         return _QUEST_INDEX
     mst = MST_DIR
+    titles = {}
+    for name in ('F_TEXT_PANEL_QUEST_NAME.ndjson', 'F_TEXT_SPCHALLENGE.ndjson'):
+        try:
+            with open(os.path.join(TEXT_DIR, name), encoding='utf-8') as source:
+                for line in source:
+                    text = json.loads(line)
+                    if text.get('v') and '_NAME_' in text.get('key', ''):
+                        titles[text['key']] = text['v'][0]
+        except OSError:
+            pass
     for family, fn in (("spchallenge", "F_SP_CHALLENGE_MST.ndjson"),
                        ("panelquest", "F_PANEL_QUEST_MST.ndjson")):
         path = os.path.join(mst, fn)
@@ -1270,6 +1281,13 @@ def _quest_index() -> dict:
                     mx = 0
                 _QUEST_INDEX[qid] = {"family": family, "schedule": str(row.get("zF6QIY2r", "")),
                                      "cond": cond, "param": param.strip(), "max": mx}
+                if cond in ('24', '25'):
+                    prefix = 'MST_SPCHALLENGE_NAME_' if family == 'spchallenge' else 'MST_PANEL_QUEST_NAME_'
+                    title = str(titles.get(prefix + qid) or row.get('G4L0YIB2') or '').lower()
+                    _QUEST_INDEX[qid]['chain'] = (
+                        'element' if cond == '25' or 'element chain' in title else 'all',
+                        'turn' if any(s in title for s in ('1 turn', 'one turn', '1ターン', '１ターン')) else
+                        'battle' if 'in a quest' in title else 'total')
     return _QUEST_INDEX
 
 
@@ -1353,32 +1371,102 @@ def _satisfied_quests(action: str, cleared_mission=None) -> list:
     return out
 
 
-def _action_context(action: str, plaintext: str | None):
-    """The one fact a PARAMETERISED condition code needs from the request body. `None` if unavailable.
+def score_quest_action(code, amount=1, param=None, *, best=False):
+    """Score a verified activity against the original quest definitions."""
+    if amount <= 0 or State.player is None:
+        return
+    player = State.player
+    params = param if isinstance(param, tuple) else (param,)
+    for qid, meta in _quest_index().items():
+        if meta['cond'] != str(code) or not any(_quest_matches('', meta, value) for value in params):
+            continue
+        key = _progress_key(meta['family'], meta['schedule'], qid)
+        gain = amount - player.progress_value(key) if best else amount
+        if gain > 0:
+            player.bump_progress(key, gain, cap=meta['max'] or None, what=f'condition {code} -> {qid}')
 
-    `mission_clear` is the only such action today: its code `15` is scored against the mission the client
-    just cleared, which is `jQsE54Iz.qo3PECw6` on the `MissionEndRequest` body. Anything else returns None
-    and therefore matches the bare-code rows only -- the fail-closed direction, so an unparseable body can
-    never pay a quest.
 
-    `raw_decode`, never a fixed pad byte (RE_VERIFICATION_IDIOMS #24): the client's manual PKCS#7 pad
-    leaves the pad VALUE as the last byte, so a fixed strip is a coin flip.
-    """
-    if not plaintext or action != "mission_clear":
-        return None
+@lru_cache(maxsize=1)
+def _exploration_missions():
     try:
-        obj = json.JSONDecoder().raw_decode(plaintext)[0]
-    except Exception as exc:  # noqa: BLE001 - any parse failure is the same fact: no id
-        _note(f"progress: {action} body did not parse ({exc!r}) -- only unconditional quests can score")
-        return None
-    if not isinstance(obj, dict):
-        return None
-    for row in (obj.get(PROGRESS_MISSION_GROUP) or []):
-        if isinstance(row, dict):
-            val = row.get(PROGRESS_MISSION_TOKEN)
-            if val:
-                return str(val)
-    return None
+        with open(os.path.join(TEXT_DIR, 'F_TEXT_MISSION.ndjson'), encoding='utf-8') as source:
+            return {row['key'].rsplit('_', 1)[-1] for row in map(json.loads, source)
+                    if row.get('v') and str(row['v'][0]).lower().endswith(' - exploration')}
+    except OSError:
+        return set()
+
+
+def score_completed_quest_mission(plaintext):
+    from exvius_challenges import _counts, _party
+    from exvius_repeat import claim_quest_progress
+    from ffbe_battle import mission_result_from
+    from player_state import mission_row, unit_mst
+
+    ctx = mission_result_from(plaintext)
+    mid = ctx.get('mission_id')
+    if ctx['cleared'] is not True or not claim_quest_progress(State.player, mid):
+        return False
+    score_quest_action('15', param=mid)
+    score_quest_action('42', param=mid)
+    if mid in _exploration_missions():
+        score_quest_action('48')
+    if (mission_row(mid) or {}).get('uv60hgDW') == '906':  # Original Room of Recollection area.
+        score_quest_action('47')
+    stats = [ctx['max_parameters'].get(str(index), 0) for index in range(1, 7)]
+    # sgBaseMissionEndRequest serializes UnitInfoBase totals for each
+    # party member as instance-master@HP:MP:ATK:DEF:MAG:SPR.
+    for entry in str(ctx['party_history'].get('UerDbZzt') or '').split(','):
+        _, separator, packed = entry.partition('@')
+        values = packed.split('@', 1)[0].split(':')
+        if separator and len(values) == len(stats) and all(v.isascii() and v.isdigit() for v in values):
+            stats = [max(before, int(value)) for before, value in zip(stats, values)]
+    for index, value in enumerate(stats, 1):
+        score_quest_action('43', value, str(index), best=True)
+    if ctx.get('helper_master'):
+        score_quest_action('17')
+    def metric(*names):
+        report = ctx.get('achievements', {})
+        return next((int(report[name]) for name in names if str(report.get(name, '')).isdigit()), 0)
+
+    damage = metric('MAX_DAMAGE_TURN', 'DMG_RANK_MAX_DAMAGE_TURN')
+    for code, channel, key in (('23', 'lb', 'LB'), ('26', 'magic', 'MAGIC'), ('27', 'beasts', 'BEAST')):
+        counts = _counts(ctx, channel) or {}
+        score_quest_action(code, max(sum(counts.values()), metric(f'TOTAL_{key}_USE', f'DMG_RANK_TOTAL_{key}_USE')))
+    for element, amount in (_counts(ctx, 'elements') or {}).items():
+        score_quest_action('20', amount, element)
+    for code, amount in (('39', damage), ('50', damage), ('40', metric('TOTAL_DAMAGE', 'DMG_RANK_TOTAL_DAMAGE'))):
+        score_quest_action(code, amount, best=True)
+    turn_chains = {'all': metric('MAX_CHAIN_TURN', 'DMG_RANK_MAX_CHAIN_TURN'),
+                   'element': metric('MAX_ELEMENT_CHAIN_TURN', 'DMG_RANK_MAX_ELEMENT_CHAIN_TURN')}
+    totals = {'all': metric('TOTAL_CHAIN', 'TOTAL_CHAIN_CNT'),
+              'element': metric('TOTAL_ELEMENT_CHAIN', 'TOTAL_ELEMENT_CHAIN_CNT')}
+    units = None
+    for qid, meta in _quest_index().items():
+        if 'chain' in meta:
+            channel, scope = meta['chain']
+            amount = turn_chains[channel] if scope == 'turn' else max(turn_chains[channel], totals[channel])
+            key = _progress_key(meta['family'], meta['schedule'], qid)
+            gain = amount if scope == 'total' else amount - State.player.progress_value(key)
+            if gain > 0:
+                State.player.bump_progress(key, gain, cap=meta['max'] or None, what=f'chain -> {qid}')
+        if meta['cond'] not in ('70', '76', '77'):
+            continue
+        target, _, value = meta['param'].partition(':')
+        if target != mid or not value.isdigit():
+            continue
+        if units is None:
+            units = _party(ctx)
+        if meta['cond'] == '70':
+            done = units and all(value in (unit_mst(u['master_id']) or {}).get('GPUkhv72', '').split(',')
+                                 for u in units)
+        elif meta['cond'] == '76':
+            done = ctx.get('turns') is not None and ctx['turns'] <= int(value)
+        else:
+            done = any(str(u['master_id'])[:-1] == value[:-1] for u in units)
+        if done:
+            key = _progress_key(meta['family'], meta['schedule'], qid)
+            State.player.bump_progress(key, 1, cap=meta['max'] or None, what=f'mission clear -> {qid}')
+    return True
 
 
 def apply_progress(spec, reply_id, plaintext=None):
@@ -1402,21 +1490,11 @@ def apply_progress(spec, reply_id, plaintext=None):
     player = State.player
     action = next((a for a, rids in PROGRESS_REQUESTS.items() if reply_id in rids), None)
     if action == "mission_clear":
-        from exvius_repeat import claim_quest_progress
-        from ffbe_battle import mission_result_from
-        mid = _action_context(action, plaintext)
-        if (mission_result_from(plaintext)['cleared'] is not True
-                or not claim_quest_progress(player, mid)):
+        if not score_completed_quest_mission(plaintext):
             _note('progress: mission clear not scored without a new successful loaded attempt')
             action = None
-    if action:
-        # The CONTEXT a parameterised code needs. `mission_clear` is the only such action today, and its
-        # context is the mission the client just cleared -- read from the SAME body with the same
-        # `raw_decode` discipline as everywhere else (never a fixed pad byte). A request that reports the
-        # action but carries no id scores only the bare-code / wildcard rows, which is the fail-closed
-        # direction: a missing id under-credits and is named in the log, while a wrong one would pay.
-        ctx = _action_context(action, plaintext) if action == "mission_clear" else None
-        hit = _satisfied_quests(action, ctx)
+    if action and action != 'mission_clear':
+        hit = _satisfied_quests(action)
         moved = []
         for key, qid, meta in hit:
             before = player.progress_value(key)
@@ -1432,10 +1510,6 @@ def apply_progress(spec, reply_id, plaintext=None):
             shown = moved[:8]
             _note(f"progress: {action} moved {len(moved)} of {len(hit)} quest counter(s): "
                   + ", ".join(shown) + (f" … (+{len(moved) - len(shown)} more)" if len(moved) > len(shown) else ""))
-        elif action == "mission_clear":
-            _note(f"progress: mission_clear reported mission {ctx or '(none)'} and moved no quest counter "
-                  f"({len(hit)} row(s) matched a condition spec but are already at their target, or no "
-                  f"quest's spec names this mission)")
     # The DAILY QUEST's half of the same fact. Its join key is the ACTION, not a condition code: the row has
     # no `Pzn5h0Ga` column at all, and what the player must do is written in the row's shipped TEXT
     # ("Send gifts to 5 friends"). One action therefore scores both families from one store -- the reason
@@ -1466,7 +1540,7 @@ def apply_progress(spec, reply_id, plaintext=None):
             meta = _quest_index().get(qid)
             if not meta:
                 continue
-            val = player.progress_value(_progress_key(meta["family"], meta["schedule"], qid))
+            val = player_progress(qid, meta)
             mx = meta["max"]
             r[PQ_PROGRESS] = str(val)
             r[PQ_CLEAR] = "1" if (mx and val >= mx) else "0"
@@ -1530,8 +1604,7 @@ def claim_panel_quest(spec, reply_id, plaintext=None):
         if not meta or meta['family'] != 'panelquest':
             refused.append(f"{qid}: not a shipped quest")
             continue
-        key = _progress_key(meta["family"], meta["schedule"], qid)
-        done = player.progress_value(key)
+        done = player_progress(qid, meta)
         if not (meta["max"] and done >= meta["max"]):
             refused.append(f"{qid}: not cleared ({done}/{meta['max']})")
             continue
@@ -3081,7 +3154,22 @@ def player_progress(quest_id: str, meta: dict) -> int:
     """
     if not meta:
         return 0
-    return State.player.progress_value(_progress_key(meta["family"], meta["schedule"], quest_id))
+    player = State.player
+    stored = player.progress_value(_progress_key(meta['family'], meta['schedule'], quest_id))
+    code = meta['cond']
+    archive = {'2': 'ARENA_BATTLE_CNT', '3': 'ARENA_WIN_CNT', '8': 'CLSM_BATTLE_CNT',
+               '28': 'TOTAL_UNIT_CLASS_UP', '29': 'TOTAL_UNIT_MIX', '38': 'TOTAL_UNIT_RARE7_CLASS_UP',
+               '41': 'TOTAL_GIL_GET', '55': 'TOTAL_NV_UNIT_GET_CNT'}
+    if code in archive:
+        stored = max(stored, player.archive_value(archive[code]))
+    elif code == '7':
+        stored = max(stored, sum(player.archive_value(f'TOTAL_CRAFT_{kind}') for kind in ('ITEM', 'EQUIP', 'ABILITY')))
+    elif code == '900' and meta['param'].isdigit():
+        stored = max(stored, sum(int(u.get('nv_ex_level') or 0) >= int(meta['param']) for u in player.data['roster']))
+    elif code in ('15', '42') and meta['max'] == 1 and meta['param'].isdigit():
+        if meta['param'] in player.data.get('progress', {}).get('cleared_missions', ()):
+            stored = 1
+    return min(meta['max'], stored) if meta['max'] else stored
 
 
 def claim_sp_challenge(spec, reply_id, plaintext=None):
@@ -3093,14 +3181,8 @@ def claim_sp_challenge(spec, reply_id, plaintext=None):
     (so a second tap is a no-op across restarts), and answer with the FULL refreshed row set plus a
     user-state group -- see the two notes at the assignment below for why "just the claimed row" is wrong.
 
-    **Which field of the triple is the challenge id** is read from the client, not guessed.
-    `SpChallengeRewardGetRequest::createBody` (0x199e10c) writes `fK3W9qYA`, `zF6QIY2r`, `V36ygRYs` from the
-    three ints `SpChallengeListObject::onButtonTouched` (0x253e308) passed to `addChallengeInfo`, and those
-    are `mst->getChallengeId()`, `mst->getRank()` and `mst->getChallengeId()` again -- so the key NAMES are
-    positional reuse and `fK3W9qYA` carries a CHALLENGE id here, not a schedule id. With 0 captures of this
-    request the safe implementation is structural rather than positional: accept the triple, take whichever
-    field is a SHIPPED challenge id, and refuse anything else. An unrecognised triple is reported, never
-    guessed at (RE_VERIFICATION_IDIOMS #26).
+    The Global client sends the schedule ID, group ID and challenge ID in
+    `fK3W9qYA`, `zF6QIY2r` and `V36ygRYs` respectively.
     """
     if reply_id != SP_CHALLENGE_CLAIM_REQUEST or State.player is None:
         return spec
@@ -3377,9 +3459,8 @@ def credit_emblem_objectives(plaintext, spec):
     which is the whole argument for `harness/server_regression.py`: a step that forgets its return value
     is indistinguishable from a correct one until a replay compares bytes.
 
-    The mission id rides `jQsE54Iz.qo3PECw6` -- `PROGRESS_MISSION_GROUP`/`TOKEN`, the same pair the mission
-    machinery already reads. A newly cleared objective grants a crest, and a crest can cross a tier, so the
-    delivery happens here rather than waiting for a screen the player may never open.
+    The mission id rides `jQsE54Iz.qo3PECw6`. Deliver any earned crest tier here so it reaches the player
+    even if they never open the Adventurer Crests screen.
     """
     if State.player is None or not plaintext:
         return spec
@@ -3569,7 +3650,6 @@ def _selftest() -> int:
     apply_progress(None, "JiglLZx6", tfa_body)
     want("a TFA mission end scores the same as a normal one",
          tfa.progress_value("spchallenge/1101/110101"), 1)
-    want("...and it names the quests it moved", any("mission_clear moved" in n for n in st.NOTES), True)
     st.NOTES.clear()
     apply_progress(None, "x5Unqg2d", tfa_body)
     want("a second end of the same mission is a repeat, not a re-score",
@@ -3580,8 +3660,10 @@ def _selftest() -> int:
     # so no replay gate executes this code -- deleting the "must be cleared" rule left the golden, the
     # sequence replay, the selftest and the state-writer audit ALL green while the chain paid an uncleared
     # quest. These three cases are the gate that now fails if it happens again.)
-    def _claim(qid, rank=1):
-        return json.dumps({"Dtw7GU1j": [{"fK3W9qYA": qid, "zF6QIY2r": str(rank), "V36ygRYs": qid}]})
+    def _claim(qid):
+        gid = _quest_index()[qid]["schedule"]
+        return json.dumps({"Dtw7GU1j": [
+            {SP_SCHEDULE_ID: sp_schedule_id(gid), SP_GROUP_ID: gid, SP_CHALLENGE_ID: qid}]})
 
     cp = ps2.PlayerState.load("/nonexistent", slot="selftest-claim")
     State.player = cp
@@ -3610,25 +3692,14 @@ def _selftest() -> int:
     claim_sp_challenge(None, SP_CHALLENGE_CLAIM_REQUEST, _claim("110101"))
     want("a second claim pays nothing", cp.progress_value("claimed/1101/110101"), 1)
     want("...and says so", "already claimed" in " ".join(st.NOTES), True)
-    # a reward whose kind no reply group can express must be REFUSED, not logged as paid -- this is what
-    # made `paid 1 (100102: 10:900020301x10)` a lie before (kind 10 is a UNIT and went to an invisible bag
-    # row; the client's readers are the roster and the type-20/23 bags).
+    # Recipe books and units must reach their own inventories.
     st.NOTES.clear()
     mp = ps2.PlayerState.load("/nonexistent", slot="selftest-grant")
     State.player = mp
     mp.bump_progress("spchallenge/1001/9000001", 1, cap=1)      # pays 60:1000000125 (a recipe book)
-    # the grant-level refusal is a `print` (player_state has no NOTES channel), so capture stdout for it
-    import contextlib as _cx
-    import io as _io
-    _buf = _io.StringIO()
-    with _cx.redirect_stdout(_buf):
-        claim_sp_challenge(None, SP_CHALLENGE_CLAIM_REQUEST, _claim("9000001", 2))
-    want("a reward no reply group projects is refused, not paid",
-         mp.progress_value("claimed/1001/9000001"), 0)
-    want("...and the grant logs WHY, naming the kind",
-         "no reply group projects this kind" in _buf.getvalue(), True)
-    want("...and the claim's own note records the shortfall",
-         "0/1 reward row(s) creditable" in " ".join(st.NOTES), True)
+    claim_sp_challenge(None, SP_CHALLENGE_CLAIM_REQUEST, _claim("9000001"))
+    want("the recipe book reward is claimed", mp.progress_value("claimed/1001/9000001"), 1)
+    want("the recipe book is stored", mp.data["exvius_craft"]["books"].get("1000000125"), True)
     mp.bump_progress("spchallenge/1001/9000000", 1, cap=1)      # pays 10:213000105 (a UNIT)
     n_roster = len(mp.data["roster"])
     st.NOTES.clear()
@@ -4006,6 +4077,7 @@ def _selftest() -> int:
     was_player = State.player
     try:
         import player_state as _ps4
+        from unittest.mock import patch
         from ffbe_battle import roll_drops as _roll
         State.player = _ps4.PlayerState(_ps4.default_state("100000001", "Rain", now_ms=1789000000000),
                                         mode="live")
@@ -4015,12 +4087,15 @@ def _selftest() -> int:
         want("event gate: ...for EVERY named area -- a new event is one word, not a table edit",
              [(a, d, m) for a, d, m in facts if a == "888"], [("888", "88801", "8880100")])
         carrier = {EVENT_GATE_TAG: [{"uv60hgDW": "226", "U9iHsau3": "21104", "qo3PECw6": "2110401"}]}
-        out = serve_event_gate(carrier, EVENT_GATE_CARRIERS[0])
+        with patch.dict(os.environ, {'EXVIUS_EVENT_ARCHIVE': '0'}), patch(
+                __name__ + '.load_policy', return_value={
+                    'version': 1, 'areas': list(EVENT_GATE_AREAS), 'permanent': True}):
+            out = serve_event_gate(carrier, EVENT_GATE_CARRIERS[0])
         rows = (out or {}).get(EVENT_GATE_TAG) or []
-        # The carrier's own row FIRST and untouched, then exactly one row per named area. The count is
-        # derived from the facts list rather than typed, so adding an event to the lever cannot stale this.
-        want("event gate: the rows are APPENDED, one per named area, the carrier's own tile untouched",
-             (rows[0].get("uv60hgDW") if rows else None, len(rows)), ("226", 1 + len(facts)))
+        want("event gate: the original tile stays first and each opening mission appears once",
+             (rows[0] == carrier[EVENT_GATE_TAG][0],
+              all(sum(r.get("qo3PECw6") == mid for r in rows) == 1 for _, _, mid in facts)),
+             (True, True))
         ev = next((r for r in rows if r.get("uv60hgDW") == "888"), {})
         want("event gate: ...carrying the derived area/dungeon/mission and the 1-BASED Event tab",
              (ev.get("U9iHsau3"), ev.get("qo3PECw6"), ev.get("qnUhs32P")),

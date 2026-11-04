@@ -207,6 +207,15 @@ def repeat_challenge_rewards(spec, mid, plaintext):
         _note('replay lapis %d listed in the results for mission %s' % (replay_lapis, mid))
     for blocked in result['blocked']:
         _note('repeat challenge %s withheld: %s' % (blocked['id'], blocked['reason']))
+    kinds = {reward['kind'] for entry in result['paid'] for reward in entry['rewards']}
+    if 27 in kinds:
+        spec = dict(spec, **{'4hPYneL3': State.player.vision_card_rows()})
+    if 28 in kinds:
+        from exvius_actions_shops import _point_rows
+        spec = dict(spec, z36FApms=_point_rows())
+    if kinds.intersection((90, 91)):
+        from exvius_actions_shops import _switches
+        spec = _switches(dict(spec))
     from exvius_fortuna import project as project_fortuna
     spec = project_fortuna(State.player, spec, mid)
     from exvius_raid_progress import apply_personal_raid_result

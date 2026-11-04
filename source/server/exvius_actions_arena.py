@@ -100,12 +100,13 @@ def _arena_rows(arena):
 
 
 def rb_entry(spec, req):
-    from exvius_arena import _model
+    from exvius_arena import _model, settle_weekly_reward
     arena = _model()
     rows = _arena_rows(arena)
     if rows is None:
         return _refuse(spec, "no shipped arena season")
     if _writable():
+        settle_weekly_reward(arena)
         _save_arena(arena)
     candidates = []
     for friend in load_friends():
@@ -368,6 +369,9 @@ def _friend_change(spec, req, action):
     state["relations"][target] = relation
     previous_count = State.player.data.get("counts", {}).get("friend", 0)
     _save_friends(state)
+    if action == 'request' and category == 0:
+        from ffbe_player import score_quest_action
+        score_quest_action('14')
     if action in ("delete", "refuse"):
         out = _ope(_out(spec), target)
     else:

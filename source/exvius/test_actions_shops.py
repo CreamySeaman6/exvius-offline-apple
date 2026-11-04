@@ -132,6 +132,20 @@ class ActionsShops(unittest.TestCase):
         self.reopen()
         self.assertEqual(self.player.data['roster'][0]['shift_equipment'], {'0': '301000200'})
 
+    def test_town_sale_leaves_equipped_materia_and_rejects_stale_quantity(self):
+        iid = 504228203
+        product = shops._product(22, iid)
+        price = int(product['bz6RS3pI'])
+        self.player.grant_item(22, iid, 2)
+        self.player.data['roster'][0]['shift_materia'] = [str(iid), '0', '0', '0']
+        before_sale = deepcopy(self.player.data)
+        shops.item_sell({}, {'2tHu3Chy': [{'8X7LwE3r': f'22:{iid}:2', '97h4mIQo': 2 * price}]})
+        self.assertEqual(self.player.data, before_sale)
+        before = self.player.currencies['gil']
+        shops.item_sell({}, {'2tHu3Chy': [{'8X7LwE3r': f'22:{iid}:1', '97h4mIQo': price}]})
+        self.assertEqual(self.player.item_count(22, iid), 1)
+        self.assertEqual(self.player.currencies['gil'], before + price)
+
     def test_town_chest_reports_credit_once_across_reload(self):
         from exvius_field_treasures import serve, GROUP
         from player_state import _serialise, _normalise
@@ -481,7 +495,8 @@ class ActionsShops(unittest.TestCase):
     def test_variable_store_and_star_quartz_unit_purchase(self):
         from datetime import datetime
         out = self.call('i0woEP4B')
-        schedule, minister = out['3VS1Bhmf']
+        schedules = {row['Z20mNDvL']: row for row in out['3VS1Bhmf']}
+        schedule, minister = schedules['900104'], schedules['900122']
         self.assertEqual((schedule['Z20mNDvL'], schedule['za2xsDj5'], schedule['suR36Jpm']),
                          ('900104', '7000458', '20:106200100'))
         self.assertEqual((minister['Z20mNDvL'], minister['za2xsDj5'], minister['suR36Jpm']),
@@ -666,6 +681,16 @@ class ActionsShops(unittest.TestCase):
             self.assertIn('8000320', learned)
         self.assertNotIn(root, self.player.data['exvius_hidden_skill'][series])
         self.unchanged('qxUUaS8s', 'gK8NR3Lt', {'woghJa61': series, 'uNQgv5QM': root})
+
+    def test_ability_awakening_levels_three_and_four_tick_their_own_panel_goals(self):
+        unit = self.player.grant_unit('212002507')
+        table = _load_ndjson('F_SUBLIMATION_RECIPE_MST.ndjson', 'SJ56uhz2')
+        for recipe in ('111104001', '111104002', '111104003', '111104004'):
+            self.seed_costs(table[recipe]['HS7V6Ww1'])
+            request = {'6uIYE15X': unit['instance_id'], 'yjY4GK3X': 2, 'SJ56uhz2': recipe}
+            self.call('s48Qzvhd', 'NcI0GgU9', request)
+        self.assertEqual(self.player.progress_value('panelquest/55501/5550104'), 1)
+        self.assertEqual(self.player.progress_value('panelquest/55501/5550105'), 1)
 
     def test_craft_exe_batch_costs_and_result_count(self):
         row = self.provision_craft()

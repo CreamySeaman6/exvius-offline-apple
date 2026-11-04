@@ -167,7 +167,8 @@ def event_skill_sets(source, target, key):
 
 
 def exbonus_master(source, target, key, table):
-    restored = json.loads((PROJECT / 'source/server/content/exbonus_masters.json').read_text(encoding='utf8'))['tables'][table]
+    from player_state import restored_master
+    restored = restored_master(table)
     lines = [line for line in source.read_text(encoding='ascii').splitlines() if line]
     mode, original = decode(source.read_bytes(), key)
     identity = lambda row: row[restored['key']] if restored['key'] else json.dumps(row, sort_keys=True)
@@ -237,6 +238,68 @@ def localized_text_versions(source, target, key, replacements):
     target.write_text('\n'.join(output) + '\n', encoding='ascii')
 
 
+def exchange_shop_comments(source, target, key):
+    """Fill absent exchange greetings while preserving the shipped English lines."""
+    _, original = decode(source.read_bytes(), key, localized=True)
+    existing = {row['key'] for row in original if row['v'] and row['v'][0].strip()}
+    masters = DATA / 'mst_decoded'
+    shops = (masters / 'F_TOWN_STORE_MST.ndjson').read_text(encoding='utf8').splitlines()
+    original_comments = (masters / 'F_TOWN_STORE_COMMENT_MST.ndjson').read_text(encoding='utf8').splitlines()
+    base = {(row['Z20mNDvL'], row['5uDYV3nK']): row['85DIQ1nK'].strip()
+            for row in map(json.loads, original_comments)}
+    currencies = {
+        '900153': 'Pakkun Chocolate', '900166': 'Memorial Coins',
+        '900216': 'Battle Anthem Certificates', '900220': 'Magic Walnuts',
+        '900232': 'Formidable Foes Memory Fragments',
+        '900234': 'Guidance of the Mark of Erdrick Memory Fragments',
+        '901601': 'Rainbow Exchange Tickets', '901602': 'Gold Exchange Tickets',
+        '901603': 'Silver Exchange Tickets', '901604': 'White Exchange Tickets',
+    }
+    translations = {
+        '900160': ("I'm not collecting anything at the moment, kupo.",
+                   'Come back and see me if you find anything rare, kupo!'),
+        '901401': ('Found some cacao? I would love to trade with you.',
+                   'Come back if you find more cacao!'),
+        '901501': ('Take your time looking around!',
+                   'Come back when you have more FamilyMart Coins!'),
+        '901502': ('Take your time looking around!',
+                   'Come back when you have more FamilyMart Tickets!'),
+        '902305': ('Want to trade your Channels of Absolution Certificates for my treasures, kupo?',
+                   'Bring me any rare treasures you find, kupo!'),
+    }
+    translations['902304'] = translations['900160']
+    for store, currency in currencies.items():
+        translations[store] = (f"I'd be happy to trade for your {currency}, kupo!",
+                               f"Come back when you've collected more {currency}, kupo!")
+    comments = {}
+    for shop in map(json.loads, shops):
+        if shop['kaG4xf3I'] != '5':
+            continue
+        store = shop['Z20mNDvL']
+        for index, slot in enumerate(('1', '3')):
+            name = f'MST_TOWNSTORE_COMMENT_{store}_{slot}'
+            if name in existing:
+                continue
+            line = base.get((store, slot), '')
+            if not line:
+                lines = ('Welcome! What would you like to trade for?', 'Thanks for stopping by!')
+                if 'モーグリ' in shop['mBVN12cS']:
+                    lines = ('Welcome, kupo! What would you like to trade for?', 'Come back anytime, kupo!')
+                line = lines[index]
+            elif store in translations:
+                line = translations[store][index]
+            elif line == '今はまだ交換できないクポ。':
+                line = 'Trading is unavailable for now, kupo.'
+            elif line == '準備が整うまで<br>もう少し待っていて欲しいクポ。':
+                line = 'Please come back when everything is ready, kupo.'
+            elif re.search(r'[\u3040-\u30ff\u3400-\u9fff]', line):
+                raise ValueError('Missing English translation for ' + name)
+            else:
+                line = line.replace('Id be happy', "I'd be happy").replace('youve', "you've")
+            comments[name] = line
+    loading_text(source, target, key, comments, append_missing=True)
+
+
 def main():
     manifest = client_manifest(PROJECT / 'repository snapshots/FFBE-Global-v9.0.0-original.apk')
     by_table = {entry['table']: (token, entry['key']) for token, entry in manifest.items()}
@@ -254,7 +317,8 @@ def main():
         relative = source.relative_to(DATA / 'client/files')
         target = DATA / 'overlay' / relative.parent / ('Ver' + version + '_' + token + '.dat')
         target.parent.mkdir(parents=True, exist_ok=True)
-        if table in ('F_TEXT_TOWN_STORE_OWNER_NAME', 'F_TEXT_MONSTER_NAME', 'F_TEXT_NPC_NAME', 'F_TEXT_MISSION'):
+        if table in ('F_TEXT_TOWN_STORE_OWNER_NAME', 'F_TEXT_TOWN_STORE_COMMENT',
+                     'F_TEXT_MONSTER_NAME', 'F_TEXT_NPC_NAME', 'F_TEXT_MISSION'):
             localized_updates[table] = (version, target)
         if table == 'F_DEFINE_MST':
             lines, changed = [], 0
@@ -295,6 +359,8 @@ def main():
             loading_text(source, target, key,
                          {'MST_TOWN_STORE_OWNER_NAME_' + iid: 'King Mog'
                           for iid in ('7000456', '7000457', '7000458')}, append_missing=True)
+        elif table == 'F_TEXT_TOWN_STORE_COMMENT':
+            exchange_shop_comments(source, target, key)
         elif table == 'F_LOCALIZED_TEXT_MST':
             index_update = source, target, key
         elif table == 'F_TEXT_MONSTER_NAME':
@@ -312,7 +378,7 @@ def main():
             event_skill_sets(source, target, key)
         elif table in ('F_UNIT_EX_BONUS_MST', 'F_UNIT_SERIES_NV_PIECE_MST',
                        'F_SUBLIMATION_RECIPE_MST', 'F_ABILITY_MST', 'F_ABILITY_EXPLAIN_MST',
-                       'F_UNIT_SERIES_LV_ACQUIRE_MST'):
+                       'F_UNIT_SERIES_LV_ACQUIRE_MST', 'F_UNIT_SERIES_POWER_UP_POINT_MST'):
             exbonus_master(source, target, key, table)
         else:
             shutil.copyfile(source, target)

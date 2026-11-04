@@ -86,6 +86,62 @@ rpc.exports = {
         let installing = 'summon menu';
         try {
         const bridge = createNativeBridge(module);
+        installing = 'battle chain totals';
+        const native = (name, result, args) => new NativeFunction(
+          module.getExportByName(name), result, args, {exceptions: 'propagate'});
+        const stringCtor = native('_ZNSt6__ndk112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2IDnEEPKc',
+          'void', ['pointer', 'pointer']);
+        const archive = native('_ZN18ArchieveResultInfo6sharedEv', 'pointer', []);
+        const incArchive = native(
+          '_ZN18ArchieveResultInfo8incValueERKNSt6__ndk112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEx',
+          'void', ['pointer', 'pointer', 'int64']);
+        const readArchive = native(
+          '_ZN18ArchieveResultInfo8getValueERKNSt6__ndk112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE',
+          'int64', ['pointer', 'pointer']);
+        const addChainNode = native('_ZN9JsonGroup7addNodeEv', 'pointer', ['pointer']);
+        const addChainParam = native('_ZN8JsonNode8addParamEPKcS1_', 'void', ['pointer', 'pointer', 'pointer']);
+        const totalKeys = ['localChn', 'localElm'].map(name => {
+          const wireKey = Memory.allocUtf8String(name);
+          const nativeKey = Memory.alloc(24);
+          stringCtor(nativeKey, wireKey);
+          return {wireKey, nativeKey};
+        });
+        const pendingChains = [0, 0];
+        function flushChains(result) {
+          for (let index = 0; index < totalKeys.length; index++) {
+            if (pendingChains[index] > 0) {
+              incArchive(result, totalKeys[index].nativeKey, pendingChains[index]);
+              pendingChains[index] = 0;
+            }
+          }
+        }
+        // BattleUnit::decHp sends the running chain length for each hit and
+        // sends 1 separately for elemental hits. Zero starts a new chain.
+        retained.push(Interceptor.attach(module.getExportByName('_ZN25ArchieveTurnMaxResultInfo8setChainEi'), {
+          onEnter(args) { if (args[1].toInt32() > 0) pendingChains[0]++; }
+        }));
+        retained.push(Interceptor.attach(module.getExportByName('_ZN25ArchieveTurnMaxResultInfo15incElementChainEi'), {
+          onEnter(args) { pendingChains[1] += Math.max(0, args[1].toInt32()); }
+        }));
+        retained.push(Interceptor.attach(module.getExportByName('_ZN18ArchieveResultInfo5clearEv'), {
+          onEnter() { pendingChains.fill(0); }
+        }));
+        retained.push(Interceptor.attach(module.getExportByName('_ZN18ArchieveResultInfo9getSpdCsvEv'), {
+          onEnter(args) { flushChains(args[0]); }
+        }));
+        retained.push(Interceptor.attach(module.getExportByName('_ZN19MissionChallengeLog11toJsonGroupEv'), {
+          onLeave(group) {
+            if (group.isNull()) return;
+            const result = archive();
+            flushChains(result);
+            const totals = totalKeys.map(key => readArchive(result, key.nativeKey).toNumber());
+            if (totals.every(value => value === 0)) return;
+            const row = addChainNode(group);
+            for (let index = 0; index < totalKeys.length; index++)
+              addChainParam(row, totalKeys[index].wireKey, Memory.allocUtf8String(String(totals[index])));
+          }
+        }));
+        installing = 'Android screenshot guard';
         // Android 16's Region parcel reader can pass a null AParcel during
         // screenshot/accessibility requests. Its array reader dereferences
         // that pointer before returning a status (the device crash is at

@@ -272,14 +272,14 @@ class LocalizationRegression(unittest.TestCase):
             table, token, key = (value.decode() for value in match.groups())
             manifest[table] = {'table': table, 'token': token, 'key': key}
         index = manifest['F_LOCALIZED_TEXT_MST']
-        _, records = decode((ROOT / 'data/overlay/mst' / ('Ver709_' + index['token'] + '.dat'))
+        _, records = decode((ROOT / 'data/overlay/mst' / ('Ver710_' + index['token'] + '.dat'))
                             .read_bytes(), index['key'])
         original = {r['a4hXTIm0']: r for r in map(json.loads,
                     (ROOT / 'data/mst_decoded/F_LOCALIZED_TEXT_MST.ndjson')
                     .read_text(encoding='utf8').splitlines())}
         selected = {r['a4hXTIm0']: r for r in records}
         for table, version in (('F_TEXT_MONSTER_NAME', '227'), ('F_TEXT_TOWN_STORE_OWNER_NAME', '85'),
-                               ('F_TEXT_NPC_NAME', '30')):
+                               ('F_TEXT_NPC_NAME', '30'), ('F_TEXT_TOWN_STORE_COMMENT', '77')):
             info, row = manifest[table], selected[table]
             path = ROOT / 'data/overlay/localized_texts/en' / ('Ver' + version + '_' + info['token'] + '.dat')
             data = path.read_bytes()
@@ -289,8 +289,35 @@ class LocalizationRegression(unittest.TestCase):
             self.assertEqual({k: v for k, v in row.items() if k not in ('00zAYGYS', 'zptmZGqa', 'MLOSu5E0')},
                              {k: v for k, v in original[table].items()
                               if k not in ('00zAYGYS', 'zptmZGqa', 'MLOSu5E0')})
-        for table in original.keys() - {'F_TEXT_MONSTER_NAME', 'F_TEXT_TOWN_STORE_OWNER_NAME', 'F_TEXT_NPC_NAME'}:
+        for table in original.keys() - {'F_TEXT_MONSTER_NAME', 'F_TEXT_TOWN_STORE_OWNER_NAME',
+                                       'F_TEXT_NPC_NAME', 'F_TEXT_TOWN_STORE_COMMENT', 'F_TEXT_MISSION'}:
             self.assertEqual(selected[table], original[table])
+        info = manifest['F_TEXT_TOWN_STORE_COMMENT']
+        _, original_comments = decode(
+            (ROOT / 'data/client/files/localized_texts/en' / ('Ver76_' + info['token'] + '.dat')).read_bytes(),
+            info['key'], localized=True)
+        _, repaired_comments = decode(
+            (ROOT / 'data/overlay/localized_texts/en' / ('Ver77_' + info['token'] + '.dat')).read_bytes(),
+            info['key'], localized=True)
+        comments = {row['key']: row['v'] for row in repaired_comments}
+        self.assertTrue({(row['key'], tuple(row['v'])) for row in original_comments
+                         if row['v'] and row['v'][0].strip()} <=
+                        {(row['key'], tuple(row['v'])) for row in repaired_comments})
+        self.assertIn('Summon Coin (FFBE May 2019)', comments['MST_TOWNSTORE_COMMENT_7000016_1'][0])
+        self.assertIn('Pakkun Chocolate', comments['MST_TOWNSTORE_COMMENT_900153_1'][0])
+        shops = ROOT / 'data/mst_decoded/F_TOWN_STORE_MST.ndjson'
+        for shop in map(json.loads, shops.read_text(encoding='utf8').splitlines()):
+            if shop['kaG4xf3I'] == '5':
+                for slot in (1, 3):
+                    self.assertTrue(comments[f"MST_TOWNSTORE_COMMENT_{shop['Z20mNDvL']}_{slot}"][0].strip())
+        info = manifest['F_UNIT_SERIES_POWER_UP_POINT_MST']
+        _, records = decode((ROOT / 'data/overlay/mst' / ('Ver22_' + info['token'] + '.dat'))
+                            .read_bytes(), info['key'])
+        native_points = {row['RvN2W9Qx']: row for row in records}
+        points = ROOT / 'source/server/content/series_point_rewards.json'
+        restored = json.loads(points.read_text(encoding='utf8'))['tables']['F_UNIT_SERIES_POWER_UP_POINT_MST']
+        for row in restored['rows']:
+            self.assertEqual(native_points[row['RvN2W9Qx']], row)
         row = selected['F_TEXT_MONSTER_NAME']
         info = manifest['F_TEXT_MONSTER_NAME']
         _, names = decode((ROOT / 'data/overlay/localized_texts/en' /

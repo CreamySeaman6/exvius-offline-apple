@@ -359,6 +359,8 @@ def _finish(name, f, req, switches=True, spec=None):
     result_spec = credit_mission_rewards(json.dumps(req), result_spec)
     from exvius_repeat import repeat_challenge_rewards
     result_spec = repeat_challenge_rewards(result_spec, mid, json.dumps(req))
+    from ffbe_player import score_completed_quest_mission
+    score_completed_quest_mission(json.dumps(req))
     result = _challenges(mid, run, req, result_spec['09HRWXDf'])
     # These mode handlers run after the normal pipeline's clear step. Publish
     # the same validated mission switches when this handler creates the result.

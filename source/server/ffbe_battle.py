@@ -641,16 +641,35 @@ def mission_result_from(plaintext: str | None) -> dict:
 
     meta = first_row(CHALLENGE_GROUP)
     operation = first_row('jQsE54Iz')
-    ctx['mission_id'] = str(operation.get('qo3PECw6') or '')
+    result_operation = first_row('3uy7DzGB')
+    ctx['mission_id'] = str(operation.get('qo3PECw6') or result_operation.get('qo3PECw6') or '')
+    ctx['party_history'] = first_row('9uzBbMgf')
     ctx['party_size'] = party_size(ctx['mission_id'])
     helper = str(operation.get('qLke7K8f') or '')
     if helper.isdigit() and (operation.get('dUX7Pt5i') or operation.get('w40YsHIz')):
         ctx['helper_master'] = helper
         ctx['party_size'] += 1
     ctx['native_log'] = meta
+    ctx['max_parameters'] = {}
+    # GL9 MissionChallengeLog::getMaxParameterInfoCsv uses 1..6 for HP
+    # through SPR. encryptStatusEx hex-encodes two salt digits, eight value
+    # digits and a two-digit checksum of the preceding decimal digits.
+    for entry in str(meta.get('e6ha3LUX') or '').split(','):
+        stat, _, encoded = entry.partition(':')
+        if stat not in ('1', '2', '3', '4', '5', '6') or not re.fullmatch(r'[0-9a-fA-F]{1,10}', encoded):
+            continue
+        digits = str(int(encoded, 16))
+        if len(digits) == 12 and int(digits[:2]) >= 10 and sum(map(int, digits[:10])) == int(digits[10:]):
+            ctx['max_parameters'][stat] = int(digits[2:10])
     ctx['battle_turns'] = {}
     ctx['achievements'] = {str(r.get('NYb0Cri6')): str(r.get('6gAX1BpC', '0'))
                            for r in req.get('nSG9Jb1s', []) if isinstance(r, dict)}
+    for row in (req.get(CHALLENGE_GROUP) or [])[1:]:
+        if isinstance(row, dict):
+            for wire_key, key in (('localChn', 'TOTAL_CHAIN'), ('localElm', 'TOTAL_ELEMENT_CHAIN')):
+                value = str(row.get(wire_key, ''))
+                if re.fullmatch(r'[0-9]{1,9}', value):
+                    ctx['achievements'][key] = value
     elapsed = str(meta.get('7TyWeg0H') or '')
     ctx['elapsed_seconds'] = int(elapsed) if elapsed.isdigit() else None
     # The group must be PRESENT before "absent" can mean anything -- a request that sent no battle log
@@ -1082,6 +1101,8 @@ def grant_cleared_mission(spec, mid: str | None, plaintext: str | None = None):
     for next_rarity in (2, 3):
         awakening = story_beast_for_mission(mid, next_rarity)
         if awakening is not None and State.player.awaken_beast(awakening, next_rarity):
+            from ffbe_player import score_quest_action
+            score_quest_action('46')
             State.state_dirty = True
             print(f"    beast: mission {mid} cleared -> awakened esper {awakening} to R{next_rarity}", flush=True)
     had = set(State.player.switches.get(SWITCH_TYPE_MISSION, set()))
