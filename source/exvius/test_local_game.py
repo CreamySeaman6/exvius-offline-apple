@@ -93,6 +93,62 @@ class LocalGameIntegration(unittest.TestCase):
         self.assertTrue({0, 117}.issubset(player.switches['101']))
         self.assertEqual(player.data['progress']['cleared_missions'], ['1110100', '1110101'])
 
+    def test_equipment_edit_survives_battle_entry_and_reload(self):
+        player = self.game.server.State.player
+        iid = str(player.data['roster'][0]['instance_id'])
+        player.grant_equipment(301000200, 1)
+        reply = self.exchange('UnitEquipRequest', {'Er92Kdhm': [{
+            '93Y6evuT': f'{iid}:1-301000200@2-0@3-404000200@4-406000100@5-409000100@6-0',
+            'xBi3L6yR': '1', 'r21y0YzS': '0'}]})
+        self.assertNotIn('5Eb0Rig6', reply)
+        self.load_mission('1110100')
+        self.assertEqual(self.restored_player().roster_row(iid)['equipment']['1'], '301000200')
+        login = self.exchange('GetUserInfoRequest', {})
+        equipment = next(row for row in login['TJ9eL80N'] if row['og2GHy49'] == iid)
+        self.assertTrue(equipment['93Y6evuT'].startswith('1-301000200@'))
+
+    def test_bought_gigantuar_credits_spendable_exp_once(self):
+        player = self.game.server.State.player
+        player.grant_item(20, 106300200, 100)
+        bought = self.exchange('MedalExchangeRequest', {'2d6RAkvh': [{
+            'Z20mNDvL': '900106', 'L2gHC5ta': '70425:1'}]})
+        self.assertEqual(bought['z36FApms'][0]['XeRVw3s2'], '30000')
+        self.assertFalse(any(str(unit['master_id']) == '900020301' for unit in player.data['roster']))
+        exchange = {'g6sVon0N': [{'og2GHy49': '1'}]}
+        converted = self.exchange('UnitExchangeRequest', exchange)
+        self.assertEqual(converted['z36FApms'][0]['XeRVw3s2'], '30000')
+        target = player.data['roster'][0]
+        self.exchange('UnitUsePointRequest', {'5xfBN93i': [{
+            'og2GHy49': str(target['instance_id']), 'woghJa61': '0', 'XeRVw3s2': '100'}]})
+        restored = self.restored_player()
+        self.assertEqual(restored.roster_row(target['instance_id'])['total_exp'], 100)
+        self.assertEqual(restored.data['exvius_unit_points']['banks']['0']['XeRVw3s2'], 29900)
+
+    def test_pure_nv_conversion_grants_original_fragments_once(self):
+        player = self.game.server.State.player
+        player._grant_items([{'kind': 10, 'id': 100044807, 'count': 1}])
+        iid = str(player.data['roster'][-1]['instance_id'])
+        request = {'4Ncra9DF': [{'og2GHy49': iid, 'ijEey5f7': '1'}]}
+        reply = self.exchange('NvSacrificeRequest', request)
+        self.assertEqual(reply['4Ncra9DF'][0]['1swM3H4T'], '20:250033800:50,20:293000100:1')
+        self.exchange('NvSacrificeRequest', request)
+        restored = self.restored_player()
+        self.assertIsNone(restored.roster_row(iid))
+        self.assertEqual(restored.item_count(20, 250033800), 50)
+        self.assertEqual(restored.item_count(20, 293000100), 1)
+
+    def test_native_fragment_picker_routes_pure_nv_through_sacrifice_request(self):
+        player = self.game.server.State.player
+        player._grant_items([{'kind': 10, 'id': 100044807, 'count': 1}])
+        iid = str(player.data['roster'][-1]['instance_id'])
+        request = {'6kvFj2Kw': [{'og2GHy49': iid, 'ijEey5f7': '1'}]}
+        reply = self.exchange('SacrificeRequest', request)
+        self.assertEqual(reply['6kvFj2Kw'][0]['1swM3H4T'], '20:250033800:50,20:293000100:1')
+        restored = self.restored_player()
+        self.assertIsNone(restored.roster_row(iid))
+        self.assertEqual(restored.item_count(20, 250033800), 50)
+        self.assertEqual(restored.item_count(20, 293000100), 1)
+
     def test_friend_pages_use_local_profiles_and_search_without_state_changes(self):
         from ffbe_friends import load_friends
         friend = str(load_friends()[0]['friend_id'])

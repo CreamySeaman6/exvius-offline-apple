@@ -6,6 +6,7 @@ handler here keys on its own request id (source/server/endpoints.json), reads th
 harness/extract_request_fields.py) and applies the change to the one player state. A reply that should
 refresh the client's lists carries the unit group, so `apply_to_reply` projects every player group.
 """
+from collections import Counter
 import json
 from exvius_raid_progress import personal_raid_menu
 from ffbe_friends import local_friend_action
@@ -102,28 +103,92 @@ def _parse_rewards(text):
     return rows
 
 
-def sacrifice(spec, req, group="6kvFj2Kw"):
-    """SacrificeRequest / NvSacrificeRequest (the Units "Convert"): one node per unit in `6kvFj2Kw`
-    (`4Ncra9DF` for NV), `og2GHy49` = the unit. F_SACRIFICE_MST (keyed by the unit id `woghJa61`) gives
-    the item it becomes (`tL6G9egd`) and the extra items (`q1PJQ3eE`). The unit leaves the roster."""
-    table = _mst("F_SACRIFICE_MST.ndjson", "woghJa61")
-    ids = [str(n.get("og2GHy49")) for n in (req.get(group) or []) if isinstance(n, dict) and n.get("og2GHy49")]
-    roster = {str(u["instance_id"]): u for u in State.player.data["roster"]}
-    converted = []
-    for iid in ids:
-        unit = roster.get(iid)
-        row = table.get(str(unit["master_id"])) if unit else None
-        if not row:
-            _note(f"unit-convert: {iid} has no F_SACRIFICE_MST row; kept")
-            continue
-        rewards = _parse_rewards(row.get("q1PJQ3eE"))
-        if str(row.get("tL6G9egd") or "0") not in ("", "0"):
-            rewards.insert(0, {"kind": 20, "id": int(row["tL6G9egd"]), "count": 1})
-        State.player.drop_units([iid])
-        State.player._grant_items(rewards)
-        converted.append(f"{unit['master_id']}->" + ",".join(f"{r['id']}x{r['count']}" for r in rewards))
-    print(f"unit: converted {len(converted)} unit(s): {' '.join(converted)}", flush=True)
+def unit_equip(spec, req):
+    from exvius_actions_expedition import _retain_owned_equipment, _wire_loadouts
+
+    player = State.player
+    rows = req.get("Er92Kdhm")
+    if player.mode == "frozen" or not isinstance(rows, list):
+        return _refresh(spec)
+    roster = {str(unit["instance_id"]): unit for unit in player.data["roster"]}
+    gear = {row["J1YX9kmM"]: int(row["Qy5EvcK1"]) for row in player.equip_item_rows()}
+    materia = {row["H5jBL0Vf"]: int(row["Qy5EvcK1"]) for row in player.materia_rows()}
+    cards = {str(card["user_vc_id"]) for card in player.data.get("vision_cards", [])}
+    loadouts = {}
+    try:
+        for row in rows:
+            decoded, _ = _wire_loadouts(row, roster)
+            for iid, fields in decoded.items():
+                for field, values in fields.items():
+                    if field in ("equipment", "shift_equipment", "materia", "shift_materia"):
+                        owned = materia if "materia" in field else gear
+                        counts = Counter(values if "materia" in field else values.values())
+                        if any(item != "0" and count > owned.get(item, 0) for item, count in counts.items()):
+                            raise ValueError("unowned equipment or materia")
+                    if field in ("vision_card", "shift_vision_card") and values and values not in cards:
+                        # Native vision-card strings carry the master id as well as the instance id.
+                        if not cards.intersection(values.split("-")):
+                            raise ValueError("unowned vision card")
+                if str(row.get("xBi3L6yR", "1")) == "1":
+                    loadouts.setdefault(iid, {}).update(fields)
+    except (AttributeError, TypeError, ValueError):
+        _note("unit-equip: invalid equipment update")
+        return _refresh(spec)
+    if any(any(roster[iid].get(key) != value for key, value in fields.items())
+           for iid, fields in loadouts.items()):
+        # Older saves infer the starter copies from the worn slots. Keep those
+        # copies in inventory before replacing or clearing the slots.
+        _retain_owned_equipment()
+        for iid, fields in loadouts.items():
+            roster[iid].update(fields)
+        player.dirty = True
     return _refresh(spec)
+
+
+def sacrifice(spec, req, group="6kvFj2Kw"):
+    """Consume eligible units only after resolving the fragment rewards for the full batch."""
+    from exvius_actions_shops import deployed_unit_ids
+    from player_state import unit_mst
+
+    player = State.player
+    nodes = req.get(group)
+    if player.mode == "frozen" or not isinstance(nodes, list) or not nodes:
+        return spec
+    table = _mst("F_SACRIFICE_MST.ndjson", "woghJa61")
+    deployed = deployed_unit_ids(player)
+    ids, rewards, result = set(), [], []
+    for node in nodes:
+        iid = str(node.get("og2GHy49", "")) if isinstance(node, dict) else ""
+        unit = player.roster_row(iid)
+        if not unit or iid in ids or iid in deployed or unit.get("favourite"):
+            return _refresh(spec)
+        master = unit_mst(unit["master_id"]) or {}
+        row = table.get(str(unit["master_id"])) or table.get(master.get("woghJa61"))
+        if not row:
+            return _refresh(spec)
+        # The native picker can send pure NV units through SacrificeRequest.
+        # The unit's master row determines its rewards for either request.
+        items = str(row.get("1swM3H4T") or row.get("q1PJQ3eE") or "")
+        unit_rewards = _parse_rewards(items)
+        prism = str(row.get("tL6G9egd") or "0")
+        if group == "4Ncra9DF":
+            prism = "0"
+        if prism != "0":
+            unit_rewards.insert(0, {"kind": 20, "id": int(prism), "count": 1})
+        if not unit_rewards or any(not player._can_credit(reward) for reward in unit_rewards):
+            return _refresh(spec)
+        ids.add(iid)
+        rewards.extend(unit_rewards)
+        result.append({"og2GHy49": iid, "ijEey5f7": str(node.get("ijEey5f7", "1")),
+                       "tL6G9egd": prism, "1swM3H4T": items})
+    if len(ids) >= len(player.data["roster"]):
+        return _refresh(spec)
+    player.drop_units(ids)
+    player._grant_items(rewards)
+    out = _refresh(spec)
+    out[group] = result
+    _note(f"unit-convert: granted rewards for {len(ids)} unit(s)")
+    return out
 
 
 HANDLERS = {
@@ -132,6 +197,7 @@ HANDLERS = {
     "iAs67PhJ": lambda spec, req: local_friend_action(spec, req, 'suggest'),
     "1oE3Fwn4": lambda spec, req: local_friend_action(spec, req, 'favorite'),
     "g0BjrU5D": personal_raid_menu,  # RoutineRaidMenuUpdateRequest
+    "pB3st6Tg": unit_equip,         # UnitEquipRequest
     "7tWdn9zH": sacrifice,                                             # SacrificeRequest
     "x94MnujU": lambda spec, req: sacrifice(spec, req, "4Ncra9DF"),   # NvSacrificeRequest
     "d9Si7TYm": item_sell,          # ItemSellRequest

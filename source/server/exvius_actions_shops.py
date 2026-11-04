@@ -437,14 +437,10 @@ def shop_exchange_item(spec, req):
     return shop_exchange_list(spec, {})
 
 
-@_action
-def shop_exchange_unit(spec, req):
-    from player_state import unit_mst
-    node = _node(req, 'gGCM0Q3h') or {}
-    ids = _ids(node.get('og2GHy49'))
-    player = State.player
-    deployed = {str(m.get('instance_id')) for deck in player.data.get('party', {}).get('decks', [])
-                for m in deck.get('members', [])}
+def deployed_unit_ids(player):
+    party = player.data.get('party', {})
+    deployed = {str(m.get('instance_id')) for mode in (party, *party.get('special', {}).values())
+                for deck in mode.get('decks', []) for m in deck.get('members', [])}
     # Other offline systems retain their own instance references.
     for feature in ('expedition', 'companions', 'arena', 'dark_visions'):
         value = player.data.get('exvius_' + feature, {})
@@ -459,6 +455,16 @@ def shop_exchange_unit(spec, req):
                 for child in obj:
                     collect(child)
         collect(value)
+    return deployed
+
+
+@_action
+def shop_exchange_unit(spec, req):
+    from player_state import unit_mst
+    node = _node(req, 'gGCM0Q3h') or {}
+    ids = _ids(node.get('og2GHy49'))
+    player = State.player
+    deployed = deployed_unit_ids(player)
     rates = {int(r['w84ixWg3']): _int(r['m7PJto98'], 1)
              for r in _rows('F_UNIT_TRANSLATE_RATE_MST') if str(r['5Fix0IX9']) == '1'}
     coins = 0
@@ -591,6 +597,35 @@ def _awakening_cost(node, master):
 POINT_TOKENS = ('XeRVw3s2', 'jWS57HG3', 'LD4UJaf0', 'ui34MYgo', '5sNq90o6',
                 '0xgsDY9E', 'VSL4Wj9z', 'y7Z5AmhC', 'h5s68EtJ', 'eu2DXK4I',
                 '8RUQtk4i', '8cj19yhb', 'rjK5oB1H', '16NCtrGw')
+
+
+def convert_exp_materials(player, ids=None):
+    from player_state import unit_mix_exp, unit_mst
+
+    if player.mode == 'frozen':
+        return set()
+    materials = []
+    for unit in player.data['roster']:
+        iid = str(unit['instance_id'])
+        if (ids is not None and iid not in ids) or unit.get('favourite'):
+            continue
+        master = unit_mst(unit['master_id']) or {}
+        if master.get('2odVXyT8') == '1' and '9' in master.get('27GkYdEu', '').split(','):
+            materials.append(unit)
+    if not materials:
+        return set()
+    deployed = deployed_unit_ids(player)
+    materials = [unit for unit in materials if str(unit['instance_id']) not in deployed]
+    amount = sum(unit_mix_exp(unit) for unit in materials)
+    if amount <= 0:
+        return set()
+    converted = {str(unit['instance_id']) for unit in materials}
+    bank = player.data.setdefault('exvius_unit_points', {}).setdefault('banks', {}).setdefault('0', {})
+    token = POINT_TOKENS[0]
+    bank[token] = int(bank.get(token, 0)) + amount
+    player.drop_units(converted)
+    _note(f'unit-exchange: credited {amount} EXP from {len(converted)} material(s)')
+    return converted
 
 
 def _point_rows():
@@ -1294,6 +1329,10 @@ def serve_feature_state(spec, reply_id=None):
     """Restore persistent service state on login and the corresponding menus."""
     if not isinstance(spec, dict) or State.player is None:
         return spec
+    # The native automatic conversion screen can stall before sending its
+    # request. Bank EXP before publishing acquired or previously owned Cactuars.
+    if ('LhVz6aD2' in spec or UNIT_GROUP in spec) and convert_exp_materials(State.player):
+        spec = dict(spec, z36FApms=_point_rows())
     if reply_id not in {'75fYdNxq', 'X07iYtp5', '6H1R9WID', 'u7Id4bMg',
                         '9KN5rcwj', 'syKz34cE'} and 'LhVz6aD2' not in spec:
         return spec

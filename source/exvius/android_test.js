@@ -287,6 +287,40 @@ rpc.exports = {
         retained.push(Interceptor.attach(module.getExportByName('_ZN19DownloadMstFileList3addERKNSt6__ndk112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEiiiS8_b'), {
           onEnter(args) { note('LOCAL_TABLE_CHECK name=' + text(args[1]) + ' version=' + args[2].toInt32() + ' old=' + args[3].toInt32() + ' bytes=' + args[4].toInt32()); }
         }));
+        const sacrificeMaster = new NativeFunction(module.getExportByName('_ZN16SacrificeMstList6sharedEv'), 'pointer', []);
+        // Use the pinned class's parser with an explicit path to the installed table.
+        const sacrificeVtable = module.getExportByName('_ZTV16SacrificeMstList').add(0x10);
+        const loadSacrifice = new NativeFunction(sacrificeVtable.add(0x50).readPointer(),
+          'int', ['pointer', 'pointer'], {exceptions: 'propagate'});
+        const makePath = new NativeFunction(module.getExportByName('_ZNSt6__ndk112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC2IDnEEPKc'),
+          'void', ['pointer', 'pointer']);
+        const freePath = new NativeFunction(module.getExportByName('_ZNSt6__ndk112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEED2Ev'),
+          'void', ['pointer']);
+        let sacrificeLoaded = false;
+        retained.push(Interceptor.attach(module.getExportByName('_ZN26UnitSellTransformListScene10initializeEv'), {
+          onEnter() {
+            if (sacrificeLoaded) return;
+            const master = sacrificeMaster();
+            if (master.isNull() || !master.readPointer().equals(sacrificeVtable)) {
+              note('LOCAL_SACRIFICE_MASTER unavailable');
+              return;
+            }
+            const path = bridge('materializedPath', '(Ljava/lang/String;)Ljava/lang/String;', ['/mst/Ver291_w5JFGPh3.dat']);
+            if (!path) {
+              note('LOCAL_SACRIFICE_MASTER file missing');
+              return;
+            }
+            const nativePath = Memory.alloc(24);
+            makePath(nativePath, Memory.allocUtf8String(path));
+            try {
+              const status = loadSacrifice(master, nativePath);
+              sacrificeLoaded = status === 0;
+              note('LOCAL_SACRIFICE_MASTER status=' + status);
+            } finally {
+              freePath(nativePath);
+            }
+          }
+        }));
         const selectGuest = new NativeFunction(module.getExportByName('_ZN19LoginServiceManager18selectLoginServiceEi'), 'void', ['pointer', 'int'], {exceptions: 'propagate'});
         const forceGuest = new NativeFunction(module.getExportByName('_ZN19LoginServiceManager22setIsForceLoginAsGuestEb'), 'void', ['pointer', 'bool'], {exceptions: 'propagate'});
         retained.push(Interceptor.attach(module.getExportByName('_ZN10TitleScene9startGameEv'), {

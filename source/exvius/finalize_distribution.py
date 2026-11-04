@@ -34,7 +34,7 @@ def finalize(version, client_version, version_code):
     app = {'version': version, 'versionName': client_version, 'versionCode': version_code,
            'url': f'https://github.com/Elvlin/exvius-offline/releases/download/v{version}/{apk.name}',
            'size': apk.stat().st_size, 'sha256': sha256(apk)}
-    manifest['minAppVersionCode'] = version_code
+    # The data packs keep their own compatibility floor when only the APK changes.
     manifest['app'] = app
     manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
     (ROOT / 'release/app.json').write_text(json.dumps(app, indent=2) + '\n')

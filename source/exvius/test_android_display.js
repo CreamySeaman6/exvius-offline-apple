@@ -53,6 +53,9 @@ assert.deepEqual(anchorLayout('home_bottom_parts_main_menu_world_button', child,
 const header = {x:0,y:108,width:640,height:90};
 assert.deepEqual(anchorLayout('home_top_parts_offset', header, reference, canvas), header);
 assert.equal(anchorLayout('gacha_scroll_area', {x:0,y:300,width:640,height:700}, reference, canvas).height, 922);
+const enhancementList = {x:0,y:490,width:640,height:475};
+assert.deepEqual(anchorLayout('unit_enhance_common_scrl_area', enhancementList, reference, canvas),
+  enhancementList);
 assert.deepEqual(anchorLayout('gacha_item_list', {x:0,y:300,width:640,height:100}, reference, canvas), {x:0,y:300,width:640,height:100});
 for (const [name, box] of [
   ['departure_item_scrl_area', {x:330,y:625,width:300,height:245}],

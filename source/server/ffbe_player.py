@@ -645,22 +645,33 @@ UNIT_EXCHANGE_REQUEST = "3ekgi8bh"      # UnitExchangeRequest (endpoints.json)
 
 
 def serve_unit_exchange(spec, reply_id, plaintext: str | None):
-    """UnitExchangeRequest: the client converts exchange-only units (the Mini Pots / Mini Power Door) and
-    shows "Point conversion has been completed". The request lists them as `g6sVon0N`/`og2GHy49`. Left in
-    the roster, they were sent again on every visit to Units, popup included (phone, 2026-10-25), so the
-    converted rows leave the roster like sold units. The points they convert into are not credited yet:
-    the reply format for them is not recovered."""
-    if reply_id != UNIT_EXCHANGE_REQUEST or State.player is None:
+    """Convert the native enhancement materials to the corresponding point balance."""
+    if reply_id != UNIT_EXCHANGE_REQUEST or State.player is None or State.player.mode == "frozen":
         return spec
+    from exvius_actions_shops import _point_rows, convert_exp_materials, deployed_unit_ids
+    from player_state import unit_mst
     req = _request_json(plaintext)
     rows = req.get("g6sVon0N") if req else None
     ids = [str(r.get("og2GHy49")) for r in rows or [] if isinstance(r, dict) and r.get("og2GHy49")]
     if not ids:
         return spec
-    removed, unknown = State.player.sell_units(ids, 0)
-    print(f"unit: exchanged {len(removed)} unit(s) for points (points not credited)"
-          + (f"; not in roster: {','.join(unknown)}" if unknown else ""), flush=True)
-    return spec
+    player = State.player
+    materials = convert_exp_materials(player, set(ids))
+    deployed = deployed_unit_ids(player)
+    legacy = []
+    for iid in dict.fromkeys(ids):
+        unit = player.roster_row(iid)
+        if not unit or iid in deployed or unit.get("favourite"):
+            continue
+        master = unit_mst(unit["master_id"]) or {}
+        if master.get("2odVXyT8") in ("1", "2"):
+            legacy.append(iid)
+    if legacy:
+        player.sell_units(legacy, 0)
+    out = dict(spec or {}, z36FApms=_point_rows())
+    if materials:
+        out["B71MekS8"] = []
+    return out
 
 
 def serve_unit_mix(spec, plaintext: str | None):
