@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "revision": 5,
-  "version": "2026.11.04.5",
+  "revision": 6,
+  "version": "2026.11.04.6",
   "minAppVersionCode": 9015,
   "packs": [
     {
@@ -108,17 +108,24 @@
       "size": 183848,
       "unpackedSize": 268703,
       "sha256": "56d58602aa0d1f9ee1b846e55485684c4eef463fd32ded2fdf16bf3ad409ce2c"
+    },
+    {
+      "id": "quest-rewards-and-shop-text",
+      "url": "https://github.com/Elvlin/exvius-offline/releases/download/data-r6/exvius-quest-rewards-r6.zip",
+      "size": 252885,
+      "unpackedSize": 666543,
+      "sha256": "84d8672efa7a60d62ab12494eadf1075cc261ff19f0005f4642f017cb0c7b52c"
     }
   ],
-  "downloadBytes": 14610469959,
-  "installedBytes": 14858167194,
-  "files": 12485,
+  "downloadBytes": 14610722844,
+  "installedBytes": 14858833737,
+  "files": 12489,
   "app": {
-    "version": "0.1.15",
-    "versionName": "9.0.0-offline.16",
-    "versionCode": 9016,
-    "url": "https://github.com/Elvlin/exvius-offline/releases/download/v0.1.15/exvius-offline-v0.1.15.apk",
-    "size": 74275554,
-    "sha256": "f531b51241d60c474fa52151c53b08b5350609cbab3487dc1eaa4a882a4d4864"
+    "version": "0.1.16",
+    "versionName": "9.0.0-offline.17",
+    "versionCode": 9017,
+    "url": "https://github.com/Elvlin/exvius-offline/releases/download/v0.1.16/exvius-offline-v0.1.16.apk",
+    "size": 74287842,
+    "sha256": "7f68fd700e48f1eec0548ce8b32cbde0d036f90920630219878fbc74e431e3bd"
   }
 }
