@@ -162,10 +162,19 @@ def pool_cutoff(banner: dict | None = None, now: datetime | None = None) -> date
     (expand_pool keeps those), but the rest of its pool stays at this week's point in history."""
     if not enabled():
         return None
+    if banner and str(banner.get('id')) in full_pool_ids():
+        return None  # the one-off SP ticket summons keep their whole pool (EXVIUS_REPLAY_FULL_POOL)
     win = window(now)
     if win['finished']:
         return None
     return win['to'] - timedelta(days=1)
+
+
+def full_pool_ids() -> set[str]:
+    """Banners exempt from the replay's unit limit: the SP ticket summons, which can only be pulled with a
+    once-only ticket from the Shop (global_bundles.json 990000108/990000109)."""
+    raw = os.environ.get('EXVIUS_REPLAY_FULL_POOL', '9200107,9200108')
+    return {part.strip() for part in raw.split(',') if part.strip()}
 
 
 def build_unit_dates(banners: list) -> dict[str, str]:

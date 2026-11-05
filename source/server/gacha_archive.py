@@ -156,10 +156,30 @@ def selected_group(player, groups):
     return next((group for group in groups if group['id'] == selected), groups[0])
 
 
+def held_ticket_ids(player, banners):
+    """Ticket-only banners (paid with an item, e.g. the SP Summon tickets) whose ticket the player holds.
+    With the weekly rotation on they would otherwise be hidden, and a bought ticket would have no banner."""
+    if player is None:
+        return []
+    out = []
+    for banner in banners:
+        cost = banner.get('cost')
+        cost = cost[0] if isinstance(cost, list) and cost else cost
+        if not isinstance(cost, dict) or cost.get('kind') != 'item' or not cost.get('item_id'):
+            continue
+        try:
+            held = player.item_count(20, cost['item_id'])
+        except Exception:  # noqa: BLE001 -- no inventory, no banner
+            held = 0
+        if held > 0:
+            out.append(str(banner['id']))
+    return out
+
+
 def visible_banners(player, banners):
     from gacha_rotation import enabled, rotation_ids
     if enabled():
-        ids = rotation_ids(banners)
+        ids = rotation_ids(banners) + held_ticket_ids(player, banners)
     else:
         ids = selected_group(player, catalogue(banners))['ids']
     by_id = {str(banner['id']): banner for banner in banners}
