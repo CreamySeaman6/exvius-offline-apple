@@ -216,6 +216,7 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | `EXVIUS_EARLY_RESOURCES` | Resource packs downloaded up front instead of in the background. The default, `resources_common.cpk,resources.cpk`, is what the first battle needs (about 50 MB). `all` downloads everything up front in one long download; `0` turns it off. |
 | `EXVIUS_IOS_HCA_PLAIN` | `1` (default) removes the sound banks' HCA cipher, which is what makes the music play cleanly on the iPhone. |
 | `EXVIUS_IOS_SOUND_REFETCH` | Set it to any new value to make the phone download every sound bank again. |
+| `EXVIUS_IOS_TEXT` | `1` (default) adds the English names the stock app is missing, such as the Shop's local bundles and the special summon tickets. `0` turns it off. |
 
 If you have original **iOS** sound banks, put them in `FFBE_DIR/data/native/common_lang/sound/<bgm or se>/ios/`, keeping their `Ver<N>_` file names. The server sends those as they are, ahead of the Android ones.
 
@@ -230,7 +231,8 @@ The preserved game data comes from the Android version, and the iPhone app was n
 3. **Missing sound files.** The app asks for `…/sound/…/ios/…`, but the preserved data only has `…/android/…`. The bank format is the same on both, so the server answers iOS sound requests from the Android folder.
 4. **Crash entering the first battle.** The opening battle loads two layout files from two resource packs that the game normally leaves near the end of its background download, so the battle started before they arrived. The server marks those packs for the up-front download (`ios_tables.py`). The phone only gets the changed list at login, which is why the second launch matters.
 5. **Garbled music and sound effects.** Every Android sound bank uses CRI HCA cipher type 1, a fixed keyless scrambling table. The iPhone played the banks as loud noise, the same noise a decoder makes when it skips that table. The server removes the cipher as it sends each bank (`sound_compat.py`): it decrypts every audio frame, marks the file unencrypted and rewrites the checksums. The audio and the file size stay exactly the same. Because the phone never re-downloads a file it already has, the server also gives every sound file a new version number whenever these settings change.
-6. **Seeing what the phone is doing.** iOS hides apps' logs, so the server enables the game's own crash-report upload and saves what it sends (`client_reports.py`). Every step above was diagnosed from those reports.
+6. **Names showing as codes.** The Android build fills in some names itself, with code hooks inside the app (for example the Shop's local bundles, `MST_BUNDLE_NAME_990000107`). The stock iPhone app has no hooks, so it showed the raw keys. The server adds those names to the game's own text tables instead, and gives the changed tables new versions so the phone downloads them (`ios_texts.py`).
+7. **Seeing what the phone is doing.** iOS hides apps' logs, so the server enables the game's own crash-report upload and saves what it sends (`client_reports.py`). Every step above was diagnosed from those reports.
 
 The weekly summon rotation is in `source/server/gacha_rotation.py`.
 

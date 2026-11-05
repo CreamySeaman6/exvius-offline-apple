@@ -29,6 +29,8 @@ never reach it. The file versions come from `OzT5lSz3` in two tables: `F_RESOURC
 them once. `_cdn_fetch` answers any `Ver<N>_` of a sound file from the Android folder, so the new names
 need no files of their own. The client's size table (`F_RESOURCE_CHECKSUM_MST`) still matches, because
 the rewrites keep every bank's size.
+
+3. MISSING ENGLISH TEXT. The localized-text index and three text tables are served by `ios_texts.py`.
 """
 from __future__ import annotations
 
@@ -78,7 +80,8 @@ def version_bump() -> int:
 
 def version_bumps() -> dict[str, int]:
     """Table name -> amount to add to its advertised version (only tables served patched)."""
-    out = {RESOURCE[0]: version_bump()}
+    import ios_texts
+    out = {RESOURCE[0]: version_bump(), ios_texts.INDEX[0]: ios_texts.bump()}
     for spec in _VERSIONS:
         out[spec[0]] = sound_bump()
     return {name: bump for name, bump in out.items() if bump}
@@ -89,7 +92,8 @@ def _path(token: str):
 
 
 def wants(rel: str) -> bool:
-    return _which(rel) is not None
+    import ios_texts
+    return _which(rel) is not None or ios_texts.wants(rel)
 
 
 def _which(rel: str):
@@ -177,6 +181,9 @@ def patch_versions(raw: bytes, spec, ids: set[str], bump: int) -> tuple[bytes, i
 
 def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
     """(table bytes, CDN log note) when `rel` is one of the tables served patched, else (None, None)."""
+    import ios_texts
+    if ios_texts.wants(rel):
+        return ios_texts.serve(rel, *roots)
     spec = _which(rel)
     if spec is None:
         return None, None

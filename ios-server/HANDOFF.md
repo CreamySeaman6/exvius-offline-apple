@@ -136,6 +136,17 @@ After the cipher fix, the first tutorial battles had sound effects but no music.
 - To check: `docker compose logs server | grep -E "la005_battle1|la006_battle|la301_dungeon"` should show `Ver13xx_` requests, and the next client report should show `Playing BGM` or `BGM playback failed REASON=Missing file` for the battle.
 - If it's the queue and the wait matters, move the BGM rows up front: add their file names to `EXVIUS_EARLY_RESOURCES` (only `F_RESOURCE_MST` rows; map BGM in `F_RESOURCE_MAP_MST` would need its own change).
 
+## Android-only client hooks (important background)
+
+The Android build is the stock gumi `libgame.so` plus about 4,000 lines of Frida-style hooks in `source/exvius/*.js` (`summon_menu.js`, `menu_assets.js`, `home_carousel.js`, `raid_menu.js`, `android_display.js`, ...), which call back into Python through `LocalGameBridge.java` / `source/memorial/android/src/main/python/android_game.py`. The stock iPhone app has none of this. Any iOS bug that works on Android should first be checked against those hooks; the fix is a server-side equivalent.
+
+- Done: missing text. `ios_texts.py` adds the names `summon_menu.js` injects (local Shop bundles `990000xxx`, tickets `1062130x0`, banner names from `ffbe_gacha.missing_gacha_names`, explanations for banners without one) into `F_TEXT_BUNDLE` / `F_TEXT_ITEM_NAME` / `F_TEXT_GACHA`, and serves the localized-text index (`F_LOCALIZED_TEXT_MST`, `i5QEJpua`/`R8PYPnJ9`) with new versions plus each file's MD5 and size. `EXVIUS_IOS_TEXT=1` (default).
+- Not done: area/dungeon names for Clash of Wills / Dark Visions and the parade party headers (`summon_menu.js` `nameFor`), the Vortex event filter and art (`menu_assets.js`, `summon_menu.js` GateScene hooks), the home carousel.
+
+## Open problem: Vortex crash (2026-11-05)
+
+Tapping Vortex crashes the app right after `NAVIGATION > Current Scene=GateEntryScene`, with no further client log lines and no server request. `GateEntryScene::initialize` (GL `0x2195578`) reads `DefineMst OTHER_WORLD_TOWN_ID` (9001), looks up the town in `TownMstList`, then requests the town's map resource and changes to scene 604 (`GateScene`). Town 9001 is present in the shipped `F_TOWN_MST` (Ver64), and the `area_vw*` packs were downloaded. Next: the iPhone's own crash report (`Settings → Privacy & Security → Analytics & Improvements → Analytics Data`, the `.ips` from the crash) for the faulting frame, and compare with the GateScene hooks in `menu_assets.js`.
+
 ## Getting logs from the phone
 
 The server makes the game upload its own log. Files land in `FFBE_DIR/server/client-reports/<timestamp>.txt`, and the server log prints `CLIENT REPORT:` lines. Tar the folder and attach it.
@@ -182,4 +193,6 @@ Docker Hub is blocked in the sandbox, so run the server directly:
 
 ## Next steps, in order
 
-1. Confirm whether the missing battle music is just the download queue (see "Open problem" above). If not, fix what the client report shows.
+1. Confirm the Shop bundle names now show.
+2. Vortex crash: get the `.ips` crash report (see above).
+3. Confirm whether the missing battle music is just the download queue. The 2026-11-05 server log showed `Ver1309_la301_dungeon_temple1.acb` fetched on entering the Earth Shrine, so map BGM downloads on demand.
