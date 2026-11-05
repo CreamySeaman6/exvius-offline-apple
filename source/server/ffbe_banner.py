@@ -108,6 +108,15 @@ def banner_selection() -> tuple[str, list]:
     "off" means "no *filter*, i.e. everything". Here a filter always exists (the era), so "off" has to
     mean "no marquee", and `all` is the escape that serves every era.
     """
+    # Historical replay: this week's event banners (replay_notices.marquee_entries).
+    try:
+        from replay_notices import marquee_entries
+        replay_rows = marquee_entries()
+    except Exception as exc:  # noqa: BLE001 -- fall back to the era table
+        _note(f"marquee: replay banners skipped ({exc!r})")
+        replay_rows = None
+    if replay_rows is not None:
+        return "replay", replay_rows
     doc = _doc()
     key = str(BANNER_CAMPAIGN or "").strip()
     if key.lower() in ("off", "0", "none"):

@@ -4,7 +4,7 @@ Play **Final Fantasy Brave Exvius** (Global) on an iPhone again, with the **unmo
 
 This folder runs the [Exvius Offline](https://github.com/Elvlin/exvius-offline) game engine as a server in Docker. The iPhone app thinks it's talking to the original servers. Nothing on the phone is modified apart from trusting one private certificate.
 
-It also adds a **historical replay**: summons, Vortex events and shops follow Global's own release history, starting at Noctis's December 2016 banner and moving three historical weeks per real week (two per week from the first Neo Vision banner in August 2020). The permanent summons only draw units that had come out by then, holiday banners arrive the week before each real holiday, and a "This week" notice on the News board lists what just arrived. The week changes on Sunday at 10 PM US Eastern by default. With the replay off, banners rotate randomly every week instead.
+It also adds a **historical replay**: summons, Vortex events and shops follow Global's own release history, starting at Noctis's December 2016 banner and moving three historical weeks per real week (two per week from the first Neo Vision banner in August 2020). The permanent summons only draw units that had come out by then, holiday banners arrive the week before each real holiday, and a "This week" notice on the News board lists what just arrived, and the home screen banners show that week's events. The week changes on Sunday at 10 PM US Eastern by default. With the replay off, banners rotate randomly every week instead.
 
 > Tested with the Global app at build 1167 (`ver.9100`) on an iPhone 17 Pro running iOS 27, with the server on an Unraid NAS. The same Docker setup is meant to run on any computer that runs Docker.
 
@@ -207,6 +207,7 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | `EXVIUS_REPLAY_PACE` | Historical weeks per real week, with optional changes by date. Default `3,2@2020-08-20`: three, then two from Global's first Neo Vision banner. |
 | `EXVIUS_REPLAY_NV_ERA` | When NV EXVIUS appears among the permanent summons. Default `2020-08-20`. |
 | `EXVIUS_REPLAY_NOTICES` | `1` (default) adds a "This week" notice to the News board for each replay week, listing its summons and Vortex events. `EXVIUS_REPLAY_NOTICE_WEEKS` (default `8`) is how many weeks stay listed. |
+| `EXVIUS_REPLAY_MARQUEE` | `1` (default) fills the home screen's banner strip with the original banners of this week's Vortex events (the same art as the Vortex tiles, at most `EXVIUS_REPLAY_MARQUEE_MAX`, default `6`). Needs `MARQUEE_FLAG=1`, which turns the strip on; set `MARQUEE_FLAG` to `0` if the home screen misbehaves. Weeks with no dated events show no banners. |
 
 Your first replay week is recorded in `FFBE_DIR/server/state/replay.json`. Changing the pace later re-times the whole replay from that week. Units you already own stay in your save. Holiday sets come out of the timeline and appear in the week before each real holiday and the holiday's own week. Each holiday brings the next original year that hasn't been shown (if it's less than a year ahead of history), plus any years the replay went past, older ones first. When history runs out, the random rotation takes over with every unit.
 

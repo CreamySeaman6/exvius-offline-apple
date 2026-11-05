@@ -200,3 +200,79 @@ ul{{margin:0;padding-left:20px}}li{{margin:0 0 9px;line-height:1.4}}
 .when{{display:block;color:#bfae92;font-size:14px}}</style></head><body>
 {body}
 </body></html>'''
+
+
+# ---- Home banners (the marquee on the home screen) ----------------------------------------------------
+# In replay mode the home banners are the original event banners of this week's Vortex events: the same
+# 640x240 images (from the FFBE wiki, event_art.json) the Vortex tiles use, already in the data overlay
+# at en/sd/area/<file>. Each row's url ends in HomeBanner_<id>.png, the client's own cache name; the CDN
+# handler maps that name back to the event art (marquee_file). Off switch: EXVIUS_REPLAY_MARQUEE=0.
+
+MARQUEE_ID_BASE = 7000000
+_MARQUEE_CACHE: dict = {}
+
+
+def marquee_enabled() -> bool:
+    import replay
+    return replay.enabled() and os.environ.get('EXVIUS_REPLAY_MARQUEE', '1') == '1'
+
+
+def _event_art() -> dict:
+    if 'art' not in _MARQUEE_CACHE:
+        here = os.path.dirname(os.path.abspath(__file__))
+        try:
+            with open(os.path.join(here, 'event_art.json'), encoding='utf-8') as fh:
+                events = json.load(fh).get('events') or {}
+        except (OSError, ValueError):
+            events = {}
+        _MARQUEE_CACHE['art'] = {str(area): row.get('filename') for area, row in events.items()
+                                 if row.get('filename')}
+    return _MARQUEE_CACHE['art']
+
+
+def marquee_entries() -> list[dict] | None:
+    """This replay week's home banners, newest first, in banner_campaigns.json's entry shape.
+    None when the replay marquee is off (the normal era selection applies)."""
+    if not marquee_enabled():
+        return None
+    import event_archive
+    import replay
+    win = replay.window()
+    if win['finished']:
+        return None
+    key = (win['index'], win['anchor'])
+    if key in _MARQUEE_CACHE:
+        return _MARQUEE_CACHE[key]
+    try:
+        limit = max(1, int(os.environ.get('EXVIUS_REPLAY_MARQUEE_MAX', '6')))
+    except ValueError:
+        limit = 6
+    art = _event_art()
+    rows = [r for r in event_archive.weekly_events() if r.get('group') != 'permanent' and r.get('release')]
+    rows.sort(key=lambda r: (str(r['release']), str(r.get('area'))), reverse=True)
+    out, seen = [], set()
+    for row in rows:
+        filename = art.get(str(row.get('area')))
+        if not filename or filename in seen:
+            continue
+        seen.add(filename)
+        banner_id = MARQUEE_ID_BASE + int(row['area'])
+        out.append({'name': row['name'], 'start': row['release'],
+                    'art': {'banner_id': banner_id, 'banner_version': 1, 'file': filename,
+                            'store_path': f'homeMarquee/HomeBanner_{banner_id}.png'}})
+        if len(out) >= limit:
+            break
+    _MARQUEE_CACHE[key] = out
+    return out
+
+
+def marquee_file(banner_id: str) -> str | None:
+    """The event art (relative CDN path) behind a replay home banner's HomeBanner_<id>.png, or None."""
+    try:
+        area = int(banner_id) - MARQUEE_ID_BASE
+    except ValueError:
+        return None
+    if area <= 0:
+        return None
+    filename = _event_art().get(str(area))
+    return f'en/sd/area/{filename}' if filename else None

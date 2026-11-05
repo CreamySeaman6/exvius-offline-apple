@@ -531,6 +531,11 @@ class Handler(BaseHTTPRequestHandler):
         # client (the iPhone app) sends it over the network, so strip it here too.
         if rel.startswith("banner/"):
             rel = rel[len("banner/"):].lstrip("/")
+        # Historical replay home banners: HomeBanner_<id>.png is that week's event art (replay_notices.py).
+        replay_banner = re.fullmatch(r"en/sd/static_banner/marquee/HomeBanner_(\d+)\.png", rel)
+        if replay_banner:
+            from replay_notices import marquee_file
+            rel = marquee_file(replay_banner.group(1)) or rel
         # EXVIUS_TABLE_VERSION_OFFSET advertises every table at <real version + offset> (see
         # ffbe_battle.serve_version_table); the client then asks for that inflated name. Map it back.
         from ffbe_battle import table_version_offset
