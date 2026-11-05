@@ -481,10 +481,14 @@ class Handler(BaseHTTPRequestHandler):
         rates_page = re.fullmatch(r'/exvius/gacha-rates/(\d+)\.html', path)
         parade_page = path == '/exvius/parade-rewards.html'
         equip_page = path == '/exvius/equipment-enhancement.html'
+        notice_page = re.fullmatch(r'/exvius/notices/(\d+)\.html', path)
         clash_page = path in ('/exvius/clash-rewards.html', '/exvius/clash-ranking.html')
-        if raid_page or rates_page or parade_page or clash_page or equip_page:
+        if raid_page or rates_page or parade_page or clash_page or equip_page or notice_page:
             with STATE_LOCK:
-                if raid_page:
+                if notice_page:
+                    from replay_notices import page as notice_html
+                    html = notice_html(notice_page.group(1))
+                elif raid_page:
                     from exvius_raid_progress import personal_rewards_page
                     html = personal_rewards_page(State.player, raid_page.group(1))
                 elif equip_page:

@@ -211,11 +211,25 @@ Requested: keep the game a long, slow playthrough with no shortcuts. Findings (a
 
 ## Done: holiday-aware summon rotation and weekly Vortex (2026-11-05)
 
-- `gacha_rotation.py`: a set is a holiday set when it was released in that holiday's season and one of its banners carries the holiday's mark (`HOLIDAYS`: Valentine's Day, Easter, Halloween, Christmas). Holiday sets leave the random pool and appear in every week that overlaps the 14 days before the holiday, one original year per occurrence, oldest first (the n-th occurrence since the save's first week shows the n-th year). `EXVIUS_ROTATION_HOLIDAYS=1`. `python3 gacha_rotation.py --weeks 8` lists them.
+- `gacha_rotation.py`: a set is a holiday set when it was released in that holiday's season and one of its banners carries the holiday's mark (`HOLIDAYS`: Valentine's Day, Easter, Halloween, Christmas). Holiday sets leave the random pool and appear in the week before the holiday and the holiday's own week (changed from "the 14 days before" at the operator's request), one original year per occurrence, oldest first (the n-th occurrence since the save's first week shows the n-th year). `EXVIUS_ROTATION_HOLIDAYS=1`. `python3 gacha_rotation.py --weeks 8` lists them.
 - `event_archive.weekly_events`: the Vortex shows the 90 permanent dungeons, every event released from 3 days before to 13 days after one of this week's summon sets (478 of the 626 dated events launched the same day as a set), and `EXVIUS_VORTEX_EXTRA` (2) undated recurring events. `serve_event_gate` uses it when `EXVIUS_SUMMON_ROTATION=1` and `EXVIUS_VORTEX_ROTATION=1`. Typical week: ~10 events plus the permanent ones.
+
+## Done: historical replay (2026-11-05)
+
+Requested: content arrives in Global's original order, so late-game units don't make early play trivial. Operator's choices: start at Noctis (2016-12-16), 3 historical weeks per real week, then 2 from the first Neo Vision banner (Global 2020-08-20, Cloud FFVII Remake). Holidays line up with real holidays; skipped holiday years are stacked into the next real holiday. Holiday banners run the week before the holiday plus the holiday's own week. News-board notices wanted; the home marquee is a separate future job (art would have to be made or found).
+
+- `replay.py`: the clock. Replay week 0 = the rotation week of the first summon serve with `EXVIUS_REPLAY=1` (recorded in `state/replay.json`). `window()` gives each real week's slice of history. `python3 replay.py --weeks 8` previews; `ffbe.py rotation` uses it when the replay is on.
+- Unit release dates: `unit_release.json`, from `python3 replay.py --write-units`. First Global banner featuring the unit (JP-only `translated-jp` banners only count for units Global never featured). Units no banner featured take the next dated unit of the same series (first three id digits) or the end of history; undated rarity-7 (NV) units are never before the NV era. Full reward lists of banners are not used for dating.
+- `gacha_rotation.plan` → `_replay_plan`: every non-holiday, non-JP-only set released in the slice. Holidays: `_replay_holiday_years` walks each real occurrence since replay week 0 and shows years history went past without showing, plus the next year if it is within 365 days of history; several years are split across the two holiday weeks. NV EXVIUS is hidden until `EXVIUS_REPLAY_NV_ERA`.
+- `player_state.expand_pool`: every pool (permanent and featured) is limited to units released by the end of the slice (`replay.pool_cutoff`); a banner's featured units always stay. At Noctis week Rare Summon draws 14 five-star, 23 four-star and 55 three-star units (was 358/187/161).
+- `event_archive.weekly_events`: also events released inside the slice; events launched with a withheld holiday set (0 to 3 days after it) wait for it. The archive has no dated events before 2017-05-12 (the final client only kept events still in the game), so the first ~7 real weeks show only permanent and undated events.
+- `exvius_shop_catalogue`: products granting a unit (kind 10) not yet released are left out (Obnixus exchanges, some EX Coin items). Catalogue cached per cutoff.
+- `replay_notices.py`: News board. `InformationListScene::initConnect` sends `NoticeUpdateRequest` kind 4 (`CQ4jTm2F`); the list reads NoticeMstList buckets 0 and 1; reply tag `tN8f0PSB` fills bucket 0. Row fields from `NoticeMstResponse::readParam` (libgame 0x197d464) are listed in the module docstring. Caption is JSON `{"en": ...}` (`getLanguageCaption`), page type 1 opens the row's URL (`InformationDetailScene::getUrl`). Each replay week gets notice id 880000+week, read index 500+week; page `/exvius/notices/<week>.html` (future weeks 404). Not yet seen on the phone.
+- Not gated (known): old units' later enhancements, 7★ awakening (Global mid-2018) and NV awakening rules, the final patch's new-player login ladder. Ask before gating these.
 
 ## Next steps, in order
 
 1. Confirm the Shop bundle names now show.
 2. Confirm Vortex tile art and the Enhance tab (see "Vortex" above), and that the Vortex shows this week's events.
-3. Confirm whether the missing battle music is just the download queue. The 2026-11-05 server log showed `Ver1309_la301_dungeon_temple1.acb` fetched on entering the Earth Shrine, so map BGM downloads on demand.
+3. Confirm the replay on the phone: this week shows only the Noctis set plus permanent summons, Rare Summon rates list early units only, and the News board shows a "This week" notice that opens.
+(Battle music: confirmed working by the operator on 2026-11-05.)

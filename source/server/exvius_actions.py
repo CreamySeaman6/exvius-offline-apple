@@ -342,6 +342,10 @@ def serve_actions(spec, reply_id, plaintext):
     if State.player is None:
         return spec
     from exvius_colosseum import project
+    if reply_id == 'CQ4jTm2F':
+        # The News board: the historical replay's weekly notices (replay_notices.py).
+        from replay_notices import add_rows
+        spec = add_rows(spec)
     if (reply_id in ('pC3a2JWU', 'CQ4jTm2F') or isinstance(spec, dict)
             and ('LhVz6aD2' in spec or any(group in spec for group in NOTICE_GROUPS))):
         spec = notice_state(spec, _request(plaintext), reply_id)

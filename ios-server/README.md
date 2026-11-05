@@ -4,7 +4,7 @@ Play **Final Fantasy Brave Exvius** (Global) on an iPhone again, with the **unmo
 
 This folder runs the [Exvius Offline](https://github.com/Elvlin/exvius-offline) game engine as a server in Docker. The iPhone app thinks it's talking to the original servers. Nothing on the phone is modified apart from trusting one private certificate.
 
-It also adds a **weekly summon rotation**: Standard, Rare and the other permanent summons are always there, and three sets of release banners rotate every week (Sunday 10 PM US Eastern by default). The first week opens with Noctis's original December 2016 debut banner.
+It also adds a **historical replay**: summons, Vortex events and shops follow Global's own release history, starting at Noctis's December 2016 banner and moving three historical weeks per real week (two per week from the first Neo Vision banner in August 2020). The permanent summons only draw units that had come out by then, holiday banners arrive the week before each real holiday, and a "This week" notice on the News board lists what just arrived. The week changes on Sunday at 10 PM US Eastern by default. With the replay off, banners rotate randomly every week instead.
 
 > Tested with the Global app at build 1167 (`ver.9100`) on an iPhone 17 Pro running iOS 27, with the server on an Unraid NAS. The same Docker setup is meant to run on any computer that runs Docker.
 
@@ -170,6 +170,7 @@ The server also keeps every request it received for three days, in `FFBE_DIR/ser
 | --- | --- |
 | See this week's banners | `docker compose exec server python3 /app/ffbe.py rotation` |
 | See the next four weeks | `docker compose exec server python3 /app/ffbe.py rotation 4` |
+| Restart the replay from its start date | delete `FFBE_DIR/server/state/replay.json`, then `docker compose restart server` |
 | Show the save's status | `docker compose exec server python3 /app/ffbe.py status` |
 | Restart | `docker compose restart server` |
 | Logs | `docker compose logs -f server` |
@@ -197,12 +198,24 @@ docker compose up -d
 
 Settings are environment variables in `docker-compose.yml`. After changing one, run `docker compose up -d`.
 
+**Historical replay**
+
+| Setting | What it controls |
+| --- | --- |
+| `EXVIUS_REPLAY` | `1` (default) follows Global's history: each week shows the summon sets released in that week's slice of history, the Vortex events that launched with them, and permanent summons and exchange shops limited to units released by then (NV EXVIUS appears with the NV era). `0` uses the random weekly rotation below. Needs `EXVIUS_SUMMON_ROTATION=1`. |
+| `EXVIUS_REPLAY_START` | Where history starts in your first replay week. Default `2016-12-16` (Noctis). |
+| `EXVIUS_REPLAY_PACE` | Historical weeks per real week, with optional changes by date. Default `3,2@2020-08-20`: three, then two from Global's first Neo Vision banner. |
+| `EXVIUS_REPLAY_NV_ERA` | When NV EXVIUS appears among the permanent summons. Default `2020-08-20`. |
+| `EXVIUS_REPLAY_NOTICES` | `1` (default) adds a "This week" notice to the News board for each replay week, listing its summons and Vortex events. `EXVIUS_REPLAY_NOTICE_WEEKS` (default `8`) is how many weeks stay listed. |
+
+Your first replay week is recorded in `FFBE_DIR/server/state/replay.json`. Changing the pace later re-times the whole replay from that week. Units you already own stay in your save. Holiday sets come out of the timeline and appear in the week before each real holiday and the holiday's own week. Each holiday brings the next original year that hasn't been shown (if it's less than a year ahead of history), plus any years the replay went past, older ones first. When history runs out, the random rotation takes over with every unit.
+
 **Summon rotation**
 
 | Setting | What it controls |
 | --- | --- |
 | `EXVIUS_SUMMON_ROTATION` | `1` rotates banners weekly; `0` shows every banner at once. |
-| `EXVIUS_ROTATION_HOLIDAYS` | `1` (default) keeps holiday summon sets (Christmas, Halloween, Valentine's Day, Easter) for the weeks just before that holiday, one original year at a time, oldest first, so the newest and strongest holiday units come later. `0` mixes them into the normal pool. |
+| `EXVIUS_ROTATION_HOLIDAYS` | `1` (default) keeps holiday summon sets (Christmas, Halloween, Valentine's Day, Easter) for the week before that holiday and the holiday's own week. Without the replay, it's one original year at a time, oldest first, so the newest and strongest holiday units come later. `0` mixes them into the normal pool. |
 | `EXVIUS_VORTEX_ROTATION` | `1` (default) makes the Vortex follow the summon rotation: the permanent dungeons are always open, plus the events that originally launched alongside this week's summon sets, so an event's featured units, coins and tickets line up with the banners you can pull. `0` opens all 757 archived events at once. |
 | `EXVIUS_VORTEX_EXTRA` | How many undated recurring Vortex events (Boss Rush, Cactuar Dunes, Challenge of the Brave, …) open each week. Default `2`. |
 | `EXVIUS_ROTATION_TZ` | Time zone of the weekly change. Default `America/New_York`. |
@@ -210,7 +223,7 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | `EXVIUS_ROTATION_HOUR` | Hour of the change, in 24-hour time. |
 | `EXVIUS_ROTATION_SPECIAL` | How many sets with step-up, ticket or select banners appear each week. |
 | `EXVIUS_ROTATION_FEATURED` | How many other featured sets appear each week. |
-| `EXVIUS_ROTATION_FIRST_WEEK` | Release sets for the first week, by release date. Default `2016-12-16` (Noctis). Later weeks are random, and nothing repeats until the whole pool has cycled. |
+| `EXVIUS_ROTATION_FIRST_WEEK` | Without the replay: release sets for the first week, by release date. Default `2016-12-16` (Noctis). Later weeks are random, and nothing repeats until the whole pool has cycled. |
 
 **Downloads and sound**
 
@@ -241,7 +254,7 @@ The preserved game data comes from the Android version, and the iPhone app was n
 7. **Blank Vortex tiles, and a crash on the Enhance tab.** Each Vortex tile's picture is loaded by name from the game's mounted data packs, and the archive's event banners only existed as loose PNG files, which the Android version hands to the game with in-app code. The server now rebuilds the game's own Vortex banner pack with those pictures added, gives it a new version, and puts it in the up-front download (`ios_art.py`).
 8. **Seeing what the phone is doing.** iOS hides apps' logs, so the server enables the game's own crash-report upload and saves what it sends (`client_reports.py`). Every step above was diagnosed from those reports.
 
-The weekly summon rotation is in `source/server/gacha_rotation.py`.
+The weekly summon rotation is in `source/server/gacha_rotation.py`, the historical replay in `source/server/replay.py` (unit release dates in `unit_release.json`), and the News board notices in `source/server/replay_notices.py`. The notice rows use the layout the app's own notice reader expects, read from the Android build of the game.
 
 ---
 

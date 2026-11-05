@@ -16,8 +16,18 @@ START = '2020-01-01 00:00:00'
 END = '2099-12-31 23:59:59'
 
 
-@lru_cache(maxsize=1)
 def catalogue():
+    """The shop catalogue; with the historical replay on, units not yet released are left out."""
+    try:
+        import replay
+        cutoff = replay.pool_cutoff()
+    except Exception:  # noqa: BLE001 -- no replay limit
+        cutoff = None
+    return _catalogue(cutoff.isoformat() if cutoff else None)
+
+
+@lru_cache(maxsize=4)
+def _catalogue(cutoff=None):
     # Fragment exchanges retain their original currency, quantity and limits.
     names = {}
     path = Path(TEXT_DIR) / 'F_TEXT_ITEM_NAME.ndjson'
@@ -48,6 +58,12 @@ def catalogue():
     def product(pid, did, reward, price, limit, currency, monthly=False):
         if currency[0] == 50 and ':'.join(str(reward).split(':')[:2]) in excluded:
             return
+        if cutoff:
+            import replay
+            from datetime import date
+            if any(r['kind'] == 10 and not replay.released_by(r['id'], date.fromisoformat(cutoff))
+                   for r in parse(reward)):
+                return
         row = {'jPV7Xc4N': str(pid), '3X1gLufw': str(did), 'P4puB2ch': reward,
                'e4mG8jTc': str(price), 'uYcL8IQ1': str(-1 if int(limit) == 2147483647 else limit),
                'Z0EN6jSh': str(len(products) + 1),

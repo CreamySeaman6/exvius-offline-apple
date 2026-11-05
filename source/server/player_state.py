@@ -1155,8 +1155,23 @@ def expand_pool(banner: dict) -> list:
     (split equally) and the non-featured take the remainder. This keeps `gacha_authored.json` small and the
     pool real -- the unit catalogue is shipped data."""
     pool = banner.get("pool")
+    # Historical replay (replay.py): only units released by this week's point in history. A banner's
+    # featured units always stay (a holiday set shown ahead of history keeps its own units).
+    try:
+        import replay
+        cutoff = replay.pool_cutoff(banner)
+    except Exception:  # noqa: BLE001 -- no replay limit
+        cutoff = None
+    if cutoff is not None:
+        import replay
+        featured_ids = {str(u) for t in ((pool or {}).get("tiers") or [] if isinstance(pool, dict) else [])
+                        for u in (t.get("featured") or [])}
+        featured_ids |= {str(u) for u in ((banner.get("community") or {}).get("unit_ids") or [])}
+        allowed = lambda u: str(u) in featured_ids or replay.released_by(u, cutoff)  # noqa: E731
+    else:
+        allowed = lambda u: True  # noqa: E731
     if isinstance(pool, list):
-        return _only_named(pool)
+        return _only_named([row for row in pool if allowed(row.get("unit_id"))])
     roots = unit_roots_by_rarity()
     # Retail summons (Lapis, tickets) never drew the 9xxxxxxxx fusion/material units (moogles, pots):
     # those come from the Friend Point summon and events. Only a friend-point banner keeps them.
@@ -1176,7 +1191,8 @@ def expand_pool(banner: dict) -> list:
         if rate <= 0:
             continue
         units = [str(u) for u in (tier.get("units") or [u for u in roots.get(str(tier.get("rarity")), [])
-                                                          if keep_materials or not u.startswith("9")])]
+                                                          if keep_materials or not u.startswith("9")])
+                 if allowed(u)]
         # A featured unit drawn at its own rarity (an NV unit is not a base 5★ root) still belongs here.
         units += [u for u in (str(x) for x in (tier.get("featured") or [])) if u not in units]
         if not units:

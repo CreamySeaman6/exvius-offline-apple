@@ -43,7 +43,8 @@ def weekly_events(rows=None, now=None):
     belong to that set. So an event is open while a set released between 3 days after and 13 days before it
     is on the summon screen (`gacha_rotation.set_dates`), holiday sets included. Undated, non-permanent
     events (Boss Rush, Cactuar Dunes, Challenge of the Brave, ...) rotate EXVIUS_VORTEX_EXTRA at a time
-    (default 2).
+    (default 2). With the historical replay on (replay.py), events released in this week's slice of
+    history are open too.
     """
     import os
     import random
@@ -54,6 +55,13 @@ def weekly_events(rows=None, now=None):
     import gacha_rotation
     dates = gacha_rotation.set_dates(now)
     number = gacha_rotation.week(now)[0]
+    # Historical replay: also every event released in this week's slice of history; events that launched
+    # with a holiday set wait for that set (gacha_rotation.withheld_holiday_dates).
+    import replay
+    win = replay.window(now) if replay.enabled() else None
+    if win and win['finished']:
+        win = None
+    held = gacha_rotation.withheld_holiday_dates(now) if win else []
     kept, extra = [], []
     for row in rows:
         if row.get('group') == 'permanent':
@@ -64,7 +72,10 @@ def weekly_events(rows=None, now=None):
         except ValueError:
             extra.append(row)
             continue
-        if any(timedelta(days=-3) <= released - d <= timedelta(days=13) for d in dates):
+        if any(timedelta(days=0) <= released - d <= timedelta(days=3) for d in held):
+            continue
+        if any(timedelta(days=-3) <= released - d <= timedelta(days=13) for d in dates) or (
+                win and win['from'] <= released < win['to']):
             kept.append(row)
     try:
         per_week = max(0, int(os.environ.get('EXVIUS_VORTEX_EXTRA', '2')))

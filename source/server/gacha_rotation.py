@@ -17,8 +17,8 @@ job: the server works it out on every request.
 
 HOLIDAYS (EXVIUS_ROTATION_HOLIDAYS=1, the default). A set is a holiday set when it was originally released
 in that holiday's season AND one of its banners carries the holiday's mark (a name like "Santa Roselia" or
-"Grim Lord Sakura"; see HOLIDAYS). Holiday sets leave the random pool. Instead, every week that overlaps
-the two weeks before the holiday shows one original year's holiday sets, oldest year first: the first
+"Grim Lord Sakura"; see HOLIDAYS). Holiday sets leave the random pool. Instead, the week before the holiday
+and the week the holiday falls in show one original year's holiday sets, oldest year first: the first
 Christmas you play gets the 2016 Christmas units, the next one 2017's, and so on, so the strongest holiday
 units are not on offer in the first year. After the last year the order starts again.
 EXVIUS_ROTATION_FIRST_WEEK lists release dates (set keys, e.g. 2016-12-16) to feature in the first
@@ -124,7 +124,7 @@ def _easter(year: int) -> date:
 # name: (holiday date in a year, how far before/after it the original sets were released (days), the mark).
 HOLIDAYS = {
     'Valentine\'s Day': (lambda y: date(y, 2, 14), (-21, 3),
-                         re.compile(r"valentine|white day|sakura & ayaka|sieghard & ignacio", re.I)),
+                         re.compile(r"valentine|white day|sakura & ayaka|sieghard & ignacio|cupid|sweet (luka|nichol)", re.I)),
     'Easter': (_easter, (-21, 7), re.compile(r"easter|egg|bunny", re.I)),
     'Halloween': (lambda y: date(y, 10, 31), (-16, 3),
                   re.compile(r"halloween|hallowe|grim lord|dracu|demon rain|black cat|pumpkin|lilith|full moon",
@@ -132,7 +132,6 @@ HOLIDAYS = {
     'Christmas': (lambda y: date(y, 12, 25), (-18, 8),
                   re.compile(r"christmas|santa|holiday|xmas|winter|white knight noel|kryla", re.I)),
 }
-LEAD_DAYS = 14
 
 
 def holidays_enabled() -> bool:
@@ -153,13 +152,61 @@ def holiday_of(key: str, names: list) -> str | None:
 
 
 def _holiday_this_week(start: datetime, nxt: datetime):
-    """(holiday, its date) when this week overlaps the LEAD_DAYS before a holiday, else None."""
+    """(holiday, its date, 0 or 1) when this is the week before a holiday (0) or the week it falls in (1)."""
     for holiday, (when, _window, _mark) in HOLIDAYS.items():
         for year in (start.year, start.year + 1):
             day = when(year)
-            if start.date() < day and nxt.date() > day - timedelta(days=LEAD_DAYS):
-                return holiday, day
+            noon = datetime(day.year, day.month, day.day, 12, tzinfo=start.tzinfo)
+            if start <= noon < nxt:
+                return holiday, day, 1
+            if start + timedelta(days=7) <= noon < nxt + timedelta(days=7):
+                return holiday, day, 0
     return None
+
+
+def _jp_only(ids: list, by_id: dict) -> bool:
+    """A set made only of JP banners (translated from the JP calendar): not part of Global's history."""
+    return all(str(by_id[bid].get('source', '')).startswith('translated-jp') for bid in ids)
+
+
+def _replay_holiday_years(entries: list, name: str, day: date, slot: int, anchor: int, tz) -> list:
+    """The original years of `name` to show this week in the replay.
+
+    Walks every real occurrence of the holiday since replay week 0: each shows the years the replay has
+    gone past without showing, plus the next one ahead of it. Once every year has been shown, they start
+    again. Several years are split: the older ones the week before, the rest in the holiday's week."""
+    import replay
+    years = sorted({key[:4] for key, _ids in entries})
+    first_day = {y: min(key for key, _ids in entries if key[:4] == y) for y in years}
+    when = HOLIDAYS[name][0]
+    shown: set = set()
+    pick: list = []
+    year = day.year - 12
+    while year <= day.year:
+        occurrence = when(year)
+        year += 1
+        noon = datetime(occurrence.year, occurrence.month, occurrence.day, 12, tzinfo=tz)
+        holiday_week = week(noon)[0]
+        if holiday_week - anchor < 0:
+            continue
+        reached = replay.historical_start(max(0, holiday_week - 1 - anchor)).isoformat()
+        pending = [y for y in years if y not in shown]
+        if not pending:
+            shown, pending = set(), list(years)
+        pick = [y for y in pending if first_day[y] <= reached]
+        # The next year ahead, unless it is more than a year ahead of history (a holiday some early years
+        # never had would otherwise bring much later units).
+        horizon = (date.fromisoformat(reached) + timedelta(days=365)).isoformat()
+        ahead = [y for y in pending if reached < first_day[y] <= horizon]
+        if ahead:
+            pick.append(ahead[0])
+        shown |= set(pick)
+        if occurrence == day:
+            break
+    if len(pick) > 1:
+        half = (len(pick) + 1) // 2
+        pick = pick[:half] if slot == 0 else pick[half:]
+    return pick
 
 
 def pools(banners: list) -> tuple[list, list, list, dict]:
@@ -241,11 +288,19 @@ def _pinned(cfg: dict) -> list:
     return [key.strip() for key in os.environ.get('EXVIUS_ROTATION_FIRST_WEEK', '').split(',') if key.strip()]
 
 
-def plan(banners: list, now: datetime | None = None, record: bool = False, first: int | None = None) -> dict:
+def plan(banners: list, now: datetime | None = None, record: bool = False, first: int | None = None,
+         anchor: int | None = None) -> dict:
     """This week's rotation: its number, start and end, and the sets on offer."""
     cfg = settings()
     number, start, nxt = week(now, cfg)
     fixed, special, featured, by_id = pools(banners)
+    import replay
+    win = replay.window(now, record=record, anchor=anchor) if replay.enabled() else None
+    if win and win['finished']:
+        win = None
+    if win:
+        special = [entry for entry in special if not _jp_only(entry[1], by_id)]
+        featured = [entry for entry in featured if not _jp_only(entry[1], by_id)]
     holiday_sets = {}
     if holidays_enabled():
         def split(entries):
@@ -258,6 +313,8 @@ def plan(banners: list, now: datetime | None = None, record: bool = False, first
                     kept.append((key, ids))
             return kept
         special, featured = split(special), split(featured)
+    if win:
+        return _replay_plan(number, start, nxt, fixed, special, featured, by_id, holiday_sets, win)
     picked_special = _pick(special, cfg['special'], number, cfg['seed'], 'special')
     picked_featured = _pick(featured, cfg['featured'], number, cfg['seed'], 'featured')
     pins = _pinned(cfg)
@@ -275,7 +332,7 @@ def plan(banners: list, now: datetime | None = None, record: bool = False, first
         sets = picked_special + picked_featured
     holiday = _holiday_this_week(start, nxt) if holiday_sets else None
     if holiday and holiday[0] in holiday_sets:
-        name, day = holiday
+        name, day, _slot = holiday
         # The n-th time this holiday comes round since the save's first week shows the n-th original year.
         first_number = first if first is not None else first_week(number, record=False)
         first_start = start - timedelta(days=7 * (number - first_number))
@@ -291,6 +348,44 @@ def plan(banners: list, now: datetime | None = None, record: bool = False, first
             'by_id': by_id, 'pool_sizes': {'special': len(special), 'featured': len(featured)},
             'holiday': holiday[0] if holiday and holiday[0] in holiday_sets else None,
             'holiday_sets': {name: [key for key, _ids in entries] for name, entries in holiday_sets.items()}}
+
+
+def _replay_plan(number, start, nxt, fixed, special, featured, by_id, holiday_sets, win) -> dict:
+    """The replay's week: every set released in this week's slice of history, plus holiday sets."""
+    import replay
+    begin, end = win['from'].isoformat(), win['to'].isoformat()
+    sets = sorted(entry for entry in special + featured if begin <= entry[0] < end)
+    holiday = _holiday_this_week(start, nxt) if holiday_sets else None
+    shown_holiday = None
+    if holiday and holiday[0] in holiday_sets:
+        name, day, slot = holiday
+        years = _replay_holiday_years(holiday_sets[name], name, day, slot, win['anchor'], start.tzinfo)
+        chosen = [entry for entry in sorted(holiday_sets[name]) if entry[0][:4] in years]
+        if chosen:
+            shown_holiday = name
+            sets = chosen + [entry for entry in sets if entry[0] not in {k for k, _ in chosen}]
+    if win['to'] <= replay.nv_era():
+        fixed = [bid for bid in fixed if 'NV' not in str(by_id[bid].get('name', ''))]
+    return {'week': number, 'starts': start, 'ends': nxt, 'permanent': fixed, 'sets': sets,
+            'by_id': by_id, 'pool_sizes': {'special': len(special), 'featured': len(featured)},
+            'holiday': shown_holiday, 'replay': win,
+            'holiday_sets': {name: [key for key, _ids in entries] for name, entries in holiday_sets.items()}}
+
+
+def withheld_holiday_dates(now: datetime | None = None) -> list:
+    """Release dates of the holiday sets NOT on offer this week (their events wait for the holiday too)."""
+    from ffbe_gacha import all_banners
+    current = plan(all_banners(), now)
+    shown = {key for key, _ids in current['sets']}
+    out = []
+    for keys in current['holiday_sets'].values():
+        for key in keys:
+            if key not in shown:
+                try:
+                    out.append(date.fromisoformat(key))
+                except ValueError:
+                    pass
+    return out
 
 
 def set_dates(now: datetime | None = None) -> list:
@@ -344,7 +439,7 @@ def describe(banners: list, weeks: int = 1, now: datetime | None = None) -> str:
                  f"{sizes['featured']} featured-only sets.")
     held = plan(banners, now)['holiday_sets']
     for name, keys in held.items():
-        lines.append(f"{name} sets (shown before {name}, oldest first): {', '.join(sorted(keys))}")
+        lines.append(f"{name} sets (the week before {name} and its own week, oldest first): {', '.join(sorted(keys))}")
     return '\n'.join(lines)
 
 

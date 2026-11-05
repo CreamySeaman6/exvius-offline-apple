@@ -43,6 +43,9 @@ def main(argv: list[str]) -> int:
         sys.path.insert(0, str(APP))
         import serve
         serve.configure_engine()
+        import replay
+        if replay.enabled():
+            return replay.main(['--weeks', rest[0] if rest else '1'])
         import gacha_rotation
         return gacha_rotation.main(['--weeks', rest[0] if rest else '1'])
     if command == 'status':

@@ -46,10 +46,20 @@ services:
       EXVIUS_ROTATION_HOUR: "22"      # 10 PM
       EXVIUS_ROTATION_SPECIAL: "1"    # sets with step-up / ticket / select banners each week
       EXVIUS_ROTATION_FEATURED: "2"   # other featured sets each week
-      # Your first week opens with Noctis's original Dec 2016 debut banner; later weeks are random.
+      # Without the replay: your first week opens with Noctis's Dec 2016 banner; later weeks are random.
       EXVIUS_ROTATION_FIRST_WEEK: "2016-12-16"
-      # Holiday sets (Christmas, Halloween, Valentine's, Easter) only in the weeks before the holiday, oldest first.
+      # Holiday sets (Christmas, Halloween, Valentine's, Easter) only in the week before the holiday and the
+      # holiday's own week, oldest first.
       EXVIUS_ROTATION_HOLIDAYS: "1"
+      # Historical replay (source/server/replay.py): summons, Vortex and shops follow Global's own history,
+      # starting at EXVIUS_REPLAY_START and moving EXVIUS_REPLAY_PACE historical weeks per real week.
+      # Permanent summons only draw units released by then. "0" goes back to the random weekly rotation.
+      # Delete server/state/replay.json to restart the replay from EXVIUS_REPLAY_START.
+      EXVIUS_REPLAY: "1"
+      EXVIUS_REPLAY_START: "2016-12-16"
+      EXVIUS_REPLAY_PACE: "3,2@2020-08-20"   # 3 weeks per week, then 2 from the first Neo Vision banner
+      # A "This week" notice on the News board for each replay week ("0" turns them off).
+      EXVIUS_REPLAY_NOTICES: "1"
       # The Vortex follows the summons: permanent dungeons, the events that launched with this week's sets,
       # and EXVIUS_VORTEX_EXTRA undated recurring events. "0" opens every archived event at once.
       EXVIUS_VORTEX_ROTATION: "1"
