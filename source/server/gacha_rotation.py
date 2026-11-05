@@ -15,6 +15,12 @@ fixed seed and walked in order, so no set repeats until every set of its kind ha
 the next cycle uses a fresh shuffle. The choice depends only on the date, so it needs no scheduled
 job: the server works it out on every request.
 
+HOLIDAYS (EXVIUS_ROTATION_HOLIDAYS=1, the default). A set is a holiday set when it was originally released
+in that holiday's season AND one of its banners carries the holiday's mark (a name like "Santa Roselia" or
+"Grim Lord Sakura"; see HOLIDAYS). Holiday sets leave the random pool. Instead, every week that overlaps
+the two weeks before the holiday shows one original year's holiday sets, oldest year first: the first
+Christmas you play gets the 2016 Christmas units, the next one 2017's, and so on, so the strongest holiday
+units are not on offer in the first year. After the last year the order starts again.
 EXVIUS_ROTATION_FIRST_WEEK lists release dates (set keys, e.g. 2016-12-16) to feature in the first
 week the server serves summons; the week is recorded in state/summon_rotation.json. Those sets take
 the first slots of their kind that week, and every later week is random as usual.
@@ -26,7 +32,8 @@ from __future__ import annotations
 import os
 import random
 from collections import OrderedDict
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+import re
 
 try:
     from zoneinfo import ZoneInfo
@@ -98,6 +105,61 @@ def _kind(banner: dict) -> str:
     if isinstance(cost, dict) and cost.get('kind') in ('ticket', 'important', 'item'):
         return 'ticket'
     return 'featured'
+
+
+def _easter(year: int) -> date:
+    """Western Easter (anonymous Gregorian algorithm)."""
+    a, b, c = year % 19, year // 100, year % 100
+    d, e = b // 4, b % 4
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = c // 4, c % 4
+    m = (32 + 2 * e + 2 * i - h - k) % 7
+    n = (a + 11 * h + 22 * m) // 451
+    month, day = divmod(h + m - 7 * n + 114, 31)
+    return date(year, month, day + 1)
+
+
+# name: (holiday date in a year, how far before/after it the original sets were released (days), the mark).
+HOLIDAYS = {
+    'Valentine\'s Day': (lambda y: date(y, 2, 14), (-21, 3),
+                         re.compile(r"valentine|white day|sakura & ayaka|sieghard & ignacio", re.I)),
+    'Easter': (_easter, (-21, 7), re.compile(r"easter|egg|bunny", re.I)),
+    'Halloween': (lambda y: date(y, 10, 31), (-16, 3),
+                  re.compile(r"halloween|hallowe|grim lord|dracu|demon rain|black cat|pumpkin|lilith|full moon",
+                             re.I)),
+    'Christmas': (lambda y: date(y, 12, 25), (-18, 8),
+                  re.compile(r"christmas|santa|holiday|xmas|winter|white knight noel|kryla", re.I)),
+}
+LEAD_DAYS = 14
+
+
+def holidays_enabled() -> bool:
+    return os.environ.get('EXVIUS_ROTATION_HOLIDAYS', '1') == '1'
+
+
+def holiday_of(key: str, names: list) -> str | None:
+    """The holiday a set belongs to, from its original release date and its banners' names."""
+    try:
+        released = date.fromisoformat(key)
+    except ValueError:
+        return None
+    for holiday, (when, (before, after), mark) in HOLIDAYS.items():
+        day = when(released.year)
+        if before <= (released - day).days <= after and any(mark.search(n or '') for n in names):
+            return holiday
+    return None
+
+
+def _holiday_this_week(start: datetime, nxt: datetime):
+    """(holiday, its date) when this week overlaps the LEAD_DAYS before a holiday, else None."""
+    for holiday, (when, _window, _mark) in HOLIDAYS.items():
+        for year in (start.year, start.year + 1):
+            day = when(year)
+            if start.date() < day and nxt.date() > day - timedelta(days=LEAD_DAYS):
+                return holiday, day
+    return None
 
 
 def pools(banners: list) -> tuple[list, list, list, dict]:
@@ -184,6 +246,18 @@ def plan(banners: list, now: datetime | None = None, record: bool = False, first
     cfg = settings()
     number, start, nxt = week(now, cfg)
     fixed, special, featured, by_id = pools(banners)
+    holiday_sets = {}
+    if holidays_enabled():
+        def split(entries):
+            kept = []
+            for key, ids in entries:
+                holiday = holiday_of(key, [by_id[bid].get('name', '') for bid in ids])
+                if holiday:
+                    holiday_sets.setdefault(holiday, []).append((key, ids))
+                else:
+                    kept.append((key, ids))
+            return kept
+        special, featured = split(special), split(featured)
     picked_special = _pick(special, cfg['special'], number, cfg['seed'], 'special')
     picked_featured = _pick(featured, cfg['featured'], number, cfg['seed'], 'featured')
     pins = _pinned(cfg)
@@ -199,8 +273,36 @@ def plan(banners: list, now: datetime | None = None, record: bool = False, first
         sets = pinned_special + pinned_featured + [e for e in picked_special + picked_featured if e[0] not in keys]
     else:
         sets = picked_special + picked_featured
+    holiday = _holiday_this_week(start, nxt) if holiday_sets else None
+    if holiday and holiday[0] in holiday_sets:
+        name, day = holiday
+        # The n-th time this holiday comes round since the save's first week shows the n-th original year.
+        first_number = first if first is not None else first_week(number, record=False)
+        first_start = start - timedelta(days=7 * (number - first_number))
+        first_day = HOLIDAYS[name][0](first_start.year)
+        if first_day <= first_start.date():
+            first_day = HOLIDAYS[name][0](first_start.year + 1)
+        occurrence = max(0, day.year - first_day.year)
+        years = sorted({key[:4] for key, _ids in holiday_sets[name]})
+        year = years[occurrence % len(years)]
+        chosen = [entry for entry in sorted(holiday_sets[name]) if entry[0][:4] == year]
+        sets = chosen + [entry for entry in sets if entry[0] not in {k for k, _ in chosen}]
     return {'week': number, 'starts': start, 'ends': nxt, 'permanent': fixed, 'sets': sets,
-            'by_id': by_id, 'pool_sizes': {'special': len(special), 'featured': len(featured)}}
+            'by_id': by_id, 'pool_sizes': {'special': len(special), 'featured': len(featured)},
+            'holiday': holiday[0] if holiday and holiday[0] in holiday_sets else None,
+            'holiday_sets': {name: [key for key, _ids in entries] for name, entries in holiday_sets.items()}}
+
+
+def set_dates(now: datetime | None = None) -> list:
+    """Original release dates of this week's sets (for the Vortex rotation, event_archive.weekly_events)."""
+    from ffbe_gacha import all_banners
+    out = []
+    for key, _ids in plan(all_banners(), now)['sets']:
+        try:
+            out.append(date.fromisoformat(key))
+        except ValueError:
+            pass
+    return out
 
 
 def rotation_ids(banners: list, now: datetime | None = None) -> list:
@@ -228,7 +330,8 @@ def describe(banners: list, weeks: int = 1, now: datetime | None = None) -> str:
         moment = start + timedelta(days=7 * offset, hours=1)
         current = plan(banners, moment, first=first)
         lines.append(f"Week {current['week']}: {current['starts']:%a %b %d %I:%M %p %Z} "
-                     f"to {current['ends']:%a %b %d %I:%M %p %Z}")
+                     f"to {current['ends']:%a %b %d %I:%M %p %Z}"
+                     + (f"  [{current['holiday']}]" if current['holiday'] else ''))
         if offset == 0:
             lines.append('  Always: ' + ', '.join(current['by_id'][b].get('name', b) for b in current['permanent']))
         for key, members in current['sets']:
@@ -239,6 +342,9 @@ def describe(banners: list, weeks: int = 1, now: datetime | None = None) -> str:
     sizes = plan(banners, now)['pool_sizes']
     lines.append(f"Pool: {sizes['special']} sets with step-up/ticket/select/box banners, "
                  f"{sizes['featured']} featured-only sets.")
+    held = plan(banners, now)['holiday_sets']
+    for name, keys in held.items():
+        lines.append(f"{name} sets (shown before {name}, oldest first): {', '.join(sorted(keys))}")
     return '\n'.join(lines)
 
 

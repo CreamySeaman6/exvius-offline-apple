@@ -147,7 +147,7 @@ The Android build is the stock gumi `libgame.so` plus about 4,000 lines of Frida
 
 - **Crash: not reproduced.** Tapping Vortex crashed right after `GateEntryScene` early in the session (`GateEntryScene::initialize`, GL `0x2195578`: `DefineMst OTHER_WORLD_TOWN_ID` 9001 -> `TownMstList` -> request the town's map resource -> scene 604 `GateScene`). An hour later, after the background download had run, it opened normally. Most likely a file still in the download queue. If it recurs, get the `.ips` crash report.
 - **Fix built (not yet tested on the phone): blank event tiles and the Enhance-tab crash.** `serve_event_gate` (ffbe_player.py) sets every archived area's tile art to the archive's banner (`event_<area>.png`, `event_art.json`), including permanent Enhance-tab dungeons whose shipped art was loadable. `GateScene` loads tile art by name through the CRI loader, which only searches mounted CPKs, and the archive's PNGs ship loose in `en/sd/area/`. Android supplies them with `menu_assets.js`. On the iPhone the Event tab drew empty frames and the Enhance tab crashed: the `.ips` from 2026-11-05 17:17 shows SIGSEGV at address 0 with `x2 = 21104` (Chamber of Experience, art `event_226.png`). `ios_art.py` rebuilds `en/sd/area/spdungeon1.cpk` (resource 6108101, 1,237 original files) with the 692 loose banners added. `ios_tables.py` raises its English version (`86SWOBTb`) and size (`MLOSu5E0` in `F_RESOURCE_CHECKSUM_MST`), and moves it into the up-front (`TUTO`) download. serve.py builds it at startup into `server-root/ios-cache/`. Verified locally: every original file byte-identical, added files byte-identical, TOC sorted upper-case like the original.
-- **Planned: weekly rotation** of archived events (operator request), after the tiles work.
+- **Done: weekly rotation** of archived events, tied to the summon rotation (see below).
 
 ## Getting logs from the phone
 
@@ -209,12 +209,13 @@ Requested: keep the game a long, slow playthrough with no shortcuts. Findings (a
 - The operator chose to leave the other findings as they are for now (repeat Lapis, Early Bird, bundles). Don't change them without asking.
 - Vortex: the operator wants archived events rotated weekly, like the summon rotation, instead of all 757 at once. Build after the Vortex crash is fixed.
 
-## Planned: holiday-aware summon rotation (operator request, later)
+## Done: holiday-aware summon rotation and weekly Vortex (2026-11-05)
 
-Holiday banners (Christmas, Halloween, Valentine's, etc.) should land in the week or two before their holiday, and within a holiday the sets should come in release order (older, weaker units first), so the strongest holiday unit isn't offered in the first year.
+- `gacha_rotation.py`: a set is a holiday set when it was released in that holiday's season and one of its banners carries the holiday's mark (`HOLIDAYS`: Valentine's Day, Easter, Halloween, Christmas). Holiday sets leave the random pool and appear in every week that overlaps the 14 days before the holiday, one original year per occurrence, oldest first (the n-th occurrence since the save's first week shows the n-th year). `EXVIUS_ROTATION_HOLIDAYS=1`. `python3 gacha_rotation.py --weeks 8` lists them.
+- `event_archive.weekly_events`: the Vortex shows the 90 permanent dungeons, every event released from 3 days before to 13 days after one of this week's summon sets (478 of the 626 dated events launched the same day as a set), and `EXVIUS_VORTEX_EXTRA` (2) undated recurring events. `serve_event_gate` uses it when `EXVIUS_SUMMON_ROTATION=1` and `EXVIUS_VORTEX_ROTATION=1`. Typical week: ~10 events plus the permanent ones.
 
 ## Next steps, in order
 
 1. Confirm the Shop bundle names now show.
-2. Confirm Vortex tile art and the Enhance tab (see "Vortex" above), then the weekly event rotation.
+2. Confirm Vortex tile art and the Enhance tab (see "Vortex" above), and that the Vortex shows this week's events.
 3. Confirm whether the missing battle music is just the download queue. The 2026-11-05 server log showed `Ver1309_la301_dungeon_temple1.acb` fetched on entering the Earth Shrine, so map BGM downloads on demand.

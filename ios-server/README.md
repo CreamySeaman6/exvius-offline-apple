@@ -202,6 +202,9 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | Setting | What it controls |
 | --- | --- |
 | `EXVIUS_SUMMON_ROTATION` | `1` rotates banners weekly; `0` shows every banner at once. |
+| `EXVIUS_ROTATION_HOLIDAYS` | `1` (default) keeps holiday summon sets (Christmas, Halloween, Valentine's Day, Easter) for the weeks just before that holiday, one original year at a time, oldest first, so the newest and strongest holiday units come later. `0` mixes them into the normal pool. |
+| `EXVIUS_VORTEX_ROTATION` | `1` (default) makes the Vortex follow the summon rotation: the permanent dungeons are always open, plus the events that originally launched alongside this week's summon sets, so an event's featured units, coins and tickets line up with the banners you can pull. `0` opens all 757 archived events at once. |
+| `EXVIUS_VORTEX_EXTRA` | How many undated recurring Vortex events (Boss Rush, Cactuar Dunes, Challenge of the Brave, …) open each week. Default `2`. |
 | `EXVIUS_ROTATION_TZ` | Time zone of the weekly change. Default `America/New_York`. |
 | `EXVIUS_ROTATION_DAY` | Day of the change. 0 is Monday, 6 is Sunday. |
 | `EXVIUS_ROTATION_HOUR` | Hour of the change, in 24-hour time. |

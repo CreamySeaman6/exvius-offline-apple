@@ -48,6 +48,12 @@ services:
       EXVIUS_ROTATION_FEATURED: "2"   # other featured sets each week
       # Your first week opens with Noctis's original Dec 2016 debut banner; later weeks are random.
       EXVIUS_ROTATION_FIRST_WEEK: "2016-12-16"
+      # Holiday sets (Christmas, Halloween, Valentine's, Easter) only in the weeks before the holiday, oldest first.
+      EXVIUS_ROTATION_HOLIDAYS: "1"
+      # The Vortex follows the summons: permanent dungeons, the events that launched with this week's sets,
+      # and EXVIUS_VORTEX_EXTRA undated recurring events. "0" opens every archived event at once.
+      EXVIUS_VORTEX_ROTATION: "1"
+      EXVIUS_VORTEX_EXTRA: "2"
       # Resource packs downloaded before the tutorial (the first battle needs them). "all" or "0" also work.
       EXVIUS_EARLY_RESOURCES: "resources_common.cpk,resources.cpk"
       # Sound banks for the iPhone: "1" removes the Android banks' HCA cipher, "0" serves them as shipped.

@@ -2895,9 +2895,10 @@ def serve_event_gate(spec, reply_id):
         saved_policy = policy_path(DATA_ROOT)
         if (os.environ.get('EXVIUS_EVENT_ARCHIVE') == '1' and
                 not (saved_policy is not None and saved_policy.exists())):
-            from event_archive import area_ids, events
-            archive_events = events()
-            policy = dict(policy, areas=area_ids(), permanent=True)
+            from event_archive import weekly_events
+            # This week's events only, when the Vortex follows the summon rotation (event_archive.py).
+            archive_events = weekly_events()
+            policy = dict(policy, areas=[str(row['area']) for row in archive_events], permanent=True)
     except (OSError, ValueError) as exc:
         _note("event policy invalid; no extra gates served: " + str(exc))
         return spec

@@ -27,6 +27,59 @@ def area_ids():
     return [str(event['area']) for event in events()]
 
 
+def rotation_enabled():
+    """The Vortex follows the weekly summon rotation (EXVIUS_VORTEX_ROTATION, on with the summon rotation)."""
+    import os
+    return (os.environ.get('EXVIUS_SUMMON_ROTATION') == '1'
+            and os.environ.get('EXVIUS_VORTEX_ROTATION', '1') == '1')
+
+
+def weekly_events(rows=None, now=None):
+    """This week's Vortex: the permanent dungeons, the events that launched beside this week's summon sets,
+    and a few of the undated recurring events.
+
+    Global launched most events on the same day as a summon set (478 of the 626 dated events here), and
+    they were built to be played together: the event's featured units, its currency and its banner tickets
+    belong to that set. So an event is open while a set released between 3 days after and 13 days before it
+    is on the summon screen (`gacha_rotation.set_dates`), holiday sets included. Undated, non-permanent
+    events (Boss Rush, Cactuar Dunes, Challenge of the Brave, ...) rotate EXVIUS_VORTEX_EXTRA at a time
+    (default 2).
+    """
+    import os
+    import random
+    from datetime import date, timedelta
+    rows = events() if rows is None else rows
+    if not rotation_enabled():
+        return rows
+    import gacha_rotation
+    dates = gacha_rotation.set_dates(now)
+    number = gacha_rotation.week(now)[0]
+    kept, extra = [], []
+    for row in rows:
+        if row.get('group') == 'permanent':
+            kept.append(row)
+            continue
+        try:
+            released = date.fromisoformat(str(row.get('release') or ''))
+        except ValueError:
+            extra.append(row)
+            continue
+        if any(timedelta(days=-3) <= released - d <= timedelta(days=13) for d in dates):
+            kept.append(row)
+    try:
+        per_week = max(0, int(os.environ.get('EXVIUS_VORTEX_EXTRA', '2')))
+    except ValueError:
+        per_week = 2
+    if extra and per_week:
+        names = sorted({row['name'] for row in extra})
+        cycle, start = divmod(number * per_week, len(names))
+        order = list(range(len(names)))
+        random.Random(f'vortex-extra:{cycle}').shuffle(order)
+        picked = {names[order[(start + i) % len(names)]] for i in range(min(per_week, len(names)))}
+        kept.extend(row for row in extra if row['name'] in picked)
+    return kept
+
+
 def listings():
     """One tile per published campaign, with every original area retained."""
     campaigns = {}
