@@ -218,6 +218,7 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | `EXVIUS_IOS_SOUND_REFETCH` | Set it to any new value to make the phone download every sound bank again. |
 | `EXVIUS_IOS_TEXT` | `1` (default) adds the English names the stock app is missing, such as the Shop's local bundles and the special summon tickets. `0` turns it off. |
 | `ANNIVERSARY_TICKET` | `0` (default here) stops the free 8th-Anniversary 10+1 ticket the engine otherwise mails every day. `1` turns it back on. Tickets you already received stay. |
+| `EXVIUS_LAPIS_SHOP_EXCLUDE` | Products left out of the exchange shops that sell for Lapis, as `kind:id` pairs. The default, `10:900020401`, removes King Metal Minituars, which otherwise cost 3 Lapis each. Empty puts them back. |
 
 If you have original **iOS** sound banks, put them in `FFBE_DIR/data/native/common_lang/sound/<bgm or se>/ios/`, keeping their `Ver<N>_` file names. The server sends those as they are, ahead of the Android ones.
 

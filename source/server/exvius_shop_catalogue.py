@@ -2,6 +2,7 @@
 from collections import defaultdict
 from functools import lru_cache
 import json
+import os
 from pathlib import Path
 import time
 
@@ -38,7 +39,15 @@ def catalogue():
                         '6uvHX2JG': title, 'VjJQ51uG': START, 'm8ivD4NX': END,
                         '0GgK6ytT': str(kind) + ':' + str(currency)})
 
+    # Products left out of the shops that are priced in Lapis (EXVIUS_LAPIS_SHOP_EXCLUDE, `kind:id` comma list).
+    # Default: King Metal Minituar (10:900020401). Those shops' original coins have no source here, so they
+    # sell for Lapis 1:1, which made the best EXP material cost 3 Lapis, unlimited (audit 2026-11-05).
+    excluded = {entry.strip() for entry in os.environ.get('EXVIUS_LAPIS_SHOP_EXCLUDE', '10:900020401').split(',')
+                if entry.strip()}
+
     def product(pid, did, reward, price, limit, currency, monthly=False):
+        if currency[0] == 50 and ':'.join(str(reward).split(':')[:2]) in excluded:
+            return
         row = {'jPV7Xc4N': str(pid), '3X1gLufw': str(did), 'P4puB2ch': reward,
                'e4mG8jTc': str(price), 'uYcL8IQ1': str(-1 if int(limit) == 2147483647 else limit),
                'Z0EN6jSh': str(len(products) + 1),

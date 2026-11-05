@@ -203,7 +203,8 @@ Requested: keep the game a long, slow playthrough with no shortcuts. Findings (a
 - CRITICAL: `exvius_repeat.complete_attempt` pays challenge Lapis (kind 50) on every clear; other rewards once. Some event missions pay 3,000 Lapis per clear.
 - HIGH: Early Bird Offer (`global_bundles.json` 990000101) costs 242 Lapis and contains 5,000. `serve_lapis_shop` applies `max(price, lapis inside)` only to shipped cash bundles, not to `global_bundles.json`.
 - HIGH: daily 8th-Anniversary 10+1 ticket by mail. **Turned off** (`ANNIVERSARY_TICKET=0` in serve.py and docker-compose.yml), at the operator's request.
-- The operator chose to leave the other findings as they are for now. Don't change them without asking.
+- King Metal Minituars are removed from the Lapis-priced shops (Daily Coin Shop, VIP Shop) by `EXVIUS_LAPIS_SHOP_EXCLUDE` (default `10:900020401`) in `exvius_shop_catalogue.catalogue()`, at the operator's request. The EX Coin Shop fragments stay: the operator wants them.
+- The operator chose to leave the other findings as they are for now (repeat Lapis, Early Bird, bundles). Don't change them without asking.
 - Vortex: the operator wants archived events rotated weekly, like the summon rotation, instead of all 757 at once. Build after the Vortex crash is fixed.
 
 ## Next steps, in order
