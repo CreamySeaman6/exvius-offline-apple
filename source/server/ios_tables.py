@@ -31,6 +31,9 @@ need no files of their own. The client's size table (`F_RESOURCE_CHECKSUM_MST`) 
 the rewrites keep every bank's size.
 
 3. MISSING ENGLISH TEXT. The localized-text index and three text tables are served by `ios_texts.py`.
+
+4. VORTEX BANNERS. `ios_art.py` rebuilds the English Vortex banner pack; this module serves it and raises its
+English version (`F_RESOURCE_VERSION_MST_LOCALIZE`) and size (`F_RESOURCE_CHECKSUM_MST`).
 """
 from __future__ import annotations
 
@@ -45,6 +48,7 @@ RESOURCE = ("F_RESOURCE_MST", "ZQqB38Ns", "u6q3F02d")
 RESOURCE_MAP = ("F_RESOURCE_MAP_MST", "B7LnP2TH", "U0Vd7AfQ")
 RESOURCE_VERSION = ("F_RESOURCE_VERSION_MST_LOCALIZE", "A1L1GlaQ", "JchlFPWK")
 RESOURCE_MAP_VERSION = ("F_RESOURCE_MAP_VERSION_MST_LOCALIZE", "YIgCpDKW", "geHlpoos")
+RESOURCE_CHECKSUM = ("F_RESOURCE_CHECKSUM_MST", "9Hwur83G", "92SkMNAx")
 
 TABLE, TOKEN, KEY = RESOURCE  # kept for older callers
 CLASS_FIELD = "81fTkEDP"
@@ -72,18 +76,57 @@ def sound_bump() -> int:
     return _bump(sound_compat.ios_signature())
 
 
+def _art_up_front() -> bool:
+    import ios_art
+    return ios_art.enabled()
+
+
 def version_bump() -> int:
     """Added to `F_RESOURCE_MST`'s advertised version, so a client holding the unpatched table fetches this
-    one. Changes with the setting, so switching packs makes the client fetch again."""
-    return _bump(setting())
+    one. Changes with the setting, so switching packs makes the client fetch again. The Vortex banner pack
+    moving up front adds 1000, which keeps the number above what phones were served before it."""
+    return _bump(setting()) + (1000 if _art_up_front() else 0) if (setting() or _art_up_front()) else 0
+
+
+def _roots():
+    return os.environ.get("CDN_OVERLAY"), os.environ.get("CDN_ROOT")
+
+
+def art(*roots):
+    """(path, version, size) of the rebuilt Vortex banner pack (ios_art.py), or None."""
+    import ios_art
+    try:
+        return ios_art.built_pack(ios_art.cache_dir(), *(roots or _roots()))
+    except Exception as exc:  # noqa: BLE001 -- without the pack the tiles stay blank, nothing else breaks
+        print(f"[ios-art] banner pack not built ({exc})", flush=True)
+        return None
+
+
+def _art_signature(*roots) -> str:
+    a = art(*roots)
+    return f"art={a[1]}:{a[2]}" if a else ""
+
+
+def table_bump(spec, *roots) -> int:
+    import sound_compat
+    if spec == RESOURCE_VERSION:
+        # Kept above the sound-only bump (1000-1999) that phones may already hold: a table advertised at a
+        # LOWER version than the phone's copy may never be fetched again.
+        art_sig = _art_signature(*roots)
+        return sound_bump() + (2000 + zlib.crc32(art_sig.encode()) % 1000 if art_sig else 0)
+    if spec == RESOURCE_MAP_VERSION:
+        return sound_bump()
+    if spec == RESOURCE_CHECKSUM:
+        return _bump(_art_signature(*roots))
+    return 0
 
 
 def version_bumps() -> dict[str, int]:
     """Table name -> amount to add to its advertised version (only tables served patched)."""
     import ios_texts
     out = {RESOURCE[0]: version_bump(), ios_texts.INDEX[0]: ios_texts.bump()}
-    for spec in _VERSIONS:
-        out[spec[0]] = sound_bump()
+    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM):
+        out[spec[0]] = table_bump(spec)
     return {name: bump for name, bump in out.items() if bump}
 
 
@@ -92,23 +135,25 @@ def _path(token: str):
 
 
 def wants(rel: str) -> bool:
-    import ios_texts
-    return _which(rel) is not None or ios_texts.wants(rel)
+    import ios_texts, ios_art
+    return _which(rel) is not None or ios_texts.wants(rel) or ios_art.wants(rel)
 
 
 def _which(rel: str):
-    if setting() and _path(RESOURCE[1]).search(rel):
+    if version_bump() and _path(RESOURCE[1]).search(rel):
         return RESOURCE
-    if sound_bump():
-        for spec in _VERSIONS:
-            if _path(spec[1]).search(rel):
-                return spec
+    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM):
+        if _path(spec[1]).search(rel) and table_bump(spec):
+            return spec
     return None
 
 
 def _chosen(row: dict, value: str) -> bool:
     if row.get(CLASS_FIELD):
         return False  # already downloaded up front
+    import ios_art
+    if _art_up_front() and str(row.get("9ZCEWn0z")) == ios_art.RESOURCE_ID:
+        return True   # the rebuilt Vortex banner pack: the Enhance tab crashes without its art
     if value.lower() == "all":
         return True
     names = {n.strip() for n in value.split(",") if n.strip()}
@@ -165,14 +210,25 @@ def sound_ids(raw: bytes, spec=RESOURCE, id_field: str = "9ZCEWn0z") -> set[str]
             if str(row.get(PATH_FIELD, "")).startswith("sound/")}
 
 
-def patch_versions(raw: bytes, spec, ids: set[str], bump: int) -> tuple[bytes, int]:
-    """A version table with every sound row's file version raised by `bump`. Returns (table, rows changed)."""
-    id_field = _VERSIONS[spec][1]
+def patch_versions(raw: bytes, spec, ids: set[str], bump: int, sets=None,
+                   id_field: str | None = None) -> tuple[bytes, int]:
+    """A version table with every sound row's file version raised by `bump`, and `sets` ({row id: {field:
+    value}}) applied. Returns (table, rows changed)."""
+    id_field = id_field or _VERSIONS[spec][1]
+    sets = sets or {}
     out, changed = [], 0
     for line, row, double in _rows(raw, spec[2]):
+        rid = str(row.get(id_field))
         value = str(row.get(VERSION_FIELD, ""))
-        if str(row.get(id_field)) in ids and value.isdigit():
+        touched = False
+        if bump and rid in ids and value.isdigit():
             row[VERSION_FIELD] = str(int(value) + bump)
+            touched = True
+        for field, new in sets.get(rid, {}).items():
+            if str(row.get(field)) != str(new):
+                row[field] = str(new)
+                touched = True
+        if touched:
             line = _encrypt(spec[2], row, double)
             changed += 1
         out.append(line)
@@ -181,9 +237,16 @@ def patch_versions(raw: bytes, spec, ids: set[str], bump: int) -> tuple[bytes, i
 
 def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
     """(table bytes, CDN log note) when `rel` is one of the tables served patched, else (None, None)."""
-    import ios_texts
+    import ios_texts, ios_art
     if ios_texts.wants(rel):
         return ios_texts.serve(rel, *roots)
+    if ios_art.wants(rel):
+        built = art(*roots)
+        m = re.search(r"Ver(\d+)_", os.path.basename(rel))
+        if not built or not m or int(m.group(1)) != built[1]:
+            return None, None   # an older version: the shipped pack, as is
+        with open(built[0], "rb") as fh:
+            return fh.read(), f"Vortex banner pack {os.path.basename(built[0])} for the iPhone"
     spec = _which(rel)
     if spec is None:
         return None, None
@@ -194,13 +257,23 @@ def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
         if spec == RESOURCE:
             data, moved = patch(open(src, "rb").read())
             return data, f"{os.path.basename(src)}, {len(moved)} pack(s) moved to the first download"
+        import ios_art
+        built = art(*roots)
+        if spec == RESOURCE_CHECKSUM:
+            sets = {ios_art.RESOURCE_ID: {ios_art.SIZE_FIELD: built[2]}} if built else {}
+            data, changed = patch_versions(open(src, "rb").read(), spec, set(), 0, sets, id_field="9ZCEWn0z")
+            return data, f"{os.path.basename(src)}, Vortex banner pack size set ({changed} row)"
+        sets = {}
+        if spec == RESOURCE_VERSION and built:
+            sets = {ios_art.RESOURCE_ID: {ios_art.VERSION_FIELD: built[1]}}
         base, id_field = _VERSIONS[spec]
         base_src = source_table(*roots, token=base[1])
         if not base_src:
             return None, f"{spec[0]} not patched ({base[0]} not found)"
         ids = sound_ids(open(base_src, "rb").read(), base, id_field)
         bump = sound_bump()
-        data, changed = patch_versions(open(src, "rb").read(), spec, ids, bump)
-        return data, f"{os.path.basename(src)}, {changed} sound file version(s) +{bump}"
+        data, changed = patch_versions(open(src, "rb").read(), spec, ids, bump, sets)
+        return data, (f"{os.path.basename(src)}, {changed} row(s): sound versions +{bump}"
+                      + (f", Vortex banner pack -> Ver{built[1]}" if sets else ""))
     except Exception as exc:  # noqa: BLE001 -- fall back to the shipped table
         return None, f"{spec[0]} patch failed ({exc})"

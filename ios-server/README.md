@@ -219,6 +219,7 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | `EXVIUS_IOS_TEXT` | `1` (default) adds the English names the stock app is missing, such as the Shop's local bundles and the special summon tickets. `0` turns it off. |
 | `ANNIVERSARY_TICKET` | `0` (default here) stops the free 8th-Anniversary 10+1 ticket the engine otherwise mails every day. `1` turns it back on. Tickets you already received stay. |
 | `EXVIUS_LAPIS_SHOP_EXCLUDE` | Products left out of the exchange shops that sell for Lapis, as `kind:id` pairs. The default, `10:900020401`, removes King Metal Minituars, which otherwise cost 3 Lapis each. Empty puts them back. |
+| `EXVIUS_IOS_VORTEX_ART` | `1` (default) builds the Vortex banner pack the iPhone needs, so event tiles show their art (and the Enhance tab doesn't crash). It's built when the server starts and cached in `FFBE_DIR/server/ios-cache/` (about 240 MB). |
 
 If you have original **iOS** sound banks, put them in `FFBE_DIR/data/native/common_lang/sound/<bgm or se>/ios/`, keeping their `Ver<N>_` file names. The server sends those as they are, ahead of the Android ones.
 
@@ -234,7 +235,8 @@ The preserved game data comes from the Android version, and the iPhone app was n
 4. **Crash entering the first battle.** The opening battle loads two layout files from two resource packs that the game normally leaves near the end of its background download, so the battle started before they arrived. The server marks those packs for the up-front download (`ios_tables.py`). The phone only gets the changed list at login, which is why the second launch matters.
 5. **Garbled music and sound effects.** Every Android sound bank uses CRI HCA cipher type 1, a fixed keyless scrambling table. The iPhone played the banks as loud noise, the same noise a decoder makes when it skips that table. The server removes the cipher as it sends each bank (`sound_compat.py`): it decrypts every audio frame, marks the file unencrypted and rewrites the checksums. The audio and the file size stay exactly the same. Because the phone never re-downloads a file it already has, the server also gives every sound file a new version number whenever these settings change.
 6. **Names showing as codes.** The Android build fills in some names itself, with code hooks inside the app (for example the Shop's local bundles, `MST_BUNDLE_NAME_990000107`). The stock iPhone app has no hooks, so it showed the raw keys. The server adds those names to the game's own text tables instead, and gives the changed tables new versions so the phone downloads them (`ios_texts.py`).
-7. **Seeing what the phone is doing.** iOS hides apps' logs, so the server enables the game's own crash-report upload and saves what it sends (`client_reports.py`). Every step above was diagnosed from those reports.
+7. **Blank Vortex tiles, and a crash on the Enhance tab.** Each Vortex tile's picture is loaded by name from the game's mounted data packs, and the archive's event banners only existed as loose PNG files, which the Android version hands to the game with in-app code. The server now rebuilds the game's own Vortex banner pack with those pictures added, gives it a new version, and puts it in the up-front download (`ios_art.py`).
+8. **Seeing what the phone is doing.** iOS hides apps' logs, so the server enables the game's own crash-report upload and saves what it sends (`client_reports.py`). Every step above was diagnosed from those reports.
 
 The weekly summon rotation is in `source/server/gacha_rotation.py`.
 

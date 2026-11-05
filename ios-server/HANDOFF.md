@@ -146,7 +146,7 @@ The Android build is the stock gumi `libgame.so` plus about 4,000 lines of Frida
 ## Vortex (2026-11-05)
 
 - **Crash: not reproduced.** Tapping Vortex crashed right after `GateEntryScene` early in the session (`GateEntryScene::initialize`, GL `0x2195578`: `DefineMst OTHER_WORLD_TOWN_ID` 9001 -> `TownMstList` -> request the town's map resource -> scene 604 `GateScene`). An hour later, after the background download had run, it opened normally. Most likely a file still in the download queue. If it recurs, get the `.ips` crash report.
-- **Open: event tiles are blank** (frames and NEW labels, no banner art). `GateScene` loads each banner by name (`event_<area>.png`, `event_art.json`) through the CRI file loader, which only finds files inside mounted CPKs, and it never queues a download. On Android, `menu_assets.js` hooks the texture reader and supplies loose PNGs from the overlay (`/en/sd/area/<name>`). The iPhone needs a server-side equivalent: build a CPK of the archive's banner PNGs and add it as a resource row (as `ios_tables.py` does for other packs) so the phone downloads and mounts it.
+- **Fix built (not yet tested on the phone): blank event tiles and the Enhance-tab crash.** `serve_event_gate` (ffbe_player.py) sets every archived area's tile art to the archive's banner (`event_<area>.png`, `event_art.json`), including permanent Enhance-tab dungeons whose shipped art was loadable. `GateScene` loads tile art by name through the CRI loader, which only searches mounted CPKs, and the archive's PNGs ship loose in `en/sd/area/`. Android supplies them with `menu_assets.js`. On the iPhone the Event tab drew empty frames and the Enhance tab crashed: the `.ips` from 2026-11-05 17:17 shows SIGSEGV at address 0 with `x2 = 21104` (Chamber of Experience, art `event_226.png`). `ios_art.py` rebuilds `en/sd/area/spdungeon1.cpk` (resource 6108101, 1,237 original files) with the 692 loose banners added. `ios_tables.py` raises its English version (`86SWOBTb`) and size (`MLOSu5E0` in `F_RESOURCE_CHECKSUM_MST`), and moves it into the up-front (`TUTO`) download. serve.py builds it at startup into `server-root/ios-cache/`. Verified locally: every original file byte-identical, added files byte-identical, TOC sorted upper-case like the original.
 - **Planned: weekly rotation** of archived events (operator request), after the tiles work.
 
 ## Getting logs from the phone
@@ -209,8 +209,12 @@ Requested: keep the game a long, slow playthrough with no shortcuts. Findings (a
 - The operator chose to leave the other findings as they are for now (repeat Lapis, Early Bird, bundles). Don't change them without asking.
 - Vortex: the operator wants archived events rotated weekly, like the summon rotation, instead of all 757 at once. Build after the Vortex crash is fixed.
 
+## Planned: holiday-aware summon rotation (operator request, later)
+
+Holiday banners (Christmas, Halloween, Valentine's, etc.) should land in the week or two before their holiday, and within a holiday the sets should come in release order (older, weaker units first), so the strongest holiday unit isn't offered in the first year.
+
 ## Next steps, in order
 
 1. Confirm the Shop bundle names now show.
-2. Vortex tile art (see "Vortex" above), then the weekly event rotation.
+2. Confirm Vortex tile art and the Enhance tab (see "Vortex" above), then the weekly event rotation.
 3. Confirm whether the missing battle music is just the download queue. The 2026-11-05 server log showed `Ver1309_la301_dungeon_temple1.acb` fetched on entering the Earth Shrine, so map BGM downloads on demand.

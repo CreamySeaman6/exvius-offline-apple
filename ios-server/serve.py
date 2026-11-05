@@ -305,6 +305,12 @@ def main() -> int:
     import certs
     paths = certs.ensure(ROOT / 'certs')
     capture_server = start_engine()
+    # Build the iPhone's Vortex banner pack now (a few seconds, cached in server-root/ios-cache), rather than
+    # during the first login that asks for it. See source/server/ios_art.py.
+    def build_art():
+        import ios_tables
+        ios_tables.art()
+    threading.Thread(target=build_art, name='ios-art', daemon=True).start()
     tls = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     tls.minimum_version = ssl.TLSVersion.TLSv1_2
     tls.load_cert_chain(paths['leaf_chain'], paths['leaf_key'])
