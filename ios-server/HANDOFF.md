@@ -143,9 +143,11 @@ The Android build is the stock gumi `libgame.so` plus about 4,000 lines of Frida
 - Done: missing text. `ios_texts.py` adds the names `summon_menu.js` injects (local Shop bundles `990000xxx`, tickets `1062130x0`, banner names from `ffbe_gacha.missing_gacha_names`, explanations for banners without one) into `F_TEXT_BUNDLE` / `F_TEXT_ITEM_NAME` / `F_TEXT_GACHA`, and serves the localized-text index (`F_LOCALIZED_TEXT_MST`, `i5QEJpua`/`R8PYPnJ9`) with new versions plus each file's MD5 and size. `EXVIUS_IOS_TEXT=1` (default).
 - Not done: area/dungeon names for Clash of Wills / Dark Visions and the parade party headers (`summon_menu.js` `nameFor`), the Vortex event filter and art (`menu_assets.js`, `summon_menu.js` GateScene hooks), the home carousel.
 
-## Open problem: Vortex crash (2026-11-05)
+## Vortex (2026-11-05)
 
-Tapping Vortex crashes the app right after `NAVIGATION > Current Scene=GateEntryScene`, with no further client log lines and no server request. `GateEntryScene::initialize` (GL `0x2195578`) reads `DefineMst OTHER_WORLD_TOWN_ID` (9001), looks up the town in `TownMstList`, then requests the town's map resource and changes to scene 604 (`GateScene`). Town 9001 is present in the shipped `F_TOWN_MST` (Ver64), and the `area_vw*` packs were downloaded. Next: the iPhone's own crash report (`Settings → Privacy & Security → Analytics & Improvements → Analytics Data`, the `.ips` from the crash) for the faulting frame, and compare with the GateScene hooks in `menu_assets.js`.
+- **Crash: not reproduced.** Tapping Vortex crashed right after `GateEntryScene` early in the session (`GateEntryScene::initialize`, GL `0x2195578`: `DefineMst OTHER_WORLD_TOWN_ID` 9001 -> `TownMstList` -> request the town's map resource -> scene 604 `GateScene`). An hour later, after the background download had run, it opened normally. Most likely a file still in the download queue. If it recurs, get the `.ips` crash report.
+- **Open: event tiles are blank** (frames and NEW labels, no banner art). `GateScene` loads each banner by name (`event_<area>.png`, `event_art.json`) through the CRI file loader, which only finds files inside mounted CPKs, and it never queues a download. On Android, `menu_assets.js` hooks the texture reader and supplies loose PNGs from the overlay (`/en/sd/area/<name>`). The iPhone needs a server-side equivalent: build a CPK of the archive's banner PNGs and add it as a resource row (as `ios_tables.py` does for other packs) so the phone downloads and mounts it.
+- **Planned: weekly rotation** of archived events (operator request), after the tiles work.
 
 ## Getting logs from the phone
 
@@ -210,5 +212,5 @@ Requested: keep the game a long, slow playthrough with no shortcuts. Findings (a
 ## Next steps, in order
 
 1. Confirm the Shop bundle names now show.
-2. Vortex crash: get the `.ips` crash report (see above).
+2. Vortex tile art (see "Vortex" above), then the weekly event rotation.
 3. Confirm whether the missing battle music is just the download queue. The 2026-11-05 server log showed `Ver1309_la301_dungeon_temple1.acb` fetched on entering the Earth Shrine, so map BGM downloads on demand.
