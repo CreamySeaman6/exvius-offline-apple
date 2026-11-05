@@ -195,6 +195,17 @@ Docker Hub is blocked in the sandbox, so run the server directly:
 
 After every battle the phone scrolled "Get Lightning! Clear Lanzelt Ruins - Interior!" (SP challenge 9000000) and "Clear Attack of Gilgamesh..." (110101). Those are the first rows of the two served schedules (1001 Rookie, 1101 Advanced), and `serve_sp_challenge` put each schedule's first row into the ticker (`cT7S0ikb`) whatever its state. The ticker now carries only a cleared, unclaimed quest per schedule, or nothing, and the tag is always sent so the phone's old list is replaced. The quests themselves were never marked cleared.
 
+## Economy audit (2026-11-05)
+
+Requested: keep the game a long, slow playthrough with no shortcuts. Findings (all verified in code and data):
+
+- CRITICAL: `exvius_shop_catalogue.catalogue()` serves category-6 shops in Lapis 1:1 (`if category == 6: kind, currency = 50, '1'`): the Daily Coin Shop (King Metal Minituar for 3 Lapis, unlimited; Gil Snapper Family 3 Lapis, unlimited), the VIP Shop (10 KMM for 70 Lapis, 20/month) and the EX Coin Shop (unit fragments). Daily Coins (1209001163) have no source on this server; EX Coins (1209001380) do (fortuna, field treasures).
+- CRITICAL: `exvius_repeat.complete_attempt` pays challenge Lapis (kind 50) on every clear; other rewards once. Some event missions pay 3,000 Lapis per clear.
+- HIGH: Early Bird Offer (`global_bundles.json` 990000101) costs 242 Lapis and contains 5,000. `serve_lapis_shop` applies `max(price, lapis inside)` only to shipped cash bundles, not to `global_bundles.json`.
+- HIGH: daily 8th-Anniversary 10+1 ticket by mail. **Turned off** (`ANNIVERSARY_TICKET=0` in serve.py and docker-compose.yml), at the operator's request.
+- The operator chose to leave the other findings as they are for now. Don't change them without asking.
+- Vortex: the operator wants archived events rotated weekly, like the summon rotation, instead of all 757 at once. Build after the Vortex crash is fixed.
+
 ## Next steps, in order
 
 1. Confirm the Shop bundle names now show.

@@ -74,6 +74,8 @@ def configure_engine() -> None:
                        ('EXVIUS_IOS_HCA', '1'),
                        # Remove the Android banks' HCA cipher (type 1) for the iPhone. See sound_compat.py.
                        ('EXVIUS_IOS_HCA_PLAIN', '1'),
+                       # No free 8th-Anniversary 10+1 ticket in the mail every day.
+                       ('ANNIVERSARY_TICKET', '0'),
                        # Download the packs the first battle reads before the tutorial starts ('all' = everything).
                        ('EXVIUS_EARLY_RESOURCES', 'resources_common.cpk,resources.cpk')):
         os.environ.setdefault(key, value)

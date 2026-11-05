@@ -54,6 +54,8 @@ services:
       EXVIUS_IOS_HCA_PLAIN: "1"
       # Change this to any new value to make the phone download every sound bank again.
       EXVIUS_IOS_SOUND_REFETCH: ""
+      # "1" mails a free 8th-Anniversary 10+1 summon ticket every day; "0" turns it off.
+      ANNIVERSARY_TICKET: "0"
     volumes:
       - ${FFBE_DIR}/data:/srv/ffbe/data
       - ${FFBE_DIR}/server:/srv/ffbe/server-root
