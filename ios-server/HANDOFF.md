@@ -191,6 +191,10 @@ Docker Hub is blocked in the sandbox, so run the server directly:
    - `devtools/replay_init.py <engine-parent-dir> 8443 <ca.pem>` sends the iPhone's InitializeRequest and prints advertised table versions.
    - `devtools/replay_all.py <same args> <captured request json…>` replays captured requests from the server's `server/requests/` and prints the switch containers in each reply.
 
+## Fixed: quest ticker announcing the wrong quests (2026-11-05)
+
+After every battle the phone scrolled "Get Lightning! Clear Lanzelt Ruins - Interior!" (SP challenge 9000000) and "Clear Attack of Gilgamesh..." (110101). Those are the first rows of the two served schedules (1001 Rookie, 1101 Advanced), and `serve_sp_challenge` put each schedule's first row into the ticker (`cT7S0ikb`) whatever its state. The ticker now carries only a cleared, unclaimed quest per schedule, or nothing, and the tag is always sent so the phone's old list is replaced. The quests themselves were never marked cleared.
+
 ## Next steps, in order
 
 1. Confirm the Shop bundle names now show.

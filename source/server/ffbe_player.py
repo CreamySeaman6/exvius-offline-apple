@@ -2718,8 +2718,8 @@ def serve_sp_challenge(spec, reply_id):
         list), so it is only ever served on this family`'s own request, never broadcast onto a general
         refresh -- the rule that keeps a stale progress list from wiping the screen.
       * `cT7S0ikb` -- the scrolling ticker: two MST text KEYS per row (schedule name, challenge name), both
-        shipped. The PAIRING is authored (one row per served schedule, with that schedule's first challenge
-        in display order); an empty ticker list is legal -- `getNextTickerLog` falls back to an empty string
+        shipped. The PAIRING is authored (one row per served schedule, with its first cleared-but-unclaimed
+        challenge in display order, and none when there is no such challenge); an empty ticker list is legal -- `getNextTickerLog` falls back to an empty string
         (the literal at 0x2f50a80 is the empty string) -- so this is completeness, not a requirement.
 
     The UserInfo group rides the same reply (`MTf2j9aK` is a collided wire id shared with `GrandMissionEntry`)
@@ -2754,17 +2754,23 @@ def serve_sp_challenge(spec, reply_id):
                           SP_REWARD_LIMIT: fmt(end)})
         statuses.append({SP_SCHEDULE_ID: sched_id, SP_GROUP_ID: gid,
                          SP_REWARD_COUNT: str(claimable.get(gid, 0)), SP_IS_NEW: "0"})
+        # The ticker announces a quest as done ("Rookie Quests: Get Lightning! ..."), and the client scrolls it
+        # after every battle. It used to carry each schedule's FIRST quest whatever its state, so the stock
+        # iPhone app kept announcing "Get Lightning!" and "Attack of Gilgamesh" after every quest (reported
+        # 2026-11-05). Only a quest that is cleared and not yet claimed is announced now; with none, the
+        # schedule has no ticker row, which is legal (see above).
         if key and names:
-            first = str(rows[0].get(SP_CHALLENGE_ID, ""))
-            ckey = f"MST_SPCHALLENGE_NAME_{first}"
-            if ckey in names:
-                tickers.append({SP_TICKER_SCHEDULE_NAME: key, SP_TICKER_CHALLENGE_NAME: ckey})
+            for info in infos:
+                ckey = f"MST_SPCHALLENGE_NAME_{info[SP_CHALLENGE_ID]}"
+                if (info[SP_GROUP_ID] == gid and info[SP_CLEAR] == "1" and info[SP_REWARD_FLAG] == "0"
+                        and ckey in names):
+                    tickers.append({SP_TICKER_SCHEDULE_NAME: key, SP_TICKER_CHALLENGE_NAME: ckey})
+                    break
     out = dict(spec)
     out[SP_CHALLENGE_STATUS_TAG] = statuses
     out[SP_CHALLENGE_SCHEDULE_TAG] = schedules
     out[SP_CHALLENGE_INFO_TAG] = infos
-    if tickers:
-        out[SP_CHALLENGE_TICKER_TAG] = tickers
+    out[SP_CHALLENGE_TICKER_TAG] = tickers
     _note(f"sp challenge: groups "
           + ", ".join(f"{g}='{tables['titles'].get(sched_names.get(g, ''), '?')}'"
                       f" [{len(rows)} quest(s)]" for g, rows in picked)
