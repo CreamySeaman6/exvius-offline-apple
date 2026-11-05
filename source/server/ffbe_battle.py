@@ -1243,11 +1243,41 @@ def serve_version_table(spec):
             # be silent, and a silent no-op here looks exactly like the bug being fixed.
             _note(f"version table: FORCE_TABLE_VERSIONS names {missing}, which the client has NOT registered "
                   f"(not in {VERSION_TABLE_XML}) -- the row is inert")
+    offset = table_version_offset()
+    if offset:
+        # A stock client (the iPhone app) arrives with tables of its own, from its app bundle or an old
+        # install, and only fetches the tables we advertise at a HIGHER version than it holds. Mixing its
+        # copies with ours fails at load (MST_LOAD_FAILURE). Advertise every table above anything it can
+        # hold, so it replaces all of them with this server's set; `_cdn_fetch` maps the inflated
+        # `Ver<N>` file name back to the real file. Stable across launches, so it downloads once.
+        rows = [dict(r, wM9AfX6I=str(int(r["wM9AfX6I"]) + offset))
+                if str(r.get("a4hXTIm0", "")).startswith("F_") and r.get("a4hXTIm0") not in GLOBAL_VERSION_ROWS
+                and str(r.get("wM9AfX6I", "")).isdigit() else r
+                for r in rows]
+    # Tables the iPhone server serves patched (ios_tables.py); a higher version makes the phone fetch them.
+    import ios_tables
+    bumps = ios_tables.version_bumps()
+    if bumps:
+        rows = [dict(r, wM9AfX6I=str(int(r["wM9AfX6I"]) + bumps[r.get("a4hXTIm0")]))
+                if r.get("a4hXTIm0") in bumps and str(r.get("wM9AfX6I", "")).isdigit() else r
+                for r in rows]
     spec = dict(spec)  # never rewrite the loaded payload -- else the note below drifts on the 2nd request
     spec["c1qYg84Q"] = rows
     _note(f"version table: {len(authored)} authored + {len(added)} from {VERSION_TABLE_XML} "
-          f"= {len(rows)} rows" + (f"; forced {forced}" if forced else ""))
+          f"= {len(rows)} rows" + (f"; forced {forced}" if forced else "")
+          + (f"; every table advertised at +{offset}" if offset else ""))
     return spec
+
+
+# The rows that are not per-table versions: the app build and the two global counters.
+GLOBAL_VERSION_ROWS = frozenset({"F_APP_VERSION_IOS", "F_APP_VERSION_AND", "F_RSC_VERSION", "F_MST_VERSION"})
+
+
+def table_version_offset() -> int:
+    """`EXVIUS_TABLE_VERSION_OFFSET` (e.g. 100000): added to every advertised table version, so a client
+    holding its own copies replaces them all. 0 / unset leaves the table exactly as shipped."""
+    raw = str(os.environ.get("EXVIUS_TABLE_VERSION_OFFSET", "")).strip()
+    return int(raw) if raw.isdigit() else 0
 
 
 def _forced_table_versions() -> dict:

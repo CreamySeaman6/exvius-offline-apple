@@ -157,7 +157,11 @@ def selected_group(player, groups):
 
 
 def visible_banners(player, banners):
-    ids = selected_group(player, catalogue(banners))['ids']
+    from gacha_rotation import enabled, rotation_ids
+    if enabled():
+        ids = rotation_ids(banners)
+    else:
+        ids = selected_group(player, catalogue(banners))['ids']
     by_id = {str(banner['id']): banner for banner in banners}
     # GL9 sorts schedule rows by descending display order. Publish the archive's
     # series/date order there, rather than preserving unrelated old campaign ranks.
@@ -167,6 +171,12 @@ def visible_banners(player, banners):
 
 
 def menu(player, banners, selection=''):
+    from gacha_rotation import enabled, rotation_ids
+    if enabled():
+        # One fixed lineup: the season chooser has nothing to choose between.
+        ids = rotation_ids(banners)
+        week = {'id': 'rotation', 'label': 'This Week', 'count': len(ids), 'tab': 0}
+        return {'groups': [week], 'selected': week}
     groups = catalogue(banners)
     if selection:
         if selection not in {group['id'] for group in groups}:

@@ -82,6 +82,7 @@ You can also contact me there if you have a project request or an idea you want 
 - [source/](source/): the code and build instructions.
 - [release/](release/): the APK, screenshots and release notes.
 - [data/](data/): information about the downloadable game data.
+- [ios-server/](ios-server/): play on an iPhone with the stock App Store app, against a server you run in Docker on your own computer, with a weekly summon rotation. See its README for setup.
 
 The APK is in the release folder. The large game data packs are in GitHub Releases and download automatically when you first open the app.
 

@@ -288,6 +288,9 @@ class Handler(BaseHTTPRequestHandler):
         if missing_battle is None:
             spec = reply_pipeline(spec, reply_id=reply_id, plaintext=plaintext,
                                   mid=None if menu_resource else mid, spec_key=spec_key)
+        # Ask a stock client for its own error log, and keep what it uploads (client_reports.py).
+        import client_reports
+        spec = client_reports.handle(spec, reply_id, plaintext)
         # NOTE: `json.dumps(None)` is the 4-char string "null" — an unconfigured endpoint must send NOTHING
         # (an empty body), not the literal null.
         body_plain = spec if isinstance(spec, str) else (None if spec is None else json.dumps(spec))
@@ -519,8 +522,25 @@ class Handler(BaseHTTPRequestHandler):
         # So serve the whole `files/` tree rather than a single subdirectory, and keep the
         # same-token fallback for the version-prefixed MST names only.
         rel = urllib.parse.unquote(path.lstrip("/"))     # the client percent-encodes spaces etc. in art names
+        # P_GS_BANNER_PATH puts banner art under `/banner/`, while the files themselves sit at the root of
+        # the client's own tree. The Android build strips this prefix in LocalGameBridge.localFile; a stock
+        # client (the iPhone app) sends it over the network, so strip it here too.
+        if rel.startswith("banner/"):
+            rel = rel[len("banner/"):].lstrip("/")
+        # EXVIUS_TABLE_VERSION_OFFSET advertises every table at <real version + offset> (see
+        # ffbe_battle.serve_version_table); the client then asks for that inflated name. Map it back.
+        from ffbe_battle import table_version_offset
+        offset = table_version_offset()
+        inflated = re.search(r"(^|/)Ver(\d+)_([^/]+)$", rel) if offset else None
+        if inflated and int(inflated.group(2)) >= offset:
+            rel = rel[:inflated.start(2)] + str(int(inflated.group(2)) - offset) + rel[inflated.end(2):]
         data = None
         how = None
+        # Tables the iPhone server serves patched: the resource table (the battle's packs moved into the first
+        # download) and the two resource version tables (new sound file versions). See ios_tables.py.
+        import ios_tables
+        if ios_tables.wants(rel):
+            data, how = ios_tables.serve(rel, State.cdn_overlay, State.cdn_root)
         # --- authored web content -------------------------------------------------
         # The client's ToS / policy screens are WebViews that fetch HTML, observed live as
         # `GET //en/content/userpolicysin/index_a.html`. Those pages are NOT in the shipped tree (the real
@@ -538,10 +558,16 @@ class Handler(BaseHTTPRequestHandler):
         root = State.cdn_root
         if data is None and root and rel and ".." not in rel:
             exact = os.path.join(root, rel)
+            marquee = os.path.join(root, "homeMarquee", os.path.basename(rel))
             if os.path.isfile(exact):
                 with open(exact, "rb") as content:
                     data = content.read()
                 how = "exact"
+            elif rel.startswith("en/sd/static_banner/marquee/") and os.path.isfile(marquee):
+                # Home marquee art lives in `homeMarquee/` (the mapping LocalGameBridge.localFile also uses).
+                with open(marquee, "rb") as content:
+                    data = content.read()
+                how = "homeMarquee"
             else:
                 # Same token, any Ver<N>_ prefix, looked up in the SAME directory as the request
                 # (see the docstring: the advertised version and the shipped one can disagree).
@@ -554,6 +580,39 @@ class Handler(BaseHTTPRequestHandler):
                         how = "token-match " + os.path.basename(hits[0])
                     elif len(hits) > 1:
                         how = f"AMBIGUOUS ({len(hits)} candidates)"
+        # PLATFORM FOLDERS. The preserved data is the Android client's cache, which keeps sound under
+        # `.../android/`; the iPhone app asks for the same files under `.../ios/`. CRI ACB/AWB banks are
+        # the same container format on both, so answer from the Android folder, at whatever version we have.
+        # A real iOS bank dropped into the overlay wins over the Android one, at any version (the server raises
+        # sound file versions, see ios_tables.py, so the exact name above may not match). Served as is.
+        if data is None and overlay and "/ios/" in "/" + rel and ".." not in rel:
+            m = re.search(r"Ver\d+_([^/]+)$", rel)
+            if m:
+                hits = glob.glob(os.path.join(overlay, os.path.dirname(rel), f"Ver*_{glob.escape(m.group(1))}"))
+                best = max(hits, key=lambda p: int(re.search(r"Ver(\d+)_", os.path.basename(p)).group(1)),
+                           default=None)
+                if best:
+                    data, how = open(best, "rb").read(), "overlay iOS file " + os.path.basename(best)
+        if data is None and root and "/ios/" in "/" + rel and ".." not in rel:
+            twin = ("/" + rel).replace("/ios/", "/android/", 1).lstrip("/")
+            exact = os.path.join(root, twin)
+            if os.path.isfile(exact):
+                data, how = open(exact, "rb").read(), "android twin"
+            else:
+                m = re.search(r"Ver\d+_([^/]+)$", twin)
+                if m:
+                    hits = glob.glob(os.path.join(root, os.path.dirname(twin), f"Ver*_{glob.escape(m.group(1))}"))
+                    best = max(hits, key=lambda p: int(re.search(r"Ver(\d+)_", os.path.basename(p)).group(1)),
+                               default=None)
+                    if best:
+                        data, how = open(best, "rb").read(), "android twin " + os.path.basename(best)
+            # The iPhone plays the Android banks as noise. Remove their HCA cipher and re-flag HCA-MX waveforms as
+            # plain HCA (EXVIUS_IOS_HCA_PLAIN, EXVIUS_IOS_HCA). See sound_compat.py.
+            if data is not None and rel.endswith((".acb", ".awb")):
+                import sound_compat
+                data, note = sound_compat.apply_ios(data)
+                if note:
+                    how += ", " + note
         # ART BY BASENAME. The client stores art under its OWN names and the CPK trees are named
         # differently, so a basename lookup is the only join that works -- but the "banner" gate meant an
         # AREA art request (the gate/list tile art family, e.g. the spd_bn_list_* files under
@@ -570,6 +629,14 @@ class Handler(BaseHTTPRequestHandler):
             if hit:
                 data = open(hit, "rb").read()
                 how = how_art + " (" + os.path.relpath(hit, os.path.dirname(WORK)) + ")"
+        # LINE ENDINGS. The tables this project rebuilt were written on Windows with CRLF; the Android client's
+        # base64 decoder skips the CR, but the iPhone client's does not, and reports LOAD_ERROR_DECODE_FAILED
+        # (F_ABILITY_EXPLAIN_MST Ver404, F_LOCALIZED_TEXT_MST Ver710, from its own uploaded log, 2026-11-05).
+        # The shipped tables use LF; serve every table that way when EXVIUS_TABLE_LF=1.
+        if (data is not None and os.environ.get("EXVIUS_TABLE_LF") == "1" and rel.endswith(".dat")
+                and b"\r\n" in data):
+            data = data.replace(b"\r\n", b"\n")
+            how = f"{how}, CRLF->LF"
         n = len(data) if data is not None else 0
         verdict = f"200 {n} B ({how})" if data is not None else f"404 ({how or 'not in the CDN root'})"
         print(f"CDN  {self.command} {self.path}  host={self.headers.get('Host')}  "

@@ -1,0 +1,61 @@
+# Exvius Offline server for the iPhone app, on its own Tailscale address.
+#
+#   tailscale  joins your tailnet as the machine "ffbe" and owns the network
+#   server     the game server, sharing the tailscale container's network
+#
+# Everything this stack creates lives in ${FFBE_DIR} (set in .env). See README.md.
+name: ffbe
+
+services:
+  tailscale:
+    image: tailscale/tailscale:stable
+    hostname: ffbe
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY:-}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+      # This node only answers; it must not take your tailnet's DNS settings for itself.
+      TS_ACCEPT_DNS: "false"
+    volumes:
+      - ${FFBE_DIR}/tailscale:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+    logging: &logging
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  server:
+    build:
+      context: ..
+      dockerfile: ios-server/Dockerfile
+    image: ffbe-ios-server:local
+    network_mode: service:tailscale
+    depends_on:
+      - tailscale
+    environment:
+      TZ: America/New_York
+      # Weekly summon rotation (see source/server/gacha_rotation.py). Set to 0 to show every banner.
+      EXVIUS_SUMMON_ROTATION: "1"
+      EXVIUS_ROTATION_TZ: America/New_York
+      EXVIUS_ROTATION_DAY: "6"        # 0 = Monday ... 6 = Sunday
+      EXVIUS_ROTATION_HOUR: "22"      # 10 PM
+      EXVIUS_ROTATION_SPECIAL: "1"    # sets with step-up / ticket / select banners each week
+      EXVIUS_ROTATION_FEATURED: "2"   # other featured sets each week
+      # Your first week opens with Noctis's original Dec 2016 debut banner; later weeks are random.
+      EXVIUS_ROTATION_FIRST_WEEK: "2016-12-16"
+      # Resource packs downloaded before the tutorial (the first battle needs them). "all" or "0" also work.
+      EXVIUS_EARLY_RESOURCES: "resources_common.cpk,resources.cpk"
+      # Sound banks for the iPhone: "1" removes the Android banks' HCA cipher, "0" serves them as shipped.
+      EXVIUS_IOS_HCA_PLAIN: "1"
+      # Change this to any new value to make the phone download every sound bank again.
+      EXVIUS_IOS_SOUND_REFETCH: ""
+    volumes:
+      - ${FFBE_DIR}/data:/srv/ffbe/data
+      - ${FFBE_DIR}/server:/srv/ffbe/server-root
+    restart: unless-stopped
+    logging: *logging
