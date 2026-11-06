@@ -114,6 +114,9 @@ def main():
         # (Realm of the Dragon King's areas are "<area> - Base" in game and "<area>" on the wiki.)
         if 'Exploration' in name or name == 'The Six Realms' or name.endswith(' - Base'):
             keys += [norm(dungeon + ' - Exploration'), norm(dungeon)]
+        # Quest explorations the wiki describes as another exploration without its chests.
+        if name in wiki.get('same_as', {}):
+            keys.append(norm(wiki['same_as'][name]))
         for key in keys:
             if key and key in records:
                 rec = records[key][0]

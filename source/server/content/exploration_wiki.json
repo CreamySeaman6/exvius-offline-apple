@@ -1,6 +1,6 @@
 {
 "source": "Final Fantasy Brave Exvius Wiki (exvius.fandom.com), read 2026-11-06 through its MediaWiki API: the Battle Infobox ('monster' with per-zone counts, 'battle', 'boss') and the Unit EXP Guide zone table of each page.",
-"note": "story: pages in Category:Explorations, keyed by page title; z = zone table rows [name, battles]; i = infoboxes {battle, boss, m: [[monster, [count per zone]]]}. events: [page, section (named after the in-game mission), battles, bosses, monsters] for event explorations. Event records were trimmed to exploration missions (no 'Battle in the Vaults', King Mog single-battle maps or Material Quests), section names 'Battle Info' replaced by the page's mission name,. The Enchanted Maze: its wiki gives 2-6 battles (BGN, INT) and 4 (ADV) per run with no counts; recorded as 6 and 4 battles (the 'battle' field counts one boss, so 7 and 5).",
+"note": "story: pages in Category:Explorations, keyed by page title; z = zone table rows [name, battles]; i = infoboxes {battle, boss, m: [[monster, [count per zone]]]}. events: [page, section (named after the in-game mission), battles, bosses, monsters] for event explorations. Event records were trimmed to exploration missions (no 'Battle in the Vaults', King Mog single-battle maps or Material Quests), section names 'Battle Info' replaced by the page's mission name,. The Enchanted Maze: its wiki gives 2-6 battles (BGN, INT) and 4 (ADV) per run with no counts; recorded as 6 and 4 battles (the 'battle' field counts one boss, so 7 and 5). The Dreadnought: the wiki gives battles per difficulty (INT 21-23, ADV 26-27, PRO 31-33, ELT 35-36; BGN is the Captain alone) but no monster list; the monsters recorded are those of the event's own random-battle groups in the battle data (71301xx01-24; 80-90 are the Captain fights), battles the range's midpoint. Into the Abyss (Vortex exploration, Aug 2016, mission 'Expedition - Into the Abyss'): its page's Possible Monsters and Battles. same_as: the Aquapolis Olderion quest explorations the wiki describes as based on another exploration ('no chests, only collection points') use that exploration's record.",
 "story": {
 "Earth Shrine/Exploration": {
 "z": [
@@ -9083,6 +9083,275 @@
 []
 ]
 ]
+],
+[
+"The Dreadnought",
+"The Dreadnought - INT",
+"22",
+"Captain",
+[
+[
+"Balloon",
+[]
+],
+[
+"Dire Rat",
+[]
+],
+[
+"Ghast",
+[]
+],
+[
+"Ghoul",
+[]
+],
+[
+"Mine",
+[]
+],
+[
+"Shadow",
+[]
+],
+[
+"Stunner",
+[]
+],
+[
+"Werepanther",
+[]
+],
+[
+"Wraith",
+[]
 ]
 ]
+],
+[
+"The Dreadnought",
+"The Dreadnought - ADV",
+"26",
+"Captain",
+[
+[
+"Balloon",
+[]
+],
+[
+"Dire Rat",
+[]
+],
+[
+"Ghast",
+[]
+],
+[
+"Ghoul",
+[]
+],
+[
+"Magician",
+[]
+],
+[
+"Mine",
+[]
+],
+[
+"Shadow",
+[]
+],
+[
+"Soldier",
+[]
+],
+[
+"Stunner",
+[]
+],
+[
+"Werepanther",
+[]
+],
+[
+"Wraith",
+[]
+]
+]
+],
+[
+"The Dreadnought",
+"The Dreadnought - PRO",
+"32",
+"Captain",
+[
+[
+"Balloon",
+[]
+],
+[
+"Dire Rat",
+[]
+],
+[
+"Dive Talon",
+[]
+],
+[
+"Ghast",
+[]
+],
+[
+"Ghoul",
+[]
+],
+[
+"Magician",
+[]
+],
+[
+"Mine",
+[]
+],
+[
+"Shadow",
+[]
+],
+[
+"Soldier",
+[]
+],
+[
+"Stunner",
+[]
+],
+[
+"Werepanther",
+[]
+],
+[
+"Wraith",
+[]
+]
+]
+],
+[
+"The Dreadnought",
+"The Dreadnought - ELT",
+"35",
+"Captain",
+[
+[
+"Balloon",
+[]
+],
+[
+"Dire Rat",
+[]
+],
+[
+"Dive Talon",
+[]
+],
+[
+"Ghast",
+[]
+],
+[
+"Ghoul",
+[]
+],
+[
+"Magician",
+[]
+],
+[
+"Mine",
+[]
+],
+[
+"Shadow",
+[]
+],
+[
+"Soldier",
+[]
+],
+[
+"Stunner",
+[]
+],
+[
+"Werepanther",
+[]
+],
+[
+"Wraith",
+[]
+]
+]
+],
+[
+"Into the Abyss",
+"Expedition - Into the Abyss",
+"30",
+"Belmodar x3",
+[
+[
+"Ainsel",
+[]
+],
+[
+"Bomb",
+[]
+],
+[
+"Gloom Widow",
+[]
+],
+[
+"Goblin Mage",
+[]
+],
+[
+"Golden Bomb",
+[]
+],
+[
+"King Gil Snapper",
+[]
+],
+[
+"Mercury Bat",
+[]
+],
+[
+"Metal Gigantuar",
+[]
+],
+[
+"Peeper",
+[]
+],
+[
+"Scorpion",
+[]
+],
+[
+"Skuldier",
+[]
+],
+[
+"Wild Rat",
+[]
+]
+]
+]
+],
+"same_as": {
+"The Knight of Heart": "Grandshelt Catacombs/Exploration",
+"The Knight of Solice": "Zadehl Westersands/Exploration",
+"The Knight of Hardship": "Dwarves' Forge/Exploration"
+}
 }
