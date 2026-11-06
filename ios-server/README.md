@@ -29,7 +29,7 @@ Tailscale split DNS ── only gumi.sg / exvius.com questions ──▶  ffbe (
    └──────────────────────────────────────────────────────────▶  └─ HTTP 80: the certificate profile for the phone
 ```
 
-- **Its own Tailscale address.** A Tailscale container joins your tailnet as a machine called `ffbe`, and the game server shares its network. Nothing listens on your computer's own ports, so it can't clash with anything else you run.
+- **Its own Tailscale address.** One container, `ffbe`, runs Tailscale (joining your tailnet as a machine called `ffbe`) and the game server together. If either stops, both restart together. Nothing listens on your computer's own ports, so it can't clash with anything else you run.
 - **A tiny DNS responder.** It answers only `gumi.sg` and `exvius.com` names. A Tailscale split-DNS rule sends the phone's lookups for those names to it. Nothing else about your phone's or tailnet's DNS changes.
 - **A private certificate** that can only vouch for `gumi.sg` and `exvius.com` (an X.509 name constraint). You install it on the phone once, and it can't be used for any other site.
 - **The game data** (about 14.6 GB) is downloaded from the Exvius Offline GitHub releases during setup.
@@ -82,7 +82,7 @@ docker compose run --rm server fetch-data
 
 `fetch-data` downloads about **14.6 GB**, checks every pack, unpacks it and deletes the download. If it stops for any reason, run it again; it picks up where it left off.
 
-This also starts the Tailscale container for the first time, so a machine called `ffbe` appears in your Tailscale admin console.
+This also starts Tailscale for the first time, so a machine called `ffbe` appears in your Tailscale admin console.
 
 ### 4. Start the server
 
@@ -132,7 +132,7 @@ The stack is plain Docker Compose, so it runs anywhere Docker does. A machine th
 
 - **Linux server:** same steps. Install Docker Engine and the Compose plugin.
 - **Unraid:** install the **Docker Compose Manager** plugin from the Apps tab, then follow the same steps in the Unraid terminal. A good `FFBE_DIR` is `/mnt/user/appdata/ffbe`, with the repo cloned to `/mnt/user/appdata/ffbe/repo`.
-- **Synology and other NAS systems:** need Docker (Container Manager) and SSH access to run `docker compose`. The Tailscale container needs `/dev/net/tun`, which some NAS systems only provide after enabling it.
+- **Synology and other NAS systems:** need Docker (Container Manager) and SSH access to run `docker compose`. The container needs `/dev/net/tun` for Tailscale, which some NAS systems only provide after enabling it.
 
 ---
 
@@ -175,6 +175,7 @@ The server also keeps every request it received for three days, in `FFBE_DIR/ser
 | Restart | `docker compose restart server` |
 | Logs | `docker compose logs -f server` |
 | Stop | `docker compose down` |
+| Unraid | The stack is one container, `ffbe`, in the **Docker** tab: start, stop and restart it there. It starts by itself after a reboot unless you stopped it (`restart: unless-stopped`). Unraid's Autostart switch doesn't apply to it. |
 | Start the game over | `docker compose exec server python3 /app/ffbe.py new-game --yes` (the old save is backed up to `server/state/backups/`) |
 
 **Your save** is in `FFBE_DIR/server/state/`. Back up that folder.
@@ -184,6 +185,17 @@ The server also keeps every request it received for three days, in `FFBE_DIR/ser
 - The root certificate on your phone lasts ten years.
 - The server certificate lasts about 13 months and renews itself; the container restarts once to do it.
 - If you delete the `certs` folder, install the phone profile again (step 6).
+
+**Coming from the two-container version** (`ffbe-tailscale-1` and `ffbe-server-1`, before 2026-11-06): update the code, then remove the old containers once and start the new one. Your save, the data and the Tailscale sign-in are kept: the new container uses the same folders, so it's still the machine `ffbe` with the same address.
+
+```bash
+docker rm -f ffbe-tailscale-1 ffbe-server-1
+docker compose build
+docker compose up -d
+docker logs --tail 30 ffbe     # should show "Tailscale state: Running", then the server starting
+```
+
+If the log says Tailscale needs an auth key, generate a new one (Setup step 2), put it in `.env` as `TS_AUTHKEY`, and run `docker compose up -d` again.
 
 **Updating** to a newer version of this branch:
 

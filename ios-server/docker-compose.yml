@@ -1,44 +1,37 @@
 # Exvius Offline server for the iPhone app, on its own Tailscale address.
 #
-#   tailscale  joins your tailnet as the machine "ffbe" and owns the network
-#   server     the game server, sharing the tailscale container's network
+# One container, "ffbe": Tailscale joins your tailnet as the machine "ffbe", and the game server runs beside
+# it. If either stops, both restart together. On Unraid it shows in the Docker tab as "ffbe" and can be
+# started and stopped there.
 #
 # Everything this stack creates lives in ${FFBE_DIR} (set in .env). See README.md.
 name: ffbe
 
-services:
-  tailscale:
-    image: tailscale/tailscale:stable
-    hostname: ffbe
-    environment:
-      TS_AUTHKEY: ${TS_AUTHKEY:-}
-      TS_STATE_DIR: /var/lib/tailscale
-      TS_USERSPACE: "false"
-      # This node only answers; it must not take your tailnet's DNS settings for itself.
-      TS_ACCEPT_DNS: "false"
-    volumes:
-      - ${FFBE_DIR}/tailscale:/var/lib/tailscale
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - NET_ADMIN
-    restart: unless-stopped
-    logging: &logging
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "3"
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "3"
 
+services:
   server:
     build:
       context: ..
       dockerfile: ios-server/Dockerfile
     image: ffbe-ios-server:local
-    network_mode: service:tailscale
-    depends_on:
-      - tailscale
+    container_name: ffbe
+    hostname: ffbe
+    # Tailscale runs inside this container (entrypoint.sh) and needs the tunnel device.
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
     environment:
       TZ: America/New_York
+      # Tailscale. TS_AUTHKEY (from .env) is only needed the first time; after that the state folder keeps
+      # this machine signed in as "ffbe".
+      TS_AUTHKEY: ${TS_AUTHKEY:-}
+      TS_HOSTNAME: ffbe
       # Weekly summon rotation (see source/server/gacha_rotation.py). Set to 0 to show every banner.
       EXVIUS_SUMMON_ROTATION: "1"
       EXVIUS_ROTATION_TZ: America/New_York
@@ -92,5 +85,6 @@ services:
     volumes:
       - ${FFBE_DIR}/data:/srv/ffbe/data
       - ${FFBE_DIR}/server:/srv/ffbe/server-root
+      - ${FFBE_DIR}/tailscale:/var/lib/tailscale
     restart: unless-stopped
     logging: *logging

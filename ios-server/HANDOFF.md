@@ -25,7 +25,7 @@ cd /mnt/user/appdata/ffbe/repo && git fetch origin && git reset --hard origin/io
 cd ios-server && docker compose build && docker compose up -d
 ```
 
-Then he opens the game twice (some table changes only take effect on the second launch). The NAS checkout once had no `origin` remote; it was re-added with the GitHub URL. Use `git --no-pager log`, since plain `git log` opens a pager in his terminal.
+Then he opens the game twice (some table changes only take effect on the second launch). The stack is one container, `ffbe`, which he can also start and stop from Unraid's Docker tab; logs are `docker logs --tail 50 ffbe`. The NAS checkout once had no `origin` remote; it was re-added with the GitHub URL. Use `git --no-pager log`, since plain `git log` opens a pager in his terminal.
 
 ### Confirmed working on the phone
 
@@ -100,7 +100,7 @@ Build the bundle relative to `main` (`git bundle create X.bundle origin/main..re
 
 `ios-server/`:
 
-- `Dockerfile`, `docker-compose.yml`: two containers, a Tailscale sidecar plus `server`, which uses `network_mode: service:tailscale`.
+- `Dockerfile`, `docker-compose.yml`, `entrypoint.sh`: one container, `ffbe` (service `server`), running tailscaled and the game server together since 2026-11-06 (see the section at the end). Before that: a Tailscale sidecar plus `server` on `network_mode: service:tailscale`.
 - `ffbe.py`: CLI with `serve`, `fetch-data`, `rotation`, `status` and `new-game`.
 - `serve.py`: TLS on 443 (deferred handshake), HTTP on 80 (serves `/ca.mobileconfig` and `/ca.crt`), and a DNS responder that answers only gumi.sg/exvius.com. It also has `/__exvius/hello` and `configure_engine()`, which sets env defaults for the engine (list below).
 - `certs.py`: private root CA, name-constrained to gumi.sg/exvius.com, plus the leaf certificate.
@@ -328,3 +328,15 @@ The operator asked that the summon deals advertised on banners be honoured ("eve
 - **Left out:** FFBE Heroes Coin (801090/801100/801110), Special FFXV Ticket (801310) and the OCTOPATH exchange ticket (801900), because nothing in the data spends them (their summon/exchange screens are missing). Also left out: the Rain NV ticket (810700), which could not be identified; the "panel reward" and extra tickets on NV banners; and the "three 11 summons give a free one" on 9100274. Step-up, once-a-day and per-player limits were already in the banner data where those banners exist.
 - `player_state.roll_gacha` now reads `bonus_choice` from the 10+1 offer too (before, only from the step or banner).
 - Tested: a 10+1 on each of the 107 banners succeeds and pays its bonus. A single on a 10+1-only deal pays nothing extra; Star Quartz pays on singles too.
+
+## One container: Tailscale and the server together (2026-11-06)
+
+Symptom: the morning after, the phone couldn't connect, and the server log had nothing after 11:13 PM. The operator suspected Unraid's Appdata Backup, which stops and starts containers overnight. With the old layout (Tailscale container + `server` on `network_mode: service:tailscale`), restarting the Tailscale container leaves the server attached to a dead network namespace: it keeps running, but nothing can reach it until it's recreated (`docker compose up -d --force-recreate`). The cause wasn't confirmed from logs.
+
+He asked for one container he can control from Unraid. Now:
+
+- `Dockerfile` copies `tailscaled`/`tailscale` from `tailscale/tailscale:stable` (a build stage) and installs `iptables iproute2 ca-certificates`.
+- `entrypoint.sh` (the image's entrypoint): `serve` (default) starts tailscaled with `--statedir=/var/lib/tailscale` (the same folder and file the old container's containerboot used, so the node stays `ffbe` with the same IP), waits for the backend state, runs `tailscale up` with `TS_AUTHKEY` only if it needs a login (otherwise `tailscale set --accept-dns=false --hostname=ffbe`), then starts `ffbe.py serve`. If either process stops, the other is stopped and the container exits with that code, so `restart: unless-stopped` brings both back together. SIGTERM stops both cleanly. Any other command (`fetch-data`, `rotation`, ...) goes straight to `ffbe.py`, so `docker compose run --rm server fetch-data` and `docker compose exec server ...` still work.
+- `docker-compose.yml`: one service `server` with `container_name: ffbe`, `hostname: ffbe`, `/dev/net/tun`, `NET_ADMIN`, and `${FFBE_DIR}/tailscale:/var/lib/tailscale`.
+- Migration (README, Everyday use): `docker rm -f ffbe-tailscale-1 ffbe-server-1`, then build and `up -d`.
+- Tested in the sandbox with stub tailscale binaries (pass-through commands, tailscaled dying, docker stop). Not yet run on the NAS.
