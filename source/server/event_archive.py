@@ -40,6 +40,8 @@ def document():
             if row.get('release'):
                 dates.add(str(row['release']))
             row['runs'] = sorted(dates)
+            if str(row['area']) in extra.get('windows', {}):
+                row['windows'] = extra['windows'][str(row['area'])]
         _DOCUMENT = document
     return _DOCUMENT
 
@@ -50,6 +52,63 @@ def events():
 
 def area_ids():
     return [str(event['area']) for event in events()]
+
+
+# Holiday-themed events: they open with the holiday banners (the week before the holiday and its week, the
+# original year chosen the way gacha_rotation picks holiday sets), never on their history date. Picked by
+# name and theme from the Global events that ran in each holiday's season; events that only launched beside a
+# holiday set (story events, explorations) are not here and keep their history dates.
+HOLIDAY_EVENTS = {
+    'Christmas': {'906', '952', '992', '993', '1039', '1040', '1088', '1098', '9920', '9921'},
+    'Easter': {'911', '9909', '962', '1056', '1057'},
+    'Halloween': {'919', '921', '983', '986', '1033', '1034', '1081', '1082', '9910', '9911'},
+    "Valentine's Day": {'1004', '1005'},
+}
+HOLIDAY_SEASON = (-30, 14)   # days from the holiday: a holiday event's run in this range belongs to that year
+
+
+def holiday_runs(row):
+    """{run date: holiday} for a holiday event's runs in its holiday's season (HOLIDAY_EVENTS)."""
+    from datetime import date
+    import gacha_rotation
+    out = {}
+    for name, areas in HOLIDAY_EVENTS.items():
+        if str(row.get('area')) not in areas:
+            continue
+        when = gacha_rotation.HOLIDAYS[name][0]
+        for text in row.get('runs') or [row.get('release')]:
+            try:
+                run = date.fromisoformat(str(text or ''))
+            except ValueError:
+                continue
+            if HOLIDAY_SEASON[0] <= (run - when(run.year)).days <= HOLIDAY_SEASON[1]:
+                out[run] = name
+    return out
+
+
+_ART_KEYS = None
+
+
+def art_key(row):
+    """What a row's Vortex tile looks like: two rows with the same name and art key look identical."""
+    global _ART_KEYS
+    if _ART_KEYS is None:
+        try:
+            art = json.loads(Path(__file__).with_name('event_art.json').read_text(encoding='utf-8'))['events']
+        except (OSError, ValueError, KeyError):
+            art = {}
+        _ART_KEYS = {area: info.get('runtime_sha256') or info.get('filename') for area, info in art.items()}
+    area = str(row['area'])
+    return _ART_KEYS.get(area) or row.get('art_url') or area
+
+
+def _one_per_look(rows, pick):
+    """Rows grouped by (name, art): pick(group) chooses the one tile each group keeps."""
+    groups = {}
+    for row in rows:
+        groups.setdefault((row['name'], art_key(row)), []).append(row)
+    keep = {id(pick(group)) for group in groups.values()}
+    return [row for row in rows if id(row) in keep]
 
 
 def rotation_enabled():
@@ -66,8 +125,10 @@ def weekly_events(rows=None, now=None):
     Global launched most events on the same day as a summon set (478 of the 626 dated events here), and
     they were built to be played together: the event's featured units, its currency and its banner tickets
     belong to that set. So an event is open while a set released between 3 days after and 13 days before
-    one of its runs is on the summon screen (`gacha_rotation.set_dates`), holiday sets included. An event's
-    runs are its release date plus the reruns and earlier first runs in event_history.json. Undated,
+    one of its runs is on the summon screen (`gacha_rotation.vortex_week`; holiday sets do not count). An
+    event's runs are its release date plus the reruns and earlier first runs in event_history.json. Holiday
+    events (HOLIDAY_EVENTS) follow the holiday banners instead: they open only in the week before and the
+    week of their holiday, in the year the rotation picks, never on their history date. Undated,
     non-permanent events (Boss Rush, Cactuar Dunes, Challenge of the Brave, ...) rotate EXVIUS_VORTEX_EXTRA
     at a time (default 2). With the historical replay on (replay.py), events with a run in this week's
     slice of history are open too (the first week also reaches back REPLAY_LOOKBACK_DAYS, for events
@@ -81,20 +142,36 @@ def weekly_events(rows=None, now=None):
     if not rotation_enabled():
         return rows
     import gacha_rotation
-    dates = gacha_rotation.set_dates(now)
+    holiday_of_run = {id(row): holiday_runs(row) for row in rows}
+    event_keys = {}
+    for runs in holiday_of_run.values():
+        for run, name in runs.items():
+            event_keys.setdefault(name, []).append(run.isoformat())
+    summons = gacha_rotation.vortex_week(now, event_keys)
+    dates = summons['dates']
     number = gacha_rotation.week(now)[0]
-    # Historical replay: also every event with a run in this week's slice of history; events that launched
-    # with a holiday set wait for that set (gacha_rotation.withheld_holiday_dates).
     import replay
     win = replay.window(now) if replay.enabled() else None
     if win and win['finished']:
         win = None
-    held = gacha_rotation.withheld_holiday_dates(now) if win else []
     earliest = win and (win['from'] - timedelta(days=REPLAY_LOOKBACK_DAYS) if win['index'] == 0 else win['from'])
-    kept, extra = [], []
+    kept, extra, permanent, ranked = [], [], [], []
     for row in rows:
+        windows = row.get('windows')
+        if windows:
+            # A ranked event Global ran in set periods (Dark Visions, Clash of Wills): open only while one of
+            # them overlaps this week's history (replay), or else beside a set released near its start.
+            opened = []
+            for first, last in windows:
+                start, end = date.fromisoformat(first), date.fromisoformat(last)
+                if (start < win['to'] and end >= earliest if win else
+                        any(timedelta(days=-3) <= start - d <= timedelta(days=13) for d in dates)):
+                    opened.append(start)
+            if opened:
+                ranked.append(dict(row, release=max(opened).isoformat()))
+            continue
         if row.get('group') == 'permanent':
-            kept.append(row)
+            permanent.append(row)
             continue
         released = []
         for text in row.get('runs') or [row.get('release')]:
@@ -105,10 +182,12 @@ def weekly_events(rows=None, now=None):
         if not released:
             extra.append(row)
             continue
+        holiday = holiday_of_run[id(row)]
         opened = [run for run in released
-                  if not any(timedelta(days=0) <= run - d <= timedelta(days=3) for d in held)
-                  and (any(timedelta(days=-3) <= run - d <= timedelta(days=13) for d in dates)
-                       or (win and earliest <= run < win['to']))]
+                  if (summons['holiday'] == holiday[run] and run.isoformat()[:4] in summons['years']
+                      if run in holiday else
+                      any(timedelta(days=-3) <= run - d <= timedelta(days=13) for d in dates)
+                      or (win and earliest <= run < win['to']))]
         if opened:
             run = max(opened).isoformat()
             kept.append(row if run == row.get('release') else
@@ -123,8 +202,25 @@ def weekly_events(rows=None, now=None):
         order = list(range(len(names)))
         random.Random(f'vortex-extra:{cycle}').shuffle(order)
         picked = {names[order[(start + i) % len(names)]] for i in range(min(per_week, len(names)))}
-        kept.extend(row for row in extra if row['name'] in picked)
-    return kept
+        # One tile per name: a name with several areas (Challenge of the Brave, Monthly Fortune Hunt, ...)
+        # shows the next of them each time it comes round.
+        for name in picked:
+            variants = sorted((row for row in extra if row['name'] == name), key=lambda r: int(r['area']))
+            kept.append(variants[cycle % len(variants)])
+    # No two tiles that look the same. Permanent areas sharing a name and banner (Chamber of Challenges,
+    # Chamber of Crysts) take turns, one a week; dated events sharing both (later copies of an event, kept
+    # under new area ids) show the earliest area.
+    permanent = _one_per_look(permanent, lambda group: sorted(group, key=lambda r: int(r['area']))[
+        number % len(group)])
+    # Of a ranked event's runs overlapping this week, only the newest. Where Global ran two at once (two Clash
+    # of Wills bosses on the same dates, with the same banner), they take turns a week each.
+    newest = {}
+    for row in ranked:
+        newest[row['name']] = max(newest.get(row['name'], ''), row['release'])
+    ranked = [row for row in ranked if row['release'] == newest[row['name']]]
+    ranked = _one_per_look(ranked, lambda group: sorted(group, key=lambda r: int(r['area']))[number % len(group)])
+    dated = _one_per_look(kept, lambda group: min(group, key=lambda r: int(r['area'])))
+    return permanent + ranked + dated
 
 
 # --- banners of the added events -------------------------------------------------------------------

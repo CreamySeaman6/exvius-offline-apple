@@ -124,7 +124,7 @@ def _week_summary(index: int) -> dict | None:
     art = _event_art()
     events, seen = [], set()
     for row in sorted(event_archive.weekly_events(now=moment), key=lambda r: (str(r.get('release')), str(r.get('area')))):
-        if row.get('group') == 'permanent' or not row.get('release'):
+        if (row.get('group') == 'permanent' and not row.get('windows')) or not row.get('release'):
             continue
         key = (row['release'], row['name'])
         if key in seen:
@@ -378,7 +378,8 @@ def marquee_entries() -> list[dict] | None:
     except ValueError:
         limit = 6
     art = _event_art()
-    rows = [r for r in event_archive.weekly_events() if r.get('group') != 'permanent' and r.get('release')]
+    rows = [r for r in event_archive.weekly_events()
+            if (r.get('group') != 'permanent' or r.get('windows')) and r.get('release')]
     rows.sort(key=lambda r: (str(r['release']), str(r.get('area'))), reverse=True)
     out, seen = [], set()
     for row in rows:
@@ -387,9 +388,16 @@ def marquee_entries() -> list[dict] | None:
             continue
         seen.add(filename)
         banner_id = MARQUEE_ID_BASE + int(row['area'])
-        out.append({'name': row['name'], 'start': row['release'],
-                    'art': {'banner_id': banner_id, 'banner_version': 1, 'file': filename,
-                            'store_path': f'homeMarquee/HomeBanner_{banner_id}.png'}})
+        entry = {'name': row['name'], 'start': row['release'],
+                 'art': {'banner_id': banner_id, 'banner_version': 1, 'file': filename,
+                         'store_path': f'homeMarquee/HomeBanner_{banner_id}.png'}}
+        if (os.environ.get('EXVIUS_REPLAY_MARQUEE_TAP', '1') == '1' and not row.get('native_mode')
+                and row.get('first_dungeon') and row.get('first_mission')):
+            # Tapping the banner opens the event's stage list (ffbe_banner.event_link). Clash of Wills and
+            # Dark Visions open their own scenes, so their banners keep the plain Vortex link.
+            entry['event'] = {'area': str(row['area']), 'dungeon': str(row['first_dungeon']),
+                              'mission': str(row['first_mission'])}
+        out.append(entry)
         if len(out) >= limit:
             break
     _MARQUEE_CACHE[key] = out

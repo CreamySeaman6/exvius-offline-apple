@@ -662,20 +662,14 @@ def _panel_rewards(text):
     return rows
 
 
-def panel_extra(spec, req):
-    node = _node(req, "QxrSeO56") or {}
-    schedule, gid, key = (str(node.get(k) or "") for k in ("fK3W9qYA", "zF6QIY2r", "xm7c08IS"))
-    column = dict(zip((f"L{i}" for i in range(1, 9)), LINE_COLUMNS)).get(key)
-    column = "5e2xo65x" if key == "COMPLETED" else column
-    group = _mst("F_PANEL_QUEST_GROUP_MST.ndjson", "zF6QIY2r").get(gid) or {}
-    out = _out(spec, jksIZE9U=[])
-    if not column or str(group.get("fK3W9qYA")) != schedule or not _writable(out):
-        return _refuse(out, "unknown panel schedule/group/reward key")
-    block = deepcopy(_store("panel"))
-    claim_key = f"{schedule}:{gid}:{key}"
-    reply = {"fK3W9qYA": schedule, "zF6QIY2r": gid, "xm7c08IS": key, "QCLs6SV8": "1"}
-    if claim_key in block.get("claimed", {}):
-        return _out(_refresh(spec), jksIZE9U=[reply])
+PANEL_LINES = ((1, 2, 3), (4, 5, 6), (7, 8, 9), (1, 4, 7), (2, 5, 8), (3, 6, 9), (1, 5, 9), (3, 5, 7))
+
+
+def _panel_reached(gid):
+    """{reward key: reached} for one panel group: `L<n>` and `COMPLETED`.
+
+    `L<n>` is "Lines Completed: n" (PANEL_QUEST_LINE_COMPLETE_<n>): any n of the board's eight lines, not one
+    particular line. Reading L1 as the top row refused a completed middle row (2026-11-06)."""
     from ffbe_player import _quest_index, player_progress
     quests = [q for q in _mst("F_PANEL_QUEST_MST.ndjson", "V36ygRYs").values()
               if str(q.get("zF6QIY2r")) == gid]
@@ -683,15 +677,51 @@ def panel_extra(spec, req):
     cleared = {_int(q.get('Z0EN6jSh')) for q in quests
                if _int(q.get("oz5Vt6AR")) > 0 and
                player_progress(str(q["V36ygRYs"]), index.get(str(q["V36ygRYs"])) or {}) >= _int(q["oz5Vt6AR"])}
-    if key == 'COMPLETED':
-        complete = bool(quests) and len(cleared) == len(quests)
-    else:
-        # `L<n>` is "Lines Completed: n" (PANEL_QUEST_LINE_COMPLETE_<n>): any n of the board's eight lines,
-        # not one particular line. Reading L1 as the top row refused a completed middle row (2026-11-06).
-        lines = ((1, 2, 3), (4, 5, 6), (7, 8, 9), (1, 4, 7),
-                 (2, 5, 8), (3, 6, 9), (1, 5, 9), (3, 5, 7))
-        complete = sum(all(p in cleared for p in line) for line in lines) >= int(key[1:])
-    if not complete:
+    lines = sum(all(p in cleared for p in line) for line in PANEL_LINES)
+    reached = {f"L{n}": lines >= n for n in range(1, 9)}
+    reached["COMPLETED"] = bool(quests) and len(cleared) == len(quests)
+    return reached
+
+
+def _panel_column(key):
+    return "5e2xo65x" if key == "COMPLETED" else dict(zip((f"L{i}" for i in range(1, 9)), LINE_COLUMNS)).get(key)
+
+
+def panel_extra_rows(picked=None):
+    """`jksIZE9U` for the panel screen: one row per line/board reward the player has reached, claimed or not.
+
+    The chest only claims when this row exists. `sgPanelQuestScene::checkExtraRewardOnTouched` (0x24c8400)
+    looks up `getUserQuestExtraInfo(schedule, group, key)`: no row -> it opens the reward preview
+    (`sgPanelQuestInfoScene`, 0x24c87c0); a row with `QCLs6SV8` = 1 -> nothing (already claimed); a row with
+    0 -> it sends `sgPanelQuestExtraRewardRequest` (0x24c8724). The list is cleared by every reply that
+    carries the tag (`onReadStarted` 0x19590c4), so every reply sends the full set."""
+    from ffbe_player import panel_quest_picked
+    claimed = _store("panel").get("claimed", {})
+    rows = []
+    for gid, grow in (panel_quest_picked() if picked is None else picked):
+        schedule = str(grow.get("fK3W9qYA") or "")
+        for key, reached in _panel_reached(gid).items():
+            if not reached or not str(grow.get(_panel_column(key)) or "").strip():
+                continue
+            rows.append({"fK3W9qYA": schedule, "zF6QIY2r": gid, "xm7c08IS": key,
+                         "QCLs6SV8": "1" if f"{schedule}:{gid}:{key}" in claimed else "0"})
+    return rows
+
+
+def panel_extra(spec, req):
+    node = _node(req, "QxrSeO56") or {}
+    schedule, gid, key = (str(node.get(k) or "") for k in ("fK3W9qYA", "zF6QIY2r", "xm7c08IS"))
+    column = _panel_column(key)
+    group = _mst("F_PANEL_QUEST_GROUP_MST.ndjson", "zF6QIY2r").get(gid) or {}
+    out = _out(spec, jksIZE9U=panel_extra_rows())
+    if not column or str(group.get("fK3W9qYA")) != schedule or not _writable(out):
+        return _refuse(out, "unknown panel schedule/group/reward key")
+    block = deepcopy(_store("panel"))
+    claim_key = f"{schedule}:{gid}:{key}"
+    reply = {"fK3W9qYA": schedule, "zF6QIY2r": gid, "xm7c08IS": key, "QCLs6SV8": "1"}
+    if claim_key in block.get("claimed", {}):
+        return _out(_refresh(spec), jksIZE9U=panel_extra_rows())
+    if not _panel_reached(gid).get(key):
         return _refuse(out, "panel line or page is incomplete")
     rewards = _panel_rewards(group.get(column))
     if not rewards or not all(State.player._can_credit(row) for row in rewards):
@@ -699,7 +729,7 @@ def panel_extra(spec, req):
     State.player._grant_items(rewards)
     block.setdefault("claimed", {})[claim_key] = reply
     _put("panel", block)
-    return _out(_refresh(spec), jksIZE9U=[reply])
+    return _out(_refresh(spec), jksIZE9U=panel_extra_rows())
 
 
 def panel_status(spec, req):

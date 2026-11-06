@@ -2462,9 +2462,9 @@ def serve_panel_quest(spec, reply_id):
     * `ELPwhZj0` — one row per shipped quest in the selected groups, progress 0 / uncleared / unclaimed. The
       conditions are the shipped `Pzn5h0Ga` values and are evaluated by the client, so nothing is authored here.
 
-    `jksIZE9U` (the extra-reward claim flags) is deliberately NOT sent: its `xm7c08IS` RewardType is a string
-    match key against a vocabulary nothing in the corpus names, and an empty claim-flag list is the honest
-    "nothing claimed" state. Recorded rather than guessed.
+    * `jksIZE9U` -- the line and board rewards the player has reached (`L1`..`L8` = lines completed, and
+      `COMPLETED`), with their claim flag (`exvius_actions_expedition.panel_extra_rows`). Without a row the
+      chest only previews its rewards (2026-11-06).
     """
     if reply_id != PANEL_QUEST_REQUEST or State.player is None:
         return spec
@@ -2510,6 +2510,11 @@ def serve_panel_quest(spec, reply_id):
     out[PANEL_QUEST_STATUS_TAG] = statuses
     out[PANEL_QUEST_SCHEDULE_TAG] = schedules
     out[PANEL_QUEST_INFO_TAG] = infos
+    try:
+        from exvius_actions_expedition import panel_extra_rows
+        out["jksIZE9U"] = panel_extra_rows(picked)
+    except Exception as exc:  # noqa: BLE001 -- the board still opens; its chests only preview
+        _note(f"panel quest: line rewards not served ({exc!r})")
     _note(f"panel quest: groups {[g for g, _ in picked]} -> {len(schedules)} schedule(s), "
           f"{len(statuses)} status row(s), {len(infos)} quest row(s)")
     return out

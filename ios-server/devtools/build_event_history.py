@@ -101,6 +101,83 @@ ADDED = [
 ]
 
 
+# Ranked events the archive lists as permanent, with the periods Global actually ran them (PST), read
+# 2026-11-06 from the wiki: "Dark Visions - The Advent of Chaos" 1-32 (Category:Dark Visions - The Advent of
+# Chaos; event periods) and Category:Clash of Wills (each boss's event period). The Dark Visions areas run in
+# area order (checked against each run's area elements); the Clash of Wills areas by their boss names.
+DARK_VISIONS = """\
+920 200423 200429
+922 200528 200603
+924 200625 200705
+925 200716 200722
+926 200820 200826
+927 200924 201007
+928 201029 201111
+929 201126 201209
+934 201224 210106
+935 210128 210210
+936 210225 210310
+938 210325 210407
+939 210422 210505
+941 210527 210609
+942 210722 210804
+944 210826 210908
+945 211007 211020
+946 211202 211215
+949 220106 220119
+953 220310 220323
+955 220512 220525
+959 220804 220817
+9918 221110 221123
+9919 230105 230119
+9925 230202 230215
+9926 230302 230315
+9931 230406 230419
+9934 230504 230517
+9937 230713 230802
+9945 230928 231011
+9949 231207 231220
+9953 240201 240214
+"""
+CLASH_OF_WILLS = """\
+7100 210701 210714 The Empress from Beyond
+7101 210812 210825 Dragon from Across Time
+7102 210909 210922 Brawler from Another World
+7103 211021 211103 Tower of Unknown Origin
+7104 211021 211103 Hydra of Unknown Origin
+9500 211223 220105 Tree of Unknown Origin
+9501 220127 220209 Fragment of the Beast
+9502 220224 220309 Fragment of the Egg
+9503 220324 220406 Dragon Spirit of Unknown Origin
+9504 220421 220504 Nightmare of Unknown Origin
+9505 220526 220608 Trickster of Unknown Origin
+9506 220630 220713 Assimilator of Unknown Origin
+9507 220630 220713 Manticore of Unknown Origin
+9508 220818 220831 Amphibian of Unknown Origin
+9509 220915 220928 Kappa of Unknown Origin
+9510 221027 221109 Champion of Unknown Origin
+9511 221124 221207 Automaton of Unknown Origin
+9512 221222 230104 Gingerbread Man of Unknown Origin
+9513 230119 230201 Hare of Unknown Origin
+9514 230216 230301 Moth of Unknown Origin
+9515 230316 230405 Shogun of Unknown Origin
+9516 230420 230503 Moon of Unknown Origin
+9517 230518 230601 Wolf of Unknown Origin
+9518 230629 230712 Dark Swordswoman from Beyond
+9519 230720 230802 Harpy of Unknown Origin
+9520 230824 230906 Metal Dragon from Across Time
+9521 230921 231011 Songstress of Unknown Origin
+9522 231026 231108 Dog Spirit of Unknown Origin
+9523 231123 231206 Warmachine of Unknown Origin
+9524 231221 240103 Yeti of Unknown Origin
+9525 240125 240207 Shinobi of Unknown Origin
+9526 240215 240306 Sun Dragon of Unknown Origin
+9527 240321 240410 Sea Serpent of Unknown Origin
+9528 240418 240508 Centaur of Unknown Origin
+9529 240627 240731 Evil Deity of Unknown Origin
+"""
+
+
 def iso(token):
     return f'20{token[:2]}-{token[2:4]}-{token[4:]}'
 
@@ -142,6 +219,11 @@ def main():
         })
         if later:
             runs[area] = later
+    windows = {}
+    for line in (DARK_VISIONS + CLASH_OF_WILLS).strip().splitlines():
+        area, start, end = line.split()[:3]
+        assert archive[area]['group'] == 'permanent', area
+        windows[area] = [[iso(start), iso(end)]]
     doc = {
         'version': 1,
         'provenance': {
@@ -155,9 +237,13 @@ def main():
                      'Return to the Halloween Castle (919/921) is included with locally rebuilt battles '
                      '(build_halloween_castle.py); its Castle Keep has no mission rows.',
             'skipped_runs': skipped,
+            'windows': 'Periods (first day, last day, PST) Global ran ranked events the archive lists as permanent: '
+                       'Dark Visions - The Advent of Chaos 1-32 and Clash of Wills, from the Brave Exvius wiki '
+                       '(the event pages\' Event Period), read 2026-11-06. The Vortex shows them only then.',
         },
         'runs': runs,
         'added': added,
+        'windows': windows,
     }
     with open('event_history.json', 'w', encoding='utf-8') as fh:
         json.dump(doc, fh, ensure_ascii=False, indent=1)

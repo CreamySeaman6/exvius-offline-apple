@@ -372,19 +372,44 @@ def _replay_plan(number, start, nxt, fixed, special, featured, by_id, holiday_se
             'holiday_sets': {name: [key for key, _ids in entries] for name, entries in holiday_sets.items()}}
 
 
-def withheld_holiday_dates(now: datetime | None = None) -> list:
-    """Release dates of the holiday sets NOT on offer this week (their events wait for the holiday too)."""
+def vortex_week(now: datetime | None = None, event_keys: dict | None = None) -> dict:
+    """What the Vortex needs from this week's summons (event_archive.weekly_events).
+
+    dates: original release dates of this week's sets that are not holiday sets.
+    holiday: the holiday whose week (or week before) this is, if any.
+    years: the original years of that holiday whose events open this week. They are picked the way the
+    holiday's sets are (_replay_holiday_years in the replay, otherwise the years of the sets on offer), with
+    the years the holiday's events ran in (event_keys: holiday -> run dates) counted beside the sets' years,
+    so a year that had holiday events but no holiday units still comes round.
+    """
     from ffbe_gacha import all_banners
     current = plan(all_banners(), now)
-    shown = {key for key, _ids in current['sets']}
-    out = []
-    for keys in current['holiday_sets'].values():
-        for key in keys:
-            if key not in shown:
-                try:
-                    out.append(date.fromisoformat(key))
-                except ValueError:
-                    pass
+    held = {key for keys in current['holiday_sets'].values() for key in keys}
+    dates = []
+    for key, _ids in current['sets']:
+        if key in held:
+            continue
+        try:
+            dates.append(date.fromisoformat(key))
+        except ValueError:
+            pass
+    out = {'dates': dates, 'holiday': None, 'years': set()}
+    if not holidays_enabled():
+        return out
+    number, start, nxt = week(now)
+    holiday = _holiday_this_week(start, nxt)
+    if not holiday:
+        return out
+    name, day, slot = holiday
+    keys = sorted(set(current['holiday_sets'].get(name, [])) | set((event_keys or {}).get(name, [])))
+    if not keys:
+        return out
+    win = current.get('replay')
+    if win:
+        years = _replay_holiday_years([(key, None) for key in keys], name, day, slot, win['anchor'], start.tzinfo)
+    else:
+        years = [key[:4] for key, _ids in current['sets'] if key in current['holiday_sets'].get(name, [])]
+    out.update(holiday=name, years=set(years))
     return out
 
 

@@ -169,6 +169,25 @@ def _stamp(dt: datetime) -> str:
     return dt.strftime(TIME_FORMAT)
 
 
+# A banner that opens one event's stage list. `HomeScene::onTouchGateEventBanner` (0x1e51110) switches on
+# the banner type (BannerMst+0x9c, the int half of `uP4695k3`) through the jump table at 0x2f5a410:
+#   type 6/7 (0x1e51168): the string half is split on "," into ints; with at least five and the first == 2,
+#     ints[2] is the area, ints[3] the dungeon and ints[4] a mission. If that mission is in
+#     `GateUtil::getInSessionMissionList(dungeon)` (0x1e51200) it opens `GateMissionScene` with that dungeon
+#     and area (0x1e51a78, `setSelectDungeonMst`); otherwise it opens scene 601, the Vortex (0x1e51254).
+#   type 10 (0x1e51274): the string half is a scene id (`GameSceneFactory::createGameScene`), the old link.
+# `_canTransit` (0x1a4ce48) only checks a location for type 10; any other type passes
+# (`FunctionMstList::isLocationValid(-1)` returns true at 0x1d30e00), so these rows still show.
+EVENT_LINK_TYPE = "6"
+
+
+def event_link(event) -> str | None:
+    """`uP4695k3` for a banner that opens an event: "6:2,0,<area>,<dungeon>,<first mission>"."""
+    if not isinstance(event, dict) or not all(str(event.get(k, "")).isdigit() for k in ("area", "dungeon", "mission")):
+        return None
+    return f"{EVENT_LINK_TYPE}:2,0,{event['area']},{event['dungeon']},{event['mission']}"
+
+
 def _row(entry: dict, now: datetime) -> tuple[dict, dict]:
     """`(wire_row, provenance)` for one entry.
 
@@ -199,7 +218,7 @@ def _row(entry: dict, now: datetime) -> tuple[dict, dict]:
         # the string half must `StrToInt` to a location `FunctionMstList::isLocationValid` accepts. Serving
         # "0:<url>" here -- the obvious reading, and what this module did first -- makes `_canTransit` fail,
         # so `getBannerMstList` drops EVERY row and the marquee is empty while every log line looks healthy.
-        _MST_URL_TOKEN: f"{MARQUEE_LOCATION_GATE}:{MARQUEE_LOCATION_ID}",
+        _MST_URL_TOKEN: event_link(entry.get("event")) or f"{MARQUEE_LOCATION_GATE}:{MARQUEE_LOCATION_ID}",
     }
     provenance = {
         "banner_id": banner_id,
