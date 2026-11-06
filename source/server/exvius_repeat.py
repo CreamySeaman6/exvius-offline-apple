@@ -141,11 +141,39 @@ def claim_quest_progress(player, mid):
         return True
 
 
-def observe_load(spec, mid, is_battle_bundle):
+def helper_from_request(plaintext):
+    """The friend (`dUX7Pt5i`) or guest (`w40YsHIz`) brought on a mission, from a mission request body, or ''."""
+    if not plaintext:
+        return ''
+    try:
+        req = json.JSONDecoder().raw_decode(plaintext)[0]
+    except Exception:  # noqa: BLE001
+        return ''
+    rows = req.get('jQsE54Iz') if isinstance(req, dict) else None
+    op = rows[0] if isinstance(rows, list) and rows and isinstance(rows[0], dict) else {}
+    for token in ('dUX7Pt5i', 'w40YsHIz'):
+        value = str(op.get(token) or '').strip()
+        if value and value != '0':
+            return value
+    return ''
+
+
+def attempt_helper(player, mid):
+    """The helper recorded when this mission was loaded, or ''."""
+    attempt = (player.data.get('exvius_repeat', {}) or {}).get('attempt', {}) if player is not None else {}
+    return str(attempt.get('helper') or '') if attempt.get('mid') == str(mid) else ''
+
+
+def observe_load(spec, mid, is_battle_bundle, plaintext=None):
     from ffbe_state import State
     from ffbe_config import RESULT_TAG
     if is_battle_bundle and isinstance(spec, dict) and RESULT_TAG not in spec:
         if begin_attempt(State.player, mid):
+            # Who was brought along is in the START request; the end request may not repeat it (the iPhone's
+            # "Go on a quest with a friend!" never counted, 2026-11-06). Kept on the attempt for the clear.
+            helper = helper_from_request(plaintext)
+            if helper:
+                State.player.data['exvius_repeat']['attempt']['helper'] = helper
             from exvius_raid_progress import observe_personal_raid
             observe_personal_raid(State.player, mid, spec)
             State.state_dirty = True

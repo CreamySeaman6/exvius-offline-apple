@@ -150,7 +150,7 @@ PIPELINE: tuple = (
          "state", "State.player", "native bundle prices and purchases use local Lapis"),
     # Drops are server-authoritative and per-battle: roll the candidate list now. (A no-op for every reply
     # that carries no drop rows.) See roll_drops for why this cannot live in the payload.
-    Step("roll_drops", lambda c: observe_load(roll_drops(c.spec, mid=c.mid, is_battle_bundle=c.is_battle_bundle), c.mid, c.is_battle_bundle),
+    Step("roll_drops", lambda c: observe_load(roll_drops(c.spec, mid=c.mid, is_battle_bundle=c.is_battle_bundle), c.mid, c.is_battle_bundle, c.plaintext),
          "global", "LAST_DROPS", "rolls each mission's candidate drop list; claims the mission's own slot"),
     # The result screen reads its OWN channels, not the wave drop list, so mirror this battle's roll into
     # the drops channel of 09HRWXDf. (No-op for any reply without that tag.)

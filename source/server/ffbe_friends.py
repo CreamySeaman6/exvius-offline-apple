@@ -372,6 +372,11 @@ def local_friend_action(spec, request, action):
                 import friend_players
                 ok = friend_players.add(State.player, target)
         output['I53AVzSo'] = [{'0NVFk2fD': DEL_FRIEND_INFO, 'H4zD2IQ5': WAIT_NO_WAIT}]
+        if ok and action == 'request':
+            # "Send a friend invite!" (Rookie quests, condition code 14). Counted on the request itself, so
+            # inviting one of the made-up players counts (added 2026-11-06; nothing scored it before).
+            from ffbe_player import score_quest_action
+            score_quest_action('14')
         if ok:
             row = _friend_list_row(friend, time.strftime(FRIEND_LIST_DATE_FMT))
             output['2vuhy0Ex'] = [row]

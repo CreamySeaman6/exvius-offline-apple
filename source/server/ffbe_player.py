@@ -1427,7 +1427,10 @@ def score_completed_quest_mission(plaintext):
             stats = [max(before, int(value)) for before, value in zip(stats, values)]
     for index, value in enumerate(stats, 1):
         score_quest_action('43', value, str(index), best=True)
-    if ctx.get('helper_master'):
+    # "Go on a quest with a friend!" (code 17): a helper named in the end request, or the one recorded when
+    # the mission was loaded (exvius_repeat.observe_load).
+    from exvius_repeat import attempt_helper, helper_from_request
+    if ctx.get('helper_master') or helper_from_request(plaintext) or attempt_helper(State.player, mid):
         score_quest_action('17')
     def metric(*names):
         report = ctx.get('achievements', {})

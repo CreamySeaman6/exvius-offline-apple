@@ -340,3 +340,12 @@ He asked for one container he can control from Unraid. Now:
 - `docker-compose.yml`: one service `server` with `container_name: ffbe`, `hostname: ffbe`, `/dev/net/tun`, `NET_ADMIN`, and `${FFBE_DIR}/tailscale:/var/lib/tailscale`.
 - Migration (README, Everyday use): `docker rm -f ffbe-tailscale-1 ffbe-server-1`, then build and `up -d`.
 - Tested in the sandbox with stub tailscale binaries (pass-through commands, tailscaled dying, docker stop). Not yet run on the NAS.
+
+## Fixed: Rookie friend quests didn't count (2026-11-06)
+
+Reported: "Send a friend invite!" and "Go on a quest with a friend!" (Rookie Quests 100106/100107, Rookie Panel 1000103/1000102 and 1020103/1020102) never ticked.
+
+- **Invite** (condition code 14): nothing scored it. `ffbe_friends.local_friend_action` now calls `score_quest_action('14')` when a FriendRequest (`j0A5vQd8`) is accepted, including to the made-up players. Agreeing to a request doesn't count.
+- **Quest with a friend** (condition code 17): it was scored only when the mission END request carried `qLke7K8f` plus `dUX7Pt5i`/`w40YsHIz`, which the iPhone apparently doesn't send (no capture checked). Now `exvius_repeat.observe_load` (mission load, pipeline step `roll_drops`, which now passes the request body) records the friend/guest id from the START request on the attempt (`attempt['helper']`). `score_completed_quest_mission` scores 17 if the end request names a helper or the attempt recorded one.
+- Tested in the sandbox: inviting a made-up player sets both invite quests to 1; a load with a friend then a clear whose end body names no helper sets both friend-quest rows to 1; a load without a friend leaves them at 0. Saves where these quests were already done before the fix don't get them retroactively; doing them once more counts.
+- `source/exvius/test_*.py` doesn't import in the sandbox (it needs the Android build's modules), before or after this change.
