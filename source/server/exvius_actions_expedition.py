@@ -644,6 +644,24 @@ def comeback_claim(spec, req):
     return _out(_refresh(spec), bbjE3Nwh=selected)
 
 
+def _panel_rewards(text):
+    """A panel group's line/board reward, parsed like the panel quests' own rewards (`ffbe_player._quest_reward`):
+    plain `kind:id[:count]` entries, and units with their extra fields (the 4-line Trust Moogle and the
+    board-complete unit are `10:<id>:1:100:...`), which `_reward_rows` refuses."""
+    from ffbe_player import _parse_reward
+    from exvius_rewards import parse
+    rows = []
+    for entry in str(text or '').split(','):
+        entry = entry.strip()
+        if not entry:
+            continue
+        if len(entry.split(':')) == 2:
+            rows.extend({'kind': k, 'id': i, 'count': c} for k, i, c in _parse_reward(entry))
+        else:
+            rows.extend(parse(entry))
+    return rows
+
+
 def panel_extra(spec, req):
     node = _node(req, "QxrSeO56") or {}
     schedule, gid, key = (str(node.get(k) or "") for k in ("fK3W9qYA", "zF6QIY2r", "xm7c08IS"))
@@ -662,17 +680,21 @@ def panel_extra(spec, req):
     quests = [q for q in _mst("F_PANEL_QUEST_MST.ndjson", "V36ygRYs").values()
               if str(q.get("zF6QIY2r")) == gid]
     index = _quest_index()
-    if key != 'COMPLETED':
+    cleared = {_int(q.get('Z0EN6jSh')) for q in quests
+               if _int(q.get("oz5Vt6AR")) > 0 and
+               player_progress(str(q["V36ygRYs"]), index.get(str(q["V36ygRYs"])) or {}) >= _int(q["oz5Vt6AR"])}
+    if key == 'COMPLETED':
+        complete = bool(quests) and len(cleared) == len(quests)
+    else:
+        # `L<n>` is "Lines Completed: n" (PANEL_QUEST_LINE_COMPLETE_<n>): any n of the board's eight lines,
+        # not one particular line. Reading L1 as the top row refused a completed middle row (2026-11-06).
         lines = ((1, 2, 3), (4, 5, 6), (7, 8, 9), (1, 4, 7),
                  (2, 5, 8), (3, 6, 9), (1, 5, 9), (3, 5, 7))
-        positions = lines[int(key[1:]) - 1]
-        quests = [q for q in quests if _int(q.get('Z0EN6jSh')) in positions]
-    if not quests or any(_int(q.get("oz5Vt6AR")) <= 0 or
-                         player_progress(str(q["V36ygRYs"]), index.get(str(q["V36ygRYs"])) or {}) <
-                         _int(q["oz5Vt6AR"]) for q in quests):
+        complete = sum(all(p in cleared for p in line) for line in lines) >= int(key[1:])
+    if not complete:
         return _refuse(out, "panel line or page is incomplete")
-    rewards = _reward_rows(group.get(column))
-    if not rewards:
+    rewards = _panel_rewards(group.get(column))
+    if not rewards or not all(State.player._can_credit(row) for row in rewards):
         return _refuse(out, "panel reward encoding or reward kind unsupported")
     State.player._grant_items(rewards)
     block.setdefault("claimed", {})[claim_key] = reply

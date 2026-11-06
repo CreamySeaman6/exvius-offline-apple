@@ -413,3 +413,11 @@ What was rebuilt (`build_halloween_castle.py` -> `source/server/event_encounters
 - When it shows: the event launched with the 2017 Halloween banners, which the replay holds for the real holiday, so it opens in the Halloween weeks of 2027. It also opens at the 2018 rerun (around June 2027 at the current pace).
 - Tested in the sandbox: all six missions pass the mission-load checks (`capture_server` bundle choice and wave checks). Not yet played on the phone. If a boss misbehaves (wrong sprite position, missing skill), the boss row's `7KYufEd5`/`a9DvZ70c`/`5A8SmwyC` come from the 2016 Reaper template and are the first suspects.
 
+## Fixed: panel line rewards (2026-11-06)
+
+Reported: the Rookie Panel's "1 line" reward could not be claimed after completing the middle row.
+
+- The board's line rewards `L1`..`L8` mean "Lines Completed: n" (the game's own text, `PANEL_QUEST_LINE_COMPLETE_<n>`): any n of the eight lines. `panel_extra` (exvius_actions_expedition.py) read `L1` as the top row, `L2` as the middle row, and so on, so a middle row never satisfied `L1`. It now counts completed lines.
+- Line and board rewards that are units with extra fields (the Rookie board's 4-line Trust Moogle `10:904000105:1:100:1:0:100000006` and the board-complete unit) were refused by `_reward_rows`. They are now parsed like the panel quests' own rewards (`_panel_rewards`, same grammar as `ffbe_player._quest_reward`) and checked with `_can_credit`.
+- Tested in the sandbox: middle row only -> L1 pays, L2 refused; full board -> L4 (Trust Moogle), L8 and COMPLETED pay; repeated claims don't pay again.
+
