@@ -13,4 +13,4 @@ Ground rules:
 - Add a short dated section to HANDOFF.md for anything you change, and keep README's settings and removal sections current.
 - Ask me questions in plain text, not with the question-picker tool.
 
-Once you've read the handoff, tell me in a few lines that you're up to speed, and I'll describe the issues I'm seeing.
+Once you've read the handoff, tell me in a few lines that you're up to speed. Then I'll describe two new, big things I want to work on. Don't start on anything else first.

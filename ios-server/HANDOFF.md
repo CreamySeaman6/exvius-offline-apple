@@ -25,13 +25,15 @@ cd /mnt/user/appdata/ffbe/repo && git fetch origin && git reset --hard origin/io
 cd ios-server && docker compose build && docker compose up -d
 ```
 
+The first update after 2026-11-06 also needs `docker rm -f ffbe-tailscale-1 ffbe-server-1` before `docker compose up -d` (switch to the single container; README, Everyday use). It's not confirmed he has done this yet. Check with `docker ps -a --filter name=ffbe`: one container named `ffbe` means it's done.
+
 Then he opens the game twice (some table changes only take effect on the second launch). The stack is one container, `ffbe`, which he can also start and stop from Unraid's Docker tab; logs are `docker logs --tail 50 ffbe`. The NAS checkout once had no `origin` remote; it was re-added with the GitHub URL. Use `git --no-pager log`, since plain `git log` opens a pager in his terminal.
 
 ### Confirmed working on the phone
 
 Boot, login, downloads, tutorial battles, audio (music, effects and movies), the Shop bundle names, the historical replay (the News board showed "Week of November 1 — Global history Dec 16, 2016 – Jan 5, 2017" with the Noctis set), notice pages, the earlier text fixes, and the Lapis economy (it paid; it also caused the repeat-clear bug below, now fixed).
 
-### Pushed but not yet confirmed on the phone (as of commit 83810ec)
+### Pushed but not yet confirmed on the phone (as of commit bc046b2, 2026-11-06)
 
 1. **Summon detail art** (`-fit1` names, blurred side padding). See "Fixed: summon detail art still squashed…" below. On 2026-11-05 he still saw the squashed Noctis art, because the phone had cached the old image.
 2. **News page art**: banner path and wiki sprites (same section).
@@ -39,16 +41,32 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 4. **Banner deals**: 107 banners pay their printed bonuses. See "Banner deals…". In his replay, the first Trust Moogle deals arrive around summer 2017 history.
 5. **Other players** (200 friends to add and remove), **home marquee** (first dated events reach the replay around 7 real weeks in; a home-screen crash after that means `MARQUEE_FLAG=0`), **weekly summon gift** mail, **Lapis daily quests**.
 6. **Vortex tile art and the Enhance tab** (spdungeon1.cpk rebuild).
+7. **Single container** `ffbe` (Tailscale + server; fixes the dead network after Unraid's 4 AM Appdata Backup). See "One container…" at the end.
+8. **Rookie friend quests**: "Send a friend invite!" and "Go on a quest with a friend!". See "Fixed: Rookie friend quests…".
 
 ### Open issues and known limits
 
-- He mentioned "small issues to iron out" on 2026-11-06, not yet described. Ask him what they are.
+- He has **two new, big things** he wants to work on (2026-11-06), not yet described. Ask him what they are before starting anything else.
 - Vortex is thin before May 2017 history: the archive has no dated events before 2017-05-12.
 - The mission result screen shows base Lapis, not the 1.5× amount actually credited.
 - Tall 640x392 detail art is padded to the frame, so it shows narrower than the frame (with blurred sides).
 - A unit from the NV SP ticket arrives at level 1 although the banner says 120. Offered to look at it; not requested.
 - Banner deals left out: FFBE Heroes Coin, Special FFXV Ticket, OCTOPATH exchange ticket (nothing spends them), the Rain NV ticket (unidentified), NV "panel rewards", and the 9100274 "three 11 summons give a free one".
 
+### Where the 2026-11 systems live (`source/server/`)
+
+| What | Files | Section in this file |
+| --- | --- | --- |
+| Historical replay (banners, Vortex and shops follow Global history; pace 3 weeks per real week, 2 from the NV era; holidays line up) | `replay.py`, `unit_release.json`, `gacha_rotation.py` (`_replay_plan`), `event_archive.py`, `exvius_shop_catalogue.py`, `player_state.expand_pool` | Done: historical replay |
+| News board notice pages with art, home marquee | `replay_notices.py`, routes in `capture_server.py`, `ffbe_banner.py` | Done: historical replay (notice and marquee bullets); Fixed: summon detail art… |
+| Summon detail art padding | `banner_fit.py`, `ffbe_gacha._gacha_schedule_banner_string` | Done: historical replay (summon detail art bullet); Fixed: summon detail art… |
+| NV SP tickets (once per save, full pool) | `replay.full_pool`, `gacha_archive.held_ticket_ids`, `global_bundles.json` | Done: historical replay (one-off/SP ticket bullets) |
+| Item/bundle text | `ios_texts.py` (`GENERATION`), `ios_text_items.json` | Done: historical replay (iPhone text bullet) |
+| 200 made-up players | `friend_players.py`, `ffbe_friends.py` | Done: historical replay (other players bullet); Fixed: Rookie friend quests… |
+| Lapis economy (1.5× earned, daily quests, weekly gift) | `lapis_economy.py`, `player_state._grant_items`, `ffbe_battle.py`, `ffbe_player.py`, `ffbe_pipeline.py` | Done: historical replay (earned Lapis bullet); Fixed: connection error… |
+| Banner deals printed on art | `banner_deals.py`, `banner_deals.json`, `player_state.roll_gacha` | Banner deals… |
+| Rookie friend quests | `ffbe_friends.local_friend_action`, `exvius_repeat.observe_load`, `ffbe_player.score_completed_quest_mission` | Fixed: Rookie friend quests… |
+| One container | `ios-server/Dockerfile`, `entrypoint.sh`, `docker-compose.yml` | One container… |
 
 ## The goal
 
@@ -94,7 +112,7 @@ Build the bundle relative to `main` (`git bundle create X.bundle origin/main..re
 ### Commits
 
 - Author: the repo owner's identity, as in the existing `ios-server` commits.
-- `source/server/capture_server.py` and `gacha_archive.py` use **CRLF** line endings. Preserve them; edit with a byte-level replace if needed.
+- These files in `source/server/` use **CRLF** line endings: `capture_server.py`, `event_archive.py`, `exvius_actions.py`, `ffbe_config.py`, `ffbe_player.py`. Preserve them; edit with a byte-level replace (`open(p, newline='')`) if needed.
 
 ## What the iPhone stack is
 
