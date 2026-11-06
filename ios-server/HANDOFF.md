@@ -1,6 +1,54 @@
 # Handoff: Exvius Offline on the iPhone
 
-Notes for a new Claude session picking up this work. Last updated 2026-11-05.
+Notes for a new Claude session picking up this work. Last updated 2026-11-06.
+
+Read **Current state** first. The dated sections below it are the history: each records what was found and why, and later sections can supersede earlier ones (noted where they do).
+
+## Current state (2026-11-06)
+
+### How the operator works
+
+- Brando, the repo owner. He plays on his iPhone and reports back with screenshots and pasted `docker logs`. He doesn't read code.
+- Plain, direct communication. Short updates in plain words; no internal jargon in messages to him.
+- Ask questions in plain text, not with the question-picker tool (it covers the write-up on his phone).
+- Don't suggest sending fixes or reports upstream (Elvlin/exvius-offline). This fork is his.
+- Keep side tasks to a minimum; don't add extra test harnesses or chores to his list.
+- Anything installed on his machines needs a documented way to remove it (README's removal section).
+- Decisions he has made are recorded in the sections below ("operator's request/choice"). Don't reverse them without asking.
+
+### Updating the server (the NAS, ThousandSunny, Unraid)
+
+Push to `ios-server` on GitHub, then he runs:
+
+```bash
+cd /mnt/user/appdata/ffbe/repo && git fetch origin && git reset --hard origin/ios-server
+cd ios-server && docker compose build && docker compose up -d
+```
+
+Then he opens the game twice (some table changes only take effect on the second launch). The NAS checkout once had no `origin` remote; it was re-added with the GitHub URL. Use `git --no-pager log`, since plain `git log` opens a pager in his terminal.
+
+### Confirmed working on the phone
+
+Boot, login, downloads, tutorial battles, audio (music, effects and movies), the Shop bundle names, the historical replay (the News board showed "Week of November 1 — Global history Dec 16, 2016 – Jan 5, 2017" with the Noctis set), notice pages, the earlier text fixes, and the Lapis economy (it paid; it also caused the repeat-clear bug below, now fixed).
+
+### Pushed but not yet confirmed on the phone (as of commit 83810ec)
+
+1. **Summon detail art** (`-fit1` names, blurred side padding). See "Fixed: summon detail art still squashed…" below. On 2026-11-05 he still saw the squashed Noctis art, because the phone had cached the old image.
+2. **News page art**: banner path and wiki sprites (same section).
+3. **Connection error on repeat clears** (Lapis multiplier vs `exvius_repeat` check). See "Fixed: connection error…".
+4. **Banner deals**: 107 banners pay their printed bonuses. See "Banner deals…". In his replay, the first Trust Moogle deals arrive around summer 2017 history.
+5. **Other players** (200 friends to add and remove), **home marquee** (first dated events reach the replay around 7 real weeks in; a home-screen crash after that means `MARQUEE_FLAG=0`), **weekly summon gift** mail, **Lapis daily quests**.
+6. **Vortex tile art and the Enhance tab** (spdungeon1.cpk rebuild).
+
+### Open issues and known limits
+
+- He mentioned "small issues to iron out" on 2026-11-06, not yet described. Ask him what they are.
+- Vortex is thin before May 2017 history: the archive has no dated events before 2017-05-12.
+- The mission result screen shows base Lapis, not the 1.5× amount actually credited.
+- Tall 640x392 detail art is padded to the frame, so it shows narrower than the frame (with blurred sides).
+- A unit from the NV SP ticket arrives at level 1 although the banner says 120. Offered to look at it; not requested.
+- Banner deals left out: FFBE Heroes Coin, Special FFXV Ticket, OCTOPATH exchange ticket (nothing spends them), the Rain NV ticket (unidentified), NV "panel rewards", and the 9100274 "three 11 summons give a free one".
+
 
 ## The goal
 
@@ -14,7 +62,7 @@ The approach:
 
 A decrypted, re-signed IPA is the fallback if a client-side change is ever needed.
 
-Also done and working on the server side: a weekly summon rotation. Standard, Rare and other permanent banners are always shown. Release sets rotate every Sunday at 10 PM Eastern. The first week opens with Noctis's December 2016 debut banner.
+Also done on the server side: a weekly summon rotation (Sunday 10 PM Eastern) that now follows Global's history week by week ("historical replay", below). Standard, Rare and other permanent banners are always shown.
 
 Anything new the stack installs needs a documented way to remove it completely. The removal section in `README.md` covers this stack; keep it current.
 
@@ -34,7 +82,7 @@ The `ios-server` branch is on GitHub: clone the repo and check out `ios-server`.
 
 ### Delivering updates
 
-Either push to GitHub (the server machine runs `git pull origin ios-server`), or build a git bundle, send it as a file, and have it pulled on the server machine:
+Normally: push to GitHub and have him run the commands under **Updating the server** above. Fallback: build a git bundle, send it as a file, and have it pulled on the server machine:
 
 ```bash
 cd FFBE_DIR/repo/ios-server
@@ -128,7 +176,9 @@ Findings from the 2026-11-05 second session:
 2. Ask whether the opening movie's sound (ADX audio in `op_clip.usm`, before the "Download while playing tutorial?" prompt) is clean. If the movie is clean and banks are still noise, try converting the banks to ADX (encode type 0). vgmstream can decode, and a new ACB writer would be needed. If the movie is garbled too, the problem is the output layer on iOS 27, which means the decrypted-IPA route.
 3. The iOS app bundle has its own `Builtin.acb` / `*_tutorial.acb` and `Lapis_sound.acf`. If the bundled sounds play cleanly, the runtime can decode iOS banks; comparing them with the Android ones (via an IPA from Apple Configurator) would show what differs.
 
-## Open problem: no music in some scenes (2026-11-05)
+## Resolved: no music in some scenes (2026-11-05)
+
+Battle music was confirmed working by the operator later on 2026-11-05 (the tracks had still been downloading). Kept for reference:
 
 After the cipher fix, the first tutorial battles had sound effects but no music. Most likely the tracks hadn't downloaded yet: the new sound versions (`Ver13xx_`) give every bank a new name, the game won't play an older copy, and the battle and dungeon BGM sit in the background queue (the server log showed it working through the map BGM list). Not yet confirmed, because the newest client report ended before those battles (the game uploads each session's log at the next launch).
 
@@ -174,6 +224,24 @@ Server logs: `docker compose logs server | grep -E "CDN|CLIENT REPORT|ERROR"`. E
 - `devtools/acb.py` prints an ACB's waveform encode types.
 
 ## Testing locally (in a Claude sandbox)
+
+### Quick in-process tests (what the 2026-11-05 sessions used)
+
+Most changes can be tested by importing the engine modules directly, without starting the server:
+
+1. **Data.** Pull `static/mst_decoded/*.ndjson` and `static/text_decoded/*.ndjson` out of the data packs (`data/latest.json`; `devtools/zip_list.py`'s `RemoteFile` reads single zip entries by HTTP range) into e.g. `~/t/data/static/` (~255 MB). The sandbox's work folder is not kept between sessions, so this has to be redone in a new one.
+2. **Env**, then run Python from `source/server`:
+
+   ```bash
+   export FFBE_DATA=~/t/data MST_DIR=~/t/data/static/mst_decoded TEXT_DIR=~/t/data/static/text_decoded \
+     GACHA_ONLY=all GACHA_CAMPAIGN=all EXVIUS_SUMMON_ARCHIVE=1 EXVIUS_EVENT_ARCHIVE=1 GACHA_STANDARD=1 \
+     GACHA_CATALOGUE=1 EXVIUS_SUMMON_ROTATION=1 FFBE_SERVER_ROOT=<scratch dir>
+   ```
+
+3. **Examples:** `ffbe_gacha.all_banners()` (about 4,000 banners); a test save is `player_state.PlayerState(player_state.default_state())`, then `add_currency('lapis_free', n)` and `roll_gacha(banner, 1, offer=banner['secondary_offer'])`. For a CDN path, subclass `capture_server.Handler` with a stub `path`/`wfile` and call `_cdn_fetch()` (set `CDN_ROOT`/`CDN_OVERLAY` and `State.cdn_root`).
+4. Running the replay records an anchor in `<data>/static/state/replay.json`; delete it after tests.
+
+### Full server run
 
 Docker Hub is blocked in the sandbox, so run the server directly:
 
@@ -227,21 +295,18 @@ Requested: content arrives in Global's original order, so late-game units don't 
 - `replay_notices.py`: News board. `InformationListScene::initConnect` sends `NoticeUpdateRequest` kind 4 (`CQ4jTm2F`); the list reads NoticeMstList buckets 0 and 1; reply tag `tN8f0PSB` fills bucket 0. Row fields from `NoticeMstResponse::readParam` (libgame 0x197d464) are listed in the module docstring. Caption is JSON `{"en": ...}` (`getLanguageCaption`), page type 1 opens the row's URL (`InformationDetailScene::getUrl`). Each replay week gets notice id 880000+week, read index 500+week; page `/exvius/notices/<week>.html` (future weeks 404). Not yet seen on the phone.
 - iPhone text, second pass (2026-11-05): `ios_texts.py` now patches 20 text tables. It writes everything the Android hooks supply at run time (exbonus abilities, battle/colosseum monster and skill names, `MST_DUNGEONS_NAME_99999`, Clash of Wills / Dark Visions area names), the SP tickets' descriptions, and the obtainable items with no English text listed in `ios_text_items.json`. That list came from an audit of every `kind:id:count` reward list in the shipped tables and the server's JSON files; items tied only to JP-only units were left out (those units are never offered). Names there are translated from the JP item names. `GENERATION` in `ios_texts.py` must go up by one whenever the additions change, or the phone may not re-download.
 - Other players (2026-11-05): `friend_players.py` makes 200 players (ids 910000001+, handles of at most 12 characters), each lending a weekly unit picked from named base forms released by the replay cutoff (rank decides 4★/5★/NV). `ffbe_friends.all_friends()` = friends.yaml (minus `yaml_removed`) + `players_added` (starts with 15 random ones); every caller that used `load_friends()` for the player's friends now uses it (gifts, helpers, arena, raids). New handlers in `exvius_actions.HANDLERS`: FriendRequest `j0A5vQd8` and FriendAgree `kx13SLUY` add (accepted at once; reply `I53AVzSo` + the new row on `2vuhy0Ex`), FriendDelete `a2d6omAy` and FriendRefuse `1nbWRV9w` remove (reply `I53AVzSo` with `0NVFk2fD` = the removed id). Request bodies are `I53AVzSo: [{m3Wghr1j: friend id, 8zE6w9RP, 0b6e9cwr}]` (FriendRequest::createBody 0x199d590). Reply tags from the response factory (0x1918f30..): `56gJBnVh` full friend list (kind 1), `2vuhy0Ex` friend rows added (kind 1, non-clearing), `9Qt5cI0n` kind 3 and `hZR64mDe` kind 2 (pending requests, left empty), `f6yGgCj2` kind 5 suggestions (now 10 a day), `2K05IxtX` search result. Not yet tried on the phone.
-- Notice pages with art (2026-11-05): `replay_notices.render(summary, src)` is the page template (summon banner art from `/banner/<file>`, unit sprites from `/exvius/notice-art/unit/<id>.png`, event banners from `/en/sd/area/<file>`). Unit sprites are the wiki's `Unit-<Name>-<stars>.png` (tries base+1, base, base+2, 7), fetched once by the server into `ios-cache/notice-art/` (`unit_sprite`); misses are remembered for a week. Preview published as an artifact ("This Week in Exvius").
+- Notice pages with art (2026-11-05; the image paths and sprite fetching were fixed later, see "Fixed: summon detail art still squashed…"): `replay_notices.render(summary, src)` is the page template (summon banner art from `/banner/<file>`, unit sprites from `/exvius/notice-art/unit/<id>.png`, event banners from `/en/sd/area/<file>`). Unit sprites are the wiki's `Unit-<Name>-<stars>.png` (tries base+1, base, base+2, 7), fetched once by the server into `ios-cache/notice-art/` (`unit_sprite`); misses are remembered for a week. Preview published as an artifact ("This Week in Exvius").
 - Earned Lapis (operator's request, 2026-11-05; he chose all three options): `lapis_economy.py`. (1) daily quests all pay `EXVIUS_DAILY_QUEST_LAPIS` (150) plus `EXVIUS_DAILY_ALL_BONUS` (200) once all of the day's are claimed (`ffbe_player` claim path; the original daily rewards were never preserved, the catalogue's are authored); (2) `EXVIUS_LAPIS_MULTIPLIER` (1.5) applied in `PlayerState._grant_items` for kind 50 (skipped while `player._purchase` is set, which the Lapis Shop bundle path and the exchange shop `_grant` set) and in `ffbe_battle` for mission-challenge and rank-up Lapis (the result screen still shows the base amount); (3) `deliver_weekly_gift` pipeline step mails `EXVIUS_WEEKLY_GIFT` (10 Rare Summon Tickets 23:50 + Guaranteed Ticket 23:70, both in ticket group 10020 that 648 banners accept) once per rotation week (`player.data["weekly_gift"]["last_week"]`). Operator's view: the "scammy" step-up and bonus deals are part of the fun.
 - One-off ticket summons (2026-11-05): `replay.full_pool(banner)` exempts any banner paid only with an item/important ticket that `global_bundles.json` doesn't sell without a limit (e.g. 9200026 Guaranteed NV Summon, ticket 1209001319 from the Early Bird Offer). Before, the replay limit emptied its NV-only pool and the ticket's rarity floor refused the pull (white crystal).
-- Summon detail art (2026-11-05): the stock app stretches `gacha/sub/` art into a ~3.5:1 frame (measured 848x242 on the phone). `banner_fit.py` letterboxes each such image to 640:183 on a transparent canvas before serving (Pillow, added to the Dockerfile), cached in `ios-cache/banner-fit/`. `gacha/main/` list art is untouched (rows size to the image).
+- Summon detail art (2026-11-05): the stock app stretches `gacha/sub/` art into a ~3.5:1 frame (measured 848x242 on the phone). `banner_fit.py` letterboxes each such image to 640:183 (now on a blurred copy of the art, and under new `-fit1` names; see the later section) before serving (Pillow, added to the Dockerfile), cached in `ios-cache/banner-fit/`. `gacha/main/` list art is untouched (rows size to the image).
 - SP ticket pull fix (2026-11-05): the phone's summon request named the SP ticket by an id `F_TICKET_MST` doesn't have, so `roll_gacha` refused ("unknown ticket") and the client drew the decline reply (white crystal, no unit, ticket kept). For an item-paid banner the unknown id now falls back to the banner's cost item.
 - SP ticket summons (operator's request, 2026-11-05): the Shop's 4★/5★/NV (1,000 Lapis) and 5★/NV (3,000 Lapis) SP Summon Tickets are once per save (`global_bundles.json` 990000108/109 `limit: once`). `gacha_archive.held_ticket_ids` adds any ticket-paid banner the player holds a ticket for to the rotation's list (their JP-only sets are otherwise excluded from the replay). `replay.full_pool_ids` (`EXVIUS_REPLAY_FULL_POOL`, default 9200107,9200108) exempts those two from the unit limit, so a ticket is one real NV chance. The unlimited 300-Lapis SP Summon Ticket (9200106) keeps the replay limit.
 - Home banners (marquee): `replay_notices.marquee_entries` picks this week's dated Vortex events (newest first, max 6) and `ffbe_banner.banner_selection` serves them instead of the era table. Art = the event's original wiki banner already used for its Vortex tile (`event_art.json`, all 626 dated events covered, 640x240), served from `en/sd/area/<file>`; the row URL ends in `HomeBanner_<7000000+area>.png` and `capture_server` maps that name back to the art. iPhone turns the strip on with `MARQUEE_FLAG=1` (serve.py, compose); the engine default stays 0 (upstream's Android home has no marquee). Not yet seen on the phone: the marquee code path has never run on a device, so a home-screen crash after this change means `MARQUEE_FLAG=0`.
 - Not gated, by the operator's choice (2026-11-05): 7★ awakening (Global mid-2018), NV awakening rules and old units' later enhancements stay available ("a little edge"). The final patch's new-player login ladder is not gated either. Don't gate these without asking.
 
-## Next steps, in order
+## Next steps (superseded 2026-11-06)
 
-1. Confirm the Shop bundle names now show.
-2. Confirm Vortex tile art and the Enhance tab (see "Vortex" above), and that the Vortex shows this week's events.
-3. Confirm the replay on the phone: this week shows only the Noctis set plus permanent summons, Rare Summon rates list early units only, and the News board shows a "This week" notice that opens. From the week of Dec 20, 2026 the home banner strip should show event banners.
-(Battle music: confirmed working by the operator on 2026-11-05.)
+The list that stood here is now under **Current state** at the top.
 
 ## Fixed: summon detail art still squashed, notice page art missing (2026-11-05, evening)
 
