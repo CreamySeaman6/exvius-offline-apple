@@ -3011,6 +3011,13 @@ def serve_event_gate(spec, reply_id):
                 rows.append(dict(template, U9iHsau3=str(mission_row['U9iHsau3']), qo3PECw6=mid))
                 present_missions.add(mid)
                 added += 1
+    if archive_events is not None:
+        # The Vortex lists tiles in row order: this week's events first, newest first, then the ranked events
+        # and the permanent dungeons (event_archive.weekly_events' order); rows of other areas after them.
+        order = {str(row['area']): n for n, row in enumerate(archive_events)}
+        ordered = sorted(rows, key=lambda r: order.get(str(r.get('uv60hgDW')), len(order)))
+        if ordered != rows:
+            rows, gate_changed = ordered, True
     if added or gate_changed:
         spec[EVENT_GATE_TAG] = rows
     spec = serve_switches(apply_availability(spec, policy, resolved_areas=[f[0] for f in facts]))

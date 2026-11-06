@@ -64,6 +64,9 @@ HOLIDAY_EVENTS = {
     'Halloween': {'919', '921', '983', '986', '1033', '1034', '1081', '1082', '9910', '9911'},
     "Valentine's Day": {'1004', '1005'},
 }
+# Permanent Vortex areas themed for a holiday (Chamber of Challenges' Halloween and Christmas battles): they
+# take their turn in the rotation only in that holiday's two weeks, and then ahead of the others.
+HOLIDAY_PERMANENT = {'902': 'Halloween', '903': 'Halloween', '904': 'Halloween', '905': 'Christmas'}
 HOLIDAY_SEASON = (-30, 14)   # days from the holiday: a holiday event's run in this range belongs to that year
 
 
@@ -210,8 +213,15 @@ def weekly_events(rows=None, now=None):
     # No two tiles that look the same. Permanent areas sharing a name and banner (Chamber of Challenges,
     # Chamber of Crysts) take turns, one a week; dated events sharing both (later copies of an event, kept
     # under new area ids) show the earliest area.
-    permanent = _one_per_look(permanent, lambda group: sorted(group, key=lambda r: int(r['area']))[
-        number % len(group)])
+    def take_turns(group):
+        themed = [r for r in group if HOLIDAY_PERMANENT.get(str(r['area'])) == summons['holiday']]
+        plain = [r for r in group if str(r['area']) not in HOLIDAY_PERMANENT]
+        pool = sorted(themed or plain or group, key=lambda r: int(r['area']))
+        return pool[number % len(pool)]
+    permanent = [row for row in permanent if str(row['area']) not in HOLIDAY_PERMANENT or
+                 HOLIDAY_PERMANENT[str(row['area'])] == summons['holiday'] or
+                 not any(r['name'] == row['name'] and str(r['area']) not in HOLIDAY_PERMANENT for r in permanent)]
+    permanent = _one_per_look(permanent, take_turns)
     # Of a ranked event's runs overlapping this week, only the newest. Where Global ran two at once (two Clash
     # of Wills bosses on the same dates, with the same banner), they take turns a week each.
     newest = {}
@@ -220,7 +230,12 @@ def weekly_events(rows=None, now=None):
     ranked = [row for row in ranked if row['release'] == newest[row['name']]]
     ranked = _one_per_look(ranked, lambda group: sorted(group, key=lambda r: int(r['area']))[number % len(group)])
     dated = _one_per_look(kept, lambda group: min(group, key=lambda r: int(r['area'])))
-    return permanent + ranked + dated
+    # Events first (the Vortex lists tiles in this order, see ffbe_player.serve_event_gate): holiday events, then
+    # the rest newest first, then the ranked events, then the permanent dungeons.
+    holiday_areas = {area for areas in HOLIDAY_EVENTS.values() for area in areas}
+    dated.sort(key=lambda r: (str(r['area']) in holiday_areas, str(r.get('release') or ''), int(r['area'])),
+               reverse=True)
+    return dated + ranked + permanent
 
 
 # --- banners of the added events -------------------------------------------------------------------

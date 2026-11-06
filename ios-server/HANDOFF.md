@@ -1,6 +1,6 @@
 # Handoff: Exvius Offline on the iPhone
 
-Notes for a new Claude session picking up this work. Last updated 2026-11-06.
+Notes for a new Claude session picking up this work. Last updated 2026-11-06 (afternoon).
 
 Read **Current state** first. The dated sections below it are the history: each records what was found and why, and later sections can supersede earlier ones (noted where they do).
 
@@ -48,8 +48,13 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 
 11. **Vortex polish, home banner taps, panel chests** (2026-11-06): holiday events follow the holiday banners, Clash of Wills and Dark Visions only in their Global periods, no look-alike tiles, home banners open their event, the panel's line chests claim. See "Vortex polish…" at the end.
 
+12. **Tile order, holiday chambers, the 0 KB download prompt** (2026-11-06, afternoon): events listed first in the Vortex, Chamber of Challenges' Halloween/Christmas battles only in those weeks, and the seven file-less resource rows left out so the phone stops asking "Download while playing tutorial?" on every start. See "Vortex order, holiday chambers, 0 KB prompt…" at the end.
+
+**What to ask him to check first after he updates** (open the game twice): no "Download while playing tutorial?" prompt on the second start; the Rookie Panel's 1-line chest claims; tapping a home banner opens the event's stages; the Vortex lists this week's events at the top with no repeated tiles; the Arena opponent list and ranking tab.
+
 ### Open issues and known limits
 
+- **Unverified client reading.** Two of today's fixes rest on reading the Android binary (the iPhone binary is encrypted): home banner type 6 links and the 0 KB prompt. If home banners vanish, set `EXVIUS_REPLAY_MARQUEE_TAP=0`; if startup downloads misbehave, `EXVIUS_IOS_DROP_UNVERSIONED=0`. The prompt's iOS-only text (`DLC_BACKGROUND_DOWNLOAD_CONTENT`) isn't in the Android binary, so the cause (rows with no file version) is inferred from the tables, not from the iPhone's code. If it still appears, get `docker logs` from a start: the files the phone asks for right after startup are the pending ones.
 - His **two big things** of 2026-11-06 are built: event content with the banners ("Event history…", "Rebuilt: Return to the Halloween Castle") and Arena parity ("Arena: full teams…"). Neither is confirmed on the phone yet.
 - Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter and The Spearmaiden are missing for lack of battle data; they could be rebuilt the way Halloween Castle was (see "Rebuilt: Return to the Halloween Castle"). That event's Castle Keep has no mission rows; its rewards are sold in the Skeleton Key Exchange instead.
 - The mission result screen shows base Lapis, not the 1.5× amount actually credited.
@@ -455,4 +460,18 @@ Reported after the event-history update: the panel line chest only previewed its
 - **One tile per look.** Tiles with the same name and banner art (`art_key`: `event_art.json` `runtime_sha256`, or the added event's art URL) are duplicates to the player. Permanent ones take turns, one a week (Chamber of Challenges' 8 areas, Chamber of Crysts' 2); dated ones keep the lowest area id (later copies of an event: Vault of Hidden Treasures' 12 areas, Grand Gaia Chronicles 913, The Big Bridge 6193, DQ Dai 9948, ...); undated extras show one area per name, the next one each time the name comes round. Permanent tiles went from 90 to 15. A 165-week preview has no repeated look in any week. Two that are different content but share art now show one (FFBE 5th Anniversary Livestream 1068 "Vs. Starlight Elena", Destroy the Machine Lifeform 843 "Abandoned Factory"); the Halloween Castle's two areas have different banners and both show.
 - **Home banner taps.** `HomeScene::onTouchGateEventBanner` (0x1e51110) switches on the banner type (the int half of `uP4695k3`, jump table 0x2f5a410). Type 10 (what we sent, "10:601") opens scene 601, the Vortex. Type 6 takes "2,_,area,dungeon,mission" and opens `GateMissionScene` for that dungeon when the mission is in `GateUtil::getInSessionMissionList(dungeon)`, else the Vortex. `_canTransit` only checks a location for type 10 (`isLocationValid(-1)` is true), so type-6 rows still show. Event banners now send "6:2,0,<area>,<first dungeon>,<first mission>" (`ffbe_banner.event_link`); `EXVIUS_REPLAY_MARQUEE_TAP=0` goes back to "10:601". The old note in ffbe_config.py says the type must be 10; that only holds for type 10 rows. If the banners disappear after this update, that is the first suspect.
 - **Panel line chest.** `sgPanelQuestScene::checkExtraRewardOnTouched` (0x24c8400) looks up `sgPanelQuestUserQuestExtraInfoList::getUserQuestExtraInfo(schedule, group, key)`: no row opens the reward preview; a row with `QCLs6SV8`=1 does nothing (claimed); a row with 0 sends `sgPanelQuestExtraRewardRequest`. The screen's reply sent no rows (`jksIZE9U`), so every chest previewed and the claim (fixed earlier today) was never requested. `serve_panel_quest` now sends a row for every reached line/board reward with its claim flag (`panel_extra_rows`), and the claim reply sends the full set too (each reply clears the client's list, `onReadStarted` 0x19590c4). Sandbox: fresh board no rows; middle row -> L1 unclaimed; claim -> L1 claimed; full board -> L2..L8 and COMPLETED unclaimed.
+
+## Vortex order, holiday chambers, 0 KB prompt (2026-11-06, afternoon)
+
+Reported: every start asks "Download while playing tutorial?" with 0 KB; this week's events sit at the bottom of the Vortex list; Chamber of Challenges shows its Christmas battle.
+
+- **0 KB prompt.** Seven `F_RESOURCE_MST` rows have no file version in any language (`OzT5lSz3` and English `86SWOBTb` both 0): `character.cpk` (id 115001, class `tuto`, the class downloaded during the tutorial) and `6th_story1..4/4_a/4_b.usm` (101614-101623, background). There is nothing to download for them, so the phone can never mark them done, and their sizes are 0, which matches "0 KB". `ios_tables.drop_unversioned` (`EXVIUS_IOS_DROP_UNVERSIONED`, default 1) leaves them out of the served table and raises its advertised version by 2000 more (now 4837 with the default settings), so the phone fetches it. The table arrives at login, so the first start after updating may still ask; the second shouldn't. Tested on the decoded tables (521 of 528 rows served). Not confirmed on the phone; see Open issues.
+- **Order.** The Vortex shows gate rows in the order served. `weekly_events` now returns events first (holiday events, then newest first, undated extras last among them), then Clash of Wills/Dark Visions, then permanent dungeons; `serve_event_gate` sorts its rows (including the carrier's own) by that order, with other areas after.
+- **Holiday chambers.** Chamber of Challenges 902-904 (Castle of the Dead, Pumpkin Rider Strikes, Pumpking Reaper Arrives) are Halloween and 905 (A Frosty Offensive) Christmas (`HOLIDAY_PERMANENT`). Outside those holidays' two weeks the chamber rotates 930-933 (the elemental challenges); in them it shows the holiday ones. Preview: replay weeks 6-7 (December 2026) show 905, weeks 50-51 (late October 2027) 902/903, other weeks 930-933.
+
+## Starting a fresh session
+
+Paste this as the first message of a new session:
+
+> I'm continuing my Exvius Offline iPhone project. Add CreamySeaman6/exvius-offline-apple to this session with push access, clone it, check out `ios-server`, and read `ios-server/HANDOFF.md` (Current state first, then the dated sections as needed). Ground rules are in the handoff: push fixes to `ios-server`, add a short dated section to HANDOFF.md for anything you change, keep README's settings and removal sections current, ask me questions in plain text, plain direct communication, no suggestions to send anything upstream, keep side tasks to a minimum. Once you've read it, tell me in a few lines that you're up to speed, then wait for what I report from the phone.
 

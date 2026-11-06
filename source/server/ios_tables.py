@@ -34,6 +34,9 @@ the rewrites keep every bank's size.
 
 4. VORTEX BANNERS. `ios_art.py` rebuilds the English Vortex banner pack; this module serves it and raises its
 English version (`F_RESOURCE_VERSION_MST_LOCALIZE`) and size (`F_RESOURCE_CHECKSUM_MST`).
+
+5. ROWS WITH NO FILE. `F_RESOURCE_MST` rows with no version in any language are left out (`drop_unversioned`),
+so the phone stops asking to download 0 KB on every start.
 """
 from __future__ import annotations
 
@@ -81,11 +84,24 @@ def _art_up_front() -> bool:
     return ios_art.enabled()
 
 
+def drop_unversioned() -> bool:
+    """`EXVIUS_IOS_DROP_UNVERSIONED` (default on): leave out of `F_RESOURCE_MST` the rows that have no file
+    version in any language (`OzT5lSz3` and `86SWOBTb` both 0 in `F_RESOURCE_VERSION_MST_LOCALIZE`).
+
+    Seven rows: `character.cpk` (class `tuto`) and six `6th_story*.usm` movies. There is no file to download for
+    them, so the phone counts them as missing on every start and asks "Download while playing tutorial?" with
+    0 KB to fetch (reported 2026-11-06, long after the tutorial). Nothing can ever be loaded from them."""
+    return os.environ.get("EXVIUS_IOS_DROP_UNVERSIONED", "1") == "1"
+
+
 def version_bump() -> int:
     """Added to `F_RESOURCE_MST`'s advertised version, so a client holding the unpatched table fetches this
     one. Changes with the setting, so switching packs makes the client fetch again. The Vortex banner pack
-    moving up front adds 1000, which keeps the number above what phones were served before it."""
-    return _bump(setting()) + (1000 if _art_up_front() else 0) if (setting() or _art_up_front()) else 0
+    moving up front adds 1000, which keeps the number above what phones were served before it; dropping the
+    unversioned rows adds 2000 more, for the same reason."""
+    if not (setting() or _art_up_front() or drop_unversioned()):
+        return 0
+    return _bump(setting()) + (1000 if _art_up_front() else 0) + (2000 if drop_unversioned() else 0)
 
 
 def _roots():
@@ -191,11 +207,20 @@ def _encrypt(key_text: str, row: dict, double: bool) -> str:
                        double_pad=double)
 
 
-def patch(raw: bytes) -> tuple[bytes, list[str]]:
-    """`F_RESOURCE_MST` with the chosen packs moved up front. Returns (table, pack names moved)."""
+def unversioned_ids(raw: bytes) -> set[str]:
+    """Ids of `F_RESOURCE_VERSION_MST_LOCALIZE` rows with no version in the base or English column."""
+    return {str(row.get("9ZCEWn0z")) for _, row, _ in _rows(raw, RESOURCE_VERSION[2])
+            if str(row.get(VERSION_FIELD) or "0") == "0" and str(row.get("86SWOBTb") or "0") == "0"}
+
+
+def patch(raw: bytes, drop: set[str] | None = None) -> tuple[bytes, list[str]]:
+    """`F_RESOURCE_MST` with the chosen packs moved up front and the `drop` ids left out.
+    Returns (table, pack names moved)."""
     value = setting()
     out, moved = [], []
     for line, row, double in _rows(raw, RESOURCE[2]):
+        if drop and str(row.get("9ZCEWn0z")) in drop:
+            continue
         if _chosen(row, value):
             row[CLASS_FIELD] = UP_FRONT
             moved.append(str(row.get(FILE_FIELD)))
@@ -255,8 +280,13 @@ def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
         return None, None
     try:
         if spec == RESOURCE:
-            data, moved = patch(open(src, "rb").read())
-            return data, f"{os.path.basename(src)}, {len(moved)} pack(s) moved to the first download"
+            drop = set()
+            if drop_unversioned():
+                vsrc = source_table(*roots, token=RESOURCE_VERSION[1])
+                drop = unversioned_ids(open(vsrc, "rb").read()) if vsrc else set()
+            data, moved = patch(open(src, "rb").read(), drop)
+            return data, (f"{os.path.basename(src)}, {len(moved)} pack(s) moved to the first download, "
+                          f"{len(drop)} row(s) with no file left out")
         import ios_art
         built = art(*roots)
         if spec == RESOURCE_CHECKSUM:
