@@ -3480,10 +3480,13 @@ class PlayerState:
                 continue
             cur = STORAGE_CURRENCY.get(kind)
             if cur:
+                credit = count
                 if kind == 50 and not getattr(self, "_purchase", False):
                     from lapis_economy import earned
-                    count = earned(count)      # earned Lapis only (lapis_economy.py); purchases set _purchase
-                self.add_currency(cur, count)
+                    credit = earned(count)     # earned Lapis only (lapis_economy.py); purchases set _purchase
+                # The returned row keeps the reward's own count: callers check `_grant_items([row]) == [row]`
+                # and roll back otherwise (exvius_repeat raised on every repeat-clear Lapis reward, 2026-11-05).
+                self.add_currency(cur, credit)
             elif str(kind) == "21":
                 # EQUIP goes to `inventory.equipment`, NOT the generic bag: `equip_item_rows` (the
                 # `MBPCGT84` / `UserEquipItemInfoResponse` group the client's Equipment screen reads) is
