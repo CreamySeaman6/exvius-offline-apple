@@ -530,7 +530,8 @@ def _credit_mission_rewards(plaintext: str | None, spec=None):
             # Credit it as well as serve it: an award the balance does not show is a lie the next user-state
             # reply tells, which is the same rule the challenge awards follow.
             gained = int(rank.get("level", 1)) - lvl_before
-            bonus = RANKUP_BONUS_LAPIS * gained
+            from lapis_economy import earned
+            bonus = earned(RANKUP_BONUS_LAPIS * gained)
             if bonus > 0:
                 if isinstance(spec, dict):
                     for r in spec.get("09HRWXDf", []):
@@ -915,7 +916,8 @@ def credit_mission_lapis(spec, mid: str | None, plaintext: str | None = None):
     free_before = int(State.player.currencies.get("lapis_free", 0))
     for cid in fresh:
         State.player.credit_challenge(str(mid), cid)
-    amount = sum(fresh.values())
+    from lapis_economy import earned
+    amount = earned(sum(fresh.values()))           # earned-Lapis multiplier (lapis_economy.py)
     State.player.add_currency("lapis_free", amount)
     State.state_dirty = True
     # Say what actually HAPPENED. `frozen` refuses the op and the balance does not move, so the old

@@ -143,7 +143,11 @@ def _rewards(rows):
 def _grant(rows):
     # PlayerState has no materia projection; use its generic bag and emit rL81fVUI.
     previous = {str(unit['instance_id']) for unit in State.player.data['roster']}
-    State.player._grant_items([r for r in rows if r["kind"] not in (22, 26, 27)])
+    State.player._purchase = True         # bought, not earned: no Lapis multiplier (lapis_economy.py)
+    try:
+        State.player._grant_items([r for r in rows if r["kind"] not in (22, 26, 27)])
+    finally:
+        State.player._purchase = False
     for row in rows:
         if row['kind'] == 10:
             units = [unit for unit in State.player.data['roster']

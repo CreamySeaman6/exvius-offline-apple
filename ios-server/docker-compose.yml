@@ -82,6 +82,11 @@ services:
       EXVIUS_PLAYERS: "200"
       EXVIUS_START_FRIENDS: "15"
       EXVIUS_PLAYER_SUGGESTIONS: "10"
+      # Earned Lapis (source/server/lapis_economy.py). Shop purchases are never multiplied.
+      EXVIUS_LAPIS_MULTIPLIER: "1.5"      # every Lapis amount earned by playing
+      EXVIUS_DAILY_QUEST_LAPIS: "150"     # Lapis per daily quest (0 = the old gil/Lapis mix)
+      EXVIUS_DAILY_ALL_BONUS: "200"       # extra Lapis for finishing all of a day's dailies
+      EXVIUS_WEEKLY_GIFT: "23:50:10,23:70:1"   # mailed each week: 10 Rare Summon Tickets + a Guaranteed Ticket; "" = off
       # Products kept out of the exchange shops that sell for Lapis (kind:id). Default: King Metal Minituar.
       EXVIUS_LAPIS_SHOP_EXCLUDE: "10:900020401"
     volumes:

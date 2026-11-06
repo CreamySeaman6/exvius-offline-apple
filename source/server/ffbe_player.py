@@ -181,7 +181,12 @@ def serve_lapis_shop(spec, reply_id, plaintext=None):
                     raise ValueError('Not enough gil')
             elif not player.spend_lapis(price):
                 raise ValueError('Not enough Lapis')
-            if player._grant_items(rewards) != rewards:
+            player._purchase = True        # bought, not earned: no Lapis multiplier (lapis_economy.py)
+            try:
+                granted = player._grant_items(rewards)
+            finally:
+                player._purchase = False
+            if granted != rewards:
                 raise ValueError('Bundle could not be granted')
             _record_bundle_purchase(selected)
             if _bundle_bought(selected, limits.get(selected)):
@@ -1709,6 +1714,12 @@ def daily_quest_catalogue() -> dict:
 _DQ_CATALOGUE: dict | None = None
 
 
+def _daily_reward_info(quest: dict) -> str:
+    """The reward a daily quest row shows and pays (lapis_economy.EXVIUS_DAILY_QUEST_LAPIS)."""
+    from lapis_economy import daily_quest_lapis
+    return f"50:1:{daily_quest_lapis()}" if daily_quest_lapis() else str(quest.get("reward_info") or "")
+
+
 def daily_quest_by_id() -> dict:
     """`{id: row}` from the catalogue. Built on demand (the catalogue itself is cached)."""
     return {str(q.get("id")): q for q in (daily_quest_catalogue().get("quests") or [])
@@ -1874,7 +1885,7 @@ def _daily_quest_rows(player, day: str) -> list:
             DQ_LOCATION: str(int(DAILY_QUEST_LOCATION)),
             DQ_NAME: str(quest.get("name") or ""),
             DQ_DETAILS: str(quest.get("detail") or ""),
-            DQ_REWARD: str(quest.get("reward_info") or ""),
+            DQ_REWARD: _daily_reward_info(quest),
         })
     return out
 
@@ -2167,7 +2178,9 @@ def claim_daily_quest(spec, reply_id, plaintext=None):
         if player.progress_value(ckey):
             echoed.append(qid)                    # already paid: echo the state, pay nothing
             continue
-        reward = [{"kind": k, "id": i, "count": c} for k, i, c in _parse_reward(quest.get("reward_info", ""))]
+        from lapis_economy import daily_quest_lapis
+        reward_info = f"50:1:{daily_quest_lapis()}" if daily_quest_lapis() else quest.get("reward_info", "")
+        reward = [{"kind": k, "id": i, "count": c} for k, i, c in _parse_reward(reward_info)]
         if reward and not all(player._can_credit(item) for item in reward):
             refused.append(f"{qid}: reward cannot be credited")
             continue
@@ -2177,6 +2190,16 @@ def claim_daily_quest(spec, reply_id, plaintext=None):
             continue
         player.bump_progress(ckey, 1, cap=1, what=f"daily quest claim {qid} ({day})")
         paid.append(f"{qid}: " + (", ".join(f"{r['kind']}:{r['id']}x{r['count']}" for r in credited) or "no reward row"))
+    if paid:
+        # All of today's dailies claimed: the completion bonus, once per day (lapis_economy.py).
+        from lapis_economy import daily_all_bonus
+        today = [str(q) for q in player.daily_quest_ids()]
+        bkey = f"daily_all_bonus:{day}"
+        if (daily_all_bonus() and today and not player.progress_value(bkey)
+                and all(player.progress_value(player.daily_claim_key(q, day)) for q in today)):
+            player._grant_items([{"kind": 50, "id": 1, "count": daily_all_bonus()}])
+            player.bump_progress(bkey, 1, cap=1, what=f"daily quest all-clear bonus ({day})")
+            paid.append(f"all dailies done: +{daily_all_bonus()} lapis before the multiplier")
     if paid or echoed or refused:
         _note("daily quest claim: " + (f"paid {len(paid)} ({'; '.join(paid)})" if paid else "nothing paid")
               + (f"; already claimed {len(echoed)}" if echoed else "")

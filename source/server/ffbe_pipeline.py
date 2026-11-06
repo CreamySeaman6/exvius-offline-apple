@@ -240,6 +240,8 @@ PIPELINE: tuple = (
     # CreateUser reply, whose result gate is INVERTED. docs/notes/home_screen_payloads.md S11.14.
     Step("deliver_anniversary_ticket", lambda c: deliver_anniversary_ticket(c.spec, c.reply_id),
          "state", "State.player.mailbox", "one 8th-anniversary ticket per day, by mail"),
+    Step("deliver_weekly_gift", lambda c: __import__("lapis_economy").deliver_weekly_gift(c.spec, c.reply_id),
+         "state", "State.player.mailbox", "one summon gift per rotation week, by mail (lapis_economy.py)"),
     Step("serve_login_bonus", lambda c: serve_login_bonus(c.spec, c.reply_id),
          "spec", "f5bA4wFx", "the calendar's day rows, marked with the player's reached day"),
     Step("deliver_login_mail", lambda c: deliver_login_mail(c.spec, c.reply_id),

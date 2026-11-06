@@ -3480,6 +3480,9 @@ class PlayerState:
                 continue
             cur = STORAGE_CURRENCY.get(kind)
             if cur:
+                if kind == 50 and not getattr(self, "_purchase", False):
+                    from lapis_economy import earned
+                    count = earned(count)      # earned Lapis only (lapis_economy.py); purchases set _purchase
                 self.add_currency(cur, count)
             elif str(kind) == "21":
                 # EQUIP goes to `inventory.equipment`, NOT the generic bag: `equip_item_rows` (the

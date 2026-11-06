@@ -213,6 +213,17 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 
 Your first replay week is recorded in `FFBE_DIR/server/state/replay.json`. Changing the pace later re-times the whole replay from that week. Units you already own stay in your save. Holiday sets come out of the timeline and appear in the week before each real holiday and the holiday's own week. Each holiday brings the next original year that hasn't been shown (if it's less than a year ahead of history), plus any years the replay went past, older ones first. When history runs out, the random rotation takes over with every unit.
 
+**Earned Lapis**
+
+The original game's Lapis income assumed you'd buy Lapis. These settings raise what you earn by playing (Shop purchases are never touched). With the defaults, a full day of daily quests pays 975 Lapis, and every week brings a 10+1's worth of summon tickets.
+
+| Setting | What it controls |
+| --- | --- |
+| `EXVIUS_LAPIS_MULTIPLIER` | Multiplies every Lapis amount earned by playing: mission challenges, event repeats, rank-ups, login and catch-up mails, quests. Default `1.5`; `1` is the stock game. |
+| `EXVIUS_DAILY_QUEST_LAPIS` | Lapis paid by each daily quest (before the multiplier). Default `150`. `0` keeps the old gil/Lapis mix. |
+| `EXVIUS_DAILY_ALL_BONUS` | Extra Lapis for finishing all of a day's daily quests (before the multiplier). Default `200`. |
+| `EXVIUS_WEEKLY_GIFT` | Mailed once per summon week, as `kind:id:count` items. Default `23:50:10,23:70:1`: 10 Rare Summon Tickets and a Guaranteed Ticket (4★/5★/NV), usable with any banner's Ticket Summon button. `""` turns it off. |
+
 **Other players**
 
 | Setting | What it controls |
