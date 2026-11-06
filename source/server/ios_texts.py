@@ -15,6 +15,12 @@ shipped `F_TEXT_GACHA` doesn't name. The iPhone app has no hooks, so it printed 
 
 Existing records are only replaced where the Android hook replaces them too (a banner's `name_override`).
 Explanations are added only for banners with none.
+
+Also covered (2026-11-05): everything else the Android hooks fill in at run time (reconstructed EX-bonus
+ability names and descriptions, monster and monster-skill names of reconstructed battles and the
+Colosseum, the "Story" dungeon entry, Clash of Wills / Dark Visions area names), the SP tickets' short and
+long descriptions, and the obtainable items whose English text is missing (ios_text_items.json). Those
+are written only where the shipped table has no usable English text.
 """
 from __future__ import annotations
 
@@ -27,10 +33,40 @@ import re
 import zlib
 
 INDEX = ("F_LOCALIZED_TEXT_MST", "i5QEJpua", "R8PYPnJ9")
+# (file token, AES key text) per table, from the name/token/key string triplets in libgame.
 TABLES = {
     "F_TEXT_BUNDLE": ("4OBhnBKu", "3VkESseA"),
     "F_TEXT_ITEM_NAME": ("VhkhtvDn", "xDkegMbe"),
+    "F_TEXT_ITEM_EXPLAIN_SHORT": ("IAPS1jOu", "TZh30bbo"),
+    "F_TEXT_ITEM_EXPLAIN_LONG": ("9NCIDltW", "s3fVSywt"),
     "F_TEXT_GACHA": ("ZJz5QwAy", "Ab2Kb6yJ"),
+    "F_TEXT_ABILITY_NAME": ("eSB5Ry3E", "At4ghcWo"),
+    "F_TEXT_ABILITY_EXPLAIN_SHORT": ("8GJBzdQV", "D9UVupRQ"),
+    "F_TEXT_MONSTER_NAME": ("0xkPiwVI", "UOz3hI2k"),
+    "F_TEXT_MONSTER_SKILL_NAME": ("F1z92dkt", "B41kLp2C"),
+    "F_TEXT_AREA_NAME": ("4qiOcmtJ", "FhWJxFlW"),
+    "F_TEXT_DUNGEON_NAME": ("AyVqkz2B", "0cqVvd61"),
+    "F_TEXT_ITEM_EQUIP_NAME": ("E0NdslwL", "SGMI0nIq"),
+    "F_TEXT_ITEM_EQUIP_SHORT": ("Nao9HYWk", "I0l1uc2s"),
+    "F_TEXT_ITEM_EQUIP_LONG": ("CD4giPVu", "jqe9yQm0"),
+    "F_TEXT_MATERIA_NAME": ("2Eg5s20D", "E5jbLGyb"),
+    "F_TEXT_MATERIA_EXPLAIN_SHORT": ("8g18k8jD", "DvdwoXYQ"),
+    "F_TEXT_MATERIA_EXPLAIN_LONG": ("QEbXmDTD", "3ZaDmbq1"),
+    "F_TEXT_IMPORTANT_ITEM_NAME": ("TIKwbf3D", "lx4HCdrQ"),
+    "F_TEXT_IMPORTANT_ITEM_EXPLAIN_SHORT": ("YBqAUJt1", "Fc6H1Udw"),
+    "F_TEXT_IMPORTANT_ITEM_EXPLAIN_LONG": ("aJ4tvgSq", "iElLxksB"),
+}
+# Per reward kind: (name table, prefix), (short table, prefix), (long table, prefix).
+ITEM_TEXT = {
+    "20": (("F_TEXT_ITEM_NAME", "MST_ITEM_NAME_"), ("F_TEXT_ITEM_EXPLAIN_SHORT", "MST_ITEM_SHORTDESCRIPTION_"),
+           ("F_TEXT_ITEM_EXPLAIN_LONG", "MST_ITEM_LONGDESCRIPTION_")),
+    "21": (("F_TEXT_ITEM_EQUIP_NAME", "MST_EQUIP_ITEM_NAME_"), ("F_TEXT_ITEM_EQUIP_SHORT", "MST_EQUIP_ITEM_SHORTDESCRIPTION_"),
+           ("F_TEXT_ITEM_EQUIP_LONG", "MST_EQUIP_ITEM_LONGDESCRIPTION_")),
+    "22": (("F_TEXT_MATERIA_NAME", "MST_MATERIA_NAME_"), ("F_TEXT_MATERIA_EXPLAIN_SHORT", "MST_MATERIA_SHORTDESCRIPTION_"),
+           ("F_TEXT_MATERIA_EXPLAIN_LONG", "MST_MATERIA_LONGDESCRIPTION_")),
+    "23": (("F_TEXT_IMPORTANT_ITEM_NAME", "MST_IMPORTANT_ITEM_NAME_"),
+           ("F_TEXT_IMPORTANT_ITEM_EXPLAIN_SHORT", "MST_IMPORTANT_ITEM_SHORTDESCRIPTION_"),
+           ("F_TEXT_IMPORTANT_ITEM_EXPLAIN_LONG", "MST_IMPORTANT_ITEM_LONGDESCRIPTION_")),
 }
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -45,7 +81,56 @@ TICKET_NAMES = {
     "106213080": "Brave Ability Box Ticket",
 }
 
+# Their short and long descriptions (the Shop's bundle details and the item list print them).
+TICKET_DESCRIPTIONS = {
+    "106213040": "Use for one SP Special Summon.",
+    "106213050": "Use for one 4★/5★/NV SP Special Summon.",
+    "106213030": "Use for one 5★/NV SP Special Summon.",
+    "106213060": "Use for one Bonus Summon.",
+    "106213070": "Use for one Boss Rush Event Summon.",
+    "106213080": "Use for one Brave Ability Enhancement Box Summon.",
+}
+TICKET_LONG = " The summon appears on the Summon screen while you hold this ticket."
+
+# Raise by one whenever the text additions change: the phone only re-downloads a table whose advertised
+# version went UP, and the checksum part alone can go down. 1 = bundles/tickets/banners (2026-11-05),
+# 2 = item descriptions and the Android hook texts (2026-11-05).
+GENERATION = 2
+
 _CACHE: dict = {}
+_JAPANESE = re.compile("[\u3040-\u30ff\u3400-\u9fff]")
+
+
+def _shipped(table: str) -> dict[str, str]:
+    """The shipped English text of one table (decoded copy in TEXT_DIR), first column."""
+    key = ("shipped", table)
+    if key not in _CACHE:
+        out = {}
+        try:
+            import data_paths
+            with open(os.path.join(data_paths.TEXT_DIR, table + ".ndjson"), encoding="utf-8") as fh:
+                for line in fh:
+                    row = json.loads(line)
+                    values = [v for v in row.get("v") or [] if v]
+                    out[row["key"]] = values[0] if values else ""
+        except (OSError, ValueError, ImportError):
+            pass
+        _CACHE[key] = out
+    return _CACHE[key]
+
+
+def _bad(value, key: str) -> bool:
+    """No usable English text: missing, the key itself, a TFA placeholder or Japanese (same test as the
+    Android hook in source/exvius/menu_assets.js)."""
+    return not value or value == key or value.startswith("TFA") or bool(_JAPANESE.search(value))
+
+
+def _fill(out: dict, table: str, key: str, text) -> None:
+    """Add `key` only where the shipped table has no usable English text for it."""
+    if not text:
+        return
+    if _bad(_shipped(table).get(key), key):
+        out[table][key] = (_clean(text), True)
 
 
 def enabled() -> bool:
@@ -73,6 +158,11 @@ def additions() -> dict[str, dict[str, tuple[str, bool]]]:
         out["F_TEXT_BUNDLE"]["MST_BUNDLE_DESC_" + bid] = (_clean(name), False)
     for iid, name in TICKET_NAMES.items():
         out["F_TEXT_ITEM_NAME"]["MST_ITEM_NAME_" + iid] = (name, False)
+        out["F_TEXT_ITEM_EXPLAIN_SHORT"]["MST_ITEM_SHORTDESCRIPTION_" + iid] = (TICKET_DESCRIPTIONS[iid], False)
+        out["F_TEXT_ITEM_EXPLAIN_LONG"]["MST_ITEM_LONGDESCRIPTION_" + iid] = (
+            TICKET_DESCRIPTIONS[iid] + TICKET_LONG, False)
+    _hook_texts(out)
+    _reachable_items(out)
     try:
         from ffbe_gacha import all_banners, missing_gacha_names
         banners = all_banners()
@@ -92,13 +182,66 @@ def additions() -> dict[str, dict[str, tuple[str, bool]]]:
     return out
 
 
+def _load(name: str):
+    try:
+        with open(os.path.join(_HERE, name), encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return {}
+
+
+def _hook_texts(out: dict) -> None:
+    """The text the Android build's hooks supply at run time (source/exvius/menu_assets.js and
+    summon_menu.js), written into the tables instead."""
+    # Reconstructed EX-bonus abilities: name and description.
+    for aid, row in (_load("content/exbonus_text.json") or {}).items():
+        if not isinstance(row, dict):
+            continue
+        _fill(out, "F_TEXT_ABILITY_NAME", "MST_ABILITY_NAME_" + aid, row.get("name"))
+        for prefix in ("MST_ABILITY_SHORTDESCRIPTION_", "MST_ABILITY_EXPLAIN_SHORT_", "MST_ABILITY_LONGDESCRIPTION_"):
+            _fill(out, "F_TEXT_ABILITY_EXPLAIN_SHORT", prefix + aid, row.get("description"))
+    # Monster and monster-skill names of the reconstructed battles and the Colosseum.
+    battle = _load("battle_names.json") or {}
+    colosseum = _load("colosseum_names.json") or {}
+    for mid, name in {**colosseum, **(battle.get("monster") or {})}.items():
+        _fill(out, "F_TEXT_MONSTER_NAME", "MST_MONSTER_NAME_" + str(mid), name)
+    for sid, name in (battle.get("skill") or {}).items():
+        _fill(out, "F_TEXT_MONSTER_SKILL_NAME", "MST_MONSTER_SKILL_NAME_" + str(sid), name)
+    # The story's own dungeon list entry, and the two native event modes' area names.
+    _fill(out, "F_TEXT_DUNGEON_NAME", "MST_DUNGEONS_NAME_99999", "Story")
+    try:
+        from event_archive import events
+        for row in events():
+            mode = row.get("native_mode")
+            label = {"tfa": "Clash of Wills", "parade": "Dark Visions"}.get(mode)
+            if label:
+                out["F_TEXT_AREA_NAME"]["MST_AREA_NAME_" + str(row["area"])] = (label, True)
+    except Exception as exc:  # noqa: BLE001 -- the rest still applies
+        print(f"[ios-texts] event mode names skipped ({exc})", flush=True)
+
+
+def _reachable_items(out: dict) -> None:
+    """Items a player can receive with no English name or description (ios_text_items.json, from an
+    audit of every reward, shop and bundle list in the shipped tables and this server's files): fill the
+    name, and use it as the description, so item screens never print MST_..._SHORTDESCRIPTION_<id>."""
+    for ref, name in (_load("ios_text_items.json").get("items") or {}).items():
+        kind, _, iid = ref.partition(":")
+        if kind not in ITEM_TEXT:
+            continue
+        (name_table, name_key), short, long = ITEM_TEXT[kind]
+        _fill(out, name_table, name_key + iid, name)
+        name = name or _shipped(name_table).get(name_key + iid)
+        for table, prefix in (short, long):
+            _fill(out, table, prefix + iid, name)
+
+
 def bump() -> int:
     """Added to each patched text table's version and to the index's advertised version."""
     if not enabled():
         return 0
     if "bump" not in _CACHE:
         blob = json.dumps(additions(), sort_keys=True, ensure_ascii=False).encode("utf-8")
-        _CACHE["bump"] = 1000 + zlib.crc32(blob) % 1000
+        _CACHE["bump"] = 1000 * GENERATION + zlib.crc32(blob) % 1000
     return _CACHE["bump"]
 
 
