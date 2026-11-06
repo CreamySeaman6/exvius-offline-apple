@@ -2894,7 +2894,12 @@ def event_gate_art(area):
     if not _EVENT_GATE_ART_CACHE:
         with open(os.path.join(HERE, 'event_art.json'), encoding='utf-8') as source:
             _EVENT_GATE_ART_CACHE.update(json.load(source)['events'])
-    return _EVENT_GATE_ART_CACHE.get(str(area), {}).get('filename')
+    name = _EVENT_GATE_ART_CACHE.get(str(area), {}).get('filename')
+    if name is None:
+        # Events added by event_history.json: their banner once it is on disk (event_archive.added_art).
+        from event_archive import added_art
+        name = added_art(area)
+    return name
 
 
 def serve_event_gate(spec, reply_id):

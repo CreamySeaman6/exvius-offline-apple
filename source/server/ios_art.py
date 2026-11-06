@@ -145,6 +145,11 @@ def art_names() -> list[str]:
     except (OSError, ValueError):
         pass
     try:
+        import event_archive
+        names.update(event_archive.added_art_names())   # events added by event_history.json
+    except Exception:  # noqa: BLE001 -- the archive's own art still packs
+        pass
+    try:
         with open(os.path.join(_HERE, "raid_archive.json"), encoding="utf-8") as fh:
             for event in json.load(fh).get("events", []):
                 if event.get("menu_background"):

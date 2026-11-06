@@ -11,11 +11,36 @@ GROUPS = (('all', 'All Events'), ('permanent', 'Permanent'),
 _DOCUMENT = None
 
 
+_HISTORY = None
+REPLAY_LOOKBACK_DAYS = 14   # first replay week: events still running when the replay starts
+
+
+def history():
+    """event_history.json: Global run dates the archive lacks (first runs, reruns) and events it lacks."""
+    global _HISTORY
+    if _HISTORY is None:
+        try:
+            _HISTORY = json.loads(Path(__file__).with_name('event_history.json').read_text(encoding='utf-8'))
+        except (OSError, ValueError):
+            _HISTORY = {}
+    return _HISTORY
+
+
 def document():
+    """The archive, plus event_history.json's added events. Every row gets `runs`: all its Global run dates."""
     global _DOCUMENT
     if _DOCUMENT is None:
         path = Path(__file__).with_name('event_archive.json')
-        _DOCUMENT = json.loads(path.read_text(encoding='utf-8'))
+        document = json.loads(path.read_text(encoding='utf-8'))
+        extra = history()
+        document['events'] = document['events'] + [dict(row) for row in extra.get('added', [])]
+        runs = extra.get('runs', {})
+        for row in document['events']:
+            dates = set(runs.get(str(row['area']), []))
+            if row.get('release'):
+                dates.add(str(row['release']))
+            row['runs'] = sorted(dates)
+        _DOCUMENT = document
     return _DOCUMENT
 
 
@@ -35,16 +60,19 @@ def rotation_enabled():
 
 
 def weekly_events(rows=None, now=None):
-    """This week's Vortex: the permanent dungeons, the events that launched beside this week's summon sets,
+    """This week's Vortex: the permanent dungeons, the events that ran beside this week's summon sets,
     and a few of the undated recurring events.
 
     Global launched most events on the same day as a summon set (478 of the 626 dated events here), and
     they were built to be played together: the event's featured units, its currency and its banner tickets
-    belong to that set. So an event is open while a set released between 3 days after and 13 days before it
-    is on the summon screen (`gacha_rotation.set_dates`), holiday sets included. Undated, non-permanent
-    events (Boss Rush, Cactuar Dunes, Challenge of the Brave, ...) rotate EXVIUS_VORTEX_EXTRA at a time
-    (default 2). With the historical replay on (replay.py), events released in this week's slice of
-    history are open too.
+    belong to that set. So an event is open while a set released between 3 days after and 13 days before
+    one of its runs is on the summon screen (`gacha_rotation.set_dates`), holiday sets included. An event's
+    runs are its release date plus the reruns and earlier first runs in event_history.json. Undated,
+    non-permanent events (Boss Rush, Cactuar Dunes, Challenge of the Brave, ...) rotate EXVIUS_VORTEX_EXTRA
+    at a time (default 2). With the historical replay on (replay.py), events with a run in this week's
+    slice of history are open too (the first week also reaches back REPLAY_LOOKBACK_DAYS, for events
+    already running when the replay starts). An event opened by a later run is returned with `release`
+    set to that run (`first_release` keeps the original), so the News board and home banners date it right.
     """
     import os
     import random
@@ -55,28 +83,36 @@ def weekly_events(rows=None, now=None):
     import gacha_rotation
     dates = gacha_rotation.set_dates(now)
     number = gacha_rotation.week(now)[0]
-    # Historical replay: also every event released in this week's slice of history; events that launched
+    # Historical replay: also every event with a run in this week's slice of history; events that launched
     # with a holiday set wait for that set (gacha_rotation.withheld_holiday_dates).
     import replay
     win = replay.window(now) if replay.enabled() else None
     if win and win['finished']:
         win = None
     held = gacha_rotation.withheld_holiday_dates(now) if win else []
+    earliest = win and (win['from'] - timedelta(days=REPLAY_LOOKBACK_DAYS) if win['index'] == 0 else win['from'])
     kept, extra = [], []
     for row in rows:
         if row.get('group') == 'permanent':
             kept.append(row)
             continue
-        try:
-            released = date.fromisoformat(str(row.get('release') or ''))
-        except ValueError:
+        released = []
+        for text in row.get('runs') or [row.get('release')]:
+            try:
+                released.append(date.fromisoformat(str(text or '')))
+            except ValueError:
+                pass
+        if not released:
             extra.append(row)
             continue
-        if any(timedelta(days=0) <= released - d <= timedelta(days=3) for d in held):
-            continue
-        if any(timedelta(days=-3) <= released - d <= timedelta(days=13) for d in dates) or (
-                win and win['from'] <= released < win['to']):
-            kept.append(row)
+        opened = [run for run in released
+                  if not any(timedelta(days=0) <= run - d <= timedelta(days=3) for d in held)
+                  and (any(timedelta(days=-3) <= run - d <= timedelta(days=13) for d in dates)
+                       or (win and earliest <= run < win['to']))]
+        if opened:
+            run = max(opened).isoformat()
+            kept.append(row if run == row.get('release') else
+                        dict(row, release=run, first_release=row.get('release')))
     try:
         per_week = max(0, int(os.environ.get('EXVIUS_VORTEX_EXTRA', '2')))
     except ValueError:
@@ -89,6 +125,68 @@ def weekly_events(rows=None, now=None):
         picked = {names[order[(start + i) % len(names)]] for i in range(min(per_week, len(names)))}
         kept.extend(row for row in extra if row['name'] in picked)
     return kept
+
+
+# --- banners of the added events -------------------------------------------------------------------
+
+def _art_folder():
+    import os
+    root = os.environ.get('CDN_ROOT')
+    return os.path.join(root, 'en', 'sd', 'area') if root else None
+
+
+def added_art_names():
+    """File names of the added events' banners (ios_art packs those that are on disk)."""
+    return [row['filename'] for row in history().get('added', []) if row.get('filename')]
+
+
+def added_art(area):
+    """The banner of an added event once its file is on disk, else None.
+
+    A Vortex tile must never name art missing from the phone's banner pack (a null tile texture crashed
+    the Enhance tab, see ios_art.py), so without the file the tile keeps the server's default art."""
+    import os
+    row = next((r for r in history().get('added', []) if str(r['area']) == str(area)), None)
+    folder = _art_folder()
+    if row and folder and os.path.isfile(os.path.join(folder, row['filename'])):
+        return row['filename']
+    return None
+
+
+def fetch_added_art(log=print):
+    """Download each added event's banner from the wiki into en/sd/area/ (once), as a 640x240 PNG."""
+    import io
+    import os
+    import urllib.request
+    folder = _art_folder()
+    if not folder or not os.path.isdir(folder):
+        return 0
+    fetched = 0
+    for row in history().get('added', []):
+        path = os.path.join(folder, row['filename'])
+        if os.path.isfile(path) or not row.get('art_url'):
+            continue
+        try:
+            req = urllib.request.Request(row['art_url'] + '?format=original',
+                                         headers={'User-Agent': 'Mozilla/5.0 (ExviusOffline event art)'})
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                data = resp.read()
+            if data[:8] != b'\x89PNG\r\n\x1a\n' or data[16:24] != (640).to_bytes(4, 'big') + (240).to_bytes(4, 'big'):
+                from PIL import Image
+                image = Image.open(io.BytesIO(data)).convert('RGBA').resize((640, 240))
+                out = io.BytesIO()
+                image.save(out, 'PNG')
+                data = out.getvalue()
+        except Exception as exc:  # noqa: BLE001 -- the tile keeps the default art; retried next start
+            log(f"EVENT-ART {row['area']} {row['name']}: {exc}")
+            continue
+        with open(path + '.tmp', 'wb') as fh:
+            fh.write(data)
+        os.replace(path + '.tmp', path)
+        fetched += 1
+    if fetched:
+        log(f'EVENT-ART downloaded {fetched} event banner(s) into {folder}')
+    return fetched
 
 
 def listings():

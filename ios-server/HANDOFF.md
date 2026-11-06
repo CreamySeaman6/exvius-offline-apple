@@ -43,11 +43,12 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 6. **Vortex tile art and the Enhance tab** (spdungeon1.cpk rebuild).
 7. **Single container** `ffbe` (Tailscale + server; fixes the dead network after Unraid's 4 AM Appdata Backup). See "One container…" at the end.
 8. **Rookie friend quests**: "Send a friend invite!" and "Go on a quest with a friend!". See "Fixed: Rookie friend quests…".
+9. **Event history** (2026-11-06): events open at every Global run (first runs and reruns), and seven missing events were added. Replay week 0 gains The Hanging Edge and Dread Frost Arrives; week 1 (from Sunday 2026-11-08) Memories from the Aquapolis, Akademeia, Dangerous Woman Tour, Mana Mystery. Open the game twice before opening the Vortex (the banner pack changes). See "Event history: real run dates…" at the end.
 
 ### Open issues and known limits
 
-- He has **two new, big things** he wants to work on (2026-11-06), not yet described. Ask him what they are before starting anything else.
-- Vortex is thin before May 2017 history: the archive has no dated events before 2017-05-12.
+- He has **two new, big things** (2026-11-06). The first, event content to go with the banners, is done (see "Event history…"). The second is not yet described; ask him.
+- Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter, Halloween Castle and The Spearmaiden are missing for lack of battle data (would need a wiki-roster reconstruction like `event_encounters.json`).
 - The mission result screen shows base Lapis, not the 1.5× amount actually credited.
 - Tall 640x392 detail art is padded to the frame, so it shows narrower than the frame (with blurred sides).
 - A unit from the NV SP ticket arrives at level 1 although the banner says 120. Offered to look at it; not requested.
@@ -67,6 +68,7 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 | Banner deals printed on art | `banner_deals.py`, `banner_deals.json`, `player_state.roll_gacha` | Banner deals… |
 | Rookie friend quests | `ffbe_friends.local_friend_action`, `exvius_repeat.observe_load`, `ffbe_player.score_completed_quest_mission` | Fixed: Rookie friend quests… |
 | One container | `ios-server/Dockerfile`, `entrypoint.sh`, `docker-compose.yml` | One container… |
+| Event run dates and added events | `event_history.json`, `event_archive.py` (`document`, `weekly_events`, `added_art`, `fetch_added_art`) | Event history… |
 
 ## The goal
 
@@ -367,3 +369,24 @@ Reported: "Send a friend invite!" and "Go on a quest with a friend!" (Rookie Que
 - **Quest with a friend** (condition code 17): it was scored only when the mission END request carried `qLke7K8f` plus `dUX7Pt5i`/`w40YsHIz`, which the iPhone apparently doesn't send (no capture checked). Now `exvius_repeat.observe_load` (mission load, pipeline step `roll_drops`, which now passes the request body) records the friend/guest id from the START request on the attempt (`attempt['helper']`). `score_completed_quest_mission` scores 17 if the end request names a helper or the attempt recorded one.
 - Tested in the sandbox: inviting a made-up player sets both invite quests to 1; a load with a friend then a clear whose end body names no helper sets both friend-quest rows to 1; a load without a friend leaves them at 0. Saves where these quests were already done before the fix don't get them retroactively; doing them once more counts.
 - `source/exvius/test_*.py` doesn't import in the sandbox (it needs the Android build's modules), before or after this change.
+
+## Event history: real run dates, and the missing events (2026-11-06)
+
+Requested: the story/event content that went with each week's banners, which gave Lapis, event items and equipment. The Vortex was empty of dated events before May 2017 history.
+
+Findings:
+
+- Global's own schedule (the Brave Exvius wiki, Update Schedule, section "Global Update History") has an event or raid almost every week from December 2016. Global's first story event was The Gathering (June 2017); before that it ran exploration, King Mog (exchange), raid, challenge and trial events.
+- 12 of the 18 events from Dec 2016 to May 2017 were already in `event_archive.json`, but undated (Dread Frost Arrives, Mana Mystery, March on Ifrit, The Egg Seekers, The Psycho Clown, Dangerous Woman Tour) or dated by a later rerun (The Hanging Edge, Akademeia, The Dreadnought, Operation MA Demolition, The Floating Continent, Shadow of the Empire), so the replay never opened them then.
+- Some events the archive lacks are still in the shipped tables, with battles in the JP battle index. Every mission was checked with the same bundle choice and checks as `capture_server` (exploration field bundle, story phases, or `battle_content.assemble`).
+
+Changes:
+
+- `event_history.json`: `runs` (58 areas): Global run dates the archive lacks, read from that schedule. Dates within 45 days of the archive's release, or the same day a year apart, are treated as typos and listed in `provenance.skipped_runs`. `added` (7 events, archive row shape plus `art_url`): Memories from the Aquapolis (711, dungeon 71101 only; 71102 has no field battles; 2017-01-06, rerun 2017-07-14), The Auracite Chosen (712, 2017-03-24), Guardian of the Order (746, story event #5, 84 missions, 2017-11-03), The Web-Weaving Princess (749, 2017-12-01), King of Darkness (747, raid, 2017-12-08), Dracotaur Lancer (797, raid, 2018-05-25), Orbonne Monastery Vaults (703, 2016-09-30, rerun 2018-07-20). Together about 2,500 Lapis in mission challenges plus items and equipment.
+- `ios-server/devtools/build_event_history.py` writes that file (the schedule lines and added events are in it; run it from `source/server` with `MST_DIR` set).
+- `event_archive.document()` appends `added` and gives every row `runs` (release plus history). `weekly_events` opens an event when any run qualifies (same set-proximity and replay-slice rules as before). It returns the row with `release` set to that run (`first_release` keeps the original), so the News board and home banners date reruns correctly. Replay week 0 also reaches back 14 days (`REPLAY_LOOKBACK_DAYS`) for events running when the replay starts (The Hanging Edge, 2016-12-02).
+- The two raids have no `raid_archive.json` data, so they play as normal battles (mission rewards, no raid coin scoring).
+- Art: the added events' banners aren't in the data packs. `serve.py`'s art thread calls `event_archive.fetch_added_art()` before building the banner pack. It downloads each banner once from the wiki (`?format=original`, converted to a 640x240 PNG if needed) into `data/native/en/sd/area/`, and logs `EVENT-ART` on failure, retrying at the next start. `event_archive.added_art(area)` names the file only once it exists. `ffbe_player.event_gate_art`, `replay_notices._event_art` and `ios_art.art_names` use it, so a tile never names art the banner pack lacks; until then it shows the default tile picture.
+- Left out (no battle data): Lunar New Year (907/908: the Nian Beast challenges are exploration missions with no field groups), The Spearmaiden (701), Halloween Castle (919/921), Eternal Winter (923), Trials of Love (no missions). Not checked: whether The Auracite Chosen's King Mog exchange shop shows (other King Mog events use the same path).
+- Tested in the sandbox: all missions of the added areas pass the load checks; a 9-week replay preview before/after; the Vortex reply for weeks 1 and 4 (gate rows for every mission, default art without the file); News board summaries; the art download (PNG, WebP resized, network error, retry). Not yet on the phone.
+

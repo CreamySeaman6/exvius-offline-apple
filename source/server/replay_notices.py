@@ -351,7 +351,13 @@ def _event_art() -> dict:
             events = {}
         _MARQUEE_CACHE['art'] = {str(area): row.get('filename') for area, row in events.items()
                                  if row.get('filename')}
-    return _MARQUEE_CACHE['art']
+    art = dict(_MARQUEE_CACHE['art'])
+    import event_archive
+    for row in event_archive.history().get('added', []):
+        name = event_archive.added_art(row['area'])   # only once the banner is on disk
+        if name:
+            art.setdefault(str(row['area']), name)
+    return art
 
 
 def marquee_entries() -> list[dict] | None:

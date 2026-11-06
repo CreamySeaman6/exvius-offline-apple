@@ -314,7 +314,9 @@ def main() -> int:
     # Build the iPhone's Vortex banner pack now (a few seconds, cached in server-root/ios-cache), rather than
     # during the first login that asks for it. See source/server/ios_art.py.
     def build_art():
+        import event_archive
         import ios_tables
+        event_archive.fetch_added_art(log=log)   # banners of events added by event_history.json (once)
         ios_tables.art()
     threading.Thread(target=build_art, name='ios-art', daemon=True).start()
     tls = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)

@@ -219,7 +219,7 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 | `EXVIUS_REPLAY_PACE` | Historical weeks per real week, with optional changes by date. Default `3,2@2020-08-20`: three, then two from Global's first Neo Vision banner. |
 | `EXVIUS_REPLAY_NV_ERA` | When NV EXVIUS appears among the permanent summons. Default `2020-08-20`. |
 | `EXVIUS_REPLAY_NOTICES` | `1` (default) adds a "This week" notice to the News board for each replay week, listing its summons and Vortex events. `EXVIUS_REPLAY_NOTICE_WEEKS` (default `8`) is how many weeks stay listed. |
-| `EXVIUS_NOTICE_ART` | `1` (default) lets the notice pages show unit sprites: the server downloads each unit's sprite from the FFBE wiki the first time a notice needs it and keeps it in `FFBE_DIR/server/ios-cache/notice-art/` (delete that folder to clear it). Summon and event banners come from your own data. `0` shows names only. |
+| `EXVIUS_NOTICE_ART` | `1` (default) lets the notice pages show unit sprites: the server downloads each unit's sprite from the FFBE wiki the first time a notice needs it and keeps it in `FFBE_DIR/server/ios-cache/notice-art/` (delete that folder to clear it). Summon and event banners come from your own data, except the banners of the seven events added in `source/server/event_history.json`: the server downloads those from the wiki once at startup into `FFBE_DIR/data/native/en/sd/area/` (until then their Vortex tiles show the default picture). `0` shows names only. |
 | `EXVIUS_REPLAY_FULL_POOL` | Summons paid only with a ticket you can't buy over and over (the Early Bird's Guaranteed NV Summon Ticket, the once-only SP NV tickets, event and login tickets) ignore the replay's unit limit, so a held ticket is a real one-off chance at any unit, NV included. Tickets the Shop sells without limit keep the limit. This setting names more banners by id (default `9200107,9200108`). Ticket-paid banners appear on the summon screen whenever you hold the ticket. |
 | `EXVIUS_REPLAY_MARQUEE` | `1` (default) fills the home screen's banner strip with the original banners of this week's Vortex events (the same art as the Vortex tiles, at most `EXVIUS_REPLAY_MARQUEE_MAX`, default `6`). Needs `MARQUEE_FLAG=1`, which turns the strip on; set `MARQUEE_FLAG` to `0` if the home screen misbehaves. Weeks with no dated events show no banners. |
 
@@ -252,7 +252,7 @@ Your own hand-picked companions still come from `source/server/friends.yaml`.
 | --- | --- |
 | `EXVIUS_SUMMON_ROTATION` | `1` rotates banners weekly; `0` shows every banner at once. |
 | `EXVIUS_ROTATION_HOLIDAYS` | `1` (default) keeps holiday summon sets (Christmas, Halloween, Valentine's Day, Easter) for the week before that holiday and the holiday's own week. Without the replay, it's one original year at a time, oldest first, so the newest and strongest holiday units come later. `0` mixes them into the normal pool. |
-| `EXVIUS_VORTEX_ROTATION` | `1` (default) makes the Vortex follow the summon rotation: the permanent dungeons are always open, plus the events that originally launched alongside this week's summon sets, so an event's featured units, coins and tickets line up with the banners you can pull. `0` opens all 757 archived events at once. |
+| `EXVIUS_VORTEX_ROTATION` | `1` (default) makes the Vortex follow the summon rotation: the permanent dungeons are always open, plus the events that originally ran alongside this week's summon sets, so an event's featured units, coins and tickets line up with the banners you can pull. An event opens at each of its Global runs, first runs and reruns alike (`source/server/event_history.json`). `0` opens all 764 archived events at once. |
 | `EXVIUS_VORTEX_EXTRA` | How many undated recurring Vortex events (Boss Rush, Cactuar Dunes, Challenge of the Brave, …) open each week. Default `2`. |
 | `EXVIUS_ROTATION_TZ` | Time zone of the weekly change. Default `America/New_York`. |
 | `EXVIUS_ROTATION_DAY` | Day of the change. 0 is Monday, 6 is Sunday. |
@@ -306,7 +306,7 @@ The weekly summon rotation is in `source/server/gacha_rotation.py`, the historic
    docker image rm tailscale/tailscale:stable   # skip if anything else uses this image
    ```
 
-   Then delete the whole `exvius` folder (or your `FFBE_DIR`). That removes the game data, your save, the certificates, the Tailscale state and this copy of the repo.
+   Then delete the whole `exvius` folder (or your `FFBE_DIR`). That removes the game data (including the event banners the server downloads from the Brave Exvius wiki into `data/native/en/sd/area/`), your save, the certificates, the Tailscale state and this copy of the repo.
 2. In the Tailscale admin console:
    - **Machines → ffbe → ⋯ → Remove.**
    - **DNS:** delete the nameserver entries for `gumi.sg` and `exvius.com`.
