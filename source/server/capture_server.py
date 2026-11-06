@@ -552,7 +552,9 @@ class Handler(BaseHTTPRequestHandler):
             from replay_notices import marquee_file
             rel = marquee_file(replay_banner.group(1)) or rel
         # Summon detail art asked for under its padded name (banner_fit.fit_name): serve the real file, padded.
+        # Under its `-full1` name (friend summons' screen has a 640x392 frame): fitted to that frame instead.
         import banner_fit
+        fit_plain = banner_fit.is_plain(rel)
         rel = banner_fit.real_rel(rel)
         # EXVIUS_TABLE_VERSION_OFFSET advertises every table at <real version + offset> (see
         # ffbe_battle.serve_version_table); the client then asks for that inflated name. Map it back.
@@ -667,7 +669,7 @@ class Handler(BaseHTTPRequestHandler):
         if data is not None and rel:
             import banner_fit
             if banner_fit.wants(rel):
-                data, fit_note = banner_fit.fit(data)
+                data, fit_note = banner_fit.fit(data, banner_fit.BASE_FRAME if fit_plain else banner_fit.FRAME)
                 if fit_note:
                     how = f"{how}, {fit_note}"
         n = len(data) if data is not None else 0

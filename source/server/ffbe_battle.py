@@ -45,6 +45,21 @@ __all__ = [
 ]
 
 _CHALLENGE_INFO_LOGGED: set = set()   # reply ids already announced by serve_challenge_clear_all
+def _roll_items(src: str | None) -> str:
+    """Roll a `cat:item:count:rate,...` candidate list; never empty (see roll_drops)."""
+    src = src or ",".join(DROP_TABLE.split(","))
+    items = [it for it in src.split(",") if it]
+    rolled = []
+    for it in items:
+        f = it.split(":")
+        rate = int(f[3]) if len(f) > 3 and f[3].isdigit() else 100
+        if random.randint(1, 100) <= rate:
+            rolled.append(it)
+    if not rolled and items:
+        rolled = [items[-1]]
+    return ",".join(rolled)
+
+
 def roll_drops(spec, mid: str | None = None, is_battle_bundle: bool = False):
     """Turn each served drop list into a ROLL of itself, so drops vary per battle.
 
@@ -66,6 +81,16 @@ def roll_drops(spec, mid: str | None = None, is_battle_bundle: bool = False):
         return spec
     if not ROLL_DROPS:
         return spec            # reference state: serve the payload's own candidate list verbatim
+    encount = spec.get("6v0LPiRe")
+    if isinstance(encount, list) and encount:
+        # An exploration's random-encounter rows (battle_content.encount_rows): each row is one
+        # future battle, so each gets its own roll, with the same keep-one rule as a wave. The
+        # client reports what it actually fought and picked up at MissionEnd (`xF9Sr1a6`), which
+        # is what `credit_mission_rewards` pays, so these rolls never touch LAST_DROPS.
+        spec = dict(spec)
+        spec["6v0LPiRe"] = [dict(row, **{DROP_TOKEN: _roll_items(row.get(DROP_TOKEN))})
+                            if isinstance(row, dict) and DROP_TOKEN in row else row
+                            for row in encount]
     rows = spec.get(DROP_TAG_ROWS)
     if not isinstance(rows, list):
         # This mission's bundle carries no drop rows at all, so it OWNS its slot and claims it empty --
@@ -83,16 +108,7 @@ def roll_drops(spec, mid: str | None = None, is_battle_bundle: bool = False):
         # `dropInfo` (per-monster pool, e.g. Steel Bat's differs from Dire Rat's), and the DB is the oracle
         # for it -- so the pool belongs in the served `9BetM2Ds`, and the server only rolls it. `DROP_TABLE`
         # remains as the fallback for a row that has none.
-        src = row.get(DROP_TOKEN) or ",".join(DROP_TABLE.split(","))
-        items = [it for it in src.split(",") if it]
-        rolled = []
-        for it in items:
-            f = it.split(":")
-            rate = int(f[3]) if len(f) > 3 and f[3].isdigit() else 100
-            if random.randint(1, 100) <= rate:
-                rolled.append(it)
-        if not rolled and items:
-            rolled = [items[-1]]
+        rolled = _roll_items(row.get(DROP_TOKEN)).split(",")
         row = dict(row)
         # SERVE 4 FIELDS -- the parser reads fields [0..3] with NO bounds check (`getMissionDropItemInfo`
         # 0x19f7c28: `add x0,x8,#0x48` then StrToInt, BEFORE the count>=5 guard at 0x19f7cfc), so a

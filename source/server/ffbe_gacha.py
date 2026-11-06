@@ -506,7 +506,7 @@ def _gacha_banner_detail_string(banner: str) -> str:
     parser demands. Evidence: `docs/notes/gacha_banner_draw_path.md` S4a/S4d.
     """
     return f"0:{banner}" if banner else ""
-def _gacha_schedule_banner_string(banner: str, detail: str = "", extras=()) -> str:
+def _gacha_schedule_banner_string(banner: str, detail: str = "", extras=(), pad: bool = True) -> str:
     """`GachaScheduleMst.bannerInfo` (`4yT7FUqj`): the MIXED form the two screens need, and they are TWO
     different SLOTS (confirmed 2026-09-21):
       * the **LIST** entry reads the **bare** field `+0x60` -- `GachaTopScene::setListLayout` (`0x2120880`
@@ -519,11 +519,15 @@ def _gacha_schedule_banner_string(banner: str, detail: str = "", extras=()) -> s
     One comma entry cannot satisfy both, so serve `"<list_bare>,0:<detail_file>"`. Previously we sent ONE file
     for both, so the wide list slot got the tall detail art.
     Evidence: `docs/notes/gacha_banner_draw_path.md` S0/S4d/S8.
+
+    `pad`: the detail art goes to `GachaPayDetailScene` (3.5:1 frame, padded by banner_fit). False for
+    banners that open the base `GachaDetailScene` (friend-point and other layout-0 summons), whose
+    frame is 640x392 like the art.
     """
     name = banner or GACHA_DEFAULT_BANNER_ART
     from banner_fit import fit_name   # a fresh name for padded detail art (banner_fit.py)
-    detail = fit_name(detail or name)
-    extra = "".join(f",{i}:{fit_name(f)}" for i, f in enumerate(extras or (), 1))
+    detail = fit_name(detail or name, pad)
+    extra = "".join(f",{i}:{fit_name(f, pad)}" for i, f in enumerate(extras or (), 1))
     return f"{name},0:{detail}{extra}"
 def _gacha_target_info(entry: dict) -> str:
     """`GachaPanelGroupMst.targetInfo` (7iJpH5zZ) = `TargetType:TargetID:TargetNum:TargetRate:TargetLv`
@@ -636,7 +640,8 @@ def gacha_groups(banners: list) -> dict:
                       "w2A76noc": str(sd.get("banner_type", 0)),
                       "4yT7FUqj": _gacha_schedule_banner_string(_gacha_art(schedule_art, "banner"),
                                                                  _gacha_art(schedule_art, "detail_banner"),
-                                                                 schedule_art.get("detail_extra") or ()),
+                                                                 schedule_art.get("detail_extra") or (),
+                                                                 pad=str(layout or "0") in ("1", "2")),
                       "VjJQ51uG": _served_start(b, window),
                       "m8ivD4NX": SERVED_END,
                       "N2PkD9sy": _served_start(b, window)})

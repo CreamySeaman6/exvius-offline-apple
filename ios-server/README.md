@@ -237,6 +237,12 @@ The original game's Lapis income assumed you'd buy Lapis. These settings raise w
 | `EXVIUS_DAILY_ALL_BONUS` | Extra Lapis for finishing all of a day's daily quests (before the multiplier). Default `200`. |
 | `EXVIUS_WEEKLY_GIFT` | Mailed once per summon week, as `kind:id:count` items. Default `23:50:10,23:70:1`: 10 Rare Summon Tickets and a Guaranteed Ticket (4★/5★/NV), usable with any banner's Ticket Summon button. `""` turns it off. |
 
+**Explorations**
+
+| Setting | What it controls |
+| --- | --- |
+| `EXVIUS_FIELD_ENCOUNTERS` | `1` (default) gives explorations their random battles while you walk. Every enemy group the game data has for that exploration can appear anywhere on its map (which groups appeared in which area wasn't preserved). Each battle's drops are rolled from the enemies' own drop lists. Explorations whose enemy groups are missing from the data (Latius Woods, for example) still have none. `0` turns random battles off. |
+
 **Other players**
 
 | Setting | What it controls |
@@ -275,8 +281,8 @@ Your own hand-picked companions still come from `source/server/friends.yaml`.
 | `EXVIUS_IOS_TEXT` | `1` (default) adds the English names the stock app is missing, such as the Shop's local bundles and the special summon tickets. `0` turns it off. |
 | `ANNIVERSARY_TICKET` | `0` (default here) stops the free 8th-Anniversary 10+1 ticket the engine otherwise mails every day. `1` turns it back on. Tickets you already received stay. |
 | `EXVIUS_LAPIS_SHOP_EXCLUDE` | Products left out of the exchange shops that sell for Lapis, as `kind:id` pairs. The default, `10:900020401`, removes King Metal Minituars, which otherwise cost 3 Lapis each. Empty puts them back. |
-| `EXVIUS_IOS_BANNER_FIT` | `1` (default) pads summon detail art to the shape of the frame the iPhone draws it in, so taller or wider images aren't squashed (the Android build does this with a hook). The sides are filled with a blurred, darkened copy of the art. Needs Pillow, which the image installs. Cached in `FFBE_DIR/server/ios-cache/banner-fit/`. |
-| `EXVIUS_IOS_BANNER_FIT_NAMES` | `1` (iPhone default) names each summon detail image `<name>-fit1.png` in the summon tables. The phone keeps every banner image it has downloaded and never asks again, so without a new name it keeps the squashed copy. The server maps the name back to the real file. |
+| `EXVIUS_IOS_BANNER_FIT` | `1` (default) pads summon detail art to the shape of the frame the iPhone draws it in, so taller or wider images aren't squashed (the Android build does this with a hook). Paid summons draw it in a wide frame; the Standard (friend point) and free summons in a 640x392 one, so their art is fitted to that instead. The sides are filled with a blurred, darkened copy of the art. Needs Pillow, which the image installs. Cached in `FFBE_DIR/server/ios-cache/banner-fit/`. |
+| `EXVIUS_IOS_BANNER_FIT_NAMES` | `1` (iPhone default) names each summon detail image `<name>-fit1.png` (`<name>-full1.png` for the Standard and free summons) in the summon tables. The phone keeps every banner image it has downloaded and never asks again, so without a new name it keeps the squashed copy. The server maps the name back to the real file. |
 | `EXVIUS_BANNER_DEALS` | `1` (default) pays the extras printed on summon banner art that the banner data left out: free Trust Moogles with every 10+1, bonus coins and tickets, and from October 2020 a guaranteed 5★/NV unit plus a Summon Coin with every 11 summon. 107 banners, listed in `source/server/banner_deals.json`. `0` turns it off. |
 | `EXVIUS_IOS_VORTEX_ART` | `1` (default) builds the Vortex banner pack the iPhone needs, so event tiles show their art (and the Enhance tab doesn't crash). It's built when the server starts and cached in `FFBE_DIR/server/ios-cache/` (about 240 MB). |
 
