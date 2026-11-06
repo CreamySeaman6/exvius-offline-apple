@@ -14,6 +14,8 @@ from ffbe_state import State
 
 START = '2020-01-01 00:00:00'
 END = '2099-12-31 23:59:59'
+# Exchange shops tied to events (content/event_shops.json): detail id -> (event areas, cost kind, currency).
+EVENT_SHOPS = {}
 
 
 def catalogue():
@@ -108,7 +110,40 @@ def _catalogue(cutoff=None):
         for position, row in enumerate(shop['products']):
             product(940001000 + index * 1000 + position, did, row['reward'], row['price'],
                     row['limit'], (kind, currency), shop['reset_months'])
+    # Event exchanges made here for events whose own key-spending stages were never shipped (e.g. the
+    # Skeleton Key Exchange for Return to the Halloween Castle). Shown only while the event is open, or
+    # while the player still holds the currency (entry() below).
+    path = Path(__file__).with_name('content').joinpath('event_shops.json')
+    events = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {'shops': []}
+    for index, shop in enumerate(events['shops']):
+        did = 850002000 + index
+        kind, currency = shop['currency']
+        detail(did, shop['name'], kind, currency, shop.get('category', 4))
+        for position, row in enumerate(shop['products']):
+            product(950000000 + index * 1000 + position, did, row['reward'], row['price'],
+                    row['limit'], (kind, str(currency)))
+        EVENT_SHOPS[str(did)] = ([str(area) for area in shop.get('event_areas', [])], kind, str(currency))
     return details, products, offers
+
+
+def hidden_details():
+    """Event exchanges to leave out now: their event is not in this week's Vortex and the player holds
+    none of their currency."""
+    if not EVENT_SHOPS:
+        return set()
+    try:
+        import event_archive
+        open_areas = {str(row['area']) for row in event_archive.weekly_events()}
+    except Exception:  # noqa: BLE001 -- without the rotation, every event exchange shows
+        return set()
+    hidden = set()
+    for did, (areas, kind, currency) in EVENT_SHOPS.items():
+        if open_areas.intersection(areas):
+            continue
+        held = State.player.item_count(kind, currency) if State.player is not None else 0
+        if not held:
+            hidden.add(did)
+    return hidden
 
 
 def receipt_key(pid, offer):
@@ -146,13 +181,14 @@ def labels():
 
 def entry(spec, req):
     details, products, offers = catalogue()
+    hidden = hidden_details()
     out = _reply(spec)
-    out['F2rNo6qf'] = [dict(row) for row in details]
-    out['TPrh6Ay3'] = [dict(row) for row in products]
+    out['F2rNo6qf'] = [dict(row) for row in details if row['3X1gLufw'] not in hidden]
+    out['TPrh6Ay3'] = [dict(row) for row in products if row['3X1gLufw'] not in hidden]
     counts = _feature('shop_catalogue').get('counts', {})
     out['qS62ewjH'] = [{'jPV7Xc4N': pid, '3X1gLufw': offer['detail'],
                         'Q8GLK1pz': str(counts.get(receipt_key(pid, offer), 0))}
-                       for pid, offer in offers.items()]
+                       for pid, offer in offers.items() if offer['detail'] not in hidden]
     return out
 
 

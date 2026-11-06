@@ -48,7 +48,7 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 ### Open issues and known limits
 
 - He has **two new, big things** (2026-11-06). The first, event content to go with the banners, is done (see "Event history…"). The second is not yet described; ask him.
-- Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter and The Spearmaiden are missing for lack of battle data; they could be rebuilt the way Halloween Castle was (see "Rebuilt: Return to the Halloween Castle"). That event's Castle Keep is also missing (no mission rows).
+- Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter and The Spearmaiden are missing for lack of battle data; they could be rebuilt the way Halloween Castle was (see "Rebuilt: Return to the Halloween Castle"). That event's Castle Keep has no mission rows; its rewards are sold in the Skeleton Key Exchange instead.
 - The mission result screen shows base Lapis, not the 1.5× amount actually credited.
 - Tall 640x392 detail art is padded to the frame, so it shows narrower than the frame (with blurred sides).
 - A unit from the NV SP ticket arrives at level 1 although the banner says 120. Offered to look at it; not requested.
@@ -70,6 +70,7 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 | One container | `ios-server/Dockerfile`, `entrypoint.sh`, `docker-compose.yml` | One container… |
 | Event run dates and added events | `event_history.json`, `event_archive.py` (`document`, `weekly_events`, `added_art`, `fetch_added_art`) | Event history… |
 | Rebuilt battles (Halloween Castle) | `event_encounters_added.json` (merged in `battle_content.event_encounter`), `ios-server/devtools/build_halloween_castle.py` | Rebuilt: Return to the Halloween Castle |
+| Event exchanges (Skeleton Key Exchange) | `content/event_shops.json`, `exvius_shop_catalogue.py` (`EVENT_SHOPS`, `hidden_details`) | Rebuilt: Return to the Halloween Castle |
 
 ## The goal
 
@@ -406,7 +407,9 @@ What was rebuilt (`build_halloween_castle.py` -> `source/server/event_encounters
 - Castle Dungeon: the wiki roster per difficulty (BGN Zombie/Ghoul + Revenant; ADV Mage/Shadow/Ghost + Pumpkin Kid; ELT Woodwatcher/Mammon/Treant + Pumpkin Rider) under the original ids. Each monster's combat profile comes from a same-species JP monster whose AI and skill set are in the client's tables (Pumpkin Kid/Rider: their 2016 Global profiles). Stats are scaled to Global's mid-2017 King Mog events at the same energy (Henne Mines, In the Name of Love, Castle Hein): L15 ~1.6-1.9k HP and a ~6k boss; L40 30-38k and a 110k boss; L70 150-190k and a 480k boss. Formations are local.
 - `battle_content.event_encounter` merges `event_encounters_added.json` over `event_encounters.json`.
 - `event_history.json` adds areas 919 and 921 (dungeons 91900 and 92100 only; area 921 also holds Dark Visions stages, which stay out), dated 2017-10-20 with the 2018-10-26 rerun, with the original banners (Banner-Halloween Dungeon, Banner-Inner Chamber).
-- Not rebuilt: the Castle Keep (key-spending stages: materials, Purecrysts, Metal Cactuars). It has no mission or dungeon rows in the shipped tables, so the Skeleton Keys have nothing to spend on.
+- Not rebuilt: the Castle Keep (key-spending stages: materials, Purecrysts, Metal Cactuars). It has no mission or dungeon rows in the shipped tables. Its rewards go to a shop instead (below).
+- Skeleton Keys (item 1209000838) drop in the Castle Dungeon: floor bosses always drop the floor's original key reward (1/2/3), other waves 35% (Hi-Potion as the fallback drop, since `roll_drops` always keeps one item).
+- **Skeleton Key Exchange** (operator's request, 2026-11-06): `content/event_shops.json`, read by `exvius_shop_catalogue._catalogue` after the permanent shops (detail ids 850002000+, product ids 950000000+). Category 4, the same exchange list as the Obnixus Drop and Xenostone Shard exchanges. Stock: the Keep's challenge rewards from the Global datamine (missions 9200001-3: 1-star Trust Moogle, Chilling Aura, Spooky Aura, Mini Burst Pot), its first-clear Purecrysts (one each, 3/4/5 keys like the Keep stages), and the wiki's Keep drops (materials, Megacites, Metal Cactuar/Gigantuar, 2 King Metal Minituars at 10 keys each, Gil Snapper Family, Heavicrysts/Giancrysts, Elixir, Phoenix Down, Scrolls). Prices and limits are local. `hidden_details()` leaves an event exchange out of the list unless one of its `event_areas` is in this week's Vortex or the player still holds its currency, so leftover keys stay spendable. Tested: hidden/shown cases, purchases pay keys and grant items, purchase limits refuse.
 - When it shows: the event launched with the 2017 Halloween banners, which the replay holds for the real holiday, so it opens in the Halloween weeks of 2027. It also opens at the 2018 rerun (around June 2027 at the current pace).
 - Tested in the sandbox: all six missions pass the mission-load checks (`capture_server` bundle choice and wave checks). Not yet played on the phone. If a boss misbehaves (wrong sprite position, missing skill), the boss row's `7KYufEd5`/`a9DvZ70c`/`5A8SmwyC` come from the 2016 Reaper template and are the first suspects.
 

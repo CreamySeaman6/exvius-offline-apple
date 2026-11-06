@@ -11,7 +11,8 @@ monster_sg_common.cpk). What was never shipped is the server side: wave formatio
 - Castle Dungeon: original ids and names, the wiki's roster per difficulty; the combat profile (AI,
   skills, resistances) from a same-species monster, stats scaled to Global's King Mog events of mid 2017
   at the same energy cost (Henne Mines, In the Name of Love, Castle Hein). Formations are local.
-- The Castle Keep (key-spending stages) has no mission rows in the shipped tables and is not rebuilt.
+- The Castle Keep (key-spending stages) has no mission rows in the shipped tables and is not rebuilt; its
+  rewards are sold for Skeleton Keys in the Skeleton Key Exchange (content/event_shops.json) instead.
 
 Run from source/server with the env of HANDOFF.md "Testing locally" (MST_DIR, TEXT_DIR, FFBE_DATA):
 
@@ -96,6 +97,12 @@ WAVES = {
     '9210002': [['900010339']],
     '9210003': [['900010340']],
 }
+# Skeleton Keys (item 1209000838) drop in the Castle Dungeon, as on Global (wiki: "drop Skeleton Key"), and
+# are spent in the Skeleton Key Exchange (content/event_shops.json). Floor bosses always drop the floor's
+# original key reward (1/2/3); other waves have a 35% chance, with a Hi-Potion as the fallback drop.
+KEY = '20:1209000838'
+KEY_DROPS = {'900010368': KEY + ':1:100', '900010372': KEY + ':2:100', '900010376': KEY + ':3:100'}
+MOB_DROP = KEY + ':1:35,20:101000200:1:60'
 UNIT_EXP = {'9190001': 156, '9190002': 266, '9190003': 728, '9210001': 10000, '9210002': 18000, '9210003': 20000}
 
 
@@ -173,8 +180,8 @@ def main():
         row.update({'xqartN26': pid, 'G4L0YIB2': monsters[pid]['G4L0YIB2'], '7wV3QZ80': str(level),
                     'fh31sk7B': str(hp), 'PC97pWQj': str(max(mp, int(row.get('PC97pWQj') or 0))),
                     '9NBV1XCS': str(atk), 'Pn5w9dfh': str(df), '84FJM3PD': str(mag), 'T8xMDAZ4': str(spr),
-                    '4Y2DGP7m': actions, 'e56NZY42': '0', 'ATM35pjf': '0', '9BetM2Ds': '', 'm28pD1GM': '',
-                    '3frn4ILX': ''})
+                    '4Y2DGP7m': actions, 'e56NZY42': '0', 'ATM35pjf': '0',
+                    '9BetM2Ds': KEY_DROPS.get(pid, MOB_DROP), 'm28pD1GM': '', '3frn4ILX': ''})
         row['a9qg8vnP'] = dictionary.get(monsters[pid]['V9j8wJcC'], {}).get('a9qg8vnP', row.get('a9qg8vnP'))
     template = next(p for p in encounters['9000401']['bundle']['bV34YIJQ'] if p['xqartN26'] == '900010153')
     for pid, spec in BOSSES.items():
@@ -188,7 +195,7 @@ def main():
                     'hn42BL3Q': ','.join(vector), 'D9Nb7jgd': '100,100,100,100,100,100,100,100',
                     'Rcqa1Zt7': spec['breaks'], '4Y2DGP7m': spec['actions'], '8a6gAwN9': spec['ai'],
                     'A5x02C6a': spec['set'], 'jmKe42Yg': '0', 'e56NZY42': '0', 'ATM35pjf': '0',
-                    'a9qg8vnP': dictionary[spec['dictionary']]['a9qg8vnP'], '3frn4ILX': ''})
+                    'a9qg8vnP': dictionary[spec['dictionary']]['a9qg8vnP'], '3frn4ILX': '', '9BetM2Ds': ''})
         profiles[pid] = row
         monsters[pid] = {'xqartN26': pid, 'G4L0YIB2': spec['name'], 'V9j8wJcC': spec['dictionary']}
         skills.update(recover_skills(client_sets[spec['set']], raw_skills, templates))
