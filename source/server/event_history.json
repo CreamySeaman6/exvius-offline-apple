@@ -2,7 +2,7 @@
  "version": 1,
  "provenance": {
   "runs": "Global run dates (first runs, reruns, updates) from the Brave Exvius wiki, Update Schedule, section \"Global Update History\", read 2026-11-06. Only dates the archive does not already carry as its release date. Dates that look like a typo of the release date (within 45 days, or the same day one year apart) are left out.",
-  "added": "Global events missing from event_archive.json whose missions are in the shipped tables and whose battles the server builds (every mission checked). Left out for lack of battle data: Lunar New Year (907/908, Jan 2017), The Spearmaiden (701), Halloween Castle (919/921), Eternal Winter (923).",
+  "added": "Global events missing from event_archive.json whose missions are in the shipped tables and whose battles the server builds (every mission checked). Left out for lack of battle data: Lunar New Year (907/908, Jan 2017), The Spearmaiden (701), Eternal Winter (923). Return to the Halloween Castle (919/921) is included with locally rebuilt battles (build_halloween_castle.py); its Castle Keep has no mission rows.",
   "skipped_runs": [
    "9917 2018-08-16 (archive 2018-07-20)",
    "3035 2019-03-12 (archive 2020-03-12)",
@@ -286,6 +286,12 @@
   ],
   "703": [
    "2018-07-20"
+  ],
+  "919": [
+   "2018-10-26"
+  ],
+  "921": [
+   "2018-10-26"
   ]
  },
  "added": [
@@ -549,6 +555,52 @@
    "source_page": "https://exvius.fandom.com/wiki/Orbonne_Monastery_Vaults",
    "date_source": "https://exvius.fandom.com/wiki/Update_Schedule#Global_Update_History",
    "art_url": "https://static.wikia.nocookie.net/exvius_gamepedia_en/images/a/ab/Banner-Orbonne_Monastery_Vaults.png/revision/latest"
+  },
+  {
+   "area": "919",
+   "name": "Return to the Halloween Castle",
+   "group": "season1",
+   "release": "2017-10-20",
+   "kind": "FFBE - Unique Event",
+   "collaboration": null,
+   "dungeons": [
+    "91900"
+   ],
+   "missions": [
+    "9190001",
+    "9190002",
+    "9190003"
+   ],
+   "first_dungeon": "91900",
+   "first_mission": "9190001",
+   "banner_title": "File:Banner-Halloween Dungeon.png",
+   "filename": "event_919.png",
+   "source_page": "https://exvius.fandom.com/wiki/Return_to_the_Halloween_Castle",
+   "date_source": "https://exvius.fandom.com/wiki/Update_Schedule#Global_Update_History",
+   "art_url": "https://static.wikia.nocookie.net/exvius_gamepedia_en/images/1/1c/Banner-Halloween_Dungeon.png/revision/latest"
+  },
+  {
+   "area": "921",
+   "name": "Return to the Halloween Castle",
+   "group": "season1",
+   "release": "2017-10-20",
+   "kind": "FFBE - Unique Event",
+   "collaboration": null,
+   "dungeons": [
+    "92100"
+   ],
+   "missions": [
+    "9210001",
+    "9210002",
+    "9210003"
+   ],
+   "first_dungeon": "92100",
+   "first_mission": "9210001",
+   "banner_title": "File:Banner-Inner Chamber.png",
+   "filename": "event_921.png",
+   "source_page": "https://exvius.fandom.com/wiki/Return_to_the_Halloween_Castle",
+   "date_source": "https://exvius.fandom.com/wiki/Update_Schedule#Global_Update_History",
+   "art_url": "https://static.wikia.nocookie.net/exvius_gamepedia_en/images/0/02/Banner-Inner_Chamber.png/revision/latest"
   }
  ]
 }

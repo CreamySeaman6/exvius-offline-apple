@@ -671,6 +671,12 @@ def event_encounter(mission: str) -> dict | None:
         path = os.path.join(HERE, 'event_encounters.json')
         with open(path, encoding='utf-8') as fh:
             _EVENT_ENCOUNTERS = json.load(fh)['missions']
+        # Local reconstructions of events whose battles Global never shipped (e.g. Return to the
+        # Halloween Castle; ios-server/devtools/build_halloween_castle.py). Same entry shape.
+        added = os.path.join(HERE, 'event_encounters_added.json')
+        if os.path.exists(added):
+            with open(added, encoding='utf-8') as fh:
+                _EVENT_ENCOUNTERS = dict(_EVENT_ENCOUNTERS, **json.load(fh)['missions'])
     entry = _EVENT_ENCOUNTERS.get(str(mission))
     if not entry:
         return None

@@ -43,12 +43,12 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 6. **Vortex tile art and the Enhance tab** (spdungeon1.cpk rebuild).
 7. **Single container** `ffbe` (Tailscale + server; fixes the dead network after Unraid's 4 AM Appdata Backup). He has switched to it (2026-11-06); not yet confirmed that it survives the nightly backup. See "One container…" at the end.
 8. **Rookie friend quests**: "Send a friend invite!" and "Go on a quest with a friend!". See "Fixed: Rookie friend quests…".
-9. **Event history** (2026-11-06): events open at every Global run (first runs and reruns), and seven missing events were added. Replay week 0 gains The Hanging Edge and Dread Frost Arrives; week 1 (from Sunday 2026-11-08) Memories from the Aquapolis, Akademeia, Dangerous Woman Tour, Mana Mystery. Open the game twice before opening the Vortex (the banner pack changes). See "Event history: real run dates…" at the end.
+9. **Event history** (2026-11-06): events open at every Global run (first runs and reruns), and nine missing events were added (two of them, Return to the Halloween Castle, with rebuilt battles). Replay week 0 gains The Hanging Edge and Dread Frost Arrives; week 1 (from Sunday 2026-11-08) Memories from the Aquapolis, Akademeia, Dangerous Woman Tour, Mana Mystery. Open the game twice before opening the Vortex (the banner pack changes). See "Event history: real run dates…" at the end.
 
 ### Open issues and known limits
 
 - He has **two new, big things** (2026-11-06). The first, event content to go with the banners, is done (see "Event history…"). The second is not yet described; ask him.
-- Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter, Halloween Castle and The Spearmaiden are missing for lack of battle data (would need a wiki-roster reconstruction like `event_encounters.json`).
+- Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter and The Spearmaiden are missing for lack of battle data; they could be rebuilt the way Halloween Castle was (see "Rebuilt: Return to the Halloween Castle"). That event's Castle Keep is also missing (no mission rows).
 - The mission result screen shows base Lapis, not the 1.5× amount actually credited.
 - Tall 640x392 detail art is padded to the frame, so it shows narrower than the frame (with blurred sides).
 - A unit from the NV SP ticket arrives at level 1 although the banner says 120. Offered to look at it; not requested.
@@ -69,6 +69,7 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 | Rookie friend quests | `ffbe_friends.local_friend_action`, `exvius_repeat.observe_load`, `ffbe_player.score_completed_quest_mission` | Fixed: Rookie friend quests… |
 | One container | `ios-server/Dockerfile`, `entrypoint.sh`, `docker-compose.yml` | One container… |
 | Event run dates and added events | `event_history.json`, `event_archive.py` (`document`, `weekly_events`, `added_art`, `fetch_added_art`) | Event history… |
+| Rebuilt battles (Halloween Castle) | `event_encounters_added.json` (merged in `battle_content.event_encounter`), `ios-server/devtools/build_halloween_castle.py` | Rebuilt: Return to the Halloween Castle |
 
 ## The goal
 
@@ -387,6 +388,25 @@ Changes:
 - `event_archive.document()` appends `added` and gives every row `runs` (release plus history). `weekly_events` opens an event when any run qualifies (same set-proximity and replay-slice rules as before). It returns the row with `release` set to that run (`first_release` keeps the original), so the News board and home banners date reruns correctly. Replay week 0 also reaches back 14 days (`REPLAY_LOOKBACK_DAYS`) for events running when the replay starts (The Hanging Edge, 2016-12-02).
 - The two raids have no `raid_archive.json` data, so they play as normal battles (mission rewards, no raid coin scoring).
 - Art: the added events' banners aren't in the data packs. `serve.py`'s art thread calls `event_archive.fetch_added_art()` before building the banner pack. It downloads each banner once from the wiki (`?format=original`, converted to a 640x240 PNG if needed) into `data/native/en/sd/area/`, and logs `EVENT-ART` on failure, retrying at the next start. `event_archive.added_art(area)` names the file only once it exists. `ffbe_player.event_gate_art`, `replay_notices._event_art` and `ios_art.art_names` use it, so a tile never names art the banner pack lacks; until then it shows the default tile picture.
-- Left out (no battle data): Lunar New Year (907/908: the Nian Beast challenges are exploration missions with no field groups), The Spearmaiden (701), Halloween Castle (919/921), Eternal Winter (923), Trials of Love (no missions). Not checked: whether The Auracite Chosen's King Mog exchange shop shows (other King Mog events use the same path).
+- Left out (no battle data): Lunar New Year (907/908: the Nian Beast challenges are exploration missions with no field groups), The Spearmaiden (701), Eternal Winter (923), Trials of Love (no missions). Not checked: whether The Auracite Chosen's King Mog exchange shop shows (other King Mog events use the same path).
 - Tested in the sandbox: all missions of the added areas pass the load checks; a 9-week replay preview before/after; the Vortex reply for weeks 1 and 4 (gate rows for every mission, default art without the file); News board summaries; the art download (PNG, WebP resized, network error, retry). Not yet on the phone.
+
+## Rebuilt: Return to the Halloween Castle (2026-11-06)
+
+Requested: make the 2017 Halloween event playable even though its enemies were never shipped, as close to the original as possible.
+
+What the shipped data keeps:
+
+- The missions, first-clear rewards and challenge rewards. Castle Dungeon BGN/ADV/ELT (9190001-3, area 919): 3/4/5 waves, Rare Summon Ticket + Skeleton Keys. Castle Inner Chamber INT/ELT/NIGHTMARE (9210001-3, area 921): Trust Moogles, Kitchen Knife, Candy Basket, Cloak of the Ghoul, Creepy Mask, Reaper's Shaft, Necro Dagger, Collar of the Blessed, ATK +15% / MAG +30% materia, Lapis.
+- Every original Global monster id and name (900010339-900010377), the bosses' skill sets and AI scripts (Skeleton Wright 900010377, Skeleton King 900010340, Pumpking Reaper set 900010339 with AI 900000000 "PumpkinKnight", which matches the wiki's turn pattern), and every animated sprite (dictionary 10000000/10000001/10000002/10000020/10000021 in `monster_sg_common.cpk`).
+
+What was rebuilt (`build_halloween_castle.py` -> `source/server/event_encounters_added.json`):
+
+- Bosses: wiki boss infobox stats (Wright L70 3.5M HP; Reaper L99 38M; King L99 48.75M), resistances, actions per turn. Skill rows come from the Global datamine `aEnigmatic/ffbe` `monster_skills.json` (raw.githubusercontent.com, ~11 MB; pass its path to the script), converted like upstream's `reconstruct_event_battles.recover_skills`. Part-row template: upstream's 2016 Global Pumpking Reaper (encounter 9000401). Debuff-resist order assumed ATK, DEF, MAG, SPR, stop, charm, berserk (`Rcqa1Zt7`).
+- Castle Dungeon: the wiki roster per difficulty (BGN Zombie/Ghoul + Revenant; ADV Mage/Shadow/Ghost + Pumpkin Kid; ELT Woodwatcher/Mammon/Treant + Pumpkin Rider) under the original ids. Each monster's combat profile comes from a same-species JP monster whose AI and skill set are in the client's tables (Pumpkin Kid/Rider: their 2016 Global profiles). Stats are scaled to Global's mid-2017 King Mog events at the same energy (Henne Mines, In the Name of Love, Castle Hein): L15 ~1.6-1.9k HP and a ~6k boss; L40 30-38k and a 110k boss; L70 150-190k and a 480k boss. Formations are local.
+- `battle_content.event_encounter` merges `event_encounters_added.json` over `event_encounters.json`.
+- `event_history.json` adds areas 919 and 921 (dungeons 91900 and 92100 only; area 921 also holds Dark Visions stages, which stay out), dated 2017-10-20 with the 2018-10-26 rerun, with the original banners (Banner-Halloween Dungeon, Banner-Inner Chamber).
+- Not rebuilt: the Castle Keep (key-spending stages: materials, Purecrysts, Metal Cactuars). It has no mission or dungeon rows in the shipped tables, so the Skeleton Keys have nothing to spend on.
+- When it shows: the event launched with the 2017 Halloween banners, which the replay holds for the real holiday, so it opens in the Halloween weeks of 2027. It also opens at the 2018 rerun (around June 2027 at the current pace).
+- Tested in the sandbox: all six missions pass the mission-load checks (`capture_server` bundle choice and wave checks). Not yet played on the phone. If a boss misbehaves (wrong sprite position, missing skill), the boss row's `7KYufEd5`/`a9DvZ70c`/`5A8SmwyC` come from the 2016 Reaper template and are the first suspects.
 

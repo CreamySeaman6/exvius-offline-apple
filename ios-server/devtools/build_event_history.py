@@ -92,6 +92,12 @@ ADDED = [
     ('703', 'Orbonne Monastery Vaults', 'season1', '2016-09-30', ['2018-07-20'],
      'Final Fantasy Tactics - Exchange Event', ['70301'], 'Orbonne_Monastery_Vaults',
      'a/ab/Banner-Orbonne_Monastery_Vaults.png'),
+    # Return to the Halloween Castle: battles rebuilt by build_halloween_castle.py
+    # (event_encounters_added.json). The Castle Keep has no mission rows and is not included.
+    ('919', 'Return to the Halloween Castle', 'season1', '2017-10-20', ['2018-10-26'], 'FFBE - Unique Event',
+     ['91900'], 'Return_to_the_Halloween_Castle', '1/1c/Banner-Halloween_Dungeon.png'),
+    ('921', 'Return to the Halloween Castle', 'season1', '2017-10-20', ['2018-10-26'], 'FFBE - Unique Event',
+     ['92100'], 'Return_to_the_Halloween_Castle', '0/02/Banner-Inner_Chamber.png'),
 ]
 
 
@@ -145,8 +151,9 @@ def main():
                     'or the same day one year apart) are left out.',
             'added': 'Global events missing from event_archive.json whose missions are in the shipped tables and '
                      'whose battles the server builds (every mission checked). Left out for lack of battle data: '
-                     'Lunar New Year (907/908, Jan 2017), The Spearmaiden (701), Halloween Castle (919/921), '
-                     'Eternal Winter (923).',
+                     'Lunar New Year (907/908, Jan 2017), The Spearmaiden (701), Eternal Winter (923). '
+                     'Return to the Halloween Castle (919/921) is included with locally rebuilt battles '
+                     '(build_halloween_castle.py); its Castle Keep has no mission rows.',
             'skipped_runs': skipped,
         },
         'runs': runs,
