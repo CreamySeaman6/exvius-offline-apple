@@ -1,8 +1,10 @@
-"""Offline Arena battles against the configured local support units.
+"""Offline Arena battles.
 
 Wire layouts are from the GL 9 client. Scoring, streaks and medals follow
-https://exvius.fandom.com/wiki/Arena. Local rivals have a neutral 1.00 ratio.
-Offline weekly participation pays the lowest original ranking reward tier.
+https://exvius.fandom.com/wiki/Arena. With the made-up players on (friend_players.py), opponents are their
+five-unit teams with a 0.50-1.50 ratio, a win pays ratio x 100, and the week ends in a placement reward from
+the weekly leaderboard (arena_ladder.py). Without them, opponents are your friends' single support units at
+a 1.00 ratio and the weekly reward is the lowest bracket.
 At the turn limit equal surviving counts are settled by damage inflicted, then
 defeat on an exact tie. The original server's hidden tie-break is unavailable.
 """
@@ -28,7 +30,71 @@ def _model():
     if not model['groups']:
         ids = sorted(_mst('F_RB_TRADE_BOARD_MST.ndjson', '6m4Rn5jd'), key=int)
         model['groups'] = [{'CIE1rky2': '1', '35iR6h0V': ','.join(ids)}]
+    roll_week(model)
     return model
+
+
+def ladder_on():
+    import arena_ladder
+    return arena_ladder.enabled()
+
+
+def roll_week(model):
+    """A new rotation week: settle last week's placement, reset the weekly points, take this week's season.
+
+    Waits while a battle is pending, so a started fight always ends in the season it began in."""
+    if not ladder_on() or model.get('active') or State.player is None or State.player.mode == 'frozen':
+        return
+    import arena_ladder
+    number = arena_ladder.week()[0]
+    user = model['user']
+    if model.get('week') is None:
+        # First run with the ladder: the stored points were all-time totals, not this week's.
+        model['lifetime_points'] = int(model.get('lifetime_points', 0)) + int(user.get('UbQ26oH4', 0))
+        user['UbQ26oH4'] = '0'
+    elif model['week'] != number:
+        settle_week(model)
+        model['lifetime_points'] = int(model.get('lifetime_points', 0)) + int(user.get('UbQ26oH4', 0))
+        user['UbQ26oH4'] = '0'
+    else:
+        return
+    model['week'] = number
+    model['season_id'] = arena_ladder.season_id()
+    model['matched'] = None
+    _save(model)
+
+
+def settle_week(model):
+    """Pay last week's placement from that week's season reward table (arena_ladder.placement)."""
+    import arena_ladder
+    from exvius_rewards import parse
+    player = State.player
+    own = int(model['user'].get('UbQ26oH4', 0))
+    if own <= 0 or model.get('last_week_paid') == model['week']:
+        return
+    number, start, _end = arena_ladder.week()
+    # The last second of the week that is being settled (several may have passed while you were away).
+    moment = start - timedelta(days=7 * max(0, number - int(model['week']) - 1), seconds=1)
+    standings = arena_ladder.standings(own, moment)
+    rank = next(i for i, (_p, f) in enumerate(standings, 1) if f is None)
+    global_rank = arena_ladder.placement(rank, len(standings))
+    reward = arena_ladder.reward_row(model['season_id'], global_rank)
+    if reward is None:
+        return
+    entries = [entry.split(':') for entry in reward['dX6cor8j'].split(',')]
+    for entry in entries:
+        if len(entry) > 3 and entry[3] == '0':
+            entry[3] = '100'  # Deterministic attachments in the original ranking table.
+    items = parse(','.join(':'.join(entry) for entry in entries))
+    if items and all(player._can_credit(item) for item in items):
+        player._grant_items(items)
+        player.deliver_mail('Arena Weekly Ranking', [],
+                            message=f'You finished the week at rank {rank} of {len(standings)} with {own} points '
+                                    f'(Global ranks {reward["ip94Nqb7"]}-{reward["XM4Ca3PF"]}). '
+                                    'Your ranking rewards have been added to your inventory.')
+        model['last_week_paid'] = model['week']
+        model['last_week_result'] = {'week': model['week'], 'rank': rank, 'players': len(standings),
+                                     'points': own, 'bracket': [reward['ip94Nqb7'], reward['XM4Ca3PF']]}
 
 
 def _save(model):
@@ -41,6 +107,8 @@ def settle_weekly_reward(model):
     player = State.player
     if player.mode == 'frozen':
         return None
+    if ladder_on():
+        return None   # placement rewards instead (roll_week / settle_week)
     now = datetime.now(timezone.utc) - timedelta(hours=4)
     current = (now.date() - timedelta(days=(now.weekday() - 3) % 7)).isoformat()
     played = model.get('last_week_played')
@@ -75,6 +143,9 @@ def _season(req, model):
 
 
 def _friend(target):
+    if ladder_on():
+        import arena_ladder
+        return arena_ladder.by_id(target)
     return next((f for f in load_friends() if str(f['friend_id']) == target), None)
 
 
@@ -113,7 +184,7 @@ def _versus(model, state):
     # Repair an already-started legacy snapshot in the reply without changing
     # its battle, opponent, AI pattern, initiative or orb charge.
     rival = battle['rival'].split(':')
-    if len(rival) == 18 and rival[10] == '0' and limit_burst(rival[1]):
+    if ';' not in battle['rival'] and len(rival) == 18 and rival[10] == '0' and limit_burst(rival[1]):
         rival[10] = '1'
     return {'N7Bd3IuL': [copy.deepcopy(battle['summary'])],
             'DW0rgk3C': [{'uC8E0opI': str(state), 'Jc4udh7x': ':'.join(rival),
@@ -143,7 +214,16 @@ def matching(spec, req):
             if model['active']['target'] != target:
                 raise ValueError('Finish the pending Arena battle first')
             return _reply(spec, model, 2)
-        model['matched'] = {'target': target, 'rival': _rival(friend),
+        if ladder_on():
+            import arena_ladder
+            units = arena_ladder.team(friend)
+            rival = arena_ladder.rival_string(units)
+            rate = arena_ladder.ratio(units, _party())
+            members = {u['instance_id']: u['master_id'] for u in units}
+        else:
+            rival, rate = _rival(friend), 100
+            members = {rival.split(':')[0]: rival.split(':')[1]}
+        model['matched'] = {'target': target, 'rival': rival, 'rate': rate, 'members': members,
             'summary': {'cw4ho9eY': str(friend['unit']['master_id']), 'P2w9myrI': '0',
                         'fP8Nv0KZ': target, 'IgS2Mi9Y': friend['display_name'],
                         'Bc43fupe': 'Local Arena opponent'},
@@ -256,15 +336,15 @@ def end(spec, req):
             return out
         node = _node(req, 'g3JFd0y7') or {}
         retired = str(node.get('g9t7dBCH', '0')) == '1'
+        members = active.get('members') or {active['rival'].split(':')[0]: active['rival'].split(':')[1]}
         if retired:
             own_text = ','.join(master + ':' + iid + ':0:1' for iid, master in active['own'].items())
-            rival_fields = active['rival'].split(':')
-            enemy_text = rival_fields[1] + ':' + rival_fields[0] + ':' + rival_fields[4].split('-')[0] + ':0'
+            enemy_text = ','.join(f[1] + ':' + f[0] + ':' + f[4].split('-')[0] + ':0'
+                                  for f in (entry.split(':') for entry in active['rival'].split(';')))
         else:
             own_text, enemy_text = node.get('GA1D6XIC'), node.get('Pch7J9Ty')
         own = _results(own_text, active['own'])
-        rival_fields = active['rival'].split(':')
-        enemies = _results(enemy_text, {rival_fields[0]: rival_fields[1]})
+        enemies = _results(enemy_text, members)
         live = sum(row[3] == '0' for row in own)
         enemy_live = sum(row[3] == '0' for row in enemies)
         turns = int(node.get('z8uj9TAU', '0'))
@@ -276,7 +356,8 @@ def end(spec, req):
             (live == enemy_live and int(node.get('3S8pMym0', '0')) > int(node.get('bB69ZWQY', '0'))))
         user = model['user']
         streak = int(user['5svT7qLR']) + 1 if win else 0
-        base = 100 if win else 10
+        # A win pays the opponent's ratio x 100 (wiki: "your opponent's ratio times 100"), a loss 10.
+        base = int(active.get('rate', 100)) if win else 10
         streak_gain = _round(Decimal(base) * Decimal(min(18, streak + 8)) / 100) if streak > 1 else 0
         bonus = _round(Decimal(base + streak_gain) * Decimal(active['bonus']) / 100) if win else 0
         # Original 2021-11-30 notice, preserved at r/FFBEblog/r5izr1:

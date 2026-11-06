@@ -243,6 +243,8 @@ The original game's Lapis income assumed you'd buy Lapis. These settings raise w
 | `EXVIUS_PLAYERS` | How many made-up players exist (default `200`, gaming and anime handles). Find them under Friend > Suggestions (a new set daily) or search by id (910000001 and up). Friend requests are accepted at once, and Remove works. Each player lends a different unit every week, only from units released by the replay's point in history. `0` turns them off. |
 | `EXVIUS_START_FRIENDS` | How many of them are already your friends in a new save (default `15`, enough for the "send gifts to 15 friends" daily quest). |
 | `EXVIUS_PLAYER_SUGGESTIONS` | How many suggestions the Friend screen shows each day (default `10`). |
+| `EXVIUS_ARENA_TOP` | The Arena's weekly leaderboard: about how many points the best of the other players reaches by the end of the week (default `12000`; 10th place ends near three quarters of it, 50th near half). The other players are the made-up accounts above, each with a five-unit team; the board resets every week (with the summon rotation) and your final rank pays that week's ranking reward. Needs `EXVIUS_PLAYERS` above 0. |
+| `EXVIUS_ARENA_RIVALS` | How many Arena opponents the list shows (default `5`). The list changes every 10 minutes, from weaker (ratio 0.50) to stronger (1.50) teams; a win pays the ratio x 100 points. |
 
 Your own hand-picked companions still come from `source/server/friends.yaml`.
 

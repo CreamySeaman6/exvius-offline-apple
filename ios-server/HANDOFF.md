@@ -43,11 +43,12 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 6. **Vortex tile art and the Enhance tab** (spdungeon1.cpk rebuild).
 7. **Single container** `ffbe` (Tailscale + server; fixes the dead network after Unraid's 4 AM Appdata Backup). He has switched to it (2026-11-06); not yet confirmed that it survives the nightly backup. See "One container…" at the end.
 8. **Rookie friend quests**: "Send a friend invite!" and "Go on a quest with a friend!". See "Fixed: Rookie friend quests…".
+10. **Arena ladder** (2026-11-06): five-unit opponent teams, 0.50-1.50 ratios, weekly leaderboard and placement rewards, the replay's weekly season. Not yet seen on the phone. See "Arena: full teams…" at the end.
 9. **Event history** (2026-11-06): events open at every Global run (first runs and reruns), and nine missing events were added (two of them, Return to the Halloween Castle, with rebuilt battles). Replay week 0 gains The Hanging Edge and Dread Frost Arrives; week 1 (from Sunday 2026-11-08) Memories from the Aquapolis, Akademeia, Dangerous Woman Tour, Mana Mystery. Open the game twice before opening the Vortex (the banner pack changes). See "Event history: real run dates…" at the end.
 
 ### Open issues and known limits
 
-- He has **two new, big things** (2026-11-06). The first, event content to go with the banners, is done (see "Event history…"). The second is not yet described; ask him.
+- His **two big things** of 2026-11-06 are built: event content with the banners ("Event history…", "Rebuilt: Return to the Halloween Castle") and Arena parity ("Arena: full teams…"). Neither is confirmed on the phone yet.
 - Early history is still lighter than the banners suggest, because Global itself had no story events before June 2017 (exploration, King Mog, raid and trial events only). Lunar New Year (Jan 2017), Eternal Winter and The Spearmaiden are missing for lack of battle data; they could be rebuilt the way Halloween Castle was (see "Rebuilt: Return to the Halloween Castle"). That event's Castle Keep has no mission rows; its rewards are sold in the Skeleton Key Exchange instead.
 - The mission result screen shows base Lapis, not the 1.5× amount actually credited.
 - Tall 640x392 detail art is padded to the frame, so it shows narrower than the frame (with blurred sides).
@@ -70,6 +71,7 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 | One container | `ios-server/Dockerfile`, `entrypoint.sh`, `docker-compose.yml` | One container… |
 | Event run dates and added events | `event_history.json`, `event_archive.py` (`document`, `weekly_events`, `added_art`, `fetch_added_art`) | Event history… |
 | Rebuilt battles (Halloween Castle) | `event_encounters_added.json` (merged in `battle_content.event_encounter`), `ios-server/devtools/build_halloween_castle.py` | Rebuilt: Return to the Halloween Castle |
+| Arena ladder (teams, ratios, weekly leaderboard, placement, seasons) | `arena_ladder.py`, `exvius_arena.py` (`roll_week`, `settle_week`, `matching`, `end`), `exvius_actions_arena.py` (`rb_entry`, `rb_ranking`, `_arena_rows`) | Arena: full teams, ratios, weekly leaderboard |
 | Event exchanges (Skeleton Key Exchange) | `content/event_shops.json`, `exvius_shop_catalogue.py` (`EVENT_SHOPS`, `hidden_details`) | Rebuilt: Return to the Halloween Castle |
 
 ## The goal
@@ -420,4 +422,22 @@ Reported: the Rookie Panel's "1 line" reward could not be claimed after completi
 - The board's line rewards `L1`..`L8` mean "Lines Completed: n" (the game's own text, `PANEL_QUEST_LINE_COMPLETE_<n>`): any n of the eight lines. `panel_extra` (exvius_actions_expedition.py) read `L1` as the top row, `L2` as the middle row, and so on, so a middle row never satisfied `L1`. It now counts completed lines.
 - Line and board rewards that are units with extra fields (the Rookie board's 4-line Trust Moogle `10:904000105:1:100:1:0:100000006` and the board-complete unit) were refused by `_reward_rows`. They are now parsed like the panel quests' own rewards (`_panel_rewards`, same grammar as `ffbe_player._quest_reward`) and checked with `_can_credit`.
 - Tested in the sandbox: middle row only -> L1 pays, L2 refused; full board -> L4 (Trust Moogle), L8 and COMPLETED pay; repeated claims don't pay again.
+
+## Arena: full teams, ratios, weekly leaderboard (2026-11-06)
+
+Requested: Arena parity with Global (opponents with their full teams, a leaderboard you can climb to first place, rotating weekly, scores that push but aren't absurd, rewards for placement).
+
+Global's last Arena (the client's, wiki "Arena" rev 313327): opponents are other players' teams (AI, up to five units, use their LBs), each with a 0.50-1.50 ratio; a win pays ratio x 100 (+ streak and unit bonuses), a loss 10; the opponent list changes every 10 minutes; points reset weekly and the week's rank pays a bracket reward (1-3000, 3001-30000, 30001-90000, 90001-150000, 150001-300000). There is one Arena mode; the Colosseum is the separate PvE mode (`exvius_colosseum.py`, unchanged).
+
+Before: opponents were your friends' single lent units at ratio 1.00 (every win 100), the ranking list was empty, points never reset, the weekly reward was always the lowest bracket, and the season was the last shipped one forever.
+
+Now (`arena_ladder.py`, with the made-up players on; `EXVIUS_PLAYERS=0` keeps the old behaviour):
+
+- **Teams.** Each made-up player fields five units for the week: their lent unit as leader plus four from their `friend_players._unit_pool` (released units with the replay). Wire: `Jc4udh7x` (UserRbVsInfo VsBattleInfo) is one `:`-separated entry per unit with `;` between units (`UserRbVsInfoResponse::readParam` 0x1928fac, delimiters at 0x3044786 `;`, 0x2fa40f1 `:`). Per unit: instance id, unit id x2, level, six `base-bonus` stat pairs, LB level, equipment and materia slots (empty), two empty esper fields, member type (0 leader, `RbRivalUnitInfo::isLeader` reads +0x520 == 0; others 1), display order, AI pattern (F_RB_AI_PATTERN_MST weights). The stat bonus stands in for gear: 25-60% of base by the player's strength. Instance ids are `friend_id * 10 + order + 1`. `end()` validates every rival unit in the result.
+- **Ratio.** Their team power over yours (`hp/10 + mp/10 + atk + def + mag + spr`; yours from `owned_unit_stats` plus equipment from F_EQUIP_ITEM_MST), clamped to 50..150 in steps of 5. A win pays the ratio (stored as `matched.rate`) instead of 100.
+- **Opponent list.** `EXVIUS_ARENA_RIVALS` (5) per 10-minute window, spread from the weakest to the strongest ratio among 15 drawn players. Rows (`Tr9m32i1`/`TI6deE8P`) now carry each player's weekly points and rank: field layout from `RbMatchingListInfoResponse::readParam` 0x197fbb8 (`id:name:unitId:unitLv:points:rank:playerLv:rate:emblem:frame:unitExLv`).
+- **Leaderboard.** Each player has a weekly target score (`_targets`: a stable persona plus weekly variation, heavy-tailed, the best scaled to about `EXVIUS_ARENA_TOP`, default 12000) and reaches it through the week at their own pace (`points`). Sandbox numbers at week's end: #1 ~11.6k, #10 ~8.9k, #50 ~5.9k, #100 ~2.5k, the least active 0. `rb_ranking` serves the top 100 and you in `CLg9j1sh` (`RbRankingListInfoResponse::readParam` 0x197f1a4: `id:name:unitId:unitLv:points:rank:playerLv:rate:emblem:frame`, ten fields minimum). Your rank goes in UserRbInfo `52ibRBqw`.
+- **Week and season.** Weeks follow the summon rotation. `exvius_arena.roll_week` (from `_model`, so on the next Arena request) settles the finished week and resets the weekly points; it waits while a battle is pending. `settle_week` ranks you against the board at the last second of that week, places the rank on Global's scale (`rank / players x 300000`; with 200 players ranks 1-2 are the top bracket, 3-20 the next, 21-60, 61-100, the rest), and pays that week's season row from F_RB_SS_REWARD_MST (granted at once, with a mail saying the rank). The season is the F_RB_SS_MST weekly season running at the start of the replay week's slice of history (424 seasons, 2016-11-10 to 2024-10), so banned abilities, bonus units, daily rewards and ranking rewards follow history; without the replay, the last shipped season.
+- **Migration.** A save's first Arena request after this update moves its all-time points to `lifetime_points` and starts the week at 0. `settle_weekly_reward` (the old participation reward) does nothing when the ladder is on.
+- Tested in the sandbox: entry list, match (5-unit rival string), start, win (150 points at ratio 1.50), ranking list, week rollover (9,000 points -> rank 10 of 201 -> bracket 3001-30000 paid by mail, points reset, next season). Ratio spread for a mid-game team with pots: 0.75-1.35. Not yet seen on the phone: the first things to check are the opponent list, the rival party screen (five units), and the ranking tab.
 

@@ -75,6 +75,10 @@ services:
       EXVIUS_PLAYERS: "200"
       EXVIUS_START_FRIENDS: "15"
       EXVIUS_PLAYER_SUGGESTIONS: "10"
+      # Arena (source/server/arena_ladder.py): the other players' teams and a weekly leaderboard. The best of
+      # them ends the week near EXVIUS_ARENA_TOP points; your final rank pays that week's ranking reward.
+      EXVIUS_ARENA_TOP: "12000"
+      EXVIUS_ARENA_RIVALS: "5"
       # Earned Lapis (source/server/lapis_economy.py). Shop purchases are never multiplied.
       EXVIUS_LAPIS_MULTIPLIER: "1.5"      # every Lapis amount earned by playing
       EXVIUS_DAILY_QUEST_LAPIS: "150"     # Lapis per daily quest (0 = the old gil/Lapis mix)

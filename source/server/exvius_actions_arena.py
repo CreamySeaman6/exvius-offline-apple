@@ -66,7 +66,12 @@ def _arena():
     seasons = _mst("F_RB_SS_MST.ndjson", "6Z9DxQFf")
     rows = [r for k, r in seasons.items() if _int(k, 0) > 0]
     latest = max(rows, key=lambda r: (r.get("VjJQ51uG", ""), _int(r["6Z9DxQFf"]))) if rows else {}
-    return {"season_id": str(latest.get("6Z9DxQFf", "0")),
+    sid = str(latest.get("6Z9DxQFf", "0"))
+    from exvius_arena import ladder_on
+    if ladder_on():
+        import arena_ladder
+        sid = arena_ladder.season_id()   # this week's Global season (arena_ladder.py)
+    return {"season_id": sid,
             "user": {k: "0" for k in ("UbQ26oH4", "mRY52Tib", "5svT7qLR", "egayI1s4",
                                        "p6H4CNw8", "Ka0Pbz5N", "qH5h4GX2", "52ibRBqw")},
             "boards": {}, "complete": {}, "groups": []}
@@ -88,6 +93,10 @@ def _arena_rows(arena):
     if bonus is None:
         bonus = _unit_bonus(arena, _party())
     user = dict(arena["user"])
+    from exvius_arena import ladder_on
+    if ladder_on():
+        import arena_ladder
+        user["52ibRBqw"] = str(arena_ladder.rank_of(_int(user.get("UbQ26oH4"), 0)))   # your weekly rank
     # UserRbInfo contains resolved percentages. The season's unit-group IDs
     # are master rules, and RbStartScene would display their first ID as 999%.
     user.update({"8TStpEr4": "", "AU4qRzL9": "0", "F9gxH37C": str(bonus)})
@@ -108,16 +117,24 @@ def rb_entry(spec, req):
     if _writable():
         settle_weekly_reward(arena)
         _save_arena(arena)
-    candidates = []
-    for friend in load_friends():
-        # Delimiters in a YAML display name must not create extra packed columns.
-        name = friend["display_name"].replace(":", " ").replace(",", " ")
-        candidates.append(":".join(map(str, (friend["friend_id"], name,
-            friend["unit"]["master_id"], friend["unit"]["level"], 0, 0,
-            friend["rank"], AUTHORED_RB_CANDIDATE_RATE, friend["emblem_id"], 0, 0))))
+    from exvius_arena import ladder_on, _party
+    if ladder_on():
+        # This 10-minute window's opponents from the weekly ladder, with their points, rank and ratio.
+        import arena_ladder
+        listed = arena_ladder.candidates(_int(arena["user"].get("UbQ26oH4"), 0), _party())
+        packed = arena_ladder.candidate_entries(listed)
+    else:
+        candidates = []
+        for friend in load_friends():
+            # Delimiters in a YAML display name must not create extra packed columns.
+            name = friend["display_name"].replace(":", " ").replace(",", " ")
+            candidates.append(":".join(map(str, (friend["friend_id"], name,
+                friend["unit"]["master_id"], friend["unit"]["level"], 0, 0,
+                friend["rank"], AUTHORED_RB_CANDIDATE_RATE, friend["emblem_id"], 0, 0))))
+        packed = ",".join(candidates)
     out = _out(spec)
     out.update(rows)
-    out["Tr9m32i1"] = [{"TI6deE8P": ",".join(candidates)}]
+    out["Tr9m32i1"] = [{"TI6deE8P": packed}]
     from exvius_arena import _versus
     out.update(_versus(arena, 2 if arena.get('active') else 0))
     out['H54XvPis'] = copy.deepcopy(arena['groups'])
@@ -162,10 +179,22 @@ def rb_ranking(spec, req):
     rows = _arena_rows(arena)
     if rows is None:
         return _refuse(spec, "no shipped arena season")
+    listing = ""
+    from exvius_arena import ladder_on, _party
+    if ladder_on():
+        # The weekly leaderboard: the top 100 made-up players and you (arena_ladder.ranking_entries).
+        import arena_ladder
+        party = _party()
+        leader = party[0] if party else {"master_id": 0, "level": 1}
+        identity = State.player.data["identity"]
+        user = {"id": identity["user_id"], "name": identity.get("handle_name", ""),
+                "unit": leader["master_id"], "unit_level": leader["level"],
+                "rank": State.player.data["rank"]["level"]}
+        listing = arena_ladder.ranking_entries(_int(arena["user"].get("UbQ26oH4"), 0), user)
     out = _out(spec)
     out.update(rows)
     out["YQN6zx3R"] = [{"3HbFrqo5": str(term), "8s9wNSpd": str(AUTHORED_RB_RANK_SELECTOR),
-                          "CLg9j1sh": ""}]
+                          "CLg9j1sh": listing}]
     return out
 
 
