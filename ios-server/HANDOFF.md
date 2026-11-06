@@ -25,7 +25,7 @@ cd /mnt/user/appdata/ffbe/repo && git fetch origin && git reset --hard origin/io
 cd ios-server && docker compose build && docker compose up -d
 ```
 
-The first update after 2026-11-06 also needs `docker rm -f ffbe-tailscale-1 ffbe-server-1` before `docker compose up -d` (switch to the single container; README, Everyday use). It's not confirmed he has done this yet. Check with `docker ps -a --filter name=ffbe`: one container named `ffbe` means it's done.
+He has switched to the single container (confirmed 2026-11-06), so the `docker rm -f ffbe-tailscale-1 ffbe-server-1` migration step (README, Everyday use) is done.
 
 Then he opens the game twice (some table changes only take effect on the second launch). The stack is one container, `ffbe`, which he can also start and stop from Unraid's Docker tab; logs are `docker logs --tail 50 ffbe`. The NAS checkout once had no `origin` remote; it was re-added with the GitHub URL. Use `git --no-pager log`, since plain `git log` opens a pager in his terminal.
 
@@ -41,7 +41,7 @@ Boot, login, downloads, tutorial battles, audio (music, effects and movies), the
 4. **Banner deals**: 107 banners pay their printed bonuses. See "Banner deals…". In his replay, the first Trust Moogle deals arrive around summer 2017 history.
 5. **Other players** (200 friends to add and remove), **home marquee** (first dated events reach the replay around 7 real weeks in; a home-screen crash after that means `MARQUEE_FLAG=0`), **weekly summon gift** mail, **Lapis daily quests**.
 6. **Vortex tile art and the Enhance tab** (spdungeon1.cpk rebuild).
-7. **Single container** `ffbe` (Tailscale + server; fixes the dead network after Unraid's 4 AM Appdata Backup). See "One container…" at the end.
+7. **Single container** `ffbe` (Tailscale + server; fixes the dead network after Unraid's 4 AM Appdata Backup). He has switched to it (2026-11-06); not yet confirmed that it survives the nightly backup. See "One container…" at the end.
 8. **Rookie friend quests**: "Send a friend invite!" and "Go on a quest with a friend!". See "Fixed: Rookie friend quests…".
 9. **Event history** (2026-11-06): events open at every Global run (first runs and reruns), and seven missing events were added. Replay week 0 gains The Hanging Edge and Dread Frost Arrives; week 1 (from Sunday 2026-11-08) Memories from the Aquapolis, Akademeia, Dangerous Woman Tour, Mana Mystery. Open the game twice before opening the Vortex (the banner pack changes). See "Event history: real run dates…" at the end.
 
