@@ -27,7 +27,7 @@ import copy
 import time
 
 from exvius_actions import _node, _refresh, _mst
-from ffbe_friends import load_friends, _friend_list_row, _reinforce_row, _vc_info_row, VCINFO_TAG
+from ffbe_friends import all_friends as load_friends, _friend_list_row, _reinforce_row, _vc_info_row, VCINFO_TAG
 from ffbe_state import State, _note
 
 AUTHORED_FRIEND_CAPACITY = 100

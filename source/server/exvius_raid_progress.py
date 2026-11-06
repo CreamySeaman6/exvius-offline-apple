@@ -194,7 +194,7 @@ def record_party_action(player, actor, skill, party):
             any(not isinstance(i, str) or not i.isdigit() for i in party) or
             len(set(party)) != len(party) or actor not in party):
         return False
-    from ffbe_friends import load_friends
+    from ffbe_friends import all_friends as load_friends
     roster = {str(u['instance_id']) for u in player.data['roster']}
     friends = {str(f['instance_id']) for f in load_friends()}
     own = set(party) & roster

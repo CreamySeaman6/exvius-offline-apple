@@ -212,6 +212,16 @@ Settings are environment variables in `docker-compose.yml`. After changing one, 
 
 Your first replay week is recorded in `FFBE_DIR/server/state/replay.json`. Changing the pace later re-times the whole replay from that week. Units you already own stay in your save. Holiday sets come out of the timeline and appear in the week before each real holiday and the holiday's own week. Each holiday brings the next original year that hasn't been shown (if it's less than a year ahead of history), plus any years the replay went past, older ones first. When history runs out, the random rotation takes over with every unit.
 
+**Other players**
+
+| Setting | What it controls |
+| --- | --- |
+| `EXVIUS_PLAYERS` | How many made-up players exist (default `200`, gaming and anime handles). Find them under Friend > Suggestions (a new set daily) or search by id (910000001 and up). Friend requests are accepted at once, and Remove works. Each player lends a different unit every week, only from units released by the replay's point in history. `0` turns them off. |
+| `EXVIUS_START_FRIENDS` | How many of them are already your friends in a new save (default `15`, enough for the "send gifts to 15 friends" daily quest). |
+| `EXVIUS_PLAYER_SUGGESTIONS` | How many suggestions the Friend screen shows each day (default `10`). |
+
+Your own hand-picked companions still come from `source/server/friends.yaml`.
+
 **Summon rotation**
 
 | Setting | What it controls |

@@ -14,7 +14,7 @@ import time
 
 from exvius_actions import _node, _mst, _refresh
 from ffbe_state import State, _note
-from ffbe_friends import load_friends, _reinforce_row
+from ffbe_friends import all_friends as load_friends, _reinforce_row
 from player_state import unit_stats, limit_burst
 
 

@@ -76,6 +76,12 @@ services:
       EXVIUS_IOS_SOUND_REFETCH: ""
       # "1" mails a free 8th-Anniversary 10+1 summon ticket every day; "0" turns it off.
       ANNIVERSARY_TICKET: "0"
+      # Other players (source/server/friend_players.py): made-up accounts you can add, borrow units from
+      # and remove. Each lends a different unit every week. EXVIUS_START_FRIENDS of them are your friends
+      # in a new save. "0" players turns the crowd off.
+      EXVIUS_PLAYERS: "200"
+      EXVIUS_START_FRIENDS: "15"
+      EXVIUS_PLAYER_SUGGESTIONS: "10"
       # Products kept out of the exchange shops that sell for Lapis (kind:id). Default: King Metal Minituar.
       EXVIUS_LAPIS_SHOP_EXCLUDE: "10:900020401"
     volumes:

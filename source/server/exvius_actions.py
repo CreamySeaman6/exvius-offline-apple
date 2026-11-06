@@ -304,6 +304,10 @@ HANDLERS = {
     "3siZRSU4": lambda spec, req: local_friend_action(spec, req, 'search'),
     "iAs67PhJ": lambda spec, req: local_friend_action(spec, req, 'suggest'),
     "1oE3Fwn4": lambda spec, req: local_friend_action(spec, req, 'favorite'),
+    "j0A5vQd8": lambda spec, req: local_friend_action(spec, req, 'request'),   # FriendRequest
+    "kx13SLUY": lambda spec, req: local_friend_action(spec, req, 'agree'),     # FriendAgreeRequest
+    "a2d6omAy": lambda spec, req: local_friend_action(spec, req, 'delete'),    # FriendDeleteRequest
+    "1nbWRV9w": lambda spec, req: local_friend_action(spec, req, 'refuse'),    # FriendRefuseRequest
     "g0BjrU5D": personal_raid_menu,  # RoutineRaidMenuUpdateRequest
     "pB3st6Tg": unit_equip,         # UnitEquipRequest
     "7tWdn9zH": sacrifice,                                             # SacrificeRequest

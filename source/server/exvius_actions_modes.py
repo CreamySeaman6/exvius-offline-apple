@@ -148,7 +148,7 @@ def _cost(row, op):
 
 
 def _helper(op):
-    from ffbe_friends import load_friends
+    from ffbe_friends import all_friends as load_friends
     fri, guest = str(op.get("dUX7Pt5i") or ""), str(op.get("w40YsHIz") or "")
     _need(not (fri and guest), "two selected helpers")
     helper = fri or guest
@@ -297,7 +297,7 @@ def _challenges(mid, run, req, base_result=None):
     ctx = mission_result_from(json.dumps(req))
     ctx['party_size'] = len(members) + bool(run.get('helper'))
     if run.get('helper'):
-        from ffbe_friends import load_friends
+        from ffbe_friends import all_friends as load_friends
         friend = next((f for f in load_friends() if str(f['friend_id']) == str(run['helper'])), None)
         if friend:
             ctx['helper_master'] = str(friend['unit']['master_id'])
@@ -1234,7 +1234,7 @@ def tfa_bonus(spec, req):
 
 @_handler
 def tfa_ranking(spec, req):
-    from ffbe_friends import load_friends
+    from ffbe_friends import all_friends as load_friends
     f = _feature("tfa", spec)
     node = _node(req, "C0SFBLx4") or {}
     uid, did = str(node.get("m3Wghr1j") or ""), str(node.get("U9iHsau3") or "")
