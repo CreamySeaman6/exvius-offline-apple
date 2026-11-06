@@ -66,11 +66,40 @@ def week_summary(index: int) -> dict | None:
     return _SUMMARIES[key]
 
 
+def _featured_units(banner: dict) -> list[str]:
+    units = [str(u) for u in ((banner.get('community') or {}).get('unit_ids') or [])]
+    pool = banner.get('pool')
+    if isinstance(pool, dict):
+        for tier in pool.get('tiers') or []:
+            units += [str(u) for u in tier.get('featured') or [] if str(u) not in units]
+    return units
+
+
+def _unit_name(unit_id: str) -> str:
+    if 'unit_names' not in _SUMMARY_CACHE:
+        names = {}
+        try:
+            import data_paths
+            with open(os.path.join(data_paths.TEXT_DIR, 'F_TEXT_UNITS_NAME.ndjson'), encoding='utf-8') as fh:
+                for line in fh:
+                    row = json.loads(line)
+                    if row.get('v'):
+                        names[row['key'][len('MST_UNIT_NAME_'):]] = str(row['v'][0]).strip()
+        except (OSError, ValueError, ImportError):
+            pass
+        _SUMMARY_CACHE['unit_names'] = names
+    return _SUMMARY_CACHE['unit_names'].get(str(unit_id), '')
+
+
+_SUMMARY_CACHE: dict = {}
+
+
 def _week_summary(index: int) -> dict | None:
     import event_archive
     import gacha_rotation
     import replay
     from ffbe_gacha import all_banners
+    from player_state import unit_mst
     moment, start = _moment(index)
     win = replay.window(moment)
     if win['index'] != index or index < 0:
@@ -79,14 +108,30 @@ def _week_summary(index: int) -> dict | None:
     holiday_keys = {key for keys in current['holiday_sets'].values() for key in keys}
     summons = []
     for key, members in current['sets']:
-        names = [current['by_id'][bid].get('name', bid) for bid in members]
-        summons.append({'released': key, 'names': names, 'holiday': key in holiday_keys})
-    events = []
-    for row in event_archive.weekly_events(now=moment):
+        banners = []
+        for bid in members:
+            banner = current['by_id'][bid]
+            units = []
+            for uid in _featured_units(banner):
+                name = _unit_name(uid)
+                if name:
+                    units.append({'id': uid, 'name': name,
+                                  'rarity': str((unit_mst(uid) or {}).get('9fW0TePj') or '')})
+            banners.append({'id': bid, 'name': banner.get('name', bid),
+                            'art': (banner.get('art') or {}).get('banner') or '', 'units': units})
+        summons.append({'released': key, 'names': [b['name'] for b in banners], 'banners': banners,
+                        'holiday': key in holiday_keys})
+    art = _event_art()
+    events, seen = [], set()
+    for row in sorted(event_archive.weekly_events(now=moment), key=lambda r: (str(r.get('release')), str(r.get('area')))):
         if row.get('group') == 'permanent' or not row.get('release'):
             continue
-        events.append((row['release'], row['name'], str(row.get('kind') or '').split('<br>')[0]))
-    events = sorted(set(events))
+        key = (row['release'], row['name'])
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append({'released': row['release'], 'name': row['name'],
+                       'kind': str(row.get('kind') or '').split('<br>')[0], 'art': art.get(str(row.get('area')), '')})
     return {'index': index, 'start': start, 'from': win['from'], 'to': win['to'] - timedelta(days=1),
             'finished': win['finished'], 'holiday': current.get('holiday'), 'summons': summons,
             'events': events}
@@ -151,6 +196,7 @@ def page(index: str) -> str | None:
         return None
     import gacha_rotation
     import replay
+    from urllib.parse import quote
     number = gacha_rotation.week()[0]
     try:
         index = int(index)
@@ -161,45 +207,112 @@ def page(index: str) -> str | None:
     summary = week_summary(index)
     if not summary:
         return None
+
+    def src(kind: str, value: str) -> str:
+        if kind == 'summon':
+            return '/banner/' + quote(value)
+        if kind == 'event':
+            return '/en/sd/area/' + quote(value)
+        return '/exvius/notice-art/unit/' + quote(value) + '.png'
+    return render(summary, src)
+
+
+def render(summary: dict, src) -> str:
+    """The notice page for one replay week. `src(kind, value)` gives each picture's URL: kind 'summon'
+    (a summon's banner art file), 'event' (an event's banner file) or 'unit' (a unit id, its sprite)."""
     esc = html.escape
-    parts = [f"<h1>Week of {summary['start']:%B} {summary['start'].day}</h1>"]
+    start = summary['start']
+    parts = ['<header class="mast">',
+             '<p class="eyebrow">Brave Exvius News</p>',
+             f'<h1>Week of {start:%B} {start.day}</h1>']
     if summary['finished']:
-        parts.append('<p>The replay has reached the end of Global\'s history. Summons now rotate weekly.</p>')
+        parts.append('<p class="era">Global\'s history is complete. Summons rotate weekly now.</p>')
     else:
-        parts.append(f"<p class=sub>History: {_day(summary['from'])} to {_day(summary['to'])}</p>")
+        parts.append(f'<p class="era"><span>Global history</span> {_day(summary["from"])} &ndash; '
+                     f'{_day(summary["to"])}</p>')
+    parts.append('</header>')
     if summary['holiday']:
-        parts.append(f"<p class=tag>{esc(summary['holiday'])} summons are here this week.</p>")
-    parts.append('<h2>Summons</h2>')
-    if summary['summons']:
-        parts.append('<ul>')
-        for entry in summary['summons']:
-            when = date.fromisoformat(entry['released']) if entry['released'][:1].isdigit() else None
-            label = f"<span class=when>{_day(when)}</span>" if when else ''
-            for name in entry['names']:
-                parts.append(f'<li>{esc(name)} {label}</li>')
-        parts.append('</ul>')
-    else:
-        parts.append('<p>No new summons this week.</p>')
-    parts.append('<h2>Vortex</h2>')
-    if summary['events']:
-        parts.append('<ul>')
-        for released, name, kind in summary['events']:
-            detail = f' <span class=when>{esc(kind)}</span>' if kind else ''
-            parts.append(f'<li>{esc(name)}{detail}</li>')
-        parts.append('</ul>')
-    else:
-        parts.append('<p>No new events this week. The permanent Vortex areas are open as usual.</p>')
-    body = '\n'.join(parts)
-    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>This week</title><style>
-body{{margin:0;padding:20px 22px 40px;background:#230b24;color:#fff5dc;font:17px Arial,sans-serif}}
-h1{{font-size:23px;color:#ffe398;margin:0 0 6px}}h2{{font-size:19px;color:#ffe398;margin:24px 0 8px}}
-.sub{{color:#d9c7a8;margin:0 0 12px}}.tag{{color:#ffb3c7;font-weight:bold}}
-ul{{margin:0;padding-left:20px}}li{{margin:0 0 9px;line-height:1.4}}
-.when{{display:block;color:#bfae92;font-size:14px}}</style></head><body>
-{body}
-</body></html>'''
+        parts.append(f'<p class="ribbon">{esc(summary["holiday"])} summons are here this week</p>')
+    parts.append('<section><h2><span>New Summons</span></h2>')
+    if not summary['summons']:
+        parts.append('<p class="empty">No new summons this week.</p>')
+    for entry in summary['summons']:
+        when = date.fromisoformat(entry['released']) if entry['released'][:1].isdigit() else None
+        for banner in entry['banners']:
+            parts.append('<article class="summon">')
+            if banner['art']:
+                parts.append(f'<img class="art" src="{esc(src("summon", banner["art"]))}" alt="" '
+                             f'width="640" height="160" loading="lazy">')
+            title = banner['name'].replace(' Featured Summon', '')
+            parts.append(f'<div class="cap"><h3>{esc(title)}</h3>'
+                         + (f'<p class="date">Originally {_day(when)}</p>' if when else '') + '</div>')
+            if banner['units']:
+                parts.append('<ul class="units">')
+                for unit in banner['units']:
+                    stars = f'{unit["rarity"]}★ base' if unit['rarity'] and unit['rarity'] != '7' else (
+                        'Neo Vision' if unit['rarity'] == '7' else '')
+                    parts.append(f'<li><img src="{esc(src("unit", unit["id"]))}" alt="" loading="lazy" '
+                                 f'onerror="this.style.visibility=\'hidden\'"><b>{esc(unit["name"])}</b>'
+                                 f'<i>{stars}</i></li>')
+                parts.append('</ul>')
+            parts.append('</article>')
+    parts.append('</section><section><h2><span>In the Vortex</span></h2>')
+    if not summary['events']:
+        parts.append('<p class="empty">No new events this week. The permanent Vortex areas are open as usual.</p>')
+    for event in summary['events']:
+        when = date.fromisoformat(event['released'])
+        parts.append('<article class="event">')
+        if event['art']:
+            parts.append(f'<img class="art" src="{esc(src("event", event["art"]))}" alt="{esc(event["name"])}" '
+                         f'width="640" height="240" loading="lazy">')
+        parts.append(f'<div class="cap"><h3>{esc(event["name"])}</h3><p class="date">'
+                     + (f'{esc(event["kind"])} &middot; ' if event['kind'] else '')
+                     + f'{_day(when)}</p></div></article>')
+    parts.append('</section><footer>Banners and sprites are the original game art.</footer>')
+    return PAGE.replace('{{BODY}}', '\n'.join(parts))
+
+
+PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>This Week in Exvius</title>
+<style>
+/* One dark look, like the game's own menus: a night-blue sheet, gold rules and gilt headings. */
+:root{--night:#0d1230;--sheet:#151b42;--ink:#f3ecd9;--muted:#b4abc9;--gold:#e8c46a;--gilt:#fff1bf;
+--rose:#ff9db6;--line:rgba(232,196,106,.45);color-scheme:dark;
+--display:"Cinzel","Trajan Pro",Georgia,"Times New Roman",serif;--body:"Avenir Next","Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;background:radial-gradient(120% 60% at 50% 0%,#2a2464 0%,var(--night) 70%) fixed,var(--night);
+color:var(--ink);font:16px/1.45 var(--body);padding:18px max(16px,env(safe-area-inset-right,0px)) 36px max(16px,env(safe-area-inset-left,0px))}
+.mast{text-align:center;padding:4px 0 14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.eyebrow{margin:0;font:600 11px/1 var(--body);letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+h1{margin:8px 0 6px;font:700 25px/1.15 var(--display);color:var(--gilt);text-wrap:balance;
+text-shadow:0 1px 0 #6b4c12,0 0 18px rgba(232,196,106,.25)}
+.era{margin:0;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.era span{color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-size:11px;margin-right:6px}
+.ribbon{margin:0 0 16px;padding:9px 12px;text-align:center;font:700 14px/1.3 var(--display);letter-spacing:.04em;
+color:#3b0a18;background:linear-gradient(90deg,#f6a5b8,#ffd7a3,#f6a5b8);border-radius:3px}
+section{display:grid;gap:14px;margin-bottom:22px}
+h2{display:flex;align-items:center;gap:10px;margin:4px 0 0;font:700 15px/1 var(--display);letter-spacing:.14em;
+text-transform:uppercase;color:var(--gold)}
+h2::before,h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line))}
+h2::after{background:linear-gradient(90deg,var(--line),transparent)}
+article{background:var(--sheet);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.art{display:block;width:100%;height:auto;background:#0a0d22}
+.cap{padding:9px 12px 10px}
+h3{margin:0;font:600 15px/1.3 var(--body);color:var(--ink)}
+.date{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.units{list-style:none;margin:0;padding:4px 8px 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px 4px}
+.units li{display:grid;justify-items:center;align-content:end;text-align:center;min-width:0;
+background:radial-gradient(50% 9px at 50% 72px,rgba(232,196,106,.22),transparent) no-repeat}
+.units img{height:76px;width:auto;max-width:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 3px 2px rgba(0,0,0,.6))}
+.units b{font:600 12px/1.2 var(--body);color:var(--gilt);margin-top:4px;overflow-wrap:anywhere}
+.units i{font:normal 11px/1.2 var(--body);color:var(--muted)}
+.empty{margin:0;color:var(--muted);font-size:14px;text-align:center}
+footer{text-align:center;color:var(--muted);font-size:11px;letter-spacing:.06em}
+</style></head><body>
+{{BODY}}
+</body></html>"""
 
 
 # ---- Home banners (the marquee on the home screen) ----------------------------------------------------
@@ -276,3 +389,74 @@ def marquee_file(banner_id: str) -> str | None:
         return None
     filename = _event_art().get(str(area))
     return f'en/sd/area/{filename}' if filename else None
+
+
+# ---- Unit sprites for the notice pages -----------------------------------------------------------------
+# The game data keeps unit art inside packed sprite sheets, so the notice pages use the FFBE wiki's
+# single-pose sprites ("Unit-<Name>-<rarity>.png", the same files the wiki shows on each unit's page).
+# The server downloads one the first time a notice asks for it and keeps it in ios-cache/notice-art/.
+# A unit the wiki has no sprite for is remembered for a week and drawn as an empty space.
+# EXVIUS_NOTICE_ART=0 turns the downloads off (the pages then show names only).
+WIKI_IMAGES = "https://static.wikia.nocookie.net/exvius_gamepedia_en/images"
+
+
+def _art_dir() -> str:
+    try:
+        import ios_art
+        base = ios_art.cache_dir()
+    except Exception:  # noqa: BLE001
+        base = os.path.join(os.environ.get("FFBE_SERVER_ROOT", "."), "ios-cache")
+    path = os.path.join(base, "notice-art")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
+def _wiki_url(filename: str) -> str:
+    import hashlib
+    from urllib.parse import quote
+    name = filename.replace(" ", "_")
+    digest = hashlib.md5(name.encode("utf-8")).hexdigest()
+    return f"{WIKI_IMAGES}/{digest[0]}/{digest[:2]}/{quote(name)}"
+
+
+def unit_sprite(unit_id: str) -> bytes | None:
+    """PNG bytes of a unit's sprite, from the cache or (once) from the wiki."""
+    import time as _time
+    import urllib.request
+    unit_id = str(unit_id)
+    if not unit_id.isdigit():
+        return None
+    folder = _art_dir()
+    path = os.path.join(folder, f"unit-{unit_id}.png")
+    if os.path.isfile(path):
+        with open(path, "rb") as fh:
+            return fh.read()
+    miss = path + ".missing"
+    if os.path.isfile(miss) and _time.time() - os.path.getmtime(miss) < 7 * 86400:
+        return None
+    if os.environ.get("EXVIUS_NOTICE_ART", "1") != "1":
+        return None
+    from player_state import unit_mst
+    name = _unit_name(unit_id)
+    try:
+        rarity = int((unit_mst(unit_id) or {}).get("9fW0TePj") or 5)
+    except ValueError:
+        rarity = 5
+    if not name:
+        return None
+    tries = [7] if rarity >= 7 else [rarity + 1, rarity, rarity + 2, 7]
+    for stars in dict.fromkeys(tries):
+        url = _wiki_url(f"Unit-{name}-{stars}.png")
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "ExviusOffline/1.0 (notice art cache)"})
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                data = resp.read()
+        except Exception:  # noqa: BLE001 -- try the next rarity
+            continue
+        if data[:8] == b"\x89PNG\r\n\x1a\n":
+            with open(path, "wb") as fh:
+                fh.write(data)
+            return data
+    with open(miss, "w", encoding="utf-8") as fh:
+        fh.write(name)
+    return None

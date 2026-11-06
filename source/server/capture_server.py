@@ -482,6 +482,21 @@ class Handler(BaseHTTPRequestHandler):
         parade_page = path == '/exvius/parade-rewards.html'
         equip_page = path == '/exvius/equipment-enhancement.html'
         notice_page = re.fullmatch(r'/exvius/notices/(\d+)\.html', path)
+        notice_art = re.fullmatch(r'/exvius/notice-art/unit/(\d+)\.png', path)
+        if notice_art:
+            from replay_notices import unit_sprite
+            image = unit_sprite(notice_art.group(1))
+            if image is None:
+                self.send_error(404, 'No sprite for this unit')
+                return
+            self.send_response(200)
+            self.send_header('Content-Type', 'image/png')
+            self.send_header('Cache-Control', 'max-age=604800')
+            self.send_header('Content-Length', str(len(image)))
+            self.end_headers()
+            if self.command != 'HEAD':
+                self.wfile.write(image)
+            return
         clash_page = path in ('/exvius/clash-rewards.html', '/exvius/clash-ranking.html')
         if raid_page or rates_page or parade_page or clash_page or equip_page or notice_page:
             with STATE_LOCK:

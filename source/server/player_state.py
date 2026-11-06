@@ -4171,8 +4171,16 @@ class PlayerState:
         # nothing ever accumulated. The `elif` below (no ticket named) stays for a ticket-ONLY banner.
         named = ticket_by_id(ticket_id) if ticket_id not in (None, "", 0, "0") else None
         if ticket_id not in (None, "", 0, "0") and named is None:
-            print(f"    gacha refused: unknown ticket {ticket_id}", flush=True)
-            return None
+            if isinstance(cost, dict) and str(cost.get("kind")) in ("item", "important") and cost.get("item_id"):
+                # An item-paid banner (the SP Summon Tickets, global_bundles.json) has no F_TICKET_MST row: the
+                # ticket IS the cost item, so the request's ticket id is not one the table knows. Pay with the
+                # cost item below instead of refusing (refusing showed a white crystal and no unit, 2026-11-05).
+                print(f"    gacha: ticket {ticket_id} is not an F_TICKET_MST row; paying banner "
+                      f"{banner.get('id')} with its cost item {cost.get('item_id')}", flush=True)
+                ticket_id = None
+            else:
+                print(f"    gacha refused: unknown ticket {ticket_id}", flush=True)
+                return None
         if named is not None:
             group = banner.get("ticket_group_id")
             if group and named not in ticket_group_items(group):
