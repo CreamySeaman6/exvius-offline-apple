@@ -68,6 +68,8 @@ def configure_engine() -> None:
                        ('EXVIUS_REPLAY', '1'),
                        # Home screen banners from this replay week's events (replay_notices.py).
                        ('MARQUEE_FLAG', '1'),
+                       # Name padded summon detail art afresh so phones drop the squashed copy (banner_fit.py).
+                       ('EXVIUS_IOS_BANNER_FIT_NAMES', '1'),
                        # A stock client keeps tables of its own; make it take this server's whole set.
                        ('EXVIUS_TABLE_VERSION_OFFSET', '200000'),  # raise it to make the phone re-download every table
                        # Ask the game to upload its own error log (saved under server/client-reports/).

@@ -551,6 +551,9 @@ class Handler(BaseHTTPRequestHandler):
         if replay_banner:
             from replay_notices import marquee_file
             rel = marquee_file(replay_banner.group(1)) or rel
+        # Summon detail art asked for under its padded name (banner_fit.fit_name): serve the real file, padded.
+        import banner_fit
+        rel = banner_fit.real_rel(rel)
         # EXVIUS_TABLE_VERSION_OFFSET advertises every table at <real version + offset> (see
         # ffbe_battle.serve_version_table); the client then asks for that inflated name. Map it back.
         from ffbe_battle import table_version_offset

@@ -520,8 +520,9 @@ def _gacha_schedule_banner_string(banner: str, detail: str = "", extras=()) -> s
     Evidence: `docs/notes/gacha_banner_draw_path.md` S0/S4d/S8.
     """
     name = banner or GACHA_DEFAULT_BANNER_ART
-    detail = detail or name
-    extra = "".join(f",{i}:{f}" for i, f in enumerate(extras or (), 1))
+    from banner_fit import fit_name   # a fresh name for padded detail art (banner_fit.py)
+    detail = fit_name(detail or name)
+    extra = "".join(f",{i}:{fit_name(f)}" for i, f in enumerate(extras or (), 1))
     return f"{name},0:{detail}{extra}"
 def _gacha_target_info(entry: dict) -> str:
     """`GachaPanelGroupMst.targetInfo` (7iJpH5zZ) = `TargetType:TargetID:TargetNum:TargetRate:TargetLv`

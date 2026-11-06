@@ -210,11 +210,20 @@ def page(index: str) -> str | None:
 
     def src(kind: str, value: str) -> str:
         if kind == 'summon':
-            return '/banner/' + quote(value)
+            # The path the summon list itself uses, so the CDN finds the file by name (a bare
+            # /banner/<file> has no folder for its lookup to go on and was answered 404 on the phone).
+            return '/banner/en/sd/static_banner/gacha/main/' + quote(value)
         if kind == 'event':
             return '/en/sd/area/' + quote(value)
         return '/exvius/notice-art/unit/' + quote(value) + '.png'
     return render(summary, src)
+
+
+# The wiki answers a file it doesn't have with a 300x171 "not found" picture instead of an error.
+_PLACEHOLDER = "if(this.naturalWidth==300&&this.naturalHeight==171)this.onerror();"
+_NEXT_SPRITE = ("var a=(this.dataset.alt||'').split('|').filter(Boolean);"
+                "if(a.length){this.dataset.alt=a.slice(1).join('|');this.src=a[0];}"
+                "else{this.onerror=null;this.style.visibility='hidden';}")
 
 
 def render(summary: dict, src) -> str:
@@ -242,7 +251,7 @@ def render(summary: dict, src) -> str:
             parts.append('<article class="summon">')
             if banner['art']:
                 parts.append(f'<img class="art" src="{esc(src("summon", banner["art"]))}" alt="" '
-                             f'width="640" height="160" loading="lazy">')
+                             f'width="640" height="160" loading="lazy" onerror="this.style.display=\'none\'">')
             title = banner['name'].replace(' Featured Summon', '')
             parts.append(f'<div class="cap"><h3>{esc(title)}</h3>'
                          + (f'<p class="date">Originally {_day(when)}</p>' if when else '') + '</div>')
@@ -251,8 +260,10 @@ def render(summary: dict, src) -> str:
                 for unit in banner['units']:
                     stars = f'{unit["rarity"]}★ base' if unit['rarity'] and unit['rarity'] != '7' else (
                         'Neo Vision' if unit['rarity'] == '7' else '')
+                    # If the server can't supply the sprite, the phone tries the wiki's copies itself.
+                    alt = '|'.join(sprite_urls(unit['id']))
                     parts.append(f'<li><img src="{esc(src("unit", unit["id"]))}" alt="" loading="lazy" '
-                                 f'onerror="this.style.visibility=\'hidden\'"><b>{esc(unit["name"])}</b>'
+                                 f'data-alt="{esc(alt)}" onerror="{_NEXT_SPRITE}" onload="{_PLACEHOLDER}"><b>{esc(unit["name"])}</b>'
                                  f'<i>{stars}</i></li>')
                 parts.append('</ul>')
             parts.append('</article>')
@@ -264,7 +275,7 @@ def render(summary: dict, src) -> str:
         parts.append('<article class="event">')
         if event['art']:
             parts.append(f'<img class="art" src="{esc(src("event", event["art"]))}" alt="{esc(event["name"])}" '
-                         f'width="640" height="240" loading="lazy">')
+                         f'width="640" height="240" loading="lazy" onerror="this.style.display=\'none\'">')
         parts.append(f'<div class="cap"><h3>{esc(event["name"])}</h3><p class="date">'
                      + (f'{esc(event["kind"])} &middot; ' if event['kind'] else '')
                      + f'{_day(when)}</p></div></article>')
@@ -395,7 +406,8 @@ def marquee_file(banner_id: str) -> str | None:
 # The game data keeps unit art inside packed sprite sheets, so the notice pages use the FFBE wiki's
 # single-pose sprites ("Unit-<Name>-<rarity>.png", the same files the wiki shows on each unit's page).
 # The server downloads one the first time a notice asks for it and keeps it in ios-cache/notice-art/.
-# A unit the wiki has no sprite for is remembered for a week and drawn as an empty space.
+# A unit the server can't fetch is retried after an hour; meanwhile the page has the phone try the wiki
+# itself, and draws an empty space if that fails too.
 # EXVIUS_NOTICE_ART=0 turns the downloads off (the pages then show names only).
 WIKI_IMAGES = "https://static.wikia.nocookie.net/exvius_gamepedia_en/images"
 
@@ -416,7 +428,35 @@ def _wiki_url(filename: str) -> str:
     from urllib.parse import quote
     name = filename.replace(" ", "_")
     digest = hashlib.md5(name.encode("utf-8")).hexdigest()
-    return f"{WIKI_IMAGES}/{digest[0]}/{digest[:2]}/{quote(name)}"
+    # format=original: without it the wiki's CDN answers WebP, which the server used to reject as "not a PNG"
+    # and then gave up on the unit (why the sprites were blank on the phone, 2026-11-05).
+    return f"{WIKI_IMAGES}/{digest[0]}/{digest[:2]}/{quote(name)}?format=original"
+
+
+def _webp_to_png(data: bytes) -> bytes | None:
+    try:
+        import io
+        from PIL import Image
+        out = io.BytesIO()
+        Image.open(io.BytesIO(data)).save(out, "PNG")
+        return out.getvalue()
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def sprite_urls(unit_id: str) -> list[str]:
+    """The wiki URLs that may hold this unit's sprite, best guess first."""
+    from player_state import unit_mst
+    unit_id = str(unit_id)
+    name = _unit_name(unit_id) if unit_id.isdigit() else ''
+    if not name:
+        return []
+    try:
+        rarity = int((unit_mst(unit_id) or {}).get("9fW0TePj") or 5)
+    except ValueError:
+        rarity = 5
+    tries = [7] if rarity >= 7 else [rarity + 1, rarity, rarity + 2, 7]
+    return [_wiki_url(f"Unit-{name}-{stars}.png") for stars in dict.fromkeys(tries)]
 
 
 def unit_sprite(unit_id: str) -> bytes | None:
@@ -431,28 +471,25 @@ def unit_sprite(unit_id: str) -> bytes | None:
     if os.path.isfile(path):
         with open(path, "rb") as fh:
             return fh.read()
-    miss = path + ".missing"
-    if os.path.isfile(miss) and _time.time() - os.path.getmtime(miss) < 7 * 86400:
+    miss = path + ".miss2"     # retried after an hour (older ".missing" markers are ignored)
+    if os.path.isfile(miss) and _time.time() - os.path.getmtime(miss) < 3600:
         return None
     if os.environ.get("EXVIUS_NOTICE_ART", "1") != "1":
         return None
-    from player_state import unit_mst
-    name = _unit_name(unit_id)
-    try:
-        rarity = int((unit_mst(unit_id) or {}).get("9fW0TePj") or 5)
-    except ValueError:
-        rarity = 5
-    if not name:
+    urls = sprite_urls(unit_id)
+    if not urls:
         return None
-    tries = [7] if rarity >= 7 else [rarity + 1, rarity, rarity + 2, 7]
-    for stars in dict.fromkeys(tries):
-        url = _wiki_url(f"Unit-{name}-{stars}.png")
+    name = _unit_name(unit_id)
+    for url in urls:
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "ExviusOffline/1.0 (notice art cache)"})
-            with urllib.request.urlopen(req, timeout=8) as resp:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (ExviusOffline notice art cache)"})
+            with urllib.request.urlopen(req, timeout=6) as resp:
                 data = resp.read()
-        except Exception:  # noqa: BLE001 -- try the next rarity
+        except Exception as exc:  # noqa: BLE001 -- try the next rarity
+            print(f"NOTICE-ART unit {unit_id}: {url} -> {exc}", flush=True)
             continue
+        if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+            data = _webp_to_png(data) or data
         if data[:8] == b"\x89PNG\r\n\x1a\n":
             with open(path, "wb") as fh:
                 fh.write(data)
