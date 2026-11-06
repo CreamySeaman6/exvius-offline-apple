@@ -22,8 +22,12 @@ Push to `ios-server` on GitHub, then he runs:
 
 ```bash
 cd /mnt/user/appdata/ffbe/repo && git fetch origin && git reset --hard origin/ios-server
-cd ios-server && docker compose build && docker compose up -d
+cd ios-server && docker compose build
 ```
+
+then Docker tab → `ffbe` → **Edit** → **Apply** (recreates it from the new image). This assumes he has moved `ffbe` to the Unraid template (`unraid/my-ffbe.xml`, README "Unraid: run it from the Docker tab"; sent 2026-11-06 evening, not yet confirmed). Until he has, the update is `docker compose build && docker compose up -d`. Once he has, never tell him to run `docker compose up` (a second container with the same name); `docker compose exec server …` becomes `docker exec ffbe …`.
+
+When a change adds or renames an environment variable in `docker-compose.yml`, also add it to `unraid/my-ffbe.xml` and tell him to add it on the Edit page (re-copying the template resets his own edits).
 
 He has switched to the single container (confirmed 2026-11-06), so the `docker rm -f ffbe-tailscale-1 ffbe-server-1` migration step (README, Everyday use) is done.
 
@@ -499,6 +503,15 @@ Operator's request: random battles as close to the original as possible, sourced
 - **Left without random battles** (no wiki record of random monsters), sent to the operator: Expedition - Into the Abyss; The Kingdom's Light of Hope (+ Provisions); Visitors from Beyond (Dalnakya, Fulan Pass, Zadehl Westersands, Lanzelt Ruins); The Knight of Heart / Solice / Hardship; Aileen's 2/3/5, Roy's 1/3/5, Silvia's 2/4/6 episodes; Electric Tower - Pursuit (4 scripted battles on the wiki); The Dreadnought BGN-ELT (wiki lists only the Captain; the battle data has Mine, Ghast, Stunner, Balloon, Shadow, Dire Rat ... groups for it); Save the Choco-Chocobos!; The Palace of Wisdom (5); A Game of Cat and Mouse; Megacrysts Map; Asura's Palace. Confirmed boss-only on the wiki, so none by design: the esper dungeons listed above plus Thunder Summit, Wicked Peaks, Carbuncle Grove, The Isolated Goddess, Raven Falls Basin, Sylph's Cavern, Pitch Black - With Friends, Howling Mountains, Cave of Rebirth, Sacred Valley, Pit of Chains, Eternal Summit, and all Trials. 106 exploration-type missions with no English name or outside the archive are ignored.
 - Not yet on the phone. First checks: Earth Shrine (13 battles of rats/bats/tarantulas, then none), a two-zone exploration (Lanzelt Highlands or Zoldaad Castle Grounds: battles in both zones).
 - **Follow-up, operator's request: confirm whether the leftovers should have enemies at all** (wiki, same day). Added: The Dreadnought INT-ELT (an exploration event; the wiki gives 21-23 / 26-27 / 31-33 / 35-36 battles but no monster list, so the monsters are those of its own groups 71301xx01-24, the 80-90 groups being the Captain fights; BGN is the Captain alone); Expedition - Into the Abyss (the Aug 2016 Vortex exploration "Into the Abyss": 30 battles, Wild Rat, Mercury Bat, Gloom Widow, Goblin Mage, Scorpion, Peeper, Skuldier, Bomb, Golden Bomb, Ainsel, King Gil Snapper, Metal Gigantuar; boss Belmodar x3); The Knight of Heart / Solice / Hardship (Aquapolis Olderion quest: "based on" the Grandshelt Catacombs / Zadehl Westersands / Dwarves' Forge exploration "however there are no chests", so they use those plans; `same_as` in exploration_wiki.json). Confirmed none: the episode missions left over are the cutscene parts (Aileen 2/3/5, Roy 1/3/5, Silvia 2/4/6), Electric Tower - Pursuit (4 set battles, X-ATM092), A Game of Cat and Mouse (3 visible rat chases), Megacrysts Map (collection points, no battles), Asura's Palace (1 battle). No trace on the Global wiki (probably Japan-only content left in the tables): The Kingdom's Light of Hope (+ Provisions), Visitors from Beyond (4), Save the Choco-Chocobos!, The Palace of Wisdom (5); left without battles. 248 missions planned.
+
+## Unraid template for the container (2026-11-06, evening)
+
+Operator's request: run `ffbe` as a normal Unraid Docker-tab container (GUI control, survives reboots and the Appdata Backup plugin) instead of from `docker compose up` in the terminal.
+
+- Compose-started containers show in the Docker tab but aren't dockerMan's: no Autostart, no Edit, and the backup plugin's stop/start doesn't treat them like apps. Fix: `ios-server/unraid/my-ffbe.xml`, a dockerMan template (copied to `/boot/config/plugins/dockerMan/templates-user/`) for the same container: image `ffbe-ios-server:local` (still built with `docker compose build`), bridge network, `/dev/net/tun` as a Device, ExtraParams `--hostname=ffbe --cap-add=NET_ADMIN --restart=unless-stopped --log-opt max-size=20m --log-opt max-file=3` (the restart policy matters: entrypoint.sh exits when Tailscale or the server dies so both restart together), the three folders under `/mnt/user/appdata/ffbe`, and every environment variable from `docker-compose.yml` with its compose comment as the description (generated from the compose file; TS_AUTHKEY masked and empty).
+- A local image needs an explicit tag in a template (Unraid forum: untagged names become `:latest` and Unraid tries to pull); `:local` is explicit. Its update status shows "not available", which is cosmetic.
+- Steps (README "Unraid: run it from the Docker tab"): build, `docker compose down`, copy the template, Add Container from the user template, Apply, Autostart on. Updating: git reset + `docker compose build`, then Edit → Apply. Removal notes added to "Removing everything".
+- Not tried on his server yet.
 
 ## Starting a fresh session
 

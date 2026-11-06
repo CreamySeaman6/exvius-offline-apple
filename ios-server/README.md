@@ -131,8 +131,40 @@ If you use custom Tailscale access rules, the phone must be allowed to reach `ff
 The stack is plain Docker Compose, so it runs anywhere Docker does. A machine that's always on (a NAS or home server) means you can play any time without your PC being on.
 
 - **Linux server:** same steps. Install Docker Engine and the Compose plugin.
-- **Unraid:** install the **Docker Compose Manager** plugin from the Apps tab, then follow the same steps in the Unraid terminal. A good `FFBE_DIR` is `/mnt/user/appdata/ffbe`, with the repo cloned to `/mnt/user/appdata/ffbe/repo`.
+- **Unraid:** follow the same steps in the Unraid terminal (Compose comes with the **Docker Compose Manager** plugin from the Apps tab), with `FFBE_DIR` set to `/mnt/user/appdata/ffbe` and the repo cloned to `/mnt/user/appdata/ffbe/repo`. Then move the container into the Docker tab ([below](#unraid-run-it-from-the-docker-tab)).
 - **Synology and other NAS systems:** need Docker (Container Manager) and SSH access to run `docker compose`. The container needs `/dev/net/tun` for Tailscale, which some NAS systems only provide after enabling it.
+
+### Unraid: run it from the Docker tab
+
+Started with `docker compose up`, the container shows in the Docker tab but Unraid doesn't manage it: no Autostart switch, no Edit, and backup plugins don't know how to bring it back. `unraid/my-ffbe.xml` is an Unraid template for the same container (same image, folders, Tailscale sign-in and settings), so Unraid manages it like any other app.
+
+1. In the Unraid terminal, build the image and remove the Compose-run container (your save, the data and the Tailscale sign-in stay in `FFBE_DIR`):
+
+   ```bash
+   cd /mnt/user/appdata/ffbe/repo/ios-server
+   grep FFBE_DIR .env    # the template assumes /mnt/user/appdata/ffbe
+   docker compose build
+   docker compose down
+   cp unraid/my-ffbe.xml /boot/config/plugins/dockerMan/templates-user/my-ffbe.xml
+   ```
+
+   If `FFBE_DIR` is something else, change the three folder paths in step 2.
+2. **Docker** tab → **Add Container** → **Template** → under *User templates*, pick **ffbe**. Leave `TS_AUTHKEY` empty (the Tailscale folder is already signed in) and select **Apply**.
+3. Turn on **Autostart** for `ffbe`. It now starts after a reboot, and backup plugins stop and start it like any other container.
+4. Check it: the `ffbe` icon → **Logs** should show `Tailscale state: Running`, then the server starting.
+
+From then on, don't run `docker compose up` (it would make a second container with the same name). `docker compose build` and `docker compose run --rm server fetch-data` are still fine. Settings are in the container's **Edit** page instead of `docker-compose.yml`.
+
+**Updating** on Unraid:
+
+```bash
+cd /mnt/user/appdata/ffbe/repo && git fetch origin && git reset --hard origin/ios-server
+cd ios-server && docker compose build
+```
+
+Then **Docker** tab → `ffbe` → **Edit** → **Apply**: that recreates the container from the new image with your settings. (**Restart** keeps the old image.) Unraid shows the image's update status as "not available" because it's built locally; that's expected.
+
+When a new version adds settings, the notes will say so: add them on the Edit page with **Add another Path, Port, Variable, Label or Device**. Copying the template file again would reset your own changes.
 
 ---
 
@@ -175,7 +207,7 @@ The server also keeps every request it received for three days, in `FFBE_DIR/ser
 | Restart | `docker compose restart server` |
 | Logs | `docker compose logs -f server` |
 | Stop | `docker compose down` |
-| Unraid | The stack is one container, `ffbe`, in the **Docker** tab: start, stop and restart it there. It starts by itself after a reboot unless you stopped it (`restart: unless-stopped`). Unraid's Autostart switch doesn't apply to it. |
+| Unraid | After [moving it to the Docker tab](#unraid-run-it-from-the-docker-tab): start, stop, restart, logs and settings are all on the `ffbe` icon. Commands run inside it with `docker exec ffbe python3 /app/ffbe.py …` (for example `rotation` or `status`) instead of `docker compose exec server …`. |
 | Start the game over | `docker compose exec server python3 /app/ffbe.py new-game --yes` (the old save is backed up to `server/state/backups/`) |
 
 **Your save** is in `FFBE_DIR/server/state/`. Back up that folder.
@@ -315,6 +347,8 @@ The weekly summon rotation is in `source/server/gacha_rotation.py`, the historic
    docker compose down --rmi local
    docker image rm tailscale/tailscale:stable   # skip if anything else uses this image
    ```
+
+   On Unraid with the template: remove `ffbe` in the Docker tab (icon → **Remove**), run `docker image rm ffbe-ios-server:local`, and delete `/boot/config/plugins/dockerMan/templates-user/my-ffbe.xml`.
 
    Then delete the whole `exvius` folder (or your `FFBE_DIR`). That removes the game data (including the event banners the server downloads from the Brave Exvius wiki into `data/native/en/sd/area/`), your save, the certificates, the Tailscale state and this copy of the repo.
 2. In the Tailscale admin console:
