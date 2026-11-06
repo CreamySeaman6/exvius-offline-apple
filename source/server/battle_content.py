@@ -567,6 +567,7 @@ def derive_mission(mission: int, source: Source | str, break_status: dict[str, d
 
 _FIELD_GROUP_BINDINGS = None
 _FIELD_SCENARIO_GROUPS = None
+_EXPLORATION_PLANS = None
 
 # Random field encounters (2026-11-06). The client starts one only when the mission
 # reply carries `EncountInfo` rows (tag `6v0LPiRe`, `GameResponseFactory` ->
@@ -576,20 +577,37 @@ _FIELD_SCENARIO_GROUPS = None
 # (`EncountInfoList::drawing` 0x1e09190) and needs a row for (field, group, n), n =
 # how often that group was met there this run (`EncountLogList`, reset at mission start
 # by `MissionStartScene::moveMapInit`). With no rows nothing is ever drawn, which is
-# why explorations had no random battles. The retail server's rows (which groups per
-# field) are not preserved, so every field the map can use gets every field group.
+# why explorations had no random battles. A field with no rows left has no more battles,
+# which is how retail explorations ran out (the wiki's "stay in Zone 1 until you have N Gil").
 ENCOUNT_TAG = '6v0LPiRe'
 # Each map lists its fields after its texture names (`MapDrawManager::initMapData`
 # 0x1fa9d74). 159 of the 169 readable maps list exactly these.
 ENCOUNT_FIELDS = (10, 11, 12, 13, 14, 20, 21, 22, 30, 31, 32, 40, 50)
 # Maps with more ("another floor" rates), by mission prefix: The Crystal Tower (707010100).
 ENCOUNT_FIELDS_EXTRA = {'70701': (70, 71, 72, 73, 74, 75)}
-# Rows per (field, group): enough that a field allows about this many battles per run.
-ENCOUNT_PER_FIELD = 48
 
 
 def encount_enabled() -> bool:
     return str(os.environ.get('EXVIUS_FIELD_ENCOUNTERS', '1')).strip().lower() not in ('0', 'off', 'false', 'no')
+
+
+def field_zone(field: int) -> int:
+    """The zone an `F_ENCOUNT_FIELD_MST` id belongs to, from the table's own names:
+    10-14 zone 1, 20-22 zone 2, ...; 60-63/64-67 and 70-75 "another floor" 1..n;
+    110-150 and 210-282 "area N". 0 for the test/generic 99 and 100."""
+    if field < 60:
+        return field // 10
+    if 60 <= field <= 63:
+        return field - 59
+    if 64 <= field <= 67:
+        return field - 63
+    if 70 <= field <= 75:
+        return field - 69
+    if 110 <= field <= 150:
+        return (field - 100) // 10
+    if 210 <= field <= 282:
+        return (field - 200) // 10
+    return 0
 
 
 def _scenario_groups() -> set[str]:
@@ -603,48 +621,75 @@ def _scenario_groups() -> set[str]:
     return _FIELD_SCENARIO_GROUPS
 
 
-def encount_rows(mid: str, own_groups: set[str], bundle: dict, source: Source) -> list[dict]:
-    """`EncountInfo` rows for an exploration: its own groups (`<mission><nn>`) on every field.
+def exploration_plans() -> dict:
+    """content/exploration_encounters.json (ios-server/devtools/build_exploration_encounters.py):
+    each exploration's battles per zone, rebuilt from the FFBE wiki's monster counts."""
+    global _EXPLORATION_PLANS
+    if _EXPLORATION_PLANS is None:
+        path = os.path.join(HERE, 'content', 'exploration_encounters.json')
+        try:
+            with open(path, encoding='utf-8') as fh:
+                _EXPLORATION_PLANS = json.load(fh)
+        except FileNotFoundError:
+            _EXPLORATION_PLANS = {'missions': {}, 'groups': {}}
+    return _EXPLORATION_PLANS
 
+
+class _WithMadeUpGroups(Source):
+    """The battle index plus the plans' made-up groups (one monster type, laid out like a real group)."""
+
+    def __init__(self, base: Source, extra: list[dict]):
+        self.base, self.extra = base, extra
+
+    def load(self, table: str) -> list[dict]:
+        rows = self.base.load(table)
+        return rows + self.extra if table == 'F_BATTLE_GROUP_MST' else rows
+
+
+def encount_rows(mid: str, zones: list[tuple[int, list[str]]], bundle: dict, source: Source) -> list[dict]:
+    """`EncountInfo` rows: each zone's battles on that zone's encounter fields (zone 0: all of them).
+
+    A group listed k times in a zone gets rows n = 0..k-1 on each field, i.e. k battles there.
     Drops are the candidate lists (`cat:item:count:rate`) of every monster in the group,
     on the first slot like the wave drop rows; `ffbe_battle.roll_drops` rolls each row.
     """
-    groups = sorted(g for g in own_groups if g not in _scenario_groups())
-    if not groups:
-        return []
     slots: dict[str, list[dict]] = {}
     for row in bundle.get('Bi6hVv34', []):
-        if str(row.get('2fY1IomW')) in groups:
-            slots.setdefault(str(row['2fY1IomW']), []).append(row)
+        slots.setdefault(str(row.get('2fY1IomW')), []).append(row)
+    wanted = {str(row['xqartN26']) for _, battles in zones for g in battles for row in slots.get(g, [])}
     # The served part rows carry no drop list; the source rows do (as in derive_mission).
-    wanted = {str(row['xqartN26']) for rows in slots.values() for row in rows}
     parts: dict[str, list[dict]] = {}
     for row in source.load('F_MONSTER_PARTS_MST'):
         if str(row.get('xqartN26')) in wanted:
             parts.setdefault(str(row['xqartN26']), []).append(row)
     fields = ENCOUNT_FIELDS + ENCOUNT_FIELDS_EXTRA.get(mid[:5], ())
-    per_group = max(2, -(-ENCOUNT_PER_FIELD // len(groups)))
     rows = []
-    for group in groups:
-        members = sorted(slots.get(group, []), key=lambda row: int(row['Z0EN6jSh']))
-        if not members:
-            continue
-        drops: list[str] = []
-        for slot in members:
-            for part in parts.get(str(slot['xqartN26']), []):
-                for item in str(part.get('9BetM2Ds') or '').split(','):
-                    if item and len(item.split(':')) >= 4 and item not in drops:
-                        drops.append(item)
-        for field in fields:
-            for n in range(per_group):
-                rows.append({
-                    'qo3PECw6': mid, 'YzGa63QM': str(field), '2fY1IomW': group, 'h4Sjf96p': str(n),
-                    'Z0EN6jSh': '1', 'xqartN26': str(members[0]['xqartN26']), '6Yc4RkdM': '1',
-                    '9BetM2Ds': ','.join(drops), 'MZn8LC6H': '', 'g4voc2Aw': '', 'Vf5DGw07': '',
-                    '4K8t5dVh': '0', 'V2mCH5UR': '',
-                    # 14FMQseU = 0 -> escape allowed (`EncountInfo::getEnableEscape`, +0x120).
-                    '14FMQseU': '0',
-                })
+    for zone, battles in zones:
+        counts: dict[str, int] = {}
+        for group in battles:
+            counts[group] = counts.get(group, 0) + 1
+        for group, times in counts.items():
+            members = sorted(slots.get(group, []), key=lambda row: int(row['Z0EN6jSh']))
+            if not members:
+                continue
+            drops: list[str] = []
+            for slot in members:
+                for part in parts.get(str(slot['xqartN26']), []):
+                    for item in str(part.get('9BetM2Ds') or '').split(','):
+                        if item and len(item.split(':')) >= 4 and item not in drops:
+                            drops.append(item)
+            for field in fields:
+                if zone and field_zone(field) != zone:
+                    continue
+                for n in range(times):
+                    rows.append({
+                        'qo3PECw6': mid, 'YzGa63QM': str(field), '2fY1IomW': group, 'h4Sjf96p': str(n),
+                        'Z0EN6jSh': '1', 'xqartN26': str(members[0]['xqartN26']), '6Yc4RkdM': '1',
+                        '9BetM2Ds': ','.join(drops), 'MZn8LC6H': '', 'g4voc2Aw': '', 'Vf5DGw07': '',
+                        '4K8t5dVh': '0', 'V2mCH5UR': '',
+                        # 14FMQseU = 0 -> escape allowed (`EncountInfo::getEnableEscape`, +0x120).
+                        '14FMQseU': '0',
+                    })
     return rows
 
 
@@ -655,21 +700,39 @@ def field_mission_bundle(carrier: dict, mission: dict) -> dict:
     group_ids = {str(row['2fY1IomW']) for row in source.load('F_BATTLE_GROUP_MST')
                  if str(row['2fY1IomW']).startswith(mid)
                  and len(str(row['2fY1IomW'])) == len(mid) + 2}
-    own_groups = set(group_ids)
+    own_groups = sorted(g for g in group_ids if g not in _scenario_groups())
     global _FIELD_GROUP_BINDINGS
     if _FIELD_GROUP_BINDINGS is None:
         path = os.path.join(HERE, 'content', 'field_group_bindings.json')
         with open(path, encoding='utf8') as stream:
             _FIELD_GROUP_BINDINGS = json.load(stream)['missions']
     group_ids.update(_FIELD_GROUP_BINDINGS.get(mid, []))
+    zones: list[tuple[int, list[str]]] = []
+    if encount_enabled():
+        plans = exploration_plans()
+        plan = plans['missions'].get(mid)
+        if plan:
+            zones = [(int(z['zone']), [str(g) for g in z['battles']]) for z in plan['zones']]
+            battle_groups = {g for _, battles in zones for g in battles}
+            # The mission's own random-battle groups give way to the plan (map-script groups stay).
+            group_ids.difference_update(set(own_groups) - battle_groups
+                                        - set(_FIELD_GROUP_BINDINGS.get(mid, [])))
+            group_ids.update(battle_groups)
+            made_up = [row for g in sorted(battle_groups) for row in plans['groups'].get(g, [])]
+            if made_up:
+                source = _WithMadeUpGroups(source, made_up)
+        # No plan: no random battles. The battle data's own groups for a mission are not used: the
+        # wiki shows the esper dungeons that have some (Siren's Tower - Top Floor, Inferno Hollow,
+        # Eternal Summit, ...) as a single boss battle in Global, and Earth Shrine's own groups are a
+        # later Japanese line-up (Wild Rat, Goblin Mage, ...) rather than Global's.
     out = story_mission_bundle(carrier, mission)
     if group_ids:
         bundle = derive_mission(int(mid), source, field_groups=group_ids)
         bundle.pop('an6TB4WS', None)
         bundle.pop('y35YvQjZ', None)
         out.update(bundle)
-        if encount_enabled():
-            out[ENCOUNT_TAG] = encount_rows(mid, own_groups, bundle, source)
+        if zones:
+            out[ENCOUNT_TAG] = encount_rows(mid, zones, bundle, source)
     return out
 
 

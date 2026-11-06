@@ -241,7 +241,7 @@ The original game's Lapis income assumed you'd buy Lapis. These settings raise w
 
 | Setting | What it controls |
 | --- | --- |
-| `EXVIUS_FIELD_ENCOUNTERS` | `1` (default) gives explorations their random battles while you walk. Every enemy group the game data has for that exploration can appear anywhere on its map (which groups appeared in which area wasn't preserved). Each battle's drops are rolled from the enemies' own drop lists. Explorations whose enemy groups are missing from the data (Latius Woods, for example) still have none. `0` turns random battles off. |
+| `EXVIUS_FIELD_ENCOUNTERS` | `1` (default) gives explorations their random battles while you walk: the monsters the FFBE wiki lists for each exploration, in about the wiki's number of battles per zone, and then they run out as they did in the original game. 240 story and event explorations are covered (`source/server/content/exploration_encounters.json`); the rest have no random battles. Each battle's drops are rolled from the enemies' own drop lists. `0` turns random battles off. |
 
 **Other players**
 
