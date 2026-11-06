@@ -661,6 +661,12 @@ class Handler(BaseHTTPRequestHandler):
                 and b"\r\n" in data):
             data = data.replace(b"\r\n", b"\n")
             how = f"{how}, CRLF->LF"
+        if data is not None and rel:
+            import banner_fit
+            if banner_fit.wants(rel):
+                data, fit_note = banner_fit.fit(data)
+                if fit_note:
+                    how = f"{how}, {fit_note}"
         n = len(data) if data is not None else 0
         verdict = f"200 {n} B ({how})" if data is not None else f"404 ({how or 'not in the CDN root'})"
         print(f"CDN  {self.command} {self.path}  host={self.headers.get('Host')}  "

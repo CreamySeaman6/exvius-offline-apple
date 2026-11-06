@@ -162,12 +162,42 @@ def pool_cutoff(banner: dict | None = None, now: datetime | None = None) -> date
     (expand_pool keeps those), but the rest of its pool stays at this week's point in history."""
     if not enabled():
         return None
-    if banner and str(banner.get('id')) in full_pool_ids():
-        return None  # the one-off SP ticket summons keep their whole pool (EXVIUS_REPLAY_FULL_POOL)
+    if banner and full_pool(banner):
+        return None  # one-off ticket summons keep their whole pool (see full_pool)
     win = window(now)
     if win['finished']:
         return None
     return win['to'] - timedelta(days=1)
+
+
+def _unlimited_shop_items() -> set[str]:
+    """`kind:id` of items the Shop sells with no purchase limit (global_bundles.json)."""
+    if 'unlimited' not in _CACHE:
+        out = set()
+        try:
+            with open(os.path.join(_HERE, 'global_bundles.json'), encoding='utf-8') as fh:
+                for bundle in json.load(fh).get('bundles', []):
+                    if not bundle.get('limit'):
+                        out |= {':'.join(str(c).split(':')[:2]) for c in bundle.get('contents', [])}
+        except (OSError, ValueError):
+            pass
+        _CACHE['unlimited'] = out
+    return _CACHE['unlimited']
+
+
+def full_pool(banner: dict) -> bool:
+    """A summon paid only with a ticket you can't buy over and over keeps its whole pool: a held ticket is
+    a one-off chance (operator, 2026-11-05). Tickets the Shop sells without limit (SP Summon Ticket,
+    Bonus/Boss Rush/Brave Ability Box tickets) keep the replay's limit. EXVIUS_REPLAY_FULL_POOL names more
+    banners by id."""
+    if str(banner.get('id')) in full_pool_ids():
+        return True
+    cost = banner.get('cost')
+    cost = cost[0] if isinstance(cost, list) and cost else cost
+    if not isinstance(cost, dict) or str(cost.get('kind')) not in ('item', 'important') or not cost.get('item_id'):
+        return False
+    kind = '20' if str(cost.get('kind')) == 'item' else '23'
+    return f"{kind}:{cost['item_id']}" not in _unlimited_shop_items()
 
 
 def full_pool_ids() -> set[str]:

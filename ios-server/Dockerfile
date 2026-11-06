@@ -2,7 +2,7 @@
 #   docker compose -f ios-server/docker-compose.yml build
 FROM python:3.12-slim
 
-RUN pip install --no-cache-dir "cryptography>=42" "pyyaml>=6" tzdata
+RUN pip install --no-cache-dir "cryptography>=42" "pyyaml>=6" tzdata "pillow>=10"
 
 WORKDIR /app
 COPY source/server /app/server
