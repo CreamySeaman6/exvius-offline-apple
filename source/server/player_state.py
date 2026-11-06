@@ -4089,7 +4089,8 @@ class PlayerState:
             return None
         bonus_rewards = copy.deepcopy((offer or {}).get('bonus_rewards',
                                       step.get('bonus_rewards', banner.get('bonus_rewards', []))))
-        choices = step.get('bonus_choice', banner.get('bonus_choice', []))
+        # A 10+1 offer may carry its own choice (banner_deals.py: "a free 3★/4★/5★ Trust Moogle with every 10+1").
+        choices = (offer or {}).get('bonus_choice', step.get('bonus_choice', banner.get('bonus_choice', [])))
         if choices:
             weights = [float(choice['rate']) for choice in choices]
             if any(weight < 0 for weight in weights) or sum(weights) <= 0:

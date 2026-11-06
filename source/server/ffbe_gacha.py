@@ -302,7 +302,8 @@ def all_banners() -> list:
             _note(f"gacha standard: serving {len(added)} standard banner(s) "
                   f"({len(std_banners)} available, {len(fams)} families) on top of {len(result)}")
         result = result + added
-    return [with_global_buttons(b) for b in result]
+    from banner_deals import apply as with_printed_deals   # bonuses printed on the art (banner_deals.py)
+    return [with_printed_deals(with_global_buttons(b)) for b in result]
 _GOLD_MAX = 11
 def _gold_button(cost: dict, draws) -> str:
     """The client's own Global summon button (`gacha_btns_gold_*`, 204x96, label baked in, price drawn in its
