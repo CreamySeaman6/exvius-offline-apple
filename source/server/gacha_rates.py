@@ -295,12 +295,18 @@ def page(banner_id):
 
 def index_page() -> str:
     """This week's summons, each linking to its rates page: the answer when a request names no banner."""
-    import gacha_rotation
+    import os
     from ffbe_gacha import all_banners
+    from ffbe_state import State
     from urllib.parse import quote
+    # The same list the summon screen gets (ffbe_gacha.serve_gacha_info): this week's summons plus any the
+    # player's tickets unlock.
     banners = all_banners()
+    if os.environ.get('EXVIUS_SUMMON_ARCHIVE') == '1':
+        from gacha_archive import visible_banners
+        banners = visible_banners(State.player, banners)
     by_id = {str(b['id']): b for b in banners}
-    ids = [str(i) for i in gacha_rotation.rotation_ids(banners) if str(i) in by_id] or sorted(by_id)[:40]
+    ids = list(by_id)
     parts = ['<header class="mast"><p class="eyebrow">Summon Rates</p><h1>This week\'s summons</h1></header>',
              '<section class="offers">']
     for bid in ids:

@@ -68,8 +68,12 @@ QUEST = ("F_QUEST_MST", "2Px75LpY", "20mEeKo3")
 QUEST_REWARD_FIELD = "dX6cor8j"
 URL = ("F_URL_MST", "9wmd4iua", "UREmi85S")
 URL_KEY_FIELD = "gu8McTA6"
-# The web host the notice and drop-rate pages are served on (replay_notices.HOST).
-WEB_HOST = "https://v900-lapis.gumi.sg"
+# The host the Drop Rates page is opened on. NOT v900 (the notice host): `WebViewCommon::showWebView`
+# (GL 0x258bbf8) skips the page's posted fields (`gacha_id`) when the address contains the game setting
+# P_GS_NOTICE_STATIC (`GameSettingInfo::getNoticeStaticURL`, served as https://v900-lapis.gumi.sg/), so on
+# v900 the page could never learn which summon was tapped (phone, 2026-11-07 09:24). v910 is the game API
+# host; the same server answers both names.
+WEB_HOST = "https://v910-lapis.gumi.sg"
 DROP_RATE_PATH = "/lapisProd/app/php/web/statics/probability/sg_summons_list.php"
 
 TABLE, TOKEN, KEY = RESOURCE  # kept for older callers
@@ -212,7 +216,7 @@ def table_bump(spec, *roots) -> int:
     if spec == QUEST:
         return 1000 if quest_rewards_shown() else 0
     if spec == URL:
-        return 1000
+        return 1001     # 1000: first build (v900 address); raise it whenever the served rows change
     return 0
 
 

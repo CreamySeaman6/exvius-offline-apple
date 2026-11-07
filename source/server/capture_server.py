@@ -500,6 +500,11 @@ class Handler(BaseHTTPRequestHandler):
             # The stock iPhone app's Drop Rates button: F_URL_MST GACHA_RATE_URL, with the banner posted as
             # `gacha_id` (sgGachaDropRateWebScene::setParameter). Same page as the Android hook's URL.
             rates_page = re.fullmatch(r'(\d+)', self._form_field('gacha_id') or '') or re.fullmatch(r'()', '')
+            print(f"DROP-RATES {self.command} query={self.path.partition('?')[2]!r} "
+                  f"type={self.headers.get('Content-Type')!r} length={self.headers.get('Content-Length')!r} "
+                  f"fields={sorted(getattr(self, '_form', {}))} -> "
+                  f"{'banner ' + rates_page.group(1) if rates_page.group(1) else 'no banner named: summon list'}",
+                  flush=True)
         parade_page = path == '/exvius/parade-rewards.html'
         equip_page = path == '/exvius/equipment-enhancement.html'
         notice_page = re.fullmatch(r'/exvius/notices/(\d+)\.html', path)
