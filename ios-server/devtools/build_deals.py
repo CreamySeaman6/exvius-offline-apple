@@ -16,6 +16,9 @@ Spec fields (per banner):
   rates         [5star, 4star, 3star] (or [nv, 5star, 4star, 3star]) to override the era's rates
   pool_rule     default {"released_by": release - 1 day, "exclude": ["limited", "collab"]}; null for none
   pool_units    explicit unit names for a fixed pool (e.g. "6 chosen FFXV 5★ units")
+  tier_units    {"5": [names]}: one tier drawn only from these units (a "specially selected 5★ pool")
+  slots         [{"count": 1, "min_rarity": 4}]: extra guaranteed draws (the "+2" of a 9+2)
+  reward_pool   [[rate, token], ...]: draws items instead of units (the free Lapis summons)
   min_rarity    drop tiers below this (e.g. 4 for a 4★+ pool)
   cost          {"lapis": n} | {"free": true} | {"item": [kind, id, amount]} for a single-offer banner
   draws         units per pull (single-offer banners)
@@ -29,7 +32,7 @@ Spec fields (per banner):
   sources       [{"url", "archived"}] news pages read (Wayback captures)
   notes         what was guessed or taken from JP
 
-Reward tokens: moogle1/moogle3/moogle5/moogle10/moogle20 (Trust Moogles giving 1/5/5/10/20% to all), ticket5_10,
+Reward tokens: lapis:<n>, kmm (King Metal Minituar), <token>*<count>, moogle1/moogle3/moogle5/moogle10/moogle20 (Trust Moogles giving 1/5/5/10/20% to all), ticket5_10,
 ticket5_30, ticket5_50 (5★ summon tickets), select5 (5★ Select Summon Ticket), rare (Rare Summon Ticket),
 guar4/guar5 (Guaranteed 4★+/5★ tickets), super_moogle_ex (Super Trust Moogle Exchange Ticket), unit:<name>,
 or a raw reward dict.
@@ -62,6 +65,7 @@ REWARDS = {
     'guar4': {'kind': 23, 'id': 70, 'count': 1},
     'guar5': {'kind': 23, 'id': 80, 'count': 1},
     'super_moogle_ex': {'kind': 20, 'id': 106211340, 'count': 1},
+    'kmm': {'kind': 10, 'id': 900020401, 'count': 1},
 }
 
 # Global's summon rates by period (from the community calendar's rate sources, gacha_community.json).
@@ -119,6 +123,11 @@ class Units:
 def reward(token, units: Units) -> dict:
     if isinstance(token, dict):
         return token
+    if token.startswith('lapis:'):
+        return {'kind': 50, 'id': 1, 'count': int(token[6:])}
+    if '*' in token:   # "moogle10*5": five of them
+        name, times = token.split('*')
+        return dict(reward(name, units), count=int(times))
     if token.startswith('unit:'):
         _rarity, uid = units.root(token[5:])
         return {'kind': 10, 'id': int(uid), 'count': 1}
@@ -158,10 +167,16 @@ def tiers(spec: dict, units: Units, rainbow=None, featured_x=None) -> dict:
         if rainbow is not None and rarity == base[0][0]:
             rate = float(rainbow)
         tier = {'rarity': rarity, 'rate': rate}
+        named = (spec.get('tier_units') or {}).get(str(rarity))
         if explicit:
             tier['units'] = [u for r, u in explicit if r == rarity]
             if not tier['units']:
                 continue
+        elif named:
+            # A selected pool: these units only, all "featured" so the limited/collab rule never drops one.
+            tier['units'] = [units.root(n)[1] for n in named]
+            tier['featured'] = list(tier['units'])
+            tier['featured_share'] = 1.0
         elif rarity == 7:
             tier['units'] = sorted(units.nv)
         fids = [u for r, u in featured if r == rarity]
@@ -201,6 +216,20 @@ def wb(entry) -> str:
     if str(name).startswith('http'):
         return name
     return f'https://web.archive.org/web/{ts}id_/{NEWS_IMG}{name}'
+
+
+def slots(spec_slots, pool) -> list:
+    """Extra guaranteed draws (a 9+2's "4★+ guaranteed"): one list per slot from the banner's tiers."""
+    out = []
+    for slot in spec_slots:
+        floor = int(slot.get('min_rarity', 4))
+        tiers_ = [dict(t) for t in pool['tiers'] if int(t['rarity']) >= floor]
+        total = sum(t['rate'] for t in tiers_) or 1
+        for t in tiers_:
+            t['rate'] = round(t['rate'] / total, 6)
+        out.append({'count': int(slot.get('count', 1)), 'label': slot.get('label', f'{floor}★ or higher'),
+                    'pool': {'tiers': tiers_}})
+    return out
 
 
 def build(spec: dict, units: Units) -> dict:
@@ -273,6 +302,11 @@ def build(spec: dict, units: Units) -> dict:
         g = guarantee(spec.get('guarantee'), units, pool)
         if g:
             banner['guarantee'] = g
+        if spec.get('slots'):
+            banner['guarantee_slots'] = slots(spec['slots'], pool)
+        if spec.get('reward_pool'):
+            banner['reward_pool'] = [dict(reward(token, units), rate=float(rate))
+                                     for rate, token in spec['reward_pool']]
         if spec.get('bonus'):
             banner['bonus_rewards'] = [reward(t, units) for t in spec['bonus']]
         if spec.get('bonus_choice'):

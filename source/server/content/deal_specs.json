@@ -5,153 +5,1252 @@
  },
  "banners": [
   {
-   "id": 9500001, "family": "free_daily", "name": "Lunar New Year: 14 Days of Free Summons",
-   "release": "2018-02-02", "until": "2018-02-15",
-   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180130_FreeGacha14days_2.html", "archived": "20191113230712"}],
+   "id": 9500001,
+   "family": "free_daily",
+   "name": "Lunar New Year: 14 Days of Free Summons",
+   "release": "2018-02-02",
+   "until": "2018-02-15",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180130_FreeGacha14days_2.html",
+     "archived": "20191113230712"
+    }
+   ],
    "notes": "One free summon a day for 14 days. The page names no pool rule; this uses permanent units released before the start. Banner art not archived: titled stand-in."
   },
   {
-   "id": 9500002, "family": "cash", "name": "5★ Guaranteed Cash Summon",
-   "release": "2018-02-14", "until": "2018-02-21",
-   "cost": {"lapis": 10000}, "draws": 11, "guarantee": {"rarity": 5}, "purchase_limit": 1,
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180213_cashGacha_2.html", "archived": "20191113221015"}],
+   "id": 9500002,
+   "family": "cash",
+   "name": "5★ Guaranteed Cash Summon",
+   "release": "2018-02-14",
+   "until": "2018-02-21",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 1,
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180213_cashGacha_2.html",
+     "archived": "20191113221015"
+    }
+   ],
    "notes": "Global sold this once-per-player 10+1 (5★ guaranteed, no limited units) for real money. Stand-in price 10,000 Lapis (operator's choice, 2026-11-07). Banner art not archived: titled stand-in."
   },
   {
-   "id": 9500003, "family": "free_daily", "name": "30 Million Downloads: Free Daily Summon",
-   "release": "2018-03-01", "until": "2018-03-19",
-   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
-   "pool_rule": {"released_by": "2018-03-02", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20221229190901", "30m_2.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180228_30milDL_enV_12.html", "archived": "20210506091201"}],
+   "id": 9500003,
+   "family": "free_daily",
+   "name": "30 Million Downloads: Free Daily Summon",
+   "release": "2018-03-01",
+   "until": "2018-03-19",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-03-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221229190901",
+     "30m_2.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180228_30milDL_enV_12.html",
+     "archived": "20210506091201"
+    }
+   ],
    "notes": "Round 1 of the 30M DL celebration: one free summon a day for 19 days; the pool took in the FFXV and FFIX units added on 3/1-3/2. Art is the celebration's general image."
   },
   {
-   "id": 9500004, "family": "free_daily", "name": "30 Million Downloads Celebratory Summon",
-   "release": "2018-03-22", "until": "2018-04-04",
-   "cost": {"free": true}, "draws": 2, "daily_limit": 1,
-   "bonus_choice": [[80, ["moogle5"]], [20, ["moogle10"]]],
-   "art": {"main": ["20221229190901", "30m_2.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180228_30milDL_enV_12.html", "archived": "20210506091201"}],
+   "id": 9500004,
+   "family": "free_daily",
+   "name": "30 Million Downloads Celebratory Summon",
+   "release": "2018-03-22",
+   "until": "2018-04-04",
+   "cost": {
+    "free": true
+   },
+   "draws": 2,
+   "daily_limit": 1,
+   "bonus_choice": [
+    [
+     80,
+     [
+      "moogle5"
+     ]
+    ],
+    [
+     20,
+     [
+      "moogle10"
+     ]
+    ]
+   ],
+   "art": {
+    "main": [
+     "20221229190901",
+     "30m_2.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180228_30milDL_enV_12.html",
+     "archived": "20210506091201"
+    }
+   ],
    "notes": "Round 2: a daily login ticket gave 2 units (3-5★) and a 4★ Trust Moogle (ALL 5%) or 5★ Trust Moogle (ALL 10%). Served as a free daily summon instead of a ticket. The moogle odds weren't published: 80/20 is a guess."
   },
   {
-   "id": 9500005, "family": "free_daily", "name": "FREE DAILY SUMMON (April 2018)",
-   "release": "2018-04-06", "until": "2018-04-19",
-   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
-   "pool_rule": {"released_by": "2018-04-06", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20220809062157", "freeSummonLor_en.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180405_FreeSummon_4.html", "archived": "20191113221137"}],
+   "id": 9500005,
+   "family": "free_daily",
+   "name": "FREE DAILY SUMMON (April 2018)",
+   "release": "2018-04-06",
+   "until": "2018-04-19",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-04-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220809062157",
+     "freeSummonLor_en.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180405_FreeSummon_4.html",
+     "archived": "20191113221137"
+    }
+   ],
    "notes": "One free summon a day; the pool took in the FFX units (Yuna, Lulu, Seymour, Wakka) added 4/6."
   },
   {
-   "id": 9500006, "family": "free_daily", "name": "FREE DAILY SUMMON (May 2018)",
-   "release": "2018-05-04", "until": "2018-05-17",
-   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
-   "pool_rule": {"released_by": "2018-05-04", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20220809062157", "freeSummonLor_en.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180502FreeSummon3.html", "archived": "20210510045004"}],
+   "id": 9500006,
+   "family": "free_daily",
+   "name": "FREE DAILY SUMMON (May 2018)",
+   "release": "2018-05-04",
+   "until": "2018-05-17",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-05-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220809062157",
+     "freeSummonLor_en.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180502FreeSummon3.html",
+     "archived": "20210510045004"
+    }
+   ],
    "notes": "One free summon a day; the pool took in Nameless Gunner Jake, Emperor Shera, Ozetta, Camille and Riley."
   },
   {
-   "id": 9500010, "family": "step_up", "name": "STEP UP SUMMON (Sephiroth / Lila)",
-   "release": "2018-05-11", "until": "2018-05-24",
-   "featured": ["Sephiroth", "Lila"], "lap_limit": 3,
-   "steps": [
-    {"lapis": 5000, "draws": 11, "bonus": ["moogle10"]},
-    {"lapis": 5000, "draws": 11, "guarantee": {"unit": "Shylt"}},
-    {"lapis": 5000, "draws": 11, "guarantee": {"rarity": 5}},
-    {"lapis": 5000, "draws": 11, "bonus": ["ticket5_10"]},
-    {"lapis": 5000, "draws": 11, "guarantee": {"units": ["Sephiroth", "Lila"]}}
+   "id": 9500010,
+   "family": "step_up",
+   "name": "STEP UP SUMMON (Sephiroth / Lila)",
+   "release": "2018-05-11",
+   "until": "2018-05-24",
+   "featured": [
+    "Sephiroth",
+    "Lila"
    ],
-   "art": {"main": ["20220425205923", "en_maintop.png"], "detail": ["20220425205942", "en_mainbig.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180508StepUp5.html", "archived": "20191120223308"}],
+   "lap_limit": 3,
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "bonus": [
+      "moogle10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "unit": "Shylt"
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "bonus": [
+      "ticket5_10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Sephiroth",
+       "Lila"
+      ]
+     }
+    }
+   ],
+   "art": {
+    "main": [
+     "20220425205923",
+     "en_maintop.png"
+    ],
+    "detail": [
+     "20220425205942",
+     "en_mainbig.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180508StepUp5.html",
+     "archived": "20191120223308"
+    }
+   ],
    "notes": "Global's first step-up: 5 steps of 5000 Lapis for 11 units, three rounds per player. Step bonuses read from the step image: 5★ Trust Moogle (ALL 10%), 4★ Shylt, a 5★ unit, a 10% 5★ Summon Ticket, then Sephiroth or Lila."
   },
   {
-   "id": 9500011, "family": "step_up", "name": "STEP UP SUMMON - CLOUD SPECIAL!",
-   "release": "2018-05-25", "until": "2018-06-07",
-   "featured": ["Cloud", "Elfreeda"], "lap_limit": 3,
-   "steps": [
-    {"lapis": 5000, "draws": 11, "bonus": ["moogle10"]},
-    {"lapis": 5000, "draws": 11, "guarantee": {"unit": "William"}},
-    {"lapis": 5000, "draws": 11, "guarantee": {"rarity": 5}},
-    {"lapis": 5000, "draws": 11, "bonus": ["ticket5_10"]},
-    {"lapis": 5000, "draws": 11, "guarantee": {"units": ["Cloud", "Elfreeda"]}}
+   "id": 9500011,
+   "family": "step_up",
+   "name": "STEP UP SUMMON - CLOUD SPECIAL!",
+   "release": "2018-05-25",
+   "until": "2018-06-07",
+   "featured": [
+    "Cloud",
+    "Elfreeda"
    ],
-   "art": {"detail": ["20220806134253", "en_TOPmainbigCL.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180523StepUpCloud2.html", "archived": "20210506093552"}],
+   "lap_limit": 3,
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "bonus": [
+      "moogle10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "unit": "William"
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "bonus": [
+      "ticket5_10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cloud",
+       "Elfreeda"
+      ]
+     }
+    }
+   ],
+   "art": {
+    "detail": [
+     "20220806134253",
+     "en_TOPmainbigCL.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180523StepUpCloud2.html",
+     "archived": "20210506093552"
+    }
+   ],
    "notes": "Same format as the Sephiroth step-up: 5 x 5000 Lapis, three rounds. Steps from the step image: 5★ Trust Moogle (ALL 10%), 4★ William, a 5★ unit, a 10% 5★ Summon Ticket, then Cloud or Elfreeda. The list banner isn't archived; the step image is used for both."
   },
   {
-   "id": 9500012, "family": "step_up", "name": "STEP UP SUMMON (Raegen)",
-   "release": "2018-07-13", "until": "2018-07-26",
-   "featured": ["Raegen"], "featured_share": 0.333, "lap_limit": 1,
-   "steps": [
-    {"lapis": 500, "draws": 1, "featured_x": 1.5},
-    {"lapis": 1000, "draws": 2, "bonus": ["moogle5"]},
-    {"lapis": 1500, "draws": 4, "bonus": ["ticket5_30"]},
-    {"lapis": 3000, "draws": 6, "bonus": ["moogle10"]},
-    {"lapis": 5000, "draws": 11, "featured_x": 3}
+   "id": 9500012,
+   "family": "step_up",
+   "name": "STEP UP SUMMON (Raegen)",
+   "release": "2018-07-13",
+   "until": "2018-07-26",
+   "featured": [
+    "Raegen"
    ],
-   "art": {"main": ["20220808084637", "20180712StepUpSkinny2.png"], "detail": ["20220808070954", "20180712mainbigStepup.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180712StepUp7.html", "archived": "20210506103716"}],
+   "featured_share": 0.333,
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1,
+     "featured_x": 1.5
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle5"
+     ]
+    },
+    {
+     "lapis": 1500,
+     "draws": 4,
+     "bonus": [
+      "ticket5_30"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "moogle10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "featured_x": 3
+    }
+   ],
+   "art": {
+    "main": [
+     "20220808084637",
+     "20180712StepUpSkinny2.png"
+    ],
+    "detail": [
+     "20220808070954",
+     "20180712mainbigStepup.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180712StepUp7.html",
+     "archived": "20210506103716"
+    }
+   ],
    "notes": "The discounted step-up: 500/1000/1500/3000/5000 Lapis for 1/2/4/6/11 units, one round. Step 1 had 1.5x and step 5 5x the chance of a 5★ Raegen; Raegen's normal share of 5★ draws (a third) is raised 1.5x and 3x (5x would make every 5★ Raegen)."
   },
   {
-   "id": 9500013, "family": "free_daily", "name": "5% Rainbow Rate Free Daily Summon",
-   "release": "2018-08-03", "until": "2018-09-05",
-   "cost": {"free": true}, "draws": 1, "daily_limit": 1, "rates": [0.05, 0.19, 0.76],
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180731RateUpSummonVote4.html", "archived": "20191120213841"}],
+   "id": 9500013,
+   "family": "free_daily",
+   "name": "5% Rainbow Rate Free Daily Summon",
+   "release": "2018-08-03",
+   "until": "2018-09-05",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "rates": [
+    0.05,
+    0.19,
+    0.76
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180731RateUpSummonVote4.html",
+     "archived": "20191120213841"
+    }
+   ],
    "notes": "The Player's Voice prize: a free daily summon at a 5% rainbow rate, no limited units. Banner art not archived: titled stand-in."
   },
   {
-   "id": 9500014, "family": "rate_up", "name": "SPECIAL RATE UP SUMMON",
-   "release": "2018-08-10", "until": "2018-08-23",
-   "cost": {"lapis": 5000}, "draws": 11, "purchase_limit": 5, "rates": [0.05, 0.19, 0.76],
-   "pool_rule": {"released_by": "2018-08-10", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20220806123147", "5rateupnarul3.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180807NarulGachaRainbow5RateUp9.html", "archived": "20201111223130"}],
+   "id": 9500014,
+   "family": "rate_up",
+   "name": "SPECIAL RATE UP SUMMON",
+   "release": "2018-08-10",
+   "until": "2018-08-23",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "purchase_limit": 5,
+   "rates": [
+    0.05,
+    0.19,
+    0.76
+   ],
+   "pool_rule": {
+    "released_by": "2018-08-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220806123147",
+     "5rateupnarul3.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180807NarulGachaRainbow5RateUp9.html",
+     "archived": "20201111223130"
+    }
+   ],
    "notes": "5% rainbow rate on 11 summons (5000 Lapis), five per player; every 5★ up to the Nalu batch except limited units."
   },
   {
-   "id": 9500015, "family": "first_10_1", "name": "Free 10+1 Summon featuring Fan Festa Units (Malphasie / Circe)",
-   "release": "2018-09-28", "until": "2018-10-11",
-   "featured": ["Malphasie", "Circe"],
-   "cost": {"free": true}, "draws": 11, "purchase_limit": 1,
-   "pool_rule": {"released_by": "2018-09-30", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20220721204521", "20180927fanfesta11summon.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180927FanFesta11FreeSummon5.html", "archived": "20210506101522"}],
+   "id": 9500015,
+   "family": "first_10_1",
+   "name": "Free 10+1 Summon featuring Fan Festa Units (Malphasie / Circe)",
+   "release": "2018-09-28",
+   "until": "2018-10-11",
+   "featured": [
+    "Malphasie",
+    "Circe"
+   ],
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-09-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220721204521",
+     "20180927fanfesta11summon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180927FanFesta11FreeSummon5.html",
+     "archived": "20210506101522"
+    }
+   ],
    "notes": "A free 10+1, once per player, with raised rates for Malphasie and Circe."
   },
   {
-   "id": 9500016, "family": "free_daily", "name": "DAILY FREE RARE SUMMON (FFXV)",
-   "release": "2018-10-05", "until": "2018-10-11",
-   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
-   "pool_rule": {"released_by": "2018-10-04", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20220809062157", "freeSummonLor_en.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/FFXVdailyfreesummon3.html", "archived": "20210510050418"}],
+   "id": 9500016,
+   "family": "free_daily",
+   "name": "DAILY FREE RARE SUMMON (FFXV)",
+   "release": "2018-10-05",
+   "until": "2018-10-11",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-10-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220809062157",
+     "freeSummonLor_en.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/FFXVdailyfreesummon3.html",
+     "archived": "20210510050418"
+    }
+   ],
    "notes": "One free summon a day for a week, permanent units added before 10/5."
   },
   {
-   "id": 9500017, "family": "first_10_1", "name": "Free 10+1 Summon featuring Fan Festa Units (Beryl / Ellesperis)",
-   "release": "2018-11-16", "until": "2018-11-29",
-   "featured": ["Beryl", "Ellesperis"],
-   "cost": {"free": true}, "draws": 11, "purchase_limit": 1,
-   "pool_rule": {"released_by": "2018-11-15", "exclude": ["limited", "collab"]},
-   "art": {"main": ["20221003111623", "20181116fanfesta1.png"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20181116FanFesta10plus1.html", "archived": "20221003111548"}],
+   "id": 9500017,
+   "family": "first_10_1",
+   "name": "Free 10+1 Summon featuring Fan Festa Units (Beryl / Ellesperis)",
+   "release": "2018-11-16",
+   "until": "2018-11-29",
+   "featured": [
+    "Beryl",
+    "Ellesperis"
+   ],
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-11-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221003111623",
+     "20181116fanfesta1.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20181116FanFesta10plus1.html",
+     "archived": "20221003111548"
+    }
+   ],
    "notes": "A free 10+1, once per player, with raised rates for Beryl and Ellesperis."
   },
   {
-   "id": 9500018, "family": "first_10_1", "name": "Free 10+1 Summon featuring Kingdom Hearts Units",
-   "release": "2018-12-28", "until": "2019-01-10",
-   "featured": ["Sora", "Cloud (KH)"],
-   "cost": {"free": true}, "draws": 11, "purchase_limit": 1,
-   "pool_rule": {"released_by": "2018-12-27", "exclude": ["limited", "collab"]},
-   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20181226KH11FreeSummon.html", "archived": "20191113215331"}],
+   "id": 9500018,
+   "family": "first_10_1",
+   "name": "Free 10+1 Summon featuring Kingdom Hearts Units",
+   "release": "2018-12-28",
+   "until": "2019-01-10",
+   "featured": [
+    "Sora",
+    "Cloud (KH)"
+   ],
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "pool_rule": {
+    "released_by": "2018-12-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20181226KH11FreeSummon.html",
+     "archived": "20191113215331"
+    }
+   ],
    "notes": "A free 10+1, once per player, with raised rates for Sora and Cloud (KH). Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500020,
+   "family": "free_daily",
+   "name": "Countdown to Lunar New Year! Free Lapis Daily Summon",
+   "release": "2019-01-25",
+   "until": "2019-02-06",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "reward_pool": [
+    [
+     0.005,
+     "lapis:10000"
+    ],
+    [
+     0.01,
+     "lapis:5000"
+    ],
+    [
+     0.035,
+     "lapis:1000"
+    ],
+    [
+     0.1,
+     "lapis:500"
+    ],
+    [
+     0.2,
+     "lapis:300"
+    ],
+    [
+     0.3,
+     "lapis:100"
+    ],
+    [
+     0.35,
+     "lapis:50"
+    ]
+   ],
+   "pool_rule": null,
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190123CNYCountdownLapisSummon.html",
+     "archived": "20210506103748"
+    }
+   ],
+   "notes": "A free daily summon that draws a Lapis prize (10,000 down to 50). Prize odds weren't published: 0.5/1/3.5/10/20/30/35% for the seven tiers is a guess. The Lapis is earned Lapis, so EXVIUS_LAPIS_MULTIPLIER applies. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500021,
+   "family": "first_10_1",
+   "name": "Free 10+1 Summon featuring Fan Festa Units (Myra / Aurora Fryevia)",
+   "release": "2019-02-22",
+   "until": "2019-03-07",
+   "featured": [
+    "Myra",
+    "Aurora Fryevia"
+   ],
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "pool_rule": {
+    "released_by": "2019-02-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221025090647",
+     "20190215fanfestaa2.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190219FanFesta10plus1.html",
+     "archived": "20221025090634"
+    }
+   ],
+   "notes": "A free 10+1, once per player, with raised rates for Myra and Aurora Fryevia."
+  },
+  {
+   "id": 9500022,
+   "family": "free_daily",
+   "name": "FINAL FANTASY III Free Daily Summon",
+   "release": "2019-03-08",
+   "until": "2019-03-21",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "reward_pool": [
+    [
+     1,
+     "moogle3"
+    ]
+   ],
+   "pool_rule": null,
+   "bonus_choice": [
+    [
+     50,
+     [
+      "kmm"
+     ]
+    ],
+    [
+     50,
+     [
+      "lapis:200"
+     ]
+    ]
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190305FF3FreeDailysummon.html",
+     "archived": "20201112012553"
+    }
+   ],
+   "notes": "Pool of 3★ Trust Moogles only (Global: 5% for Onion Knight Refia or Dark Knight Luneth; here a random 3★ moogle), plus a King Metal Minituar or 200 Lapis. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500023,
+   "family": "celebration",
+   "name": "Spring Celebration 5★ Guaranteed Summon",
+   "release": "2019-03-25",
+   "until": "2019-03-28",
+   "purchase_limit": 4,
+   "art": {
+    "main": [
+     "20220927034738",
+     "springgachacelebration.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190322SpringCelebrationGacha.html",
+     "archived": "20191115144304"
+    }
+   ],
+   "notes": "5000 Lapis for 9+2: a 5★ and a 4★+ guaranteed, plus five 5★ Trust Moogles (ALL 10%) and ten King Metal Minituars each. Two per player in each of two periods (4 in all).",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 4
+    }
+   ],
+   "bonus": [
+    "moogle10*5",
+    "kmm*10"
+   ]
+  },
+  {
+   "id": 9500024,
+   "family": "free_daily",
+   "name": "Xenogears Collaboration Free Lapis Daily Summon",
+   "release": "2019-03-29",
+   "until": "2019-04-10",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "reward_pool": [
+    [
+     0.005,
+     "lapis:10000"
+    ],
+    [
+     0.01,
+     "lapis:5000"
+    ],
+    [
+     0.035,
+     "lapis:1000"
+    ],
+    [
+     0.1,
+     "lapis:500"
+    ],
+    [
+     0.2,
+     "lapis:300"
+    ],
+    [
+     0.3,
+     "lapis:100"
+    ],
+    [
+     0.35,
+     "lapis:50"
+    ]
+   ],
+   "pool_rule": null,
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190326LapisGachaSummon.html",
+     "archived": "20210624100009"
+    }
+   ],
+   "notes": "Free daily Lapis prize summon. Prize odds weren't published: 0.5/1/3.5/10/20/30/35% for the seven tiers is a guess. The Lapis is earned Lapis, so EXVIUS_LAPIS_MULTIPLIER applies. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500025,
+   "family": "free_daily",
+   "name": "Spring 2019 Free Summon",
+   "release": "2019-04-13",
+   "until": "2019-04-29",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    "moogle3"
+   ],
+   "pool_rule": {
+    "released_by": "2019-04-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230103010725",
+     "spring2019freesummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190409Spring2019FreeSummon.html",
+     "archived": "20201111231708"
+    }
+   ],
+   "notes": "One free summon a day on three long weekends (4/13-15, 4/20-22, 4/27-29), each with a bonus 3★ Trust Moogle (Global: unit-specific 5%; here a random 3★ moogle). Served for the whole span."
+  },
+  {
+   "id": 9500026,
+   "family": "celebration",
+   "name": "Spring Celebration 5★ Guaranteed Summon (Rerun)",
+   "release": "2019-04-15",
+   "until": "2019-04-18",
+   "purchase_limit": 4,
+   "art": {
+    "main": [
+     "20220927034738",
+     "springgachacelebration.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190412SpringCelebrationGachaRerun.html",
+     "archived": "20201112012553"
+    }
+   ],
+   "notes": "Rerun of the 3/25 summon: 5000 Lapis 9+2, 5★ and 4★+ guaranteed, five 5★ Trust Moogles and ten King Metal Minituars; two per player per period.",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 4
+    }
+   ],
+   "bonus": [
+    "moogle10*5",
+    "kmm*10"
+   ]
+  },
+  {
+   "id": 9500027,
+   "family": "free_daily",
+   "name": "Xenogears Collaboration Free Lapis Daily Summon (Rerun)",
+   "release": "2019-04-26",
+   "until": "2019-05-08",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "reward_pool": [
+    [
+     0.005,
+     "lapis:10000"
+    ],
+    [
+     0.01,
+     "lapis:5000"
+    ],
+    [
+     0.035,
+     "lapis:1000"
+    ],
+    [
+     0.1,
+     "lapis:500"
+    ],
+    [
+     0.2,
+     "lapis:300"
+    ],
+    [
+     0.3,
+     "lapis:100"
+    ],
+    [
+     0.35,
+     "lapis:50"
+    ]
+   ],
+   "pool_rule": null,
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190423LapisGachaSummon.html",
+     "archived": "20191113215759"
+    }
+   ],
+   "notes": "Rerun of the free daily Lapis prize summon. Prize odds weren't published: 0.5/1/3.5/10/20/30/35% for the seven tiers is a guess. The Lapis is earned Lapis, so EXVIUS_LAPIS_MULTIPLIER applies. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500028,
+   "family": "first_10_1",
+   "name": "Free 10+1 Summon (May 2019)",
+   "release": "2019-05-10",
+   "until": "2019-05-31",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "pool_rule": {
+    "released_by": "2019-05-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230103011039",
+     "20190507FFBE11FreeSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190507FFBE11FreeSummon.html",
+     "archived": "20191115151015"
+    }
+   ],
+   "notes": "A free 10+1, once per player."
+  },
+  {
+   "id": 9500029,
+   "family": "free_daily",
+   "name": "Spring 2019 Free Summon (May)",
+   "release": "2019-05-11",
+   "until": "2019-05-27",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    "moogle3"
+   ],
+   "pool_rule": {
+    "released_by": "2019-05-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230103010725",
+     "spring2019freesummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190507Spring2019FreeSummon.html",
+     "archived": "20191113215820"
+    }
+   ],
+   "notes": "Second run: one free summon a day on three long weekends (5/11-13, 5/18-20, 5/25-27) with a bonus 3★ Trust Moogle. Served for the whole span."
+  },
+  {
+   "id": 9500030,
+   "family": "celebration",
+   "name": "Spring Celebration 5★ Guaranteed Summon (May)",
+   "release": "2019-05-20",
+   "until": "2019-05-23",
+   "purchase_limit": 4,
+   "art": {
+    "main": [
+     "20220927034738",
+     "springgachacelebration.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190517SpringCelebrationGachaRerun.html",
+     "archived": "20191113232929"
+    }
+   ],
+   "notes": "Third run of the Spring Celebration 9+2.",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 4
+    }
+   ],
+   "bonus": [
+    "moogle10*5",
+    "kmm*10"
+   ]
+  },
+  {
+   "id": 9500031,
+   "family": "free_daily",
+   "name": "Summer 2019 Free Summon",
+   "release": "2019-06-01",
+   "until": "2019-06-10",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    "moogle3"
+   ],
+   "pool_rule": {
+    "released_by": "2019-05-31",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190531Summer2019FreeSummon.html",
+     "archived": "20191115144304"
+    }
+   ],
+   "notes": "One free summon a day on two long weekends (6/1-3, 6/8-10) with a bonus 3★ Trust Moogle. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500032,
+   "family": "celebration",
+   "name": "Summer Celebration 5★ Guaranteed Summon",
+   "release": "2019-06-03",
+   "until": "2019-06-06",
+   "purchase_limit": 4,
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190531SummerCelebrationGacha.html",
+     "archived": "20191120230312"
+    }
+   ],
+   "notes": "Same 9+2 as the Spring Celebration (5000 Lapis assumed from it): 5★ and 4★+ guaranteed, five 5★ Trust Moogles, ten King Metal Minituars, two per player per period. Banner art not archived: titled stand-in.",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 4
+    }
+   ],
+   "bonus": [
+    "moogle10*5",
+    "kmm*10"
+   ]
+  },
+  {
+   "id": 9500033,
+   "family": "rate_up",
+   "name": "5% Rainbow Summon (Regina)",
+   "release": "2019-06-07",
+   "until": "2019-06-20",
+   "featured": [
+    "Regina"
+   ],
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "purchase_limit": 6,
+   "rates": [
+    0.05,
+    0.19,
+    0.76
+   ],
+   "pool_rule": {
+    "released_by": "2019-06-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220917095117",
+     "201906045PercentRainbowSummonTopImage.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201906045PercentRainbowSummon.html",
+     "archived": "20191113215336"
+    }
+   ],
+   "notes": "5% rainbow rate with Regina boosted, six per player. Each summon also gave a 5★ Guaranteed (20% Regina) Ticket, left out because nothing here spends it. 5000 Lapis per 11 assumed (the page gives no price)."
+  },
+  {
+   "id": 9500034,
+   "family": "celebration",
+   "name": "3rd Anniversary Countdown Summon (Batch 1)",
+   "release": "2019-06-17",
+   "until": "2019-06-18",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "purchase_limit": 5,
+   "tier_units": {
+    "5": [
+     "Auron",
+     "Jecht",
+     "Onion Knight",
+     "Sephiroth"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221221161115",
+     "201906143rdAnniversaryCountdownBatch1SummonTopImage.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201906143rdAnniversaryCountdownBatchSummon.html",
+     "archived": "20191115152525"
+    }
+   ],
+   "notes": "5★ pool limited to Auron, Jecht, Onion Knight and Sephiroth; five per player. The page gives no price (5000 Lapis per 11 assumed). Its Summon Coins went to a prism exchange, left out."
+  },
+  {
+   "id": 9500035,
+   "family": "celebration",
+   "name": "3rd Anniversary Countdown Summon (Batch 2)",
+   "release": "2019-06-19",
+   "until": "2019-06-20",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "purchase_limit": 5,
+   "tier_units": {
+    "5": [
+     "Myra",
+     "Aurora Fryevia",
+     "Livid Shantotto",
+     "Balthier"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221221161109",
+     "201906143rdAnniversaryCountdownBatch2SummonTopImage.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201906143rdAnniversaryCountdownBatchSummon.html",
+     "archived": "20191115152525"
+    }
+   ],
+   "notes": "5★ pool limited to Myra, Aurora Fryevia, Livid Shantotto and Balthier; five per player. Price assumed 5000 Lapis per 11."
+  },
+  {
+   "id": 9500036,
+   "family": "celebration",
+   "name": "3rd Anniversary Summon",
+   "release": "2019-07-01",
+   "until": "2019-07-14",
+   "cost": {
+    "lapis": 5000
+   },
+   "draws": 11,
+   "purchase_limit": 10,
+   "guarantee": {
+    "rarity": 5
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 4
+    }
+   ],
+   "tier_units": {
+    "5": [
+     "High Seraph Ultima",
+     "Beowulf",
+     "Crimson",
+     "Esther",
+     "Sylvie",
+     "Black Mage Golbez",
+     "Akstar",
+     "Zeno of the Beta Star",
+     "Nagi",
+     "Yego",
+     "King Edgar of Figaro",
+     "Monk Sabin of Kolts",
+     "Summer Fina & Lid",
+     "Summer Folka & Citra"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201906303rdAnniversarySummon.html",
+     "archived": "20191115152525"
+    }
+   ],
+   "notes": "A 9+2 with a 5★ and a 4★+ guaranteed from a selected 5★ pool, ten per player. Price assumed 5000 Lapis (as the 9+2 celebration summons). Summon Coins (exchange) left out. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500037,
+   "family": "free_weekly",
+   "name": "Free 10+1 Summon (3rd Anniversary, weekly)",
+   "release": "2019-07-01",
+   "until": "2019-08-04",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "pool_rule": {
+    "released_by": "2019-06-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20190630FFBE11FreeSummon.html",
+     "archived": "20191113232929"
+    }
+   ],
+   "notes": "A free 10+1 once a week (resetting Monday) for five weeks. Banner art not archived: titled stand-in."
   }
  ]
 }

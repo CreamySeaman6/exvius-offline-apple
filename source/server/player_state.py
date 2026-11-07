@@ -1264,7 +1264,9 @@ def summon_guarantee_pool(pool: list, guarantee: dict) -> list:
 def summon_slots(banner: dict, step: dict | None = None) -> list:
     """[(count, candidates, label)] for the extra guaranteed slots (`guarantee_slots`) of a banner or step."""
     step = step or {}
-    return [(int(slot.get('count', 1)), expand_pool({'pool': slot['pool']}), str(slot.get('label') or 'reward'))
+    # A slot's list follows the banner's printed pool rule too (deal banners: no limited/collab units).
+    rule = {'pool_rule': banner['pool_rule']} if banner.get('pool_rule') else {}
+    return [(int(slot.get('count', 1)), expand_pool(dict(rule, pool=slot['pool'])), str(slot.get('label') or 'reward'))
             for slot in step.get('guarantee_slots', banner.get('guarantee_slots', []))]
 
 
