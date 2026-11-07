@@ -6638,6 +6638,762 @@
     }
    ],
    "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9500100,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2020-12-21",
+   "until": "2020-12-22",
+   "lap_limit": 2,
+   "rates": [
+    0.0125,
+    0.9875,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-12-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201215NeoRainbowRevolutionSummonUpdated.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 2 rounds per player. NV share 1.25% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500101,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-01-11",
+   "until": "2021-01-12",
+   "lap_limit": 4,
+   "rates": [
+    0.0125,
+    0.9875,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-12-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210105NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 1.25% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500102,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-02-22",
+   "until": "2021-02-23",
+   "lap_limit": 4,
+   "rates": [
+    0.0125,
+    0.9875,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-02-18",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210218NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 1.25% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500103,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-03-15",
+   "until": "2021-03-16",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-03-11",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210311NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500104,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-04-05",
+   "until": "2021-04-06",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210401NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500105,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-04-12",
+   "until": "2021-04-13",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210408NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500106,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-05-10",
+   "until": "2021-05-11",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-05-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210506NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500107,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-06-07",
+   "until": "2021-06-08",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-03",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210603NeoRainbowRevolutionSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500108,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-08-23",
+   "until": "2021-08-24",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-08-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210819NeoRainbowRevolution.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500109,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-09-20",
+   "until": "2021-09-21",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210916NeoRainbowRevolution.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500110,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-10-11",
+   "until": "2021-10-12",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211007NeoRainbowRevolution.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500111,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-11-22",
+   "until": "2021-11-23",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-18",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211118NeoRainbowRevolution.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500112,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-12-06",
+   "until": "2021-12-07",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211202NeoRainbowRevolution.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9500113,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2021-12-13",
+   "until": "2021-12-14",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211209NeoRainbowRevolution.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
   }
  ]
 }
