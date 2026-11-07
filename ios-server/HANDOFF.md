@@ -1,6 +1,6 @@
 # Handoff: Exvius Offline on the iPhone
 
-Notes for a new Claude session picking up this work. Last updated 2026-11-07 (late morning). **Start with "Open problems (2026-11-07)" just below.**
+Notes for a new Claude session picking up this work. Last updated 2026-11-07 (midday). **Start with "Open problems (2026-11-07)" just below.** The next planned task is building the missing deal banners: read `ios-server/BANNER_DEALS_RESEARCH.md`.
 
 Read **Current state** first. The dated sections below it are the history: each records what was found and why, and later sections can supersede earlier ones (noted where they do).
 
@@ -13,7 +13,9 @@ The 2026-11-07 session ran out of context mid-debugging. Its notes below ("Story
 2. **Resolved, one-off (2026-11-07):** the phone downloaded the rebuilt Vortex banner pack (`Ver1989_spdungeon1.cpk`, 243 MB, after 5ac9a60 bumped `ios_art.BUILDER`) and the operator reports the prompt hasn't come back. Original note: **"Download while playing tutorial?" prompt is back** at launch (it was gone after the 2026-11-06 drop-unversioned fix). Suspect, unverified: real files to fetch, not the old 0 KB rows: 5ac9a60 bumped `ios_art.BUILDER` to 2, so the Vortex banner pack (`spdungeon1.cpk`, about 240 MB, class TUTO so up-front) was rebuilt under a new version, and the three story packs got new versions. Check what size the prompt shows and what the next CDN requests are. If the `ios_art` change is the cause and not needed, revert it (it added `FileSize`/`TotalDataSize` to that pack's header; the Vortex tiles were never confirmed either way).
 3. **Freezes.** The Lodin NPC freeze (woman, blue dress) and the sailor crash: fix pushed, not yet confirmed; see "Town quests with hidden rewards" at the end. Still not investigated (no log yet): tapping Details on the VIP Shop's vision card "Metal Gigantuar's Here!" (product 940000012, reward `27:900020101:1`; opens `VisionCardDetailScene`).
 4. **Farplane monument** always replays the first Farplane scene and returns him to Mitra. Not fixed; findings in the 2026-11-07 section (switches 10004001/10005001/10009001/10009002, map/event opcodes). Needs the server log of one monument touch.
-5. **Unconfirmed from 2026-11-07:** expedition offers rework (tutorial chain, then 3 random regular offers, daily free refresh, supercites, Moogle Cave), shop product names (`ios_texts.py` GENERATION 3, `F_TEXT_NV_SHOP_PRODUCT_*` tables).
+5. **Drop Rates button: waiting on the phone test** of 0ed2865 (address moved to the v910 host so the tapped summon is posted). If it still lands on the summon list, ask for `docker logs ffbe 2>&1 | grep DROP-RATES | tail -5`. See "Drop Rates page; Lapis multiplier 5".
+6. **Next task: the missing deal banners** (step-ups with items and discounts, once-per-player 10+1 deals, free dailies…). Research done, nothing built yet: `ios-server/BANNER_DEALS_RESEARCH.md`, and "Deal banners: research" at the end.
+7. **Unconfirmed from 2026-11-07:** expedition offers rework (tutorial chain, then 3 random regular offers, daily free refresh, supercites, Moogle Cave), shop product names (`ios_texts.py` GENERATION 3, `F_TEXT_NV_SHOP_PRODUCT_*` tables).
 
 He still runs the container with `docker compose up -d` (not yet moved to the Unraid template).
 
@@ -568,9 +570,21 @@ Operator's requests: every summon's Drop Rates button should show what that summ
 
 Operator: 0 Calamity Writs (290060400) while every other awakening material is at 50+. Checked: it is on no monster's drop list (battle data, and Global: an event-only material, e.g. Scala ad Caelum's exchange); here it comes from about 18 event exploration chests (`content/field_treasures.json`), the Skeleton Key Exchange and one event mission (9110201, 20). 471 `F_UNIT_CLASS_UP_MST` rows need it (usually 20). Operator's request: a very rare drop. `ffbe_battle._roll_items` now adds `20:290060400:1:100` with `EXVIUS_CALAMITY_WRIT_DROP` percent (default 0.5) per roll, i.e. per enemy drop row in a wave and per exploration encounter row; the client reports it at MissionEnd like any drop and `credit_mission_rewards` pays it. Tested: 0.49% of 100,000 rolls. Not yet seen on the phone.
 
+## Deal banners: research (2026-11-07, midday)
+
+Operator: Global had more banner deals than the server serves (step-ups with items and discounts along the way, a special banner that went away after the first 10+1). Researched only; no code or data changed.
+
+- Findings, sources, how to fetch them, the engine gaps and a build plan: `ios-server/BANNER_DEALS_RESEARCH.md`.
+- Short version: the deals started in 2018. The replay (Dec 2016–Jan 2017 so far) hasn't reached any, so nothing is missing yet; the first gap is about 20 real weeks out. About 250–300 deal banners from 2018–2023 are missing from the data. The engine already supports most of the mechanics. Gaps: per-step pools are ignored by the pull (`summon_pool`), there is no limited/collab pool exclusion, used-up once-per-player banners may not hide, and there is no re-summon or real-money summon.
+- Operator: fine with release order, thinks building by mechanic in big batches is faster; JP history allowed to fill blanks when Global's is lost.
+
 ## Starting a fresh session
 
 Paste this as the first message of a new session:
 
 > I'm continuing my Exvius Offline iPhone project. Add CreamySeaman6/exvius-offline-apple to this session with push access, clone it, check out `ios-server`, and read `ios-server/HANDOFF.md` (Current state first, then the dated sections as needed). Ground rules are in the handoff: push fixes to `ios-server`, add a short dated section to HANDOFF.md for anything you change, keep README's settings and removal sections current, ask me questions in plain text, plain direct communication, no suggestions to send anything upstream, keep side tasks to a minimum. Once you've read it, tell me in a few lines that you're up to speed, then wait for what I report from the phone.
 
+
+For the deal-banner build (the next planned task), paste this instead:
+
+> I'm continuing my Exvius Offline iPhone project. Add CreamySeaman6/exvius-offline-apple to this session with push access, clone it, check out `ios-server`, and read `ios-server/HANDOFF.md` (the Open problems and the operator section of Current state) and all of `ios-server/BANNER_DEALS_RESEARCH.md`. Ground rules are in the handoff: push fixes to `ios-server`, add a short dated section to HANDOFF.md for anything you change, keep README's settings and removal sections current, ask me questions in plain text, plain direct communication, no suggestions to send anything upstream, keep side tasks to a minimum. The task: build every missing Global deal banner (step-ups with items and discounts, the once-per-player 10+1 deals, free dailies, and the rest of the families in the research doc), with real dates so the replay shows each one when history reaches it. I'm fine with release order, but I think building by mechanic in big batches is faster; go with whatever you think is best after reading the research. Use my Claude for Chrome browser for the Wayback and wiki pages. Where Global's history is truly lost, you can fill blanks with FFBE Japan history, labeled as such. Before building, tell me in a few lines your plan and the order, and ask me anything the research doc says needs my decision (stand-in price for the real-money summons, whether re-summon is worth it). Then go.
