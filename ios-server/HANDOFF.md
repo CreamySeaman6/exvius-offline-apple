@@ -1,6 +1,6 @@
 # Handoff: Exvius Offline on the iPhone
 
-Notes for a new Claude session picking up this work. Last updated 2026-11-07 (midday). **Start with "Open problems (2026-11-07)" just below.** The next planned task is building the missing deal banners: read `ios-server/BANNER_DEALS_RESEARCH.md`.
+Notes for a new Claude session picking up this work. Last updated 2026-11-07 (midday). **Start with "Open problems (2026-11-07)" just below.** The deal banners are built (see the "Deal banners: ..." sections at the end); the next planned task is "Next: deals and bundles on the News board".
 
 Read **Current state** first. The dated sections below it are the history: each records what was found and why, and later sections can supersede earlier ones (noted where they do).
 
@@ -14,7 +14,7 @@ The 2026-11-07 session ran out of context mid-debugging. Its notes below ("Story
 3. **Freezes.** The Lodin NPC freeze (woman, blue dress) and the sailor crash: fix pushed, not yet confirmed; see "Town quests with hidden rewards" at the end. Still not investigated (no log yet): tapping Details on the VIP Shop's vision card "Metal Gigantuar's Here!" (product 940000012, reward `27:900020101:1`; opens `VisionCardDetailScene`).
 4. **Farplane monument** always replays the first Farplane scene and returns him to Mitra. Not fixed; findings in the 2026-11-07 section (switches 10004001/10005001/10009001/10009002, map/event opcodes). Needs the server log of one monument touch.
 5. **Drop Rates button: waiting on the phone test** of 0ed2865 (address moved to the v910 host so the tapped summon is posted). If it still lands on the summon list, ask for `docker logs ffbe 2>&1 | grep DROP-RATES | tail -5`. See "Drop Rates page; Lapis multiplier 5".
-6. **Done: the missing deal banners.** 276 built in the first pass; re-summon done; 2021-23 free dailies/weeklies done (see "Deal banners: 2021-23 free summons"). Player Appreciation, Hill of Fortune and Bonus Present done ("Deal banners: tickets, mails, Shop bundles"). 5th-7th anniversary, value and Unit Select summons done ("Deal banners: anniversaries, value, Unit Select"); 311 deal banners. The deal-banner task is finished apart from the items listed as not built there. See "Deal banners: building" and "Deal banners: step-ups, 2022 runs, re-summon" at the end.
+6. **Done: the missing deal banners; next, list them on the News board** (see "Next: deals and bundles on the News board"). 276 built in the first pass; re-summon done; 2021-23 free dailies/weeklies done (see "Deal banners: 2021-23 free summons"). Player Appreciation, Hill of Fortune and Bonus Present done ("Deal banners: tickets, mails, Shop bundles"). 5th-7th anniversary, value and Unit Select summons done ("Deal banners: anniversaries, value, Unit Select"); 311 deal banners. The deal-banner task is finished apart from the items listed as not built there. See "Deal banners: building" and "Deal banners: step-ups, 2022 runs, re-summon" at the end.
 7. **Unconfirmed from 2026-11-07:** expedition offers rework (tutorial chain, then 3 random regular offers, daily free refresh, supercites, Moogle Cave), shop product names (`ios_texts.py` GENERATION 3, `F_TEXT_NV_SHOP_PRODUCT_*` tables).
 
 He still runs the container with `docker compose up -d` (not yet moved to the Unraid template).
@@ -629,6 +629,12 @@ Operator's answers (2026-11-07): Hill of Fortune is a Shop bundle priced by its 
 - **Rules:** value, Unit Select and Bonus Lapis summons were real money: 10,000 Lapis once (Wonderful Winter: twice, as Global). Bonus Lapis: pool A drawn, pool B's seven prizes paid as their 1200 average, the 70%-NV eighth unit made a guaranteed NV. Curated NV pools (7th anniversary): the 20 units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange. The 7th Anniversary fragment ticket has no exchange in the client: 1209001670 stands in, as before. Lapis Replica and VIP Coins left out. Guesses (5th Anniversary step-up prices, Value II/III and Post-Anniversary contents, the four wiki-only Unit Select runs' dates) are in `notes`.
 - **NV Unit Select exchanges** (`exvius_shop_catalogue`, `TICKET_SHOPS`): a deal's `unit_select_tickets` makes the Shop serve that ticket's exchange from the client's F_MEDAL_EXCHANGE_MST rows (four NV per monthly ticket, 20 for the 7th anniversary curated one), hidden while the player holds none. `ios_texts.GENERATION` 5.
 - **Not built:** Fan Favorites 10+1 NV Guaranteed (Dec 2021; page not archived), the Curated NV Guaranteed ticket summons (2022-23, tickets from paid chests), Dai Gem and box summons (event items), Xenogears and A Destined Duty ticket summons (event tickets), the 7th Anniversary Summons II bonus-lapis banner of 8/17 (unclear whether it's a third run).
+
+## Next: deals and bundles on the News board (operator's request, 2026-11-07)
+
+Operator: the deal summons, the dated Shop bundles (Hill of Fortune, Bonus Present Ticket) and the replay mails should be listed or described in the notices. Same weekly notice or a separate one, whichever looks best. Also from him (2026-11-07): Global runs that were several weeks long squeezed into one replay week (one pull of a 10-week free weekly) is fine as is; mails going out on their dates matters to him.
+
+Where to start: `replay_notices.py` builds the weekly News board page (`_week_summary`, `rows`, `page`, `render`; served by routes in `capture_server.py`). This week's deal banners are the rotation's sets with a `deal` key (`gacha_rotation.plan`, `_kind` = `deal`) plus the dated permanent ones (`permanent_open`); this week's bundles are the `global_bundles.json` rows `ffbe_player._bundle_on_offer` lets through; this week's mails are `replay_mails.due(window['to'])` minus earlier weeks'. Deal banner art is `deal_art` (`server/deal_art/`), bundle icons are cached files. Nothing here is built yet.
 
 ## Starting a fresh session
 
