@@ -462,6 +462,23 @@ class Handler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self._cdn_fetch()
 
+    def _form_field(self, name: str) -> str | None:
+        """A field of the request's query string or url-encoded POST body (read once, kept)."""
+        from urllib.parse import parse_qs, urlsplit
+        if not hasattr(self, '_form'):
+            fields = parse_qs(urlsplit(self.path).query)
+            if self.command == 'POST':
+                try:
+                    length = min(int(self.headers.get('Content-Length') or 0), 65536)
+                    body = self.rfile.read(length).decode('utf-8', 'replace') if length > 0 else ''
+                except (ValueError, OSError):
+                    body = ''
+                for key, values in parse_qs(body).items():
+                    fields.setdefault(key, []).extend(values)
+            self._form = fields
+        values = self._form.get(name) or []
+        return values[0] if values else None
+
     def _cdn_fetch(self):
         """Serve a resource/CDN fetch from the shipped data tree, or 404 and say so.
 
@@ -479,6 +496,10 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.split("?", 1)[0]
         raid_page = re.fullmatch(r'/exvius/raid-rewards/(\d+)\.html', path)
         rates_page = re.fullmatch(r'/exvius/gacha-rates/(\d+)\.html', path)
+        if rates_page is None and path.endswith('/statics/probability/sg_summons_list.php'):
+            # The stock iPhone app's Drop Rates button: F_URL_MST GACHA_RATE_URL, with the banner posted as
+            # `gacha_id` (sgGachaDropRateWebScene::setParameter). Same page as the Android hook's URL.
+            rates_page = re.fullmatch(r'(\d+)', self._form_field('gacha_id') or '')
         parade_page = path == '/exvius/parade-rewards.html'
         equip_page = path == '/exvius/equipment-enhancement.html'
         notice_page = re.fullmatch(r'/exvius/notices/(\d+)\.html', path)
@@ -521,7 +542,7 @@ class Handler(BaseHTTPRequestHandler):
                     html = rewards_page(State.player, path.endswith('clash-ranking.html'))
                 else:
                     from gacha_rates import page
-                    html = page(rates_page.group(1))
+                    html = page(rates_page.group(rates_page.lastindex or 0))
             if html is None:
                 self.send_error(404, 'Local content unavailable')
                 return

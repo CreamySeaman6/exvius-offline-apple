@@ -80,7 +80,7 @@ services:
       EXVIUS_ARENA_TOP: "12000"
       EXVIUS_ARENA_RIVALS: "5"
       # Earned Lapis (source/server/lapis_economy.py). Shop purchases are never multiplied.
-      EXVIUS_LAPIS_MULTIPLIER: "1.5"      # every Lapis amount earned by playing
+      EXVIUS_LAPIS_MULTIPLIER: "5"        # every Lapis amount earned by playing
       EXVIUS_DAILY_QUEST_LAPIS: "150"     # Lapis per daily quest (0 = the old gil/Lapis mix)
       EXVIUS_DAILY_ALL_BONUS: "200"       # extra Lapis for finishing all of a day's dailies
       EXVIUS_WEEKLY_GIFT: "23:50:10,23:70:1"   # mailed each week: 10 Rare Summon Tickets + a Guaranteed Ticket; "" = off

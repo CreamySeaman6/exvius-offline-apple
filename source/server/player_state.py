@@ -1216,6 +1216,35 @@ def expand_pool(banner: dict) -> list:
     return _only_named(out)
 
 
+def summon_pool(banner: dict) -> list:
+    """What one ordinary draw of `banner` picks from, by `rate`: its explicit reward list (items or units,
+    `reward_pool`) or its tiers expanded (`expand_pool`). `roll_gacha` and the drop-rate page both use this."""
+    reward_pool = banner.get('reward_pool')
+    if not reward_pool:
+        return expand_pool(banner)
+    pool = copy.deepcopy(reward_pool)
+    for entry in pool:
+        if entry['kind'] == 10:
+            entry['unit_id'] = str(entry['id'])
+            entry['rarity'] = (unit_mst(entry['id']) or {}).get('9fW0TePj')
+    return pool
+
+
+def summon_guarantee_pool(pool: list, guarantee: dict) -> list:
+    """The rows a counted rarity guarantee (`guarantee.count`) draws from: its own `pool` if it names one,
+    else the banner's pool; either way only rows at or above `guarantee.rarity`."""
+    floor = int(guarantee.get('rarity') or 0)
+    rows = expand_pool({'pool': guarantee['pool']}) if guarantee.get('pool') is not None else pool
+    return [e for e in rows if int(e.get('rarity') or 0) >= floor]
+
+
+def summon_slots(banner: dict, step: dict | None = None) -> list:
+    """[(count, candidates, label)] for the extra guaranteed slots (`guarantee_slots`) of a banner or step."""
+    step = step or {}
+    return [(int(slot.get('count', 1)), expand_pool({'pool': slot['pool']}), str(slot.get('label') or 'reward'))
+            for slot in step.get('guarantee_slots', banner.get('guarantee_slots', []))]
+
+
 def team_level_mst(level) -> dict | None:
     return _load_ndjson("F_TEAM_LV_MST.ndjson", TEAM_LEVEL_KEY).get(str(level))
 
@@ -4105,17 +4134,14 @@ class PlayerState:
             return None
         reward_pool = banner.get('reward_pool')
         bonus_before, bonus_dirty = (copy.deepcopy(self.data), self.dirty) if bonus_rewards or reward_pool else (None, None)
-        pool = copy.deepcopy(reward_pool) if reward_pool else expand_pool(banner)
+        # The same pool the drop-rate page lists (gacha_rates.py): one function, so the two can't drift.
+        pool = summon_pool(banner)
         if not pool:
             return None
         if reward_pool:
             if any(not self._can_credit({k: entry[k] for k in ('kind', 'id', 'count')}) or
                    float(entry.get('rate', 0)) <= 0 for entry in pool):
                 return None
-            for entry in pool:
-                if entry['kind'] == 10:
-                    entry['unit_id'] = str(entry['id'])
-                    entry['rarity'] = (unit_mst(entry['id']) or {}).get('9fW0TePj')
         repeats = max(1, int(repeats))
         cost = (offer or {}).get("cost") if offer else None
         if not cost:
@@ -4146,18 +4172,13 @@ class PlayerState:
         guaranteed_count = int(guarantee.get('count', 1))
         if reward_pool and guarantee:
             return None  # Mixed item pools have their own explicit published weights.
-        guaranteed_pool = [e for e in pool if int(e.get('rarity') or 0) >= int(guarantee.get('rarity') or 0)]
-        if guarantee.get('pool') is not None:
-            guaranteed_pool = [e for e in expand_pool({'pool': guarantee['pool']})
-                               if int(e.get('rarity') or 0) >= int(guarantee.get('rarity') or 0)]
+        guaranteed_pool = summon_guarantee_pool(pool, guarantee)
         if (guaranteed_count < 1 or guaranteed_count > draws or
                 (guarantee.get('rarity') is not None and not guaranteed_pool)):
             print('    gacha refused: guaranteed slots cannot be fulfilled by this pool', flush=True)
             return None
         extra_slots = []
-        for slot in step.get('guarantee_slots', banner.get('guarantee_slots', [])):
-            count = int(slot.get('count', 1))
-            candidates = expand_pool({'pool': slot['pool']})
+        for count, candidates, _label in summon_slots(banner, step):
             if count < 1 or not candidates:
                 return None
             extra_slots.append((count, candidates))

@@ -2,7 +2,7 @@
 
 Three knobs, all for Lapis you EARN by playing (Shop purchases are never touched):
 
-  EXVIUS_LAPIS_MULTIPLIER (default 1.5)   every earned Lapis amount is multiplied: mission challenges, event
+  EXVIUS_LAPIS_MULTIPLIER (default 5)     every earned Lapis amount is multiplied: mission challenges, event
                                           repeats, rank-ups, login and catch-up mails, quests, raids, arena...
   EXVIUS_DAILY_QUEST_LAPIS (default 150)  every daily quest pays this much Lapis (the original server's
                                           daily rewards were never preserved; the ones here were authored)
@@ -14,7 +14,10 @@ Three knobs, all for Lapis you EARN by playing (Shop purchases are never touched
 
 Set the multiplier to 1, the daily values to 0 and the gift to "" to get the stock economy back. The multiplier
 and daily amounts are applied before the daily bonus is multiplied, so with the defaults a full day of
-dailies pays (3 x 150 + 200) x 1.5 = 975 Lapis.
+dailies pays (3 x 150 + 200) x 5 = 3,250 Lapis.
+
+5 (operator's choice, 2026-11-07): about 250 Lapis for all of a story mission's challenges. 416 of the 708
+story missions in the first world pay 50 Lapis across their challenges (238 pay 30); 50 x 5 = 250.
 """
 from __future__ import annotations
 
@@ -23,9 +26,9 @@ import os
 
 def multiplier() -> float:
     try:
-        return max(0.0, float(os.environ.get("EXVIUS_LAPIS_MULTIPLIER", "1.5")))
+        return max(0.0, float(os.environ.get("EXVIUS_LAPIS_MULTIPLIER", "5")))
     except ValueError:
-        return 1.5
+        return 5.0
 
 
 def earned(amount: int) -> int:

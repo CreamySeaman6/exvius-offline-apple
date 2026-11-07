@@ -555,6 +555,15 @@ Reported: taking the quest from the woman in Lodin (blue dress, lower left) froz
 - **Change.** `ios_tables` serves `F_QUEST_MST` (`QUEST`, key `20mEeKo3`) with every reward's fifth field set to 1 (`show_quest_rewards`; other fields and unchanged lines byte-identical), advertised +1000. `EXVIUS_IOS_QUEST_REWARDS` (default 1). Rewards now show when a quest is taken instead of "???". Tested on the real table (fetched with `zip_list.RemoteFile` from data-010) through `serve`.
 - Quest 1003008 and 1003003 are already accepted in his save (state 1), so talking to those NPCs again opens the same screen; it should now draw.
 
+## Drop Rates page; Lapis multiplier 5 (2026-11-07)
+
+Operator's requests: every summon's Drop Rates button should show what that summon actually draws (unit art, name, rarity, chance), grouped by rarity with the lowest first; and earned Lapis raised so a story mission's challenges pay about 250.
+
+- **Drop Rates on the iPhone.** The stock app opens `F_URL_MST` `GACHA_RATE_URL` = `<WEB>/lapisProd/app/php/web/statics/probability/sg_summons_list.php` and posts `gacha_id=<banner>&localization=en` (`sgGachaDropRateWebScene::getUrl` 0x2191af0, `setParameter` 0x2191cfc). Nothing answered that path before (only the Android hook's `/exvius/gacha-rates/<id>.html`). `capture_server._cdn_fetch` now routes it to `gacha_rates.page` (`_form_field` reads the posted field). Not yet seen on the phone: if the button still shows nothing, check the server log for a request to `sg_summons_list.php` (if none arrives, `<WEB>` resolves somewhere else).
+- **Same pool as the pull.** `player_state.summon_pool`, `summon_guarantee_pool` and `summon_slots` are now the single source for `PlayerState.roll_gacha` and the page (refactor only; `test_summon_transactions.py` has the same 3 failures before and after). Note the pull draws from the banner's pool for every offer and step; offer/step `pool` keys are not used by the pull, so the page doesn't use them either. Some banners really do draw from every released unit (e.g. 45 "5+1 Ticket Summon", 706 units), others from a set list; the page shows whichever it is this week.
+- **Page.** Notice-page look (`replay_notices` palette and sprites: `/exvius/notice-art/unit/<id>.png` with the wiki fallbacks). Sections: How it pulls (each offer/step: draws, cost, its guarantee in words, bonus rewards), Every draw (rarity groups lowest first, likeliest first within a group, chance per draw), then one section per distinct guaranteed-slot pool. Selection and box banners keep a short explanation. Preview published as an artifact ("Noctis Summon Rates", stand-in crystals for sprites, since the sandbox can't reach the wiki).
+- **Lapis.** `EXVIUS_LAPIS_MULTIPLIER` default 5 (was 1.5) in `lapis_economy.py`, `docker-compose.yml` and `unraid/my-ffbe.xml`. Story missions' challenges total 50 Lapis in 416 of the first world's 708 story missions (30 in 238), so 250 each. It applies to all earned Lapis, so a full day of dailies is now (3 x 150 + 200) x 5 = 3,250. The challenge screen still shows the original amounts.
+
 ## Starting a fresh session
 
 Paste this as the first message of a new session:

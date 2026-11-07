@@ -260,11 +260,11 @@ Your first replay week is recorded in `FFBE_DIR/server/state/replay.json`. Chang
 
 **Earned Lapis**
 
-The original game's Lapis income assumed you'd buy Lapis. These settings raise what you earn by playing (Shop purchases are never touched). With the defaults, a full day of daily quests pays 975 Lapis, and every week brings a 10+1's worth of summon tickets.
+The original game's Lapis income assumed you'd buy Lapis. These settings raise what you earn by playing (Shop purchases are never touched). With the defaults, a story mission's challenges pay about 250 Lapis, a full day of daily quests pays 3,250 Lapis, and every week brings a 10+1's worth of summon tickets.
 
 | Setting | What it controls |
 | --- | --- |
-| `EXVIUS_LAPIS_MULTIPLIER` | Multiplies every Lapis amount earned by playing: mission challenges, event repeats, rank-ups, login and catch-up mails, quests. Default `1.5`; `1` is the stock game. |
+| `EXVIUS_LAPIS_MULTIPLIER` | Multiplies every Lapis amount earned by playing: mission challenges, event repeats, rank-ups, login and catch-up mails, quests, daily quests. Default `5` (a story mission's challenges, 50 Lapis in the original, pay 250); `1` is the stock game. The challenge screen still shows the original amounts. |
 | `EXVIUS_DAILY_QUEST_LAPIS` | Lapis paid by each daily quest (before the multiplier). Default `150`. `0` keeps the old gil/Lapis mix. |
 | `EXVIUS_DAILY_ALL_BONUS` | Extra Lapis for finishing all of a day's daily quests (before the multiplier). Default `200`. |
 | `EXVIUS_WEEKLY_GIFT` | Mailed once per summon week, as `kind:id:count` items. Default `23:50:10,23:70:1`: 10 Rare Summon Tickets and a Guaranteed Ticket (4★/5★/NV), usable with any banner's Ticket Summon button. `""` turns it off. |
