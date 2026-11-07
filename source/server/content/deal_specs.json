@@ -11949,6 +11949,1290 @@
     }
    ],
    "notes": "Two 10+1s per banner at 6000 Lapis, each redoable up to 4 times; the last result stands. A 5★ is guaranteed. Global gave a Super Trust Moogle (50%) for the summoned 5★; here a 5★ Trust Moogle (ALL 50%) with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
+  },
+  {
+   "id": 9503400,
+   "family": "free_weekly",
+   "name": "Free Weekly 10+1 Summon",
+   "release": "2021-01-21",
+   "until": "2021-04-06",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "notes": "A free 10+1 once a week with one 5★/NV guaranteed, ten weeks (the last one stretched to two weeks by the 3/23 update). Global moved the pool's date cut-off forward each week and added that week's limited units; here the pool is the standard one as of 1/21.",
+   "pool_rule": {
+    "released_by": "2021-01-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20210119133825",
+     "20210119Free10Weekly10plus1Summon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210119Free10Weekly10plus1Summon.html",
+     "archived": "20210119133825"
+    },
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210323Free10Weekly10plus1SummonUpdate.html",
+     "archived": "20211025190538"
+    }
+   ]
+  },
+  {
+   "id": 9503401,
+   "family": "free_weekly",
+   "name": "FFXV Free Weekly 10+1 Summon",
+   "release": "2021-04-15",
+   "until": "2021-05-18",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "rates": [
+    0.01,
+    0.12,
+    0.435,
+    0.435
+   ],
+   "guarantee": {
+    "units": [
+     "Noctis",
+     "Crown Prince Noctis",
+     "Lunafreya",
+     "Ardyn",
+     "Prompto",
+     "Gladiolus",
+     "Ignis",
+     "Aranea",
+     "Cindy",
+     "Nyx",
+     "Cobalt Blade Noctis"
+    ]
+   },
+   "notes": "A free 10+1 once a week with one FINAL FANTASY XV 5★/NV unit guaranteed (the FFXV 5★ and NV units released by 4/15: Cobalt Blade Noctis is the only NV). NV rate 1% as printed; the 5★ rate isn't printed, so the era's 12% is kept. Ran to 5/18 after the 5/6 update.",
+   "pool_rule": {
+    "released_by": "2021-04-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20210413105012",
+     "20210413FFXVFreeWeeklySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210413FFXVFreeWeeklySummon.html",
+     "archived": "20210413105012"
+    },
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210504FFXVFreeWeeklySummonUpdate.html",
+     "archived": "20210504085921"
+    }
+   ]
+  },
+  {
+   "id": 9503402,
+   "family": "free_weekly",
+   "name": "FMA BROTHERHOOD Free Weekly 10+1 Summon",
+   "release": "2021-05-13",
+   "until": "2021-06-01",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "guarantee": {
+    "units": [
+     "Edward & Alphonse Elric",
+     "Edward Elric",
+     "Alphonse Elric",
+     "King Bradley",
+     "Roy Mustang",
+     "Greed",
+     "Envy"
+    ]
+   },
+   "featured": [
+    "Edward & Alphonse Elric",
+    "Edward Elric",
+    "Alphonse Elric",
+    "King Bradley",
+    "Roy Mustang",
+    "Greed",
+    "Envy"
+   ],
+   "notes": "A free 10+1 once a week with one FULLMETAL ALCHEMIST BROTHERHOOD 5★/NV unit guaranteed; the FMA units are also in the rest of the pool (featured here).",
+   "pool_rule": {
+    "released_by": "2021-05-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20210511082452",
+     "20210511NVFMAFreeWeeklySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210511NVFMAFreeWeeklySummon.html",
+     "archived": "20210511082452"
+    }
+   ]
+  },
+  {
+   "id": 9503403,
+   "family": "free_daily",
+   "name": "Livestream Celebration Free Daily Summon",
+   "release": "2021-06-17",
+   "until": "2021-06-26",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 100,
+     "count": 5
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "One free 3★+/NV summon a day until the 5th Anniversary livestream, with NRG Restore 10 x5 each time (3% NV, from the banner image).",
+   "art": {
+    "main": [
+     "20210615111538",
+     "LivestreamCelebrationFDSBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210615LivestreamCelebrationFreeDailySummon.html",
+     "archived": "20210615111538"
+    }
+   ]
+  },
+  {
+   "id": 9503404,
+   "family": "free_10_1",
+   "name": "Free Pre-Anniversary 10+1 Summon",
+   "release": "2021-06-17",
+   "until": "2021-06-29",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "min_rarity": 4,
+   "guarantee": {
+    "rarity": 5
+   },
+   "pool_rule": {
+    "released_by": "2021-06-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "One free 10+1 per player: ten 4★/5★/NV units plus one 5★/NV guaranteed (3% NV).",
+   "art": {
+    "main": [
+     "20210615111854",
+     "20210615PreAnnivFree10plus1SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210615PreAnnivFree10plus1Summon.html",
+     "archived": "20210615111854"
+    }
+   ]
+  },
+  {
+   "id": 9503405,
+   "family": "free_weekly",
+   "name": "Weekly Free 10+1 Summon (One Guaranteed 5★/NV) + 1/10 NV Summon Ticket",
+   "release": "2021-08-19",
+   "until": "2021-10-26",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "notes": "The 5th Anniversary Player's Voice (Part 1) winner: a free 10+1 once a week for ten weeks, one 5★/NV guaranteed and a 1/10 NV Summon Ticket each time (3% NV). Global added each week's limited/collab units for that week only; here the standard pool. The voting summons themselves (vote tickets from a login bonus) aren't built.",
+   "pool_rule": {
+    "released_by": "2021-08-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20210817101214",
+     "20210817PlayersVoiceP1Winner11SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210817PlayersVoiceP1Winner11Summon.html",
+     "archived": "20210817101214"
+    },
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202107215thAnnivPlayersVoiceSummonPart1Results.html",
+     "archived": "20210725070730"
+    }
+   ]
+  },
+  {
+   "id": 9503406,
+   "family": "free_daily",
+   "name": "FFVII REMAKE Daily Free 10 Summon",
+   "release": "2021-07-22",
+   "until": "2021-08-20",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "rates": [
+    0.01,
+    0.12,
+    0.435,
+    0.435
+   ],
+   "notes": "A free 10-unit summon once a day (1% NV as printed; the 5★ rate isn't printed, so the era's 12% is kept). The pool date moved weekly on Global (7/22, 7/29, 8/5).",
+   "pool_rule": {
+    "released_by": "2021-07-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20210721150154",
+     "20210719FFVIIRFreeDaily10Summon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210719FFVIIRFreeDaily10Summon.html",
+     "archived": "20210721150154"
+    }
+   ]
+  },
+  {
+   "id": 9503407,
+   "family": "free_daily",
+   "name": "Livestream Celebration Free Daily Summon",
+   "release": "2021-11-11",
+   "until": "2021-11-14",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 100,
+     "count": 5
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "One free summon a day for the November 2021 livestream, with NRG Restore 10 x5 each time.",
+   "art": {
+    "main": [
+     "20211109104422",
+     "20211109LivestreamCelebrationFreeDailySummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211109LivestreamCelebrationFreeDailySummon.html",
+     "archived": "20211109104422"
+    }
+   ]
+  },
+  {
+   "id": 9503408,
+   "family": "free_daily",
+   "name": "FFX Daily Free 10 Summon",
+   "release": "2021-11-25",
+   "until": "2021-12-14",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "bonus": [
+    "super_moogle_ex*2"
+   ],
+   "notes": "A free 10-unit summon once a day (3% NV) with two Super Trust Moogle Exchange Tickets each time. Its VIP Coin x30 is left out (nothing here spends VIP Coins).",
+   "pool_rule": {
+    "released_by": "2021-11-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123101829",
+     "20211123FFXDailyFreeSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211123FFXDailyFreeSummon.html",
+     "archived": "20211123101829"
+    }
+   ]
+  },
+  {
+   "id": 9503409,
+   "family": "free_daily",
+   "name": "Year-End Daily Free 10 Summon",
+   "release": "2021-12-23",
+   "until": "2022-01-04",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2021-12-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "Only the title and news date (12/21) survive, from the wiki's News/Archives list; the page isn't archived. Built like the 2020 Year-End and the True Twenty-Two daily free 10s (a free 10 summon once a day); the dates (12/23 to 1/4) are guessed from the next run starting 1/6. Banner art: titled stand-in.",
+   "sources": []
+  },
+  {
+   "id": 9503410,
+   "family": "free_daily",
+   "name": "True Twenty-Two Daily Free 10 Summon",
+   "release": "2022-01-06",
+   "until": "2022-01-18",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "notes": "A free 10-unit summon once a day.",
+   "pool_rule": {
+    "released_by": "2022-01-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220104131416",
+     "TrueTwentyTwoDailyFree10Summon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220104TrueTwentyTwoDailyFree10Summon.html",
+     "archived": "20220104131416"
+    }
+   ]
+  },
+  {
+   "id": 9503411,
+   "family": "free_daily",
+   "name": "Xenogears Free Daily Summon",
+   "release": "2022-02-10",
+   "until": "2022-02-22",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "pool_units": [
+    "Id",
+    "Grahf",
+    "Fei",
+    "Elly",
+    "Bart",
+    "Citan",
+    "Maria (Xenogears)",
+    "Emeralda",
+    "Billy",
+    "Rico"
+   ],
+   "rates": [
+    0.005,
+    0.095,
+    0.45,
+    0.45
+   ],
+   "pool_rule": null,
+   "notes": "One free summon a day from the Xenogears units only: Id and Grahf 0.5%, the five 5★ 9.5%, Emeralda and Billy 45%, Rico 45%, as printed. The Xenogears ticket summons (event tickets) aren't built.",
+   "art": {
+    "main": [
+     "20220208110831",
+     "20220208XenogearsFreeDailySummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220208XenogearsSpecialSummons.html",
+     "archived": "20220208110831"
+    }
+   ]
+  },
+  {
+   "id": 9503412,
+   "family": "free_weekly",
+   "name": "Free Weekly 10+1 Summon",
+   "release": "2022-02-10",
+   "until": "2022-04-26",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "notes": "A free 10+1 once a week for eleven weeks, one 5★/NV guaranteed and a 1/10 NV Summon Ticket each time. Global let each event's limited/collab units in during the event; here the standard pool.",
+   "pool_rule": {
+    "released_by": "2022-02-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220208110809",
+     "20220208FreeWeekly10plus1SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220208FreeWeekly10plus1Summon.html",
+     "archived": "20220208110809"
+    }
+   ]
+  },
+  {
+   "id": 9503414,
+   "family": "free_weekly",
+   "name": "Free Weekly 5 Summon",
+   "release": "2022-04-28",
+   "until": "2022-06-07",
+   "cost": {
+    "free": true
+   },
+   "draws": 5,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 5
+   },
+   "notes": "A free 5 summon once a week for five weeks, all five 5★/NV (the fifth week lasted two weeks).",
+   "pool_rule": {
+    "released_by": "2022-04-28",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220426122409",
+     "20220426FreeWeekly5SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220426FreeWeekly5Summon.html",
+     "archived": "20220426122409"
+    }
+   ]
+  },
+  {
+   "id": 9503415,
+   "family": "free_daily",
+   "name": "WOTV FFBE Daily Free Summon",
+   "release": "2022-05-12",
+   "until": "2022-05-24",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "featured": [
+    "Gilgamesh (WOTV FFBE)",
+    "Sterne Leonis",
+    "Kitone",
+    "Mont Leonis",
+    "Vinera Fennes",
+    "King of Leonis Mont"
+   ],
+   "notes": "One free 3★+/NV summon a day; the WOTV FFBE collaboration units were in the pool (featured here: the ones released by then).",
+   "pool_rule": {
+    "released_by": "2022-05-12",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220510115115",
+     "20220510WOTVFreeDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220510WOTVFreeDailySummon.html",
+     "archived": "20220510115115"
+    }
+   ]
+  },
+  {
+   "id": 9503416,
+   "family": "free_daily",
+   "name": "DRAGON QUEST The Adventure of Dai Daily Free Summon",
+   "release": "2022-06-02",
+   "until": "2022-06-21",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "featured": [
+    "Hero Dai",
+    "Martial Artist Maam",
+    "Mage Popp"
+   ],
+   "notes": "One free 3★+/NV summon a day with the Dai collaboration units in the pool. Global added the later collab units in weeks 2 and 3; only the first week's three are featured here.",
+   "pool_rule": {
+    "released_by": "2022-06-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220531090943",
+     "20220531DaiFreeDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220531DaiCollabFreeDailySummon.html",
+     "archived": "20220531090943"
+    }
+   ]
+  },
+  {
+   "id": 9503417,
+   "family": "free_daily",
+   "name": "Livestream Celebration Free Daily Summon",
+   "release": "2022-06-16",
+   "until": "2022-06-24",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 100,
+     "count": 5
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "One free summon a day until the 6th Anniversary livestream, with NRG Restore 10 x5 each time.",
+   "art": {
+    "main": [
+     "20220614113543",
+     "20220614LivestreamDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220614LivestreamDailySummon.html",
+     "archived": "20220614113543"
+    }
+   ]
+  },
+  {
+   "id": 9503418,
+   "family": "free_daily",
+   "name": "6th Anniversary Countdown Ticket Summon",
+   "release": "2022-06-16",
+   "until": "2022-06-28",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 3,
+   "pool_rule": {
+    "released_by": "2022-05-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "Global gave three 6th Anniversary Countdown Summon Tickets a day for 14 days from a login bonus, each one 3★+/NV summon; here three free single summons a day. Banner art: titled stand-in.",
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220614PreAnnivLoginBonusSummon.html",
+     "archived": "20220614113537"
+    }
+   ]
+  },
+  {
+   "id": 9503419,
+   "family": "free_daily",
+   "name": "6th Anniversary Countdown Daily Free Summon",
+   "release": "2022-06-23",
+   "until": "2022-06-28",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "notes": "One free summon a day, always a 5★/NV unit.",
+   "pool_rule": {
+    "released_by": "2022-06-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220621110824",
+     "202206216thAnnivCountdownFreeDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202206216thAnnivCountdownFreeDailySummon.html",
+     "archived": "20220621110824"
+    }
+   ]
+  },
+  {
+   "id": 9503421,
+   "family": "free_weekly",
+   "name": "6th Anniversary Free Weekly 60 Summon",
+   "release": "2022-06-30",
+   "until": "2022-09-06",
+   "cost": {
+    "free": true
+   },
+   "draws": 60,
+   "weekly_limit": 1,
+   "notes": "A free 60-unit summon once a week for eight weeks (3% NV).",
+   "pool_rule": {
+    "released_by": "2022-06-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220825123224",
+     "202206286thAnnivFreeWeekly60SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202206306thAnniversaryCelebrationCampaigns0824Update.html",
+     "archived": "20220825123224"
+    }
+   ]
+  },
+  {
+   "id": 9503422,
+   "family": "free_daily",
+   "name": "FFX Daily Free 10 Summon",
+   "release": "2022-08-25",
+   "until": "2022-10-04",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "notes": "A free 10-unit summon once a day for six weeks (3% NV).",
+   "pool_rule": {
+    "released_by": "2022-08-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220823140338",
+     "20220823FFXFreeDaily10SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220823FFXFreeDaily10Summon.html",
+     "archived": "20220823140338"
+    }
+   ]
+  },
+  {
+   "id": 9503423,
+   "family": "free_weekly",
+   "name": "Weekly Free 10 Summon (One Guaranteed NV)",
+   "release": "2022-09-01",
+   "until": "2022-11-22",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 7
+   },
+   "notes": "The 6th Anniversary Player's Voice (Part 1) winner: a free 10 summon once a week with one NV guaranteed. Global let each event's limited/collab units in during the event; here the standard pool.",
+   "pool_rule": {
+    "released_by": "2022-09-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220830141941",
+     "202209016thAnnivFree10NVGuaranteedSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220901WeeklyFree10NVGuaranteedSummon.html",
+     "archived": "20220830141941"
+    }
+   ]
+  },
+  {
+   "id": 9503424,
+   "family": "free_daily",
+   "name": "Mana Series Daily Free 5 Summon",
+   "release": "2022-10-06",
+   "until": "2022-10-18",
+   "cost": {
+    "free": true
+   },
+   "draws": 5,
+   "daily_limit": 1,
+   "featured": [
+    "Riesz",
+    "Duran",
+    "Angela",
+    "Ninja Master Hawkeye",
+    "Kevin"
+   ],
+   "notes": "A free 5-unit summon once a day for two weeks; the Mana series collaboration units are featured (the page's pool note was cut off in the capture, so this is a guess).",
+   "pool_rule": {
+    "released_by": "2022-10-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221004140600",
+     "FreeLoMDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221004Free4PLoMR1DailySummon.html",
+     "archived": "20221004140600"
+    }
+   ]
+  },
+  {
+   "id": 9503425,
+   "family": "free_weekly",
+   "name": "Chrono Cross Free Weekly 10+1 Summon",
+   "release": "2022-11-04",
+   "until": "2022-11-22",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "featured": [
+    "Serge",
+    "Kid"
+   ],
+   "notes": "A free 10+1 once a week for three weeks, one 5★/NV guaranteed; Serge and Kid featured (the page's pool note wasn't captured).",
+   "pool_rule": {
+    "released_by": "2022-11-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221101102456",
+     "202211017HChronoCrossFreeSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202211017HChronoCrossFreeSummon.html",
+     "archived": "20221101102456"
+    }
+   ]
+  },
+  {
+   "id": 9503426,
+   "family": "free_daily",
+   "name": "NieR:Automata Daily Free 10 Summon",
+   "release": "2022-11-24",
+   "until": "2022-12-13",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "featured": [
+    "2B -Neo Vision-",
+    "A2 -Neo Vision-",
+    "2B",
+    "A2",
+    "9S",
+    "Eve",
+    "21O"
+   ],
+   "notes": "A free 10 summon once a day with one 5★/NV guaranteed (3% NV); the NieR:Automata units are in the pool (featured here).",
+   "pool_rule": {
+    "released_by": "2022-11-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221122115558",
+     "20221122DNNierFreeSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221122DNNieRFreeDailySummon.html",
+     "archived": "20221122115558"
+    }
+   ]
+  },
+  {
+   "id": 9503427,
+   "family": "free_weekly",
+   "name": "FINAL FANTASY VII REMAKE Free Weekly 50 Summon",
+   "release": "2022-12-15",
+   "until": "2023-02-07",
+   "cost": {
+    "free": true
+   },
+   "draws": 50,
+   "weekly_limit": 1,
+   "notes": "A free 50-unit summon once a week for six weeks. Global let limited/collab units in during their first week; here the standard pool.",
+   "pool_rule": {
+    "released_by": "2022-12-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221219101624",
+     "20221213FHFFVIIRFreeWeekly50SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221213FHFFVIIRFreeWeekly50Summon.html",
+     "archived": "20221219101624"
+    }
+   ]
+  },
+  {
+   "id": 9503428,
+   "family": "free_daily",
+   "name": "Bye To Twenty-Two Daily Free 10 Summon",
+   "release": "2022-12-22",
+   "until": "2023-01-03",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "notes": "A free 10 summon once a day for two weeks (3% NV).",
+   "pool_rule": {
+    "released_by": "2022-12-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221220111551",
+     "202212208KYearEndFreeDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202212208KYearEndFreeDailySummon.html",
+     "archived": "20221220111551"
+    }
+   ]
+  },
+  {
+   "id": 9503429,
+   "family": "free_daily",
+   "name": "Twenty-Three and Fancy-Free Daily Free 10 Summon",
+   "release": "2023-01-05",
+   "until": "2023-01-17",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2022-12-29",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "A free 10 summon once a day for two weeks.",
+   "art": {
+    "main": [
+     "20230103120936",
+     "20230103gL2023FreeDaily10SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230103gL2023FreeDaily10Summon.html",
+     "archived": "20230103120936"
+    }
+   ]
+  },
+  {
+   "id": 9503430,
+   "family": "free_daily",
+   "name": "Daily Free 10 Summon",
+   "release": "2023-03-23",
+   "until": "2023-05-02",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "notes": "A free 10 summon once a day for six weeks.",
+   "pool_rule": {
+    "released_by": "2023-03-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230321102557",
+     "20230321q9kDaily10FreeSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230321q9kDaily10FreeSummon.html",
+     "archived": "20230321102557"
+    }
+   ]
+  },
+  {
+   "id": 9503431,
+   "family": "free_daily",
+   "name": "Daily Free 10 Summon",
+   "release": "2023-05-04",
+   "until": "2023-05-23",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "notes": "A free 10 summon once a day for three weeks.",
+   "pool_rule": {
+    "released_by": "2023-05-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230512223640",
+     "20230502d7aDailyFree10SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230502d7aDailyFree10Summon.html",
+     "archived": "20230512223640"
+    }
+   ]
+  },
+  {
+   "id": 9503432,
+   "family": "free_daily",
+   "name": "Livestream Celebration Free Daily Summon",
+   "release": "2023-06-15",
+   "until": "2023-06-24",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 100,
+     "count": 20
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2023-06-14",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "notes": "One free summon a day until the 7th Anniversary livestream, with NRG Restore 10 x20 each time.",
+   "art": {
+    "main": [
+     "20230712232752",
+     "20237thAnnivLivestreamCelebDailyFreeSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230613p3aProduceroftheCrystalDailySummon.html",
+     "archived": "20230712232752"
+    }
+   ]
+  },
+  {
+   "id": 9503433,
+   "family": "free_weekly",
+   "name": "Weekly Free 15 Summon (One NV Guaranteed) + Bonus Tickets",
+   "release": "2023-09-07",
+   "until": "2023-11-14",
+   "cost": {
+    "free": true
+   },
+   "draws": 15,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 7
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    },
+    "super_moogle_ex*20"
+   ],
+   "notes": "A free 15 summon once a week for ten weeks with one NV guaranteed, plus a 1/10 NV Summon Ticket and 20 Super Trust Moogle Exchange Tickets each time. Global's ticket was the separate '1/10 NV Summon Ticket B'; the regular 1/10 NV Summon Ticket is paid instead.",
+   "pool_rule": {
+    "released_by": "2023-09-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20231115225845",
+     "20230905c8wWeekly15FreeOneNVSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230905c8wWeekly15FreeOneNVSummon.html",
+     "archived": "20231115225845"
+    }
+   ]
+  },
+  {
+   "id": 9503434,
+   "family": "free_daily",
+   "name": "Parasite Eve Daily Free 10+1 Summon",
+   "release": "2023-09-21",
+   "until": "2023-10-10",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "daily_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "featured": [
+    "Aya Brea"
+   ],
+   "notes": "A free 10+1 once a day with one 5★/NV guaranteed; Aya Brea featured (the page's pool note wasn't captured).",
+   "pool_rule": {
+    "released_by": "2023-09-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20240214064921",
+     "20230919vp2ParasiteEveFreeDaily101SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230919vp2ParasiteEveFreeDaily101Summon.html",
+     "archived": "20240214064921"
+    }
+   ]
+  },
+  {
+   "id": 9503435,
+   "family": "free_daily",
+   "name": "Free Daily 5 Summon",
+   "release": "2023-11-02",
+   "until": "2023-11-21",
+   "cost": {
+    "free": true
+   },
+   "draws": 5,
+   "daily_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 5
+   },
+   "rates": [
+    0.05,
+    0.95,
+    0,
+    0
+   ],
+   "min_rarity": 5,
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110,
+     "count": 1
+    }
+   ],
+   "notes": "A free 5 summon once a day, all five 5★/NV with a 5% NV rate, and NRG Restore 50 x1 each time. Global also let some Dai collaboration units in; here the standard pool.",
+   "pool_rule": {
+    "released_by": "2023-11-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20231031090245",
+     "20231031FreeDaily5SummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20231031FreeDaily5Summon.html",
+     "archived": "20231031090245"
+    }
+   ]
   }
  ]
 }

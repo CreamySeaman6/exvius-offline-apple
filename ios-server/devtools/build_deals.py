@@ -207,9 +207,17 @@ def guarantee(spec, units: Units, pool_tiers) -> dict:
         return {'unit_id': units.root(spec['unit'])[1]}
     if 'units' in spec:
         ids = [units.root(n) for n in spec['units']]
-        rarity = max(r for r, _ in ids)
-        return {'rarity': rarity, 'count': int(spec.get('count', 1)),
-                'pool': {'tiers': [{'rarity': rarity, 'rate': 1, 'units': [u for _, u in ids]}]}}
+        rarities = sorted({r for r, _ in ids}, reverse=True)
+        if len(rarities) == 1:
+            return {'rarity': rarities[0], 'count': int(spec.get('count', 1)),
+                    'pool': {'tiers': [{'rarity': rarities[0], 'rate': 1, 'units': [u for _, u in ids]}]}}
+        # Units of several rarities (e.g. "one FFXV 5★/NV unit"): one tier per rarity, weighted by the
+        # banner's own rates, so a 5★ unit is granted as a 5★ and not under the NV tier's rarity.
+        rates = {t['rarity']: t['rate'] for t in pool_tiers['tiers']}
+        total = sum(rates.get(r, 0) for r in rarities) or 1
+        return {'rarity': rarities[-1], 'count': int(spec.get('count', 1)),
+                'pool': {'tiers': [{'rarity': r, 'rate': round(rates.get(r, 0) / total, 6),
+                                    'units': [u for rr, u in ids if rr == r]} for r in rarities]}}
     return {'rarity': int(spec['rarity']), 'count': int(spec.get('count', 1))}
 
 
