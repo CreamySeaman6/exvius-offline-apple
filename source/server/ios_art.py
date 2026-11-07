@@ -33,7 +33,7 @@ SIZE_FIELD = "MLOSu5E0"        # English file size in F_RESOURCE_CHECKSUM_MST
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _LOCK = threading.Lock()
 _CACHE: dict = {}
-BUILDER = "1"                  # change to rebuild every cached pack
+BUILDER = "2"                  # change to rebuild every cached pack (2: header FileSize/TotalDataSize set)
 
 
 def enabled() -> bool:
@@ -247,7 +247,8 @@ def build(src: str, adds, out_path: str) -> dict:
         header = bytearray(header)
         sum_file = sum(e["size"] for e in out_entries)
         sum_extract = sum(e["extract"] for e in out_entries)
-        values = {"ContentOffset": new_content_off, "ContentSize": tail, "TocSize": 16 + len(toc_table),
+        values = {"ContentOffset": new_content_off, "ContentSize": tail, "TotalDataSize": tail,
+                  "TocSize": 16 + len(toc_table),
                   "Files": len(out_entries), "EnabledPackedSize": 2 * sum_extract,
                   "EnabledDataSize": sum_file + sum_extract}
         cols = {c[0]: c for c in _cells(bytes(header))[0]}
@@ -282,6 +283,12 @@ def build(src: str, adds, out_path: str) -> dict:
                 out.write(b"\0" * (toc_off + e["offset"] - out.tell()))
                 with open(e["path"], "rb") as png:
                     out.write(png.read())
+            # The header's FileSize is the whole pack's size; the CRI loader refuses a pack whose size
+            # disagrees (story_text.py's first build: "a loading error has occurred", 2026-11-07).
+            if "FileSize" in hrows[0]:
+                struct.pack_into(_FMT[cols["FileSize"][2]], header, hrows[0]["FileSize"][0], out.tell())
+                out.seek(16)
+                out.write(_mask(bytes(header)))
         os.replace(tmp, out_path)
     return {"files": len(out_entries), "added": len(new_files), "size": os.path.getsize(out_path)}
 

@@ -38,7 +38,9 @@ FIXES = {
                                   "210019": "210009", "210020": "210010", "210021": "210011",
                                   "210022": "210012", "210023": "210013"}),
 }
-BUILDER = "1"                    # change to give every fixed pack a new version (and rebuild it)
+BUILDER = "2"                    # change to give every fixed pack a new version (and rebuild it)
+# 1 (2026-11-07) left the header's FileSize at the original size: "a loading error has occurred" entering
+# Port City Lodin, whose arrival downloads 111020301. 2 sets FileSize and TotalDataSize.
 VERSION_FIELD = "OzT5lSz3"       # base (common_lang) file version in F_RESOURCE_MAP_VERSION_MST_LOCALIZE
 _LOCK = threading.Lock()
 _PATH = re.compile(r"(^|/)common_lang/sd/event/([^/]+)/Ver(\d+)_(\d+)\.cpk$")
@@ -138,10 +140,12 @@ def rebuild(data: bytes, scene: str) -> tuple[bytes, int]:
         out += blob
         sum_size += len(blob)
     out += b"\0" * (-len(out) % align)
-    values = {"ContentSize": len(out) - content_off, "EnabledPackedSize": sum_size, "EnabledDataSize": sum_size}
+    values = {"ContentSize": len(out) - content_off, "TotalDataSize": len(out) - content_off,
+              "EnabledPackedSize": sum_size, "EnabledDataSize": sum_size}
     if h.get("EtocOffset"):
         values["EtocOffset"] = len(out)
-        out += data[h["EtocOffset"]:]
+        out += data[h["EtocOffset"]:h["EtocOffset"] + (h.get("EtocSize") or len(data) - h["EtocOffset"])]
+    values["FileSize"] = len(out)
     hfmt = {c[0]: _FMT[c[2]] for c in hcols}
     for name, value in values.items():
         if name in hrows[0]:
