@@ -55,6 +55,9 @@ TABLES = {
     "F_TEXT_IMPORTANT_ITEM_NAME": ("TIKwbf3D", "lx4HCdrQ"),
     "F_TEXT_IMPORTANT_ITEM_EXPLAIN_SHORT": ("YBqAUJt1", "Fc6H1Udw"),
     "F_TEXT_IMPORTANT_ITEM_EXPLAIN_LONG": ("aJ4tvgSq", "iElLxksB"),
+    "F_TEXT_NV_SHOP_PRODUCT_NAME": ("s5K4EzVy", "spxNTzFX"),
+    "F_TEXT_NV_SHOP_PRODUCT_SHORT_DES": ("39tuQBKk", "bLUjnqGk"),
+    "F_TEXT_NV_SHOP_PRODUCT_LONG_DES": ("jhDV9jT6", "uaCuMXaq"),
 }
 # Per reward kind: (name table, prefix), (short table, prefix), (long table, prefix).
 ITEM_TEXT = {
@@ -94,8 +97,8 @@ TICKET_LONG = " The summon appears on the Summon screen while you hold this tick
 
 # Raise by one whenever the text additions change: the phone only re-downloads a table whose advertised
 # version went UP, and the checksum part alone can go down. 1 = bundles/tickets/banners (2026-11-05),
-# 2 = item descriptions and the Android hook texts (2026-11-05).
-GENERATION = 2
+# 2 = item descriptions and the Android hook texts (2026-11-05), 3 = exchange shop product names (2026-11-07).
+GENERATION = 3
 
 _CACHE: dict = {}
 _JAPANESE = re.compile("[\u3040-\u30ff\u3400-\u9fff]")
@@ -163,6 +166,7 @@ def additions() -> dict[str, dict[str, tuple[str, bool]]]:
             TICKET_DESCRIPTIONS[iid] + TICKET_LONG, False)
     _hook_texts(out)
     _reachable_items(out)
+    _shop_products(out)
     try:
         from ffbe_gacha import all_banners, missing_gacha_names
         banners = all_banners()
@@ -233,6 +237,70 @@ def _reachable_items(out: dict) -> None:
         name = name or _shipped(name_table).get(name_key + iid)
         for table, prefix in (short, long):
             _fill(out, table, prefix + iid, name)
+
+
+# Reward kind -> (text table, key prefix) for naming a shop product after what it gives.
+REWARD_NAMES = {
+    "10": ("F_TEXT_UNITS_NAME", "MST_UNIT_NAME_"),
+    "20": ("F_TEXT_ITEM_NAME", "MST_ITEM_NAME_"),
+    "21": ("F_TEXT_ITEM_EQUIP_NAME", "MST_EQUIP_ITEM_NAME_"),
+    "22": ("F_TEXT_MATERIA_NAME", "MST_MATERIA_NAME_"),
+    "23": ("F_TEXT_IMPORTANT_ITEM_NAME", "MST_IMPORTANT_ITEM_NAME_"),
+    "27": ("F_TEXT_VISION_CARD_NAME", "MST_VISION_CARD_NAME_"),
+    "60": ("F_TEXT_RECIPE_BOOK_NAME", "MST_RECIPEBOOK_NAME_"),
+}
+CURRENCY_NAMES = {"30": "Gil", "31": "Friend Points", "50": "Lapis"}
+
+
+def reward_text(raw: str) -> str:
+    """'Metal Gigantuar's Here!', 'Lapis x200', 'Faceted Orb Recipe, Gil x1000' for a reward string."""
+    parts = []
+    for entry in filter(None, str(raw or "").split(",")):
+        fields = entry.split(":")
+        if len(fields) < 2:
+            continue
+        kind, iid = fields[0], fields[1]
+        count = fields[2] if len(fields) > 2 and fields[2].isdigit() else "1"
+        if kind in CURRENCY_NAMES:
+            name = CURRENCY_NAMES[kind]
+        else:
+            table, prefix = REWARD_NAMES.get(kind, (None, None))
+            name = _shipped(table).get(prefix + iid) if table else None
+            if _bad(name, (prefix or "") + iid):
+                name = out_names().get(kind + ":" + iid)
+            if not name:
+                return ""
+            if kind == "60":
+                name += " Recipe"
+        parts.append(name + (f" x{int(count):,}" if count != "1" else ""))
+    return ", ".join(parts)
+
+
+def out_names() -> dict:
+    """Names this module adds for items the shipped tables don't name (ios_text_items.json)."""
+    return {ref: name for ref, name in (_load("ios_text_items.json").get("items") or {}).items() if name}
+
+
+def _shop_products(out: dict) -> None:
+    """The exchange shops' products are this server's own (exvius_shop_catalogue.py: fragment, VIP, coin,
+    Obnixus Drop, Xenostone and event exchanges), numbered in ranges the shipped product texts partly use for
+    other products. A product whose reward has no name of its own in the list (a vision card such as the VIP
+    Shop's "Metal Gigantuar's Here!") showed `MST_NVSHOP_PRODUCT_NAME_<id>` (seen 2026-11-07). Name every
+    product after its rewards."""
+    try:
+        from exvius_shop_catalogue import _catalogue
+        _, products, _ = _catalogue(None)
+    except Exception as exc:  # noqa: BLE001 -- the other additions still apply
+        print(f"[ios-texts] shop product names skipped ({exc})", flush=True)
+        return
+    for row in products:
+        pid, text = str(row["jPV7Xc4N"]), reward_text(row.get("P4puB2ch"))
+        if not text:
+            continue
+        out["F_TEXT_NV_SHOP_PRODUCT_NAME"]["MST_NVSHOP_PRODUCT_NAME_" + pid] = (_clean(text), True)
+        out["F_TEXT_NV_SHOP_PRODUCT_SHORT_DES"]["MST_NVSHOP_PRODUCT_SHORT_DES_" + pid] = (_clean(text), True)
+        out["F_TEXT_NV_SHOP_PRODUCT_LONG_DES"]["MST_NVSHOP_PRODUCT_LONG_DES_" + pid] = (
+            _clean("Exchange for " + text + "."), True)
 
 
 def bump() -> int:
