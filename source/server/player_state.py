@@ -4126,7 +4126,22 @@ class PlayerState:
         state_id = str(banner.get('state_id', banner['id']))
         banner_counts = self.data.get('gacha', {}).get('user_banners', {}).get(state_id, {})
         purchase_limit = int(banner.get('purchase_limit', 0))
-        if purchase_limit and int(banner_counts.get('total_exe_count', 0)) + repeats > purchase_limit:
+        # (Re)summon (Global 2019-20): the paid 10+1 can be redone up to `resummon` times; each redo replaces
+        # the last result, and the last result stands once the player stops (or uses up the redos). Here the
+        # result goes into the box at once; the free "Re-summon" offer (`resummon: true`) removes it again
+        # and draws anew. A redo is refused once any unit of the pending result has left the box.
+        resummon = int(banner.get('resummon') or 0)
+        redo = bool(resummon and (offer or {}).get('resummon'))
+        pending = ((self.data.get('gacha') or {}).get('resummon') or {}).get(state_id) if resummon else None
+        if redo:
+            roster_ids = {str(u['instance_id']) for u in self.data['roster']}
+            if not pending or int(pending.get('left', 0)) <= 0:
+                print('    gacha refused: no summon result left to redo', flush=True)
+                return None
+            if any(str(i) not in roster_ids for i in pending.get('units', [])):
+                print('    gacha refused: a unit from the last result has left the box; result kept', flush=True)
+                return None
+        elif purchase_limit and int(banner_counts.get('total_exe_count', 0)) + repeats > purchase_limit:
             return None
         # A once-a-day banner (the 1/2 price summon, `daily_limit`) refuses the pull past its daily count.
         limit = int(banner.get('weekly_limit') or banner.get("daily_limit") or 0)
@@ -4365,6 +4380,7 @@ class PlayerState:
                     self.data.setdefault("vision_cards", []).append({"user_vc_id": key, "vc_id": vc_id, "level": 1})
                     rarity = min(6, max(1, int((vision_card_mst(vc_id) or {}).get("9fW0TePj") or 1)))
                     nv_cards.append({"vc_id": vc_id, "user_vc_id": key, "rarity": rarity})
+        drawn_ids = [str(g['instance_id']) for g in granted if g.get('instance_id')]
         item_awards = self._grant_items(reward_awards) if reward_awards else []
         bonus_roster = {str(u['instance_id']) for u in self.data['roster']}
         plain_bonus = [{key: reward[key] for key in ('kind', 'id', 'count')} for reward in bonus_rewards]
@@ -4397,8 +4413,19 @@ class PlayerState:
             count = int(used.get("count") or 0) if used.get("date") == today else 0
             self.data['gacha'].setdefault('daily', {})[state_id] = {"date": today, "count": count + repeats}
         st = self.banner_state(state_id)
-        st["term_exe_count"] += repeats
-        st["total_exe_count"] += repeats
+        if not redo:      # a redo is part of the paid summon, not a new one
+            st["term_exe_count"] += repeats
+            st["total_exe_count"] += repeats
+        if resummon:
+            store = self.data['gacha'].setdefault('resummon', {})
+            if redo:
+                old = {str(i) for i in pending.get('units', [])}
+                self.drop_units(sorted(old))
+                self.data['vision_cards'] = [c for c in self.data.get('vision_cards', [])
+                                             if str(c.get('user_vc_id')) not in old]
+                store[state_id] = {'units': drawn_ids, 'left': int(pending.get('left', 0)) - 1}
+            else:
+                store[state_id] = {'units': drawn_ids, 'left': resummon}
         top = max((int(a["granted_rarity"] or 1) for a in granted), default=1)
         result = {"banner_id": str(banner["id"]), "detail_id": str(banner.get("detail_id", "")),
                   "step": step_index, "count": draws, "repeats": repeats, "ticket_id": spent_ticket,

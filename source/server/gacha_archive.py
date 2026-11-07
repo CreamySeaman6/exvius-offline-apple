@@ -241,7 +241,9 @@ def used_up(player, banner) -> bool:
     state_id = str(banner.get('state_id', banner['id']))
     limit = int(banner.get('purchase_limit') or 0)
     if limit and int(((gacha.get('user_banners') or {}).get(state_id) or {}).get('total_exe_count', 0)) >= limit:
-        return True
+        # A (Re)summon stays listed while its last result can still be redone.
+        pending = (gacha.get('resummon') or {}).get(state_id) or {}
+        return not (banner.get('resummon') and int(pending.get('left', 0)) > 0)
     laps = int(banner.get('lap_limit') or 0)
     return bool(laps and int((gacha.get('completed_laps') or {}).get(state_id, 0)) >= laps)
 

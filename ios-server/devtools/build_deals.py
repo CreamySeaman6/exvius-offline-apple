@@ -27,6 +27,8 @@ Spec fields (per banner):
   bonus_choice  [[weight, [tokens]], ...]: one of these paid with every pull
   steps         [{lapis|free|item, draws, guarantee, slots, bonus, rainbow, featured_x}] for step-ups
   lap_limit / purchase_limit / daily_limit
+  resummon      n: the paid pull can be redone n times for free (a second "Re-summon" button); each redo
+                replaces the last result in the box
   art           {"main": [capture, file], "detail": [capture, file]}: the list (640x160) and detail (640x392)
                 news images by Wayback capture timestamp (or [_, full url]); a missing one gets a titled stand-in
   sources       [{"url", "archived"}] news pages read (Wayback captures)
@@ -323,6 +325,11 @@ def build(spec: dict, units: Units) -> dict:
     for key in ('lap_limit', 'purchase_limit', 'daily_limit', 'weekly_limit'):
         if spec.get(key):
             banner[key] = int(spec[key])
+    if spec.get('resummon') and not steps:
+        # (Re)summon: a free second button redoes the last paid result (player_state.roll_gacha).
+        banner['resummon'] = int(spec['resummon'])
+        banner['secondary_offer'] = {'cost': {'kind': 'free', 'amount': 0}, 'draws': banner['draws'],
+                                     'resummon': True, 'bonus_rewards': []}
     banner['sources'] = spec.get('sources', [])
     banner['rate_source'] = {
         'url': (spec.get('sources') or [{}])[0].get('url', ''),

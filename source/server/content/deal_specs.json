@@ -11715,6 +11715,240 @@
    ],
    "notes": "Not archived; known from the wiki's news archive (news 2022-09-08). Dates and contents as the 2021 runs (Monday-Wednesday after the news; step 1 4000 Lapis 8+3 with three 5★/NV and 50 Super Trust Moogle Exchange Tickets, step 2 6000 Lapis 10+1 with ten 5★/NV plus one NV and a Transcension Pearl; 2 rounds per player). Art is the Nov 2021 banner (it says Cyber Monday).",
    "id": 9503218
+  },
+  {
+   "id": 9503300,
+   "family": "resummon",
+   "name": "7★ Guaranteed (Re)summon - Support",
+   "release": "2019-11-28",
+   "until": "2019-11-30",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 1,
+   "resummon": 9,
+   "bonus": [
+    "moogle100"
+   ],
+   "pool_rule": {
+    "released_by": "2019-11-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221108175402",
+     "SupportResummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201911257StarGuaranteedReSummon.html",
+     "archived": "20221108175402"
+    }
+   ],
+   "notes": "One 9+1+1 per banner, redo up to 9 times; the last result stands (on Global the units arrived when the player finalized or used all redos; here each result goes to the box and a redo swaps it). Sold in-app on Global: stand-in 10,000 Lapis. Differences: Global's guaranteed unit came as a 7★ (an awakened 5★) with a Super Trust Moogle (100%) for that unit; here it is a guaranteed 5★ and the moogle is a 5★ Trust Moogle (ALL 100%) paid once with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
+  },
+  {
+   "id": 9503301,
+   "family": "resummon",
+   "name": "7★ Guaranteed (Re)summon - Attacker",
+   "release": "2019-12-01",
+   "until": "2019-12-03",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 1,
+   "resummon": 9,
+   "bonus": [
+    "moogle100"
+   ],
+   "pool_rule": {
+    "released_by": "2019-11-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221108175402",
+     "AttackResummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201911257StarGuaranteedReSummon.html",
+     "archived": "20221108175402"
+    }
+   ],
+   "notes": "One 9+1+1 per banner, redo up to 9 times; the last result stands (on Global the units arrived when the player finalized or used all redos; here each result goes to the box and a redo swaps it). Sold in-app on Global: stand-in 10,000 Lapis. Differences: Global's guaranteed unit came as a 7★ (an awakened 5★) with a Super Trust Moogle (100%) for that unit; here it is a guaranteed 5★ and the moogle is a 5★ Trust Moogle (ALL 100%) paid once with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
+  },
+  {
+   "id": 9503302,
+   "family": "resummon",
+   "name": "7★ Guaranteed (Re)summon - Mage",
+   "release": "2019-12-04",
+   "until": "2019-12-06",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 1,
+   "resummon": 9,
+   "bonus": [
+    "moogle100"
+   ],
+   "pool_rule": {
+    "released_by": "2019-11-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221108175402",
+     "MageResummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/201911257StarGuaranteedReSummon.html",
+     "archived": "20221108175402"
+    }
+   ],
+   "notes": "One 9+1+1 per banner, redo up to 9 times; the last result stands (on Global the units arrived when the player finalized or used all redos; here each result goes to the box and a redo swaps it). Sold in-app on Global: stand-in 10,000 Lapis. Differences: Global's guaranteed unit came as a 7★ (an awakened 5★) with a Super Trust Moogle (100%) for that unit; here it is a guaranteed 5★ and the moogle is a 5★ Trust Moogle (ALL 100%) paid once with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
+  },
+  {
+   "id": 9503310,
+   "family": "resummon",
+   "name": "5★ Guaranteed (Re)summon - Mage",
+   "release": "2020-01-30",
+   "until": "2020-02-01",
+   "cost": {
+    "lapis": 6000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 2,
+   "resummon": 4,
+   "bonus": [
+    "moogle50"
+   ],
+   "pool_rule": {
+    "released_by": "2020-01-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220726053652",
+     "202001285StarGuaranteedMageResummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202001285StarGuaranteedReSummon.html",
+     "archived": "20220726053652"
+    }
+   ],
+   "notes": "Two 10+1s per banner at 6000 Lapis, each redoable up to 4 times; the last result stands. A 5★ is guaranteed. Global gave a Super Trust Moogle (50%) for the summoned 5★; here a 5★ Trust Moogle (ALL 50%) with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
+  },
+  {
+   "id": 9503311,
+   "family": "resummon",
+   "name": "5★ Guaranteed (Re)summon - Support",
+   "release": "2020-02-02",
+   "until": "2020-02-04",
+   "cost": {
+    "lapis": 6000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 2,
+   "resummon": 4,
+   "bonus": [
+    "moogle50"
+   ],
+   "pool_rule": {
+    "released_by": "2020-01-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220726053652",
+     "202001285StarGuaranteedSupportResummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202001285StarGuaranteedReSummon.html",
+     "archived": "20220726053652"
+    }
+   ],
+   "notes": "Two 10+1s per banner at 6000 Lapis, each redoable up to 4 times; the last result stands. A 5★ is guaranteed. Global gave a Super Trust Moogle (50%) for the summoned 5★; here a 5★ Trust Moogle (ALL 50%) with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
+  },
+  {
+   "id": 9503312,
+   "family": "resummon",
+   "name": "5★ Guaranteed (Re)summon - Attacker",
+   "release": "2020-02-05",
+   "until": "2020-02-07",
+   "cost": {
+    "lapis": 6000
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 5
+   },
+   "purchase_limit": 2,
+   "resummon": 4,
+   "bonus": [
+    "moogle50"
+   ],
+   "pool_rule": {
+    "released_by": "2020-01-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220726053652",
+     "202001285StarGuaranteedAttackResummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202001285StarGuaranteedReSummon.html",
+     "archived": "20220726053652"
+    }
+   ],
+   "notes": "Two 10+1s per banner at 6000 Lapis, each redoable up to 4 times; the last result stands. A 5★ is guaranteed. Global gave a Super Trust Moogle (50%) for the summoned 5★; here a 5★ Trust Moogle (ALL 50%) with the paid pull. The role's limited 5★ pool isn't listed on the page: the normal pool is used."
   }
  ]
 }
