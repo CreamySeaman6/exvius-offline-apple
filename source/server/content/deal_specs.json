@@ -2098,6 +2098,1206 @@
     }
    ],
    "notes": "One 11-summon where every unit is 5★. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500070,
+   "family": "free_10_1",
+   "name": "3rd Season Commemorative Summon",
+   "release": "2020-01-30",
+   "until": "2020-02-29",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 3,
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 4
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-01-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202001283rdSeasonCommemorativeSummon.html",
+     "archived": "20220726000000"
+    }
+   ],
+   "notes": "Three free 10+1s per player, each with a 4★+ guaranteed. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500071,
+   "family": "rainbow",
+   "name": "Leap Year 2020 All Rainbow 11 Summon",
+   "release": "2020-02-28",
+   "until": "2020-02-29",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 11
+   },
+   "pool_rule": {
+    "released_by": "2020-02-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200224LeapYear2020AllRainbowSummon.html",
+     "archived": "20221228000000"
+    }
+   ],
+   "notes": "One 11-summon, all 5★. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500072,
+   "family": "free_daily",
+   "name": "Defiance of Fate: Free Lapis Daily Summon",
+   "release": "2020-02-27",
+   "until": "2020-03-10",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "pool_rule": null,
+   "reward_pool": [
+    [
+     0.005,
+     "lapis:10000"
+    ],
+    [
+     0.01,
+     "lapis:5000"
+    ],
+    [
+     0.02,
+     "lapis:3000"
+    ],
+    [
+     0.065,
+     "lapis:1000"
+    ],
+    [
+     0.15,
+     "lapis:500"
+    ],
+    [
+     0.3,
+     "lapis:300"
+    ],
+    [
+     0.45,
+     "lapis:100"
+    ]
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200225DefianceofFateFreeDailyLapis%20Summon.html",
+     "archived": "20210308000000"
+    }
+   ],
+   "notes": "Community challenge reward: a free daily Lapis prize summon for two weeks. Prize odds weren't published (guessed); earned Lapis, so EXVIUS_LAPIS_MULTIPLIER applies. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500073,
+   "family": "free_daily",
+   "name": "Free Daily Summon (March 2020)",
+   "release": "2020-03-07",
+   "until": "2020-03-23",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    "moogle3"
+   ],
+   "pool_rule": {
+    "released_by": "2020-02-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200303FreeDailySummon.html",
+     "archived": "20211025000000"
+    }
+   ],
+   "notes": "One free summon a day on three long weekends (3/7-9, 3/14-16, 3/21-23) with a bonus 3★ Trust Moogle (random here). Served for the whole span. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500074,
+   "family": "revival",
+   "name": "FFX Revival Summon",
+   "release": "2020-03-12",
+   "until": "2020-03-24",
+   "lap_limit": 4,
+   "rates": [
+    0.1,
+    0.19,
+    0.71
+   ],
+   "tier_units": {
+    "5": [
+     "Tidus",
+     "Yuna",
+     "Lulu",
+     "Auron",
+     "Jecht"
+    ]
+   },
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 6,
+     "bonus": [
+      "rare",
+      "moogle50"
+     ],
+     "guarantee": {
+      "rarity": 4
+     }
+    },
+    {
+     "lapis": 3000,
+     "draws": 7,
+     "bonus": [
+      "rare",
+      "moogle50"
+     ],
+     "guarantee": {
+      "rarity": 4
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 8,
+     "bonus": [
+      "rare*3",
+      "moogle50"
+     ],
+     "guarantee": {
+      "units": [
+       "Tidus",
+       "Yuna",
+       "Lulu",
+       "Auron",
+       "Jecht"
+      ]
+     }
+    }
+   ],
+   "art": {
+    "main": [
+     "20220725073328",
+     "20200310FFXRevivalStepUp.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200310FFXRevivalSummon.html",
+     "archived": "20220725000000"
+    }
+   ],
+   "notes": "Three steps (2000 Lapis 5+1, 3000 6+1, 4000 6+2) with the 5★ rate at 10% and a 5★ pool of Tidus, Yuna, Lulu, Auron and Jecht; 4★+ guaranteed per step, a 5★ Trust Moogle (ALL 50%) and tickets each step; four rounds per player. Step 3's Summon Coin (trade for one of the five) is a guaranteed one of the five here. The purple tickets on the step image are taken to be Rare Summon Tickets."
+  },
+  {
+   "id": 9500075,
+   "family": "revival",
+   "name": "FFIX Revival Summon",
+   "release": "2020-04-02",
+   "until": "2020-04-14",
+   "lap_limit": 4,
+   "rates": [
+    0.1,
+    0.19,
+    0.71
+   ],
+   "featured": [
+    "Beatrix",
+    "Eiko"
+   ],
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 6,
+     "bonus": [
+      "rare",
+      "moogle50"
+     ],
+     "guarantee": {
+      "rarity": 4
+     }
+    },
+    {
+     "lapis": 3000,
+     "draws": 7,
+     "bonus": [
+      "rare",
+      "moogle50"
+     ],
+     "guarantee": {
+      "rarity": 4
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 8,
+     "bonus": [
+      "rare*3",
+      "moogle50"
+     ],
+     "guarantee": {
+      "units": [
+       "Beatrix",
+       "Eiko"
+      ]
+     }
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-04-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220720085736",
+     "20200331FFIXRevivalStepUp.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200331FFIXRevivalSummon2.html",
+     "archived": "20220720000000"
+    }
+   ],
+   "notes": "Same three steps as the FFX Revival, raised rates for Beatrix and Eiko; the step 3 coin is a guaranteed Beatrix or Eiko here. Four rounds per player."
+  },
+  {
+   "id": 9500076,
+   "family": "first_10_1",
+   "name": "WOTV FFBE Free 10+1 Summon",
+   "release": "2020-04-13",
+   "until": "2020-04-28",
+   "featured": [
+    "Gilgamesh (WOTV FFBE)"
+   ],
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "pool_rule": {
+    "released_by": "2020-04-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200402WOTVFFBECollabFree10plus1Summon.html",
+     "archived": "20211020000000"
+    }
+   ],
+   "notes": "A free 10+1, once per player, with a 5★ guaranteed; Gilgamesh (WOTV FFBE) in the pool. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500077,
+   "family": "revival",
+   "name": "Spring Awakening Summon",
+   "release": "2020-04-27",
+   "until": "2020-05-10",
+   "lap_limit": 4,
+   "rates": [
+    0.1,
+    0.19,
+    0.71
+   ],
+   "featured": [
+    "Elephim",
+    "Esther",
+    "Sylvie"
+   ],
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 6,
+     "bonus": [
+      "rare",
+      "moogle50"
+     ],
+     "guarantee": {
+      "rarity": 4
+     }
+    },
+    {
+     "lapis": 3000,
+     "draws": 7,
+     "bonus": [
+      "rare",
+      "moogle50"
+     ],
+     "guarantee": {
+      "rarity": 4
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 8,
+     "bonus": [
+      "rare*3",
+      "moogle50"
+     ],
+     "guarantee": {
+      "units": [
+       "Elephim",
+       "Esther",
+       "Sylvie"
+      ]
+     }
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-04-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221104022740",
+     "20200421SpringAwakeningSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200421SpringAwakeningSummon.html",
+     "archived": "20221104000000"
+    }
+   ],
+   "notes": "Revival-format step-up: raised rates for Elephim, Esther and Sylvie; the step 3 coin is a guaranteed one of the three here. Four rounds per player."
+  },
+  {
+   "id": 9500078,
+   "family": "rainbow",
+   "name": "May 2020 All Rainbow 11 Summon",
+   "release": "2020-05-25",
+   "until": "2020-05-31",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 11
+   },
+   "pool_rule": {
+    "released_by": "2020-05-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200519May2020AllRainbowSummon2.html",
+     "archived": "20220726000000"
+    }
+   ],
+   "notes": "One 11-summon, all 5★. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500079,
+   "family": "free_daily",
+   "name": "Free Daily Summon (June 2020)",
+   "release": "2020-06-06",
+   "until": "2020-06-29",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "bonus": [
+    "moogle3"
+   ],
+   "pool_rule": {
+    "released_by": "2020-05-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200602FreeDailySummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "One free summon a day on four long weekends (6/6 to 6/29) with a bonus 3★ Trust Moogle (random here). Served for the whole span. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500080,
+   "family": "premium",
+   "name": "4th Anniversary Premium 10+1 Summon I",
+   "release": "2020-07-23",
+   "until": "2020-08-05",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "min_rarity": 4,
+   "pool_rule": {
+    "released_by": "2020-07-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202007214thAnnivPremiumFree10plus1Summon1and2.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "A free 10+1 with every unit 4★ or above, once per player. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500081,
+   "family": "rainbow",
+   "name": "Next Era II All Rainbow 11 Summon",
+   "release": "2020-07-27",
+   "until": "2020-08-04",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 11
+   },
+   "bonus": [
+    "moogle100"
+   ],
+   "pool_rule": {
+    "released_by": "2020-07-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200721NextEraIIAllRainbow11Summon2.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "One 11-summon, all 5★, plus a 5★ Super Trust Moogle (ALL 100%). Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500082,
+   "family": "premium",
+   "name": "4th Anniversary Premium 10+1 Summon II",
+   "release": "2020-08-06",
+   "until": "2020-08-19",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "min_rarity": 4,
+   "pool_rule": {
+    "released_by": "2020-08-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202007214thAnnivPremiumFree10plus1Summon1and2.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Second free all-4★+ 10+1, once per player. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500083,
+   "family": "free_daily",
+   "name": "Free Daily Livestream Countdown Summon",
+   "release": "2020-08-13",
+   "until": "2020-08-16",
+   "cost": {
+    "free": true
+   },
+   "draws": 1,
+   "daily_limit": 1,
+   "min_rarity": 4,
+   "pool_rule": {
+    "released_by": "2020-08-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200811FreeDailyLivestreamCountdownSummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "One free summon a day, 4★ or above guaranteed. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500084,
+   "family": "free_daily",
+   "name": "4th Anniversary Livestream 4 Summon",
+   "release": "2020-08-20",
+   "until": "2020-09-13",
+   "cost": {
+    "free": true
+   },
+   "draws": 4,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2020-08-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202008184thAnnivLivestream4Summon.html",
+     "archived": "20211025000000"
+    }
+   ],
+   "notes": "A free 4-unit summon once a day across three livestream periods (8/20 to 9/13); the pool grew each period, here fixed at 8/20. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500085,
+   "family": "free_weekly",
+   "name": "Free Weekly 5★/NV Guaranteed 10+1 Summon",
+   "release": "2020-08-20",
+   "until": "2020-10-28",
+   "cost": {
+    "free": true
+   },
+   "draws": 11,
+   "weekly_limit": 1,
+   "guarantee": {
+    "rarity": 5
+   },
+   "pool_rule": {
+    "released_by": "2020-08-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200818Free10Weekly10plus1Summon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "A free 10+1 once a week for ten weeks, one 5★ or NV guaranteed. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500086,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2020-10-05",
+   "until": "2020-10-06",
+   "lap_limit": 2,
+   "rates": [
+    0.0125,
+    0.9875,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-10-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/09292020NeoRainbowRevolutionSummon.html",
+     "archived": "20210303022217"
+    }
+   ],
+   "notes": "Three steps (500 Lapis 1 unit, 1000 for 2, 3000 for 6), every unit 5★ or NV (NV 1.25%), a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; two rounds per player."
+  },
+  {
+   "id": 9500087,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2020-10-19",
+   "until": "2020-10-20",
+   "lap_limit": 2,
+   "rates": [
+    0.0125,
+    0.9875,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-10-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201013NeoRainbowRevolutionSummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Three steps (500 Lapis 1 unit, 1000 for 2, 3000 for 6), every unit 5★ or NV (NV 1.25%), a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; two rounds per player."
+  },
+  {
+   "id": 9500088,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2020-11-23",
+   "until": "2020-11-24",
+   "lap_limit": 2,
+   "rates": [
+    0.0125,
+    0.9875,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-11-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20230628191236",
+     "09292020NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201119NeoRainbowRevolutionSummon.html",
+     "archived": "20230628000000"
+    }
+   ],
+   "notes": "Three steps (500 Lapis 1 unit, 1000 for 2, 3000 for 6), every unit 5★ or NV (NV 1.25%), a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; two rounds per player."
+  },
+  {
+   "id": 9500089,
+   "family": "neo_value",
+   "name": "Neo Value Step-Up Summon",
+   "release": "2020-09-28",
+   "until": "2020-09-29",
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 5,
+     "rainbow": 0.0125
+    },
+    {
+     "lapis": 3000,
+     "draws": 7,
+     "rainbow": 0.015
+    },
+    {
+     "lapis": 4000,
+     "draws": 10,
+     "rainbow": 0.02
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "rainbow": 0.025,
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-09-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221012090321",
+     "NeoValueStepUpSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20200922NeoValueStepUpSummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Four steps (2000 Lapis 4+1, 3000 6+1, 4000 8+2, 5000 9+2) with the NV rate rising 1.25/1.5/2/2.5%, and a 1/10 NV Summon Ticket at step 4; one round per player."
+  },
+  {
+   "id": 9500090,
+   "family": "neo_value",
+   "name": "Neo Value Step-Up Summon",
+   "release": "2020-10-12",
+   "until": "2020-10-13",
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 5,
+     "rainbow": 0.0125
+    },
+    {
+     "lapis": 3000,
+     "draws": 7,
+     "rainbow": 0.015
+    },
+    {
+     "lapis": 4000,
+     "draws": 10,
+     "rainbow": 0.02
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "rainbow": 0.025,
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-10-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221012090321",
+     "NeoValueStepUpSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201006NeoValueStepUpSummonUpdated.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Four steps (2000 Lapis 4+1, 3000 6+1, 4000 8+2, 5000 9+2) with the NV rate rising 1.25/1.5/2/2.5%, and a 1/10 NV Summon Ticket at step 4; one round per player."
+  },
+  {
+   "id": 9500091,
+   "family": "neo_value",
+   "name": "Neo Value Step-Up Summon",
+   "release": "2020-11-09",
+   "until": "2020-11-10",
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 5,
+     "rainbow": 0.0125
+    },
+    {
+     "lapis": 3000,
+     "draws": 7,
+     "rainbow": 0.015
+    },
+    {
+     "lapis": 4000,
+     "draws": 10,
+     "rainbow": 0.02
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "rainbow": 0.025,
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-11-05",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221012090321",
+     "NeoValueStepUpSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201102NeoValueStepUpSummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Four steps (2000 Lapis 4+1, 3000 6+1, 4000 8+2, 5000 9+2) with the NV rate rising 1.25/1.5/2/2.5%, and a 1/10 NV Summon Ticket at step 4; one round per player."
+  },
+  {
+   "id": 9500092,
+   "family": "free_weekly",
+   "name": "Player's Choice: Free Weekly 10 Summon",
+   "release": "2020-10-08",
+   "until": "2020-11-03",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "weekly_limit": 1,
+   "pool_rule": {
+    "released_by": "2020-10-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201006PlayersChoiceFreeWeeklySummon.html",
+     "archived": "20221028000000"
+    }
+   ],
+   "notes": "The 4th Anniversary Player's Voice winner: a free 10-unit summon once a week for four weeks (5★ 8.75%, NV 1.25%). Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500093,
+   "family": "free_daily",
+   "name": "KHDR Collaboration: Free Daily 10 Summons",
+   "release": "2020-11-26",
+   "until": "2020-12-08",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2020-11-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201124KHDRFreeDaily10Summon.html",
+     "archived": "20211020000000"
+    }
+   ],
+   "notes": "A free 10-unit summon once a day. Global's pool also held the KINGDOM HEARTS collaboration units; here they're featured only on the KH banners. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500094,
+   "family": "step_up",
+   "name": "Neo Vision Cyber Monday Step Up Summon",
+   "release": "2020-11-30",
+   "until": "2020-12-01",
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5
+     },
+     "bonus": [
+      "super_moogle_ex*10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      "super_moogle_ex*10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      "super_moogle_ex*10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*20"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7
+     }
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-11-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201126CyberMondayStepUpSummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Five steps, an NV guaranteed at step 5, Super Trust Moogle Exchange Tickets x10 at steps 1-3 and x20 at step 4; one round per player. Its step image is lost: prices and the 5★/NV guarantees per step are taken from the Holiday Spectacular step-up a month later (same format). Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500095,
+   "family": "free_daily",
+   "name": "Year End Celebration: Daily Free 10 Summon",
+   "release": "2020-12-28",
+   "until": "2021-01-05",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "daily_limit": 1,
+   "pool_rule": {
+    "released_by": "2020-12-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "2",
+     "20201222YearEndFreeDailySummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201222YearEndFreeDailySummon.html",
+     "archived": "20210307000000"
+    }
+   ],
+   "notes": "A free 10-unit summon once a day."
+  },
+  {
+   "id": 9500096,
+   "family": "step_up",
+   "name": "Holiday Spectacular: NV Step Up Summon",
+   "release": "2020-12-31",
+   "until": "2021-01-05",
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5
+     },
+     "bonus": [
+      "super_moogle_ex*10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      "super_moogle_ex*10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      "super_moogle_ex*10"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*20"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7
+     }
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2020-12-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220804225428",
+     "20201222HolidaySpectacularStepUpSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20201222HolidaySpectacularStepUpSummon.html",
+     "archived": "20210303000000"
+    }
+   ],
+   "notes": "Five steps of 5000 Lapis (10+1, 9+2, 9+2, 8+3, 10+1) with 1/2/2/3 5★-or-NV guaranteed, a guaranteed NV at step 5, Super Trust Moogle Exchange Tickets x10 at steps 1-3 and x20 at step 4; one round per player."
   }
  ]
 }
