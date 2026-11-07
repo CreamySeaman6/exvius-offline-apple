@@ -45,6 +45,17 @@ class ExpeditionActions(unittest.TestCase):
         fields = {} if selector is None else {'0B8RL54c': selector}
         return self.call('sgExpdQuestRefreshRequest', actions.QUEST, **fields)
 
+    def regular(self):
+        """The list as it stands once the tutorial expeditions are done."""
+        now = int(actions.time.time())
+        self.player.data['exvius_expedition'] = {'quests': {}, 'tutorial_done': True, 'offers': actions.OFFERS_VERSION,
+                                                 'next_free': actions._next_reset(now)}
+        return self.call('sgExpdQuestInfoRequest')
+
+    def kinds(self, out):
+        masters = _mst('F_EXPEDITION_MST.ndjson', 'Ko86047K')
+        return [actions._kind(masters[q['Ko86047K']]) for q in out[actions.QUEST]]
+
     def party(self):
         return ','.join(f"{u['instance_id']}:{u['master_id']}" for u in self.player.data['roster'])
 
@@ -69,8 +80,10 @@ class ExpeditionActions(unittest.TestCase):
 
     def test_info_initializes_once_and_reopens_saved_jobs(self):
         out = self.call('sgExpdQuestInfoRequest')
-        self.assertEqual(len(out[actions.QUEST]), int(actions._define('EXPEDITION_MAX_AVAILABLE')))
-        key = out[actions.QUEST][0]['q3D53k94']
+        kinds = self.kinds(out)
+        self.assertEqual(kinds.count(actions.TUTORIAL), 1)
+        self.assertEqual(kinds.count(actions.REGULAR), 0)
+        key = out[actions.QUEST][kinds.index(actions.TUTORIAL)]['q3D53k94']
         self.start(key)
         saved = deepcopy(self.player.data)
         self.player = player_state.PlayerState(deepcopy(saved))
@@ -84,11 +97,13 @@ class ExpeditionActions(unittest.TestCase):
         self.assertIn('nUM2AENx', out)
 
     def test_expedition_lifecycle_costs_snapshots_and_reservations(self):
-        out = self.refresh()
-        self.assertEqual(len(out[actions.QUEST]), int(actions._define('EXPEDITION_MAX_AVAILABLE')))
-        key = out[actions.QUEST][0]['q3D53k94']
-        self.assertNotEqual(key, out[actions.QUEST][0]['Ko86047K'])
-        row = _mst('F_EXPEDITION_MST.ndjson', 'Ko86047K')[out[actions.QUEST][0]['Ko86047K']]
+        out = self.regular()
+        kinds = self.kinds(out)
+        self.assertEqual(kinds.count(actions.REGULAR), int(actions._define('EXPEDITION_MAX_AVAILABLE')))
+        first = out[actions.QUEST][kinds.index(actions.REGULAR)]
+        key = first['q3D53k94']
+        self.assertNotEqual(key, first['Ko86047K'])
+        row = _mst('F_EXPEDITION_MST.ndjson', 'Ko86047K')[first['Ko86047K']]
         diff = _mst('F_EXPEDITION_DIFFICULTY_MST.ndjson', 'Up7229W2')[row['Up7229W2']]
         gil = self.player.currencies['gil']
         out = self.start(key)
@@ -128,8 +143,8 @@ class ExpeditionActions(unittest.TestCase):
         self.assertLess(self.player.currencies['gil'], paid)
 
     def test_refresh_prices_free_timer_and_running_preservation(self):
-        out = self.refresh()
-        key = out[actions.QUEST][0]['q3D53k94']
+        out = self.regular()
+        key = out[actions.QUEST][self.kinds(out).index(actions.REGULAR)]['q3D53k94']
         self.start(key)
         next_free = self.player.data['exvius_expedition']['next_free']
         before = deepcopy(self.player.data)
@@ -150,10 +165,55 @@ class ExpeditionActions(unittest.TestCase):
         self.refresh('50:100')
         self.assertEqual(self.player.data, before)
 
+    def test_tutorial_chain_then_regular_offers_and_daily_extras(self):
+        masters = _mst('F_EXPEDITION_MST.ndjson', 'Ko86047K')
+        out = self.call('sgExpdQuestInfoRequest')
+        seen = []
+        for _ in range(3):
+            tutorial = [q for q in out[actions.QUEST] if actions._kind(masters[q['Ko86047K']]) == actions.TUTORIAL]
+            self.assertEqual(len(tutorial), 1, 'one tutorial expedition at a time')
+            self.assertEqual(self.kinds(out).count(actions.REGULAR), 0)
+            self.assertEqual(self.refresh()[actions.QUEST], out[actions.QUEST], 'no refresh during the tutorial')
+            key = tutorial[0]['q3D53k94']
+            seen.append(masters[tutorial[0]['Ko86047K']]['G4L0YIB2'])
+            self.start(key)
+            with patch.object(actions.time, 'time', return_value=1800000000 + 11):
+                out = self.call('sgExpdEndRequest', actions.QUEST, Ko86047K=key, hKcId7sN='100.0')
+            out = self.call('sgExpdQuestInfoRequest')
+        self.assertEqual(seen, ['Relic Hunting Craze I', 'Relic Hunting Craze II', 'Relic Hunting Craze III'])
+        kinds = self.kinds(out)
+        self.assertEqual(kinds.count(actions.TUTORIAL), 0)
+        self.assertEqual(kinds.count(actions.REGULAR), int(actions._define('EXPEDITION_MAX_AVAILABLE')))
+        # 1800000000 is Friday 2027-01-15 08:00 UTC: orange/white and green/black supercites, and the Moogle Cave.
+        names = {masters[q['Ko86047K']]['G4L0YIB2'] for q in out[actions.QUEST]}
+        self.assertIn('Orange and White Supercite', names)
+        self.assertIn('Green and Black Supercite', names)
+        self.assertNotIn('Red and Blue Supercite', names)
+        self.assertEqual(kinds.count(actions.MOOGLE), 1)
+        # The free refresh comes back at the next daily reset (04:00 UTC), and deals new regular offers.
+        self.assertEqual(int(out['nUM2AENx'][0]['NB9uKefC']), actions._next_reset(1800000000))
+        with patch.object(actions.time, 'time', return_value=actions._next_reset(1800000000)):
+            out = self.refresh()
+        self.assertEqual(self.kinds(out).count(actions.REGULAR), int(actions._define('EXPEDITION_MAX_AVAILABLE')))
+
+    def test_old_sequential_list_is_dealt_again(self):
+        self.player.data['exvius_expedition'] = {'quests': {
+            'offline-1': {'q3D53k94': 'offline-1', 'Ko86047K': '2', '3JND4wjr': '1'},
+            'offline-2': {'q3D53k94': 'offline-2', 'Ko86047K': '3', '3JND4wjr': '1'},
+            'offline-4': {'q3D53k94': 'offline-4', 'Ko86047K': '2', '3JND4wjr': '1'}},
+            'cursor': 3, 'serial': 4, 'next_free': 1800000000 + 80000}
+        out = self.call('sgExpdQuestInfoRequest')
+        ids = [q['Ko86047K'] for q in out[actions.QUEST]]
+        self.assertEqual(sorted(i for i in ids if i in ('1', '2', '3')), ['2', '3'], 'repeated tutorial offer dropped')
+        self.player.data['exvius_expedition']['quests'] = {}
+        self.player.data['exvius_expedition'].pop('offers')
+        out = self.call('sgExpdQuestInfoRequest')
+        self.assertEqual(self.kinds(out).count(actions.REGULAR), int(actions._define('EXPEDITION_MAX_AVAILABLE')))
+
     def test_start_optional_costs_and_atomic_insufficient_funds(self):
         row = next(r for r in _mst('F_EXPEDITION_MST.ndjson', 'Ko86047K').values()
                    if r.get('sO308L0M') and ',' not in r['sO308L0M'])
-        self.refresh()
+        self.regular()
         block = self.player.data['exvius_expedition']
         key = next(iter(block['quests']))
         block['quests'][key]['Ko86047K'] = str(row['Ko86047K'])
@@ -310,7 +370,7 @@ class ExpeditionActions(unittest.TestCase):
         self.assertEqual(unit['equipment'], saved_gear)
 
     def test_frozen_and_malformed_actions_do_not_mutate(self):
-        self.refresh()
+        self.regular()
         key = next(iter(self.player.data['exvius_expedition']['quests']))
         self.player.mode = 'frozen'
         before = deepcopy(self.player.data)

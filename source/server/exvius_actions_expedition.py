@@ -25,7 +25,8 @@ from ffbe_state import State, _note
 from ffbe_battle import _switch_container
 from player_state import GRANT_BAG_PROJECTED, STORAGE_CURRENCY, switch_position, unit_mst
 
-AUTHORED_REFRESH_SECONDS = 24 * 60 * 60  # Offline free-offer cadence, not a recovered price.
+DAY_ANCHOR = 14400                       # The offline daily reset (04:00 UTC), as for attempt limits.
+OFFERS_VERSION = 2                       # Saves offered under the older sequential scheme are re-dealt once.
 AUTHORED_PARTY_LIMIT = 5                 # Conservative offline expedition selection limit.
 
 QUEST = "67l03PW2"
@@ -155,13 +156,142 @@ def _reward_csv(rewards):
     return ','.join(f"{r['kind']}:{r['id']}:{r['count']}" for r in rewards)
 
 
+# --- offers --------------------------------------------------------------------------------------------
+# What the list holds, as in Global (wiki "Expedition" and "Basic Information"):
+# - the tutorial chain first: Relic Hunting Craze I, then II, then III (`sZ4964o7` names the next), 10 s each;
+# - then EXPEDITION_MAX_AVAILABLE (3) offers dealt from the regular expeditions (`sx4kyW0i` 2: ranks D to S,
+#   3 to 24 hours), replaced by the refresh button: free once a day at the daily reset, or for lapis or an
+#   Ancient Coin;
+# - alongside them, outside that count: the supercite expeditions of the day (`sx4kyW0i` 1; `5BsSnrD4` lists
+#   the weekdays, 1 = Monday: red/blue and violet/yellow Monday to Thursday, orange/white and green/black Friday
+#   to Monday) and the Moogle Cave (`sx4kyW0i` 3, three a day), within their `Tx6MGkJ1`..`2x2W5439` dates.
+# The retired backend's deal weights were not recovered: regular offers are dealt uniformly at random among
+# the regular expeditions not already on the list.
+TUTORIAL, REGULAR, SUPERCITE, MOOGLE = "0", "2", "1", "3"
+
+
+def _kind(row):
+    return str((row or {}).get("sx4kyW0i") or "")
+
+
+def _today():
+    return (int(time.time()) - DAY_ANCHOR) // 86400
+
+
+def _next_reset(now):
+    return ((now - DAY_ANCHOR) // 86400 + 1) * 86400 + DAY_ANCHOR
+
+
+def _in_dates(row, now):
+    stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(now))
+    start, end = str(row.get("Tx6MGkJ1") or ""), str(row.get("2x2W5439") or "")
+    return (not start or start <= stamp) and (not end or stamp <= end)
+
+
+def _fixed_ids(masters, now):
+    """Supercite expeditions of today and the Moogle Cave."""
+    weekday = str(time.gmtime(now - DAY_ANCHOR).tm_wday + 1)
+    out = []
+    for mid, row in masters.items():
+        if _kind(row) == MOOGLE and _in_dates(row, now):
+            out.append(mid)
+        elif _kind(row) == SUPERCITE and _in_dates(row, now) and \
+                weekday in str(row.get("5BsSnrD4") or "").split(","):
+            out.append(mid)
+    return sorted(out, key=int)
+
+
+def _tutorial_start(masters):
+    tutorial = {m for m, r in masters.items() if _kind(r) == TUTORIAL}
+    chained = {str(r.get("sZ4964o7")) for m, r in masters.items() if m in tutorial}
+    return sorted(tutorial - chained, key=int)
+
+
+def _offer(block, mid):
+    block["serial"] = _int(block.get("serial")) + 1
+    key = "offline-" + str(block["serial"])
+    block.setdefault("quests", {})[key] = {"q3D53k94": key, "Ko86047K": str(mid), "7mA422N6": "", "Tx6MGkJ1": "0",
+                                           "2CL6pZmE": "0", "3JND4wjr": "1", "Sf2m961q": "0", "mqbn4Gdm": "0",
+                                           "O82h92n5": "0", "2A6fYiEC": ""}
+
+
+def _tutorial_pending(block, masters):
+    if block.get("tutorial_done"):
+        return False
+    return any(_kind(masters.get(str(q.get("Ko86047K")))) == TUTORIAL for q in block.get("quests", {}).values())
+
+
+def _deal(block, masters, count):
+    """Replace the available regular offers with `count` new ones."""
+    quests = block.setdefault("quests", {})
+    for key in [k for k, q in quests.items() if str(q.get("3JND4wjr")) != "2"
+                and _kind(masters.get(str(q.get("Ko86047K")))) == REGULAR]:
+        del quests[key]
+    listed = {str(q.get("Ko86047K")) for q in quests.values()}
+    pool = sorted((m for m, r in masters.items() if _kind(r) == REGULAR and m not in listed), key=int)
+    rng = secrets.SystemRandom()
+    for mid in rng.sample(pool, min(count, len(pool))):
+        _offer(block, mid)
+
+
+def _tidy(block, masters, now):
+    """Keep the fixed offers in step with the day, and drop repeated available offers."""
+    quests = block.setdefault("quests", {})
+    seen = set()
+    for key in sorted(quests, key=lambda k: _int(k.rsplit("-", 1)[-1])):
+        q = quests[key]
+        mid = str(q.get("Ko86047K"))
+        if str(q.get("3JND4wjr")) == "2":
+            continue
+        if mid not in masters or mid in seen:
+            del quests[key]
+            continue
+        seen.add(mid)
+    fixed = _fixed_ids(masters, now)
+    for key in [k for k, q in quests.items() if str(q.get("3JND4wjr")) != "2"
+                and _kind(masters.get(str(q.get("Ko86047K")))) in (SUPERCITE, MOOGLE)
+                and str(q.get("Ko86047K")) not in fixed]:
+        del quests[key]
+    listed = {str(q.get("Ko86047K")) for q in quests.values()}
+    for mid in fixed:
+        if mid not in listed:
+            _offer(block, mid)
+
+
+def _settle_offers(block, masters, now, available):
+    """Seed a new list, or bring an existing one up to date. True when the block changed."""
+    before = deepcopy(block)
+    if "quests" not in block:
+        block["quests"] = {}
+        for mid in _tutorial_start(masters):
+            _offer(block, mid)
+        if not block["quests"]:
+            block["tutorial_done"] = True
+        block["next_free"] = _next_reset(now)
+    elif block.get("offers") != OFFERS_VERSION:
+        # Lists dealt by the older scheme (ids in order, so the tutorial chain three at once): keep running
+        # jobs, keep the tutorial going if it is under way, and deal regular offers once it is done.
+        if not _tutorial_pending(block, masters):
+            block["tutorial_done"] = True
+        if block.get("tutorial_done"):
+            _deal(block, masters, available)
+        block["next_free"] = min(_int(block.get("next_free")) or _next_reset(now), _next_reset(now))
+    block["offers"] = OFFERS_VERSION
+    _tidy(block, masters, now)
+    if block.get("tutorial_done") and not any(
+            _kind(masters.get(str(q.get("Ko86047K")))) == REGULAR for q in block["quests"].values()):
+        _deal(block, masters, available)
+    return block != before
+
+
 def expedition_info(spec, req):
     """Open/reopen the native Expedition list with durable jobs and milestones."""
-    block = _store('expedition')
-    # The info request has no payload. Seed the first offers once, preserving
-    # dispatched jobs and paid refresh timers on every subsequent reopen.
-    if 'quests' not in block and State.player.mode != 'frozen':
-        return expedition_refresh(spec, {QUEST: []})
+    masters = _mst("F_EXPEDITION_MST.ndjson", "Ko86047K")
+    available = _int(_define("EXPEDITION_MAX_AVAILABLE"))
+    if masters and available > 0 and State.player.mode != 'frozen':
+        block = deepcopy(_store('expedition'))
+        if _settle_offers(block, masters, int(time.time()), available):
+            _put('expedition', block)
     return expedition_refresh(spec, {})
 
 
@@ -189,25 +319,17 @@ def expedition_refresh(spec, req):
     available = _int(_define("EXPEDITION_MAX_AVAILABLE"))
     if not masters or available <= 0:
         return _refuse(out, "missing expedition offer definitions; nothing charged")
+    _settle_offers(block, masters, now, available)
+    if _tutorial_pending(block, masters):
+        return _refuse(out, "the tutorial expeditions come first; nothing charged")
     if payment:
         paid = (State.player.spend_lapis(payment["count"]) if payment["kind"] == 50 else
                 State.player.spend_item(payment["kind"], payment["id"], payment["count"]))
         if not paid:
             return _refuse(out, "insufficient refresh payment")
-    ongoing = {k: v for k, v in block.get("quests", {}).items() if str(v.get("3JND4wjr")) == "2"}
-    ids = sorted(masters, key=int)
-    cursor = _int(block.get("cursor"))
-    serial = _int(block.get("serial"))
-    for i in range(min(available, len(ids))):
-        serial += 1
-        key = "offline-" + str(serial)
-        ongoing[key] = {"q3D53k94": key, "Ko86047K": ids[(cursor + i) % len(ids)],
-                        "7mA422N6": "", "Tx6MGkJ1": "0", "2CL6pZmE": "0",
-                        "3JND4wjr": "1", "Sf2m961q": "0", "mqbn4Gdm": "0",
-                        "O82h92n5": "0", "2A6fYiEC": ""}
-    block.update(quests=ongoing, cursor=(cursor + available) % len(ids), serial=serial)
+    _deal(block, masters, available)
     if not selector:
-        block["next_free"] = now + AUTHORED_REFRESH_SECONDS
+        block["next_free"] = _next_reset(now)
     _put("expedition", block)
     out = _quest_reply(_refresh(spec))
     out["nUM2AENx"] = [{"NB9uKefC": str(block.get("next_free", 0))}]
@@ -364,6 +486,11 @@ def expedition_end(spec, req):
     block.setdefault('receipts', {})[key] = receipt
     del block['quests'][key]
     next_id = str(row.get('sZ4964o7') or '0')
+    if _kind(row) == TUTORIAL and next_id == '0':
+        # The last tutorial expedition opens the regular list.
+        block['tutorial_done'] = True
+        masters = _mst('F_EXPEDITION_MST.ndjson', 'Ko86047K')
+        _deal(block, masters, _int(_define('EXPEDITION_MAX_AVAILABLE')))
     if next_id != '0' or trust:
         next_id = str(row['Ko86047K']) if trust else next_id
         block['serial'] = _int(block.get('serial')) + 1

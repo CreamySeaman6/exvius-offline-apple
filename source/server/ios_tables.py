@@ -35,7 +35,10 @@ the rewrites keep every bank's size.
 4. VORTEX BANNERS. `ios_art.py` rebuilds the English Vortex banner pack; this module serves it and raises its
 English version (`F_RESOURCE_VERSION_MST_LOCALIZE`) and size (`F_RESOURCE_CHECKSUM_MST`).
 
-5. ROWS WITH NO FILE. `F_RESOURCE_MST` rows with no version in any language are left out (`drop_unversioned`),
+5. MISSING STORY LINES. Three story scene packs are served with lines their scripts name but their text files
+lack (`story_text.py`); `F_RESOURCE_MAP_VERSION_MST_LOCALIZE` gives those packs new versions.
+
+6. ROWS WITH NO FILE. `F_RESOURCE_MST` rows with no version in any language are left out (`drop_unversioned`),
 so the phone stops asking to download 0 KB on every start.
 """
 from __future__ import annotations
@@ -131,7 +134,9 @@ def table_bump(spec, *roots) -> int:
         art_sig = _art_signature(*roots)
         return sound_bump() + (2000 + zlib.crc32(art_sig.encode()) % 1000 if art_sig else 0)
     if spec == RESOURCE_MAP_VERSION:
-        return sound_bump()
+        import story_text
+        # Kept above the sound-only bump (1000-1999) that phones may already hold.
+        return sound_bump() + (3000 + story_text.bump() if story_text.enabled() else 0)
     if spec == RESOURCE_CHECKSUM:
         return _bump(_art_signature(*roots))
     return 0
@@ -151,8 +156,8 @@ def _path(token: str):
 
 
 def wants(rel: str) -> bool:
-    import ios_texts, ios_art
-    return _which(rel) is not None or ios_texts.wants(rel) or ios_art.wants(rel)
+    import ios_texts, ios_art, story_text
+    return _which(rel) is not None or ios_texts.wants(rel) or ios_art.wants(rel) or story_text.wants(rel)
 
 
 def _which(rel: str):
@@ -262,9 +267,11 @@ def patch_versions(raw: bytes, spec, ids: set[str], bump: int, sets=None,
 
 def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
     """(table bytes, CDN log note) when `rel` is one of the tables served patched, else (None, None)."""
-    import ios_texts, ios_art
+    import ios_texts, ios_art, story_text
     if ios_texts.wants(rel):
         return ios_texts.serve(rel, *roots)
+    if story_text.wants(rel):
+        return story_text.serve(rel, *roots)
     if ios_art.wants(rel):
         built = art(*roots)
         m = re.search(r"Ver(\d+)_", os.path.basename(rel))
@@ -296,14 +303,24 @@ def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
         sets = {}
         if spec == RESOURCE_VERSION and built:
             sets = {ios_art.RESOURCE_ID: {ios_art.VERSION_FIELD: built[1]}}
+        raw = open(src, "rb").read()
+        if spec == RESOURCE_MAP_VERSION:
+            import story_text
+            wanted = story_text.resource_ids()
+            shipped = {str(row.get("Nnb20keZ")): str(row.get(VERSION_FIELD, "")) for _, row, _ in
+                       _rows(raw, spec[2]) if str(row.get("Nnb20keZ")) in wanted} if wanted else {}
+            sets.update(story_text.version_sets(shipped))
         base, id_field = _VERSIONS[spec]
         base_src = source_table(*roots, token=base[1])
         if not base_src:
             return None, f"{spec[0]} not patched ({base[0]} not found)"
         ids = sound_ids(open(base_src, "rb").read(), base, id_field)
         bump = sound_bump()
-        data, changed = patch_versions(open(src, "rb").read(), spec, ids, bump, sets)
+        data, changed = patch_versions(raw, spec, ids, bump, sets)
+        art_note = spec == RESOURCE_VERSION and built
         return data, (f"{os.path.basename(src)}, {changed} row(s): sound versions +{bump}"
-                      + (f", Vortex banner pack -> Ver{built[1]}" if sets else ""))
+                      + (f", Vortex banner pack -> Ver{built[1]}" if art_note else "")
+                      + (f", {len(sets)} story pack(s) with missing lines" if spec == RESOURCE_MAP_VERSION and sets
+                         else ""))
     except Exception as exc:  # noqa: BLE001 -- fall back to the shipped table
         return None, f"{spec[0]} patch failed ({exc})"
