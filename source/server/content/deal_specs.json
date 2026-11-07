@@ -7394,6 +7394,465 @@
     }
    ],
    "notes": "This run's page isn't archived: dates follow the usual pattern (Monday-Tuesday after the news), the rest as the other runs. Three steps (500/1000/3000 Lapis for 1/2/6 units), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (the era's NV rate; the page doesn't give it). Art is the 2020 banner."
+  },
+  {
+   "id": 9503001,
+   "family": "neo_value",
+   "name": "Black Friday Neo Rainbow Value Summon",
+   "release": "2021-11-25",
+   "until": "2021-12-01",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123101818",
+     "20211123BlackFridayNeoRainbowSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211123BlackFridayNeoRainbowSummon.html",
+     "archived": "20211123101628"
+    }
+   ],
+   "notes": "One 10+5 summon: five NV units and ten 5★/NV units guaranteed (NV share 3%), plus two Transcension Pearls. Global sold it for real money: stand-in 10,000 Lapis, once per player."
+  },
+  {
+   "id": 9503002,
+   "family": "neo_value",
+   "name": "New Year Neo Rainbow Value Summon",
+   "release": "2022-01-06",
+   "until": "2022-01-12",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220104131621",
+     "NewYearNeoRainbowValueSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220104NewYearNeoRainbowValueSummon.html",
+     "archived": "20220104131457"
+    }
+   ],
+   "notes": "One 10+5 summon: five NV units and ten 5★/NV units guaranteed (NV share 3%), plus two Transcension Pearls. Global sold it for real money: stand-in 10,000 Lapis, once per player."
+  },
+  {
+   "id": 9503003,
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-10-17",
+   "until": "2022-10-19",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-10-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221013K9NeoRainbowRevolutionSummon.html",
+     "archived": "20221018101651"
+    }
+   ],
+   "notes": "Three steps (500/1000/3000 Lapis for 1/2/6 units, prices as the other runs; the page doesn't print them), every unit 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player. NV share 3% (assumed). Art is the Jan 2022 banner, as the page used."
+  },
+  {
+   "id": 9503010,
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2021-09-06",
+   "until": "2021-09-08",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210902GuaranteedNVStepUpSummon.html",
+     "archived": "20211025205402"
+    }
+   ],
+   "notes": "Two steps, 2 rounds per player: step 1 4000 Lapis for 8+3 with three 5★/NV guaranteed (NV 3%) and 50 Super Trust Moogle Exchange Tickets; step 2 6000 Lapis for 10+1, ten 5★/NV plus one NV guaranteed, and a Transcension Pearl. Prices from the Nov 2021 banner image. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503011,
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2021-09-20",
+   "until": "2021-09-22",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210916GuaranteedNVStepUpSummon.html",
+     "archived": "20211025191721"
+    }
+   ],
+   "notes": "Two steps, 2 rounds per player: step 1 4000 Lapis for 8+3 with three 5★/NV guaranteed (NV 3%) and 50 Super Trust Moogle Exchange Tickets; step 2 6000 Lapis for 10+1, ten 5★/NV plus one NV guaranteed, and a Transcension Pearl. Prices from the Nov 2021 banner image. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503012,
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2021-11-01",
+   "until": "2021-11-03",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-28",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211028GuaranteedNVStepUpSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates follow the other runs (Monday-Wednesday after the news), the rest as the other runs. Two steps, 2 rounds per player: step 1 4000 Lapis for 8+3 with three 5★/NV guaranteed (NV 3%) and 50 Super Trust Moogle Exchange Tickets; step 2 6000 Lapis for 10+1, ten 5★/NV plus one NV guaranteed, and a Transcension Pearl. Prices from the Nov 2021 banner image. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503013,
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2021-11-29",
+   "until": "2021-12-01",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211125NVGuaranteedStepUpSummon.html",
+     "archived": "20211123142607"
+    }
+   ],
+   "notes": "Two steps, 2 rounds per player: step 1 4000 Lapis for 8+3 with three 5★/NV guaranteed (NV 3%) and 50 Super Trust Moogle Exchange Tickets; step 2 6000 Lapis for 10+1, ten 5★/NV plus one NV guaranteed, and a Transcension Pearl. Prices from the Nov 2021 banner image.",
+   "art": {
+    "main": [
+     "20211123155231",
+     "20211125NVGuaranteedStepUpSummon.png"
+    ]
+   }
+  },
+  {
+   "id": 9503014,
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2021-12-27",
+   "until": "2021-12-29",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211221NVGuaranteedStepUpSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates are a guess (Monday-Wednesday the week after the news), the rest as the other runs. Two steps, 2 rounds per player: step 1 4000 Lapis for 8+3 with three 5★/NV guaranteed (NV 3%) and 50 Super Trust Moogle Exchange Tickets; step 2 6000 Lapis for 10+1, ten 5★/NV plus one NV guaranteed, and a Transcension Pearl. Prices from the Nov 2021 banner image. Banner art not archived: titled stand-in."
   }
  ]
 }

@@ -25,7 +25,7 @@ Spec fields (per banner):
   guarantee     {"rarity": 5} | {"units": [names]} | {"unit": name}
   bonus         reward tokens paid with every pull (see REWARDS)
   bonus_choice  [[weight, [tokens]], ...]: one of these paid with every pull
-  steps         [{lapis|free|item, draws, guarantee, bonus, rainbow, featured_x}] for step-ups
+  steps         [{lapis|free|item, draws, guarantee, slots, bonus, rainbow, featured_x}] for step-ups
   lap_limit / purchase_limit / daily_limit
   art           {"main": [capture, file], "detail": [capture, file]}: the list (640x160) and detail (640x392)
                 news images by Wayback capture timestamp (or [_, full url]); a missing one gets a titled stand-in
@@ -34,7 +34,7 @@ Spec fields (per banner):
 
 Reward tokens: lapis:<n>, kmm (King Metal Minituar), <token>*<count>, moogle1/moogle3/moogle5/moogle10/moogle20 (Trust Moogles giving 1/5/5/10/20% to all), ticket5_10,
 ticket5_30, ticket5_50 (5★ summon tickets), select5 (5★ Select Summon Ticket), rare (Rare Summon Ticket),
-guar4/guar5 (Guaranteed 4★+/5★ tickets), super_moogle_ex (Super Trust Moogle Exchange Ticket), unit:<name>,
+guar4/guar5 (Guaranteed 4★+/5★ tickets), pearl (Transcension Pearl), super_moogle_ex (Super Trust Moogle Exchange Ticket), unit:<name>,
 or a raw reward dict.
 """
 from __future__ import annotations
@@ -68,6 +68,7 @@ REWARDS = {
     'guar5': {'kind': 23, 'id': 80, 'count': 1},
     'super_moogle_ex': {'kind': 20, 'id': 106211340, 'count': 1},
     'kmm': {'kind': 10, 'id': 900020401, 'count': 1},
+    'pearl': {'kind': 20, 'id': 293000100, 'count': 1},
 }
 
 # Global's summon rates by period (from the community calendar's rate sources, gacha_community.json).
@@ -294,6 +295,8 @@ def build(spec: dict, units: Units) -> dict:
             g = guarantee(step.get('guarantee'), units, pool)
             if g:
                 row['guarantee'] = g
+            if step.get('slots'):
+                row['guarantee_slots'] = slots(step['slots'], row.get('pool') or pool)
             if step.get('bonus'):
                 row['bonus_rewards'] = [reward(t, units) for t in step['bonus']]
             if step.get('bonus_choice'):
