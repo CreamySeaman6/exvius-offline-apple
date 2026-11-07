@@ -308,6 +308,7 @@ Your own hand-picked companions still come from `source/server/friends.yaml`.
 | --- | --- |
 | `EXVIUS_EARLY_RESOURCES` | Resource packs downloaded up front instead of in the background. The default, `resources_common.cpk,resources.cpk`, is what the first battle needs (about 50 MB). `all` downloads everything up front in one long download; `0` turns it off. |
 | `EXVIUS_IOS_DROP_UNVERSIONED` | `1` (default) leaves out of the resource list the seven entries that have no file to download (`character.cpk` and six movies). Without this the phone asks "Download while playing tutorial?" with 0 KB on every start. `0` serves the list as shipped. |
+| `EXVIUS_IOS_QUEST_REWARDS` | `1` (default) lists each town quest's rewards when you take it on, instead of "???" until it's done. On the iPhone, the "???" version of the quest screen freezes or closes the game (Port City Lodin's side quests, 2026-11-07). `0` keeps the "???" (the phone keeps the patched list until the table changes again). |
 | `EXVIUS_IOS_HCA_PLAIN` | `1` (default) removes the sound banks' HCA cipher, which is what makes the music play cleanly on the iPhone. |
 | `EXVIUS_IOS_SOUND_REFETCH` | Set it to any new value to make the phone download every sound bank again. |
 | `EXVIUS_IOS_TEXT` | `1` (default) adds the English names the stock app is missing, such as the Shop's local bundles and the special summon tickets. `0` turns it off. |

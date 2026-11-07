@@ -42,6 +42,10 @@ phones were given while it was on, so they return to the shipped packs.
 
 6. ROWS WITH NO FILE. `F_RESOURCE_MST` rows with no version in any language are left out (`drop_unversioned`),
 so the phone stops asking to download 0 KB on every start.
+
+7. HIDDEN QUEST REWARDS (2026-11-07). Taking on a town quest whose reward is hidden ("???" until it's done)
+freezes or closes the iPhone app on the quest screen. `F_QUEST_MST` is served with every reward marked shown
+(`quest_rewards_shown`, `EXVIUS_IOS_QUEST_REWARDS`).
 """
 from __future__ import annotations
 
@@ -57,6 +61,8 @@ RESOURCE_MAP = ("F_RESOURCE_MAP_MST", "B7LnP2TH", "U0Vd7AfQ")
 RESOURCE_VERSION = ("F_RESOURCE_VERSION_MST_LOCALIZE", "A1L1GlaQ", "JchlFPWK")
 RESOURCE_MAP_VERSION = ("F_RESOURCE_MAP_VERSION_MST_LOCALIZE", "YIgCpDKW", "geHlpoos")
 RESOURCE_CHECKSUM = ("F_RESOURCE_CHECKSUM_MST", "9Hwur83G", "92SkMNAx")
+QUEST = ("F_QUEST_MST", "2Px75LpY", "20mEeKo3")
+QUEST_REWARD_FIELD = "dX6cor8j"
 
 TABLE, TOKEN, KEY = RESOURCE  # kept for older callers
 CLASS_FIELD = "81fTkEDP"
@@ -97,6 +103,40 @@ def drop_unversioned() -> bool:
     them, so the phone counts them as missing on every start and asks "Download while playing tutorial?" with
     0 KB to fetch (reported 2026-11-06, long after the tutorial). Nothing can ever be loaded from them."""
     return os.environ.get("EXVIUS_IOS_DROP_UNVERSIONED", "1") == "1"
+
+
+def quest_rewards_shown() -> bool:
+    """`EXVIUS_IOS_QUEST_REWARDS` (default on): serve `F_QUEST_MST` with every reward marked shown.
+
+    A quest reward is `kind:id:count:rate:shown` (`dX6cor8j`); 263 of the 285 rewards in the shipped table
+    have shown = 0, which the quest screen draws as "???" until the quest is cleared.
+    `QuestReportDetailScene::setLayoutWindowLow` (GL 0x23fe99c) splits the rewards, and when any has
+    shown != 1 and the quest isn't cleared it takes the "unknown reward" branch (0x23ff204: text
+    `NAME_UNKNOWN`, `GameUtils::setRevisedSizeItemIcon(0, 0, ...)`). On the iPhone that branch freezes or
+    closes the app (2026-11-07, Port City Lodin: "Rime of the Absent Mariner" 1003008 froze, "Hello? Sailor?"
+    1003003 closed the app; every quest taken without trouble so far had shown = 1). Which part of it fails
+    on iOS wasn't found (no crash log); marking the rewards shown avoids the branch. The cost: rewards are
+    listed when a quest is taken instead of "???"."""
+    return os.environ.get("EXVIUS_IOS_QUEST_REWARDS", "1") == "1"
+
+
+def show_quest_rewards(raw: bytes) -> tuple[bytes, int]:
+    """`F_QUEST_MST` with each reward's fifth field set to 1. Returns (table, rewards changed)."""
+    out, changed = [], 0
+    for line, row, double in _rows(raw, QUEST[2]):
+        entries = str(row.get(QUEST_REWARD_FIELD) or "").split(",")
+        fixed = []
+        for entry in entries:
+            parts = entry.split(":")
+            if len(parts) >= 5 and parts[4] != "1":
+                parts[4] = "1"
+                changed += 1
+            fixed.append(":".join(parts))
+        if fixed != entries:
+            row[QUEST_REWARD_FIELD] = ",".join(fixed)
+            line = _encrypt(QUEST[2], row, double)
+        out.append(line)
+    return ("\n".join(out) + "\n").encode("ascii"), changed
 
 
 def version_bump() -> int:
@@ -141,6 +181,8 @@ def table_bump(spec, *roots) -> int:
         return sound_bump() + story_text.table_offset()
     if spec == RESOURCE_CHECKSUM:
         return _bump(_art_signature(*roots))
+    if spec == QUEST:
+        return 1000 if quest_rewards_shown() else 0
     return 0
 
 
@@ -148,7 +190,7 @@ def version_bumps() -> dict[str, int]:
     """Table name -> amount to add to its advertised version (only tables served patched)."""
     import ios_texts
     out = {RESOURCE[0]: version_bump(), ios_texts.INDEX[0]: ios_texts.bump()}
-    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM):
+    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM, QUEST):
         out[spec[0]] = table_bump(spec)
     return {name: bump for name, bump in out.items() if bump}
 
@@ -165,7 +207,7 @@ def wants(rel: str) -> bool:
 def _which(rel: str):
     if version_bump() and _path(RESOURCE[1]).search(rel):
         return RESOURCE
-    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM):
+    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM, QUEST):
         if _path(spec[1]).search(rel) and table_bump(spec):
             return spec
     return None
@@ -296,6 +338,9 @@ def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
             data, moved = patch(open(src, "rb").read(), drop)
             return data, (f"{os.path.basename(src)}, {len(moved)} pack(s) moved to the first download, "
                           f"{len(drop)} row(s) with no file left out")
+        if spec == QUEST:
+            data, changed = show_quest_rewards(open(src, "rb").read())
+            return data, f"{os.path.basename(src)}, {changed} hidden quest reward(s) shown"
         import ios_art
         built = art(*roots)
         if spec == RESOURCE_CHECKSUM:
