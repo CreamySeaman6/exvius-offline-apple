@@ -13642,6 +13642,1962 @@
      "20220628PlayerAppreciationSummonBanner.png"
     ]
    }
+  },
+  {
+   "id": 9503440,
+   "family": "value",
+   "name": "5th Anniversary Celebration Value Summon",
+   "release": "2021-06-29",
+   "until": "2021-07-13",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 6
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202106275thAnnivCelebBundleSpecialSummons.html",
+     "archived": "20210627160316"
+    }
+   ],
+   "notes": "One 6+5: five NV and six 5★/NV guaranteed, two Transcension Pearls. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503441,
+   "family": "step_up",
+   "name": "5th Anniversary Celebration Step-Up Summon",
+   "release": "2021-06-29",
+   "until": "2021-07-13",
+   "lap_limit": 1,
+   "rates": [
+    0.05,
+    0.12,
+    0.415,
+    0.415
+   ],
+   "steps": [
+    {
+     "lapis": 1500,
+     "draws": 11
+    },
+    {
+     "lapis": 3000,
+     "draws": 11
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 5
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202106275thAnnivCelebBundleSpecialSummons.html",
+     "archived": "20210627160316"
+    }
+   ],
+   "notes": "Five steps, once per player, 5% NV at every step: three 5★/NV at step 3, five at step 4, ten plus one NV at step 5; steps 1 and 2 discounted. The step image is lost, so the prices (1500/3000/5000/5000/5000) and 11 units per step are guesses. Banner art: titled stand-in."
+  },
+  {
+   "id": 9503442,
+   "family": "value",
+   "name": "5th Anniversary Celebration Value Summon",
+   "release": "2021-07-26",
+   "until": "2021-08-03",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 6
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202107215thAnnivCelebBundleSpecialSummons.html",
+     "archived": "20211025193006"
+    }
+   ],
+   "notes": "One 6+5: five NV and six 5★/NV guaranteed, two Transcension Pearls. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). A rerun. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503443,
+   "family": "step_up",
+   "name": "5th Anniversary Celebration Step-Up Summon",
+   "release": "2021-07-26",
+   "until": "2021-08-03",
+   "lap_limit": 1,
+   "rates": [
+    0.05,
+    0.12,
+    0.415,
+    0.415
+   ],
+   "steps": [
+    {
+     "lapis": 1500,
+     "draws": 11
+    },
+    {
+     "lapis": 3000,
+     "draws": 11
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 5
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202107215thAnnivCelebBundleSpecialSummons.html",
+     "archived": "20211025193006"
+    }
+   ],
+   "notes": "Five steps, once per player, 5% NV at every step: three 5★/NV at step 3, five at step 4, ten plus one NV at step 5; steps 1 and 2 discounted. The step image is lost, so the prices (1500/3000/5000/5000/5000) and 11 units per step are guesses. A rerun. Banner art: titled stand-in."
+  },
+  {
+   "id": 9503444,
+   "family": "free_10_1",
+   "name": "Free 5th Anniversary Celebration Summon",
+   "release": "2021-06-29",
+   "until": "2021-08-03",
+   "cost": {
+    "free": true
+   },
+   "draws": 10,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 5
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 4
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202106275thAnnivCelebBundleSpecialSummons.html",
+     "archived": "20210627160316"
+    }
+   ],
+   "notes": "One free 5+5 per player: five 5★/NV and five 4★+ guaranteed. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503445,
+   "family": "value",
+   "name": "Celebratory Value Summon",
+   "release": "2021-08-23",
+   "until": "2021-08-24",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 6
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2021-08-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210819CelebratoryValueSummon.html",
+     "archived": "20211023212853"
+    }
+   ],
+   "notes": "One 6+5: five NV and six 5★/NV guaranteed, two Transcension Pearls. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9503446,
+   "family": "step_up",
+   "name": "Collaboration Celebration Step-Up Summon",
+   "release": "2021-09-30",
+   "until": "2021-10-05",
+   "lap_limit": 1,
+   "featured": [
+    "Lara Croft -Neo Vision-"
+   ],
+   "steps": [
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "rainbow": 0.05,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 8,
+     "rainbow": 0.05,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "rainbow": 0.05,
+     "guarantee": {
+      "rarity": 5,
+      "count": 5
+     },
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 5
+     },
+     "slots": [
+      {
+       "count": 3,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ]
+    }
+   ],
+   "art": {
+    "main": [
+     "20210929070200",
+     "20210928CollabCelebStepUpSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210928SpecialSummons.html",
+     "archived": "20220920131815"
+    }
+   ],
+   "notes": "Five steps, once per player, from the banner image: 3000 Lapis 4+2, 4000 5+3, 5000 7+3+1 (one NV), 4000 6+5, 5000 3+5+3 (three NV); 5% NV on steps 1, 2 and 4 with a 1/10 NV Summon Ticket each (the page's wording; the image shows an NV EX ticket). Lara Croft -Neo Vision- in the pool.",
+   "pool_rule": {
+    "released_by": "2021-09-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503447,
+   "family": "value",
+   "name": "Collaboration Celebration Special Value Summon",
+   "release": "2021-09-30",
+   "until": "2021-10-10",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "featured": [
+    "Lara Croft -Neo Vision-"
+   ],
+   "guarantee": {
+    "rarity": 5,
+    "count": 6
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "art": {
+    "main": [
+     "20220920131851",
+     "20210928CollabCelebSpecialSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210928SpecialSummons.html",
+     "archived": "20220920131815"
+    }
+   ],
+   "notes": "One 6+5: five NV and six 5★/NV (3% NV) guaranteed, two Transcension Pearls. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule).",
+   "pool_rule": {
+    "released_by": "2021-09-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503448,
+   "family": "step_up",
+   "name": "Year of the Tiger NV Guaranteed Summon",
+   "release": "2022-02-03",
+   "until": "2022-02-08",
+   "lap_limit": 1,
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 10
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 11
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001547,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 9
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 9
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001547,
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220201080912",
+     "YearoftheTigerNVGuaranteedSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220203YearoftheTigerNVGuaranteedSummon.html",
+     "archived": "20220201080808"
+    }
+   ],
+   "notes": "Six steps, once per player, from the banner image: 2000 Lapis 10, 3000 9+2, 5000 11 (all 5★/NV), 5000 10+1 NV, 5000 9+2 NV, 6000 9+2 NV; an NV Fragment Select Ticket (Year of the Tiger) at steps 3 and 6 (spent in its own fragment exchange), a Transcension Pearl at step 5. The VIP Coins (200, 300) are left out."
+  },
+  {
+   "id": 9503449,
+   "family": "treasure",
+   "name": "FFBE Wonderful Winter Treasure Summon",
+   "release": "2021-12-23",
+   "until": "2022-01-04",
+   "featured": [
+    "Whimsical Winter Tiana"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211221100940",
+     "20211221WonderfulWinterTreasureSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211221WonderfulWinterSummon.html",
+     "archived": "20211221100940"
+    }
+   ],
+   "notes": "Up to two 9+2s with two 5★/NV guaranteed and a 1/10 NV Summon Ticket each; Whimsical Winter Tiana's rate boosted. Global sold it for real money: stand-in 10,000 Lapis, twice per player (operator's rule). Its Summon Coin and NV Exchange Ticket (exchange-shop currencies) are left out. Global let some earlier winter units in; here the standard pool."
+  },
+  {
+   "id": 9503450,
+   "family": "fortune",
+   "name": "FFBE Wonderful Winter Fortune Summon",
+   "release": "2021-12-23",
+   "until": "2022-01-04",
+   "featured": [
+    "Whimsical Winter Tiana"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2021-12-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211221100940",
+     "20211221WonderfulWinterFortuneSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211221WonderfulWinterSummon.html",
+     "archived": "20211221100940"
+    }
+   ],
+   "notes": "Up to two 7+4s with four 5★/NV guaranteed. Global sold it for real money: stand-in 10,000 Lapis, twice per player (operator's rule). Its 25 Whimsical Winter Tiana fragments and 100 VIP Coins are left out."
+  },
+  {
+   "id": 9503462,
+   "family": "value",
+   "name": "Unit Select 10+1 NV Guaranteed Summon",
+   "release": "2022-02-25",
+   "until": "2022-02-27",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl",
+    {
+     "kind": 20,
+     "id": 1209001554,
+     "count": 1
+    }
+   ],
+   "unit_select_tickets": [
+    1209001554
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220225UnitSelect10plus1NVGuaranteedSummon.html",
+     "archived": "20220302222612"
+    }
+   ],
+   "notes": "One 10+1: ten 5★/NV and one NV guaranteed, a Transcension Pearl and an NV Unit Select Ticket, traded in its own exchange (the client's rows: four NV units) for one NV of your choice. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule).",
+   "art": {
+    "main": [
+     "20220302222727",
+     "20220224UnitSelect10Plus1NVGuaranteedSummonBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2022-02-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503463,
+   "family": "value",
+   "name": "Unit Select 10+1 NV Guaranteed Summon",
+   "release": "2022-03-25",
+   "until": "2022-03-27",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl",
+    {
+     "kind": 20,
+     "id": 1209001575,
+     "count": 1
+    }
+   ],
+   "unit_select_tickets": [
+    1209001575
+   ],
+   "sources": [],
+   "notes": "One 10+1: ten 5★/NV and one NV guaranteed, a Transcension Pearl and an NV Unit Select Ticket, traded in its own exchange (the client's rows: four NV units) for one NV of your choice. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Only the title and news date survive (the wiki's News/Archives list); the page isn't archived, so the format is the Feb 2022 run's and the dates are its Friday-Sunday pattern. Banner art: titled stand-in.",
+   "pool_rule": {
+    "released_by": "2022-03-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503464,
+   "family": "value",
+   "name": "Unit Select 10+1 NV Guaranteed Summon",
+   "release": "2022-04-22",
+   "until": "2022-04-24",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl",
+    {
+     "kind": 20,
+     "id": 1209001581,
+     "count": 1
+    }
+   ],
+   "unit_select_tickets": [
+    1209001581
+   ],
+   "sources": [],
+   "notes": "One 10+1: ten 5★/NV and one NV guaranteed, a Transcension Pearl and an NV Unit Select Ticket, traded in its own exchange (the client's rows: four NV units) for one NV of your choice. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Only the title and news date survive (the wiki's News/Archives list); the page isn't archived, so the format is the Feb 2022 run's and the dates are its Friday-Sunday pattern. Banner art: titled stand-in.",
+   "pool_rule": {
+    "released_by": "2022-04-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503465,
+   "family": "value",
+   "name": "Unit Select 10+1 NV Guaranteed Summon",
+   "release": "2022-05-27",
+   "until": "2022-05-29",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl",
+    {
+     "kind": 20,
+     "id": 1209001604,
+     "count": 1
+    }
+   ],
+   "unit_select_tickets": [
+    1209001604
+   ],
+   "sources": [],
+   "notes": "One 10+1: ten 5★/NV and one NV guaranteed, a Transcension Pearl and an NV Unit Select Ticket, traded in its own exchange (the client's rows: four NV units) for one NV of your choice. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Only the title and news date survive (the wiki's News/Archives list); the page isn't archived, so the format is the Feb 2022 run's and the dates are its Friday-Sunday pattern. Banner art: titled stand-in.",
+   "pool_rule": {
+    "released_by": "2022-05-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503466,
+   "family": "value",
+   "name": "Unit Select 10+1 NV Guaranteed Summon",
+   "release": "2022-09-16",
+   "until": "2022-09-18",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl",
+    {
+     "kind": 20,
+     "id": 1209001664,
+     "count": 1
+    }
+   ],
+   "unit_select_tickets": [
+    1209001664
+   ],
+   "sources": [],
+   "notes": "One 10+1: ten 5★/NV and one NV guaranteed, a Transcension Pearl and an NV Unit Select Ticket, traded in its own exchange (the client's rows: four NV units) for one NV of your choice. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Only the title and news date survive (the wiki's News/Archives list); the page isn't archived, so the format is the Feb 2022 run's and the dates are its Friday-Sunday pattern. Banner art: titled stand-in.",
+   "pool_rule": {
+    "released_by": "2022-09-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503467,
+   "family": "value",
+   "name": "Unit Select 10+1 NV Guaranteed Summon",
+   "release": "2023-02-17",
+   "until": "2023-02-19",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl",
+    {
+     "kind": 20,
+     "id": 1209001767,
+     "count": 1
+    }
+   ],
+   "unit_select_tickets": [
+    1209001767
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202302143pUnitSelect10plus1SummonExchange.html",
+     "archived": "20230319143843"
+    }
+   ],
+   "notes": "One 10+1: ten 5★/NV and one NV guaranteed, a Transcension Pearl and an NV Unit Select Ticket, traded in its own exchange (the client's rows: four NV units) for one NV of your choice. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule).",
+   "art": {
+    "main": [
+     "20230325183643",
+     "20220224UnitSelect10Plus1NVGuaranteedSummonBanner2.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-02-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503451,
+   "family": "step_up",
+   "name": "7th Anniversary Select Step-Up Summon",
+   "release": "2023-06-29",
+   "until": "2023-07-11",
+   "lap_limit": 1,
+   "unit_select_tickets": [
+    1209001867
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      {
+       "kind": 10,
+       "id": 906000104,
+       "count": 1,
+       "affinity_points": [
+        "",
+        "500"
+       ]
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      {
+       "kind": 10,
+       "id": 906000104,
+       "count": 1,
+       "affinity_points": [
+        "",
+        "500"
+       ]
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 3
+      }
+     ]
+    },
+    {
+     "lapis": 7000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife",
+       "Materia Hunter Yuffie",
+       "Dioxus",
+       "Lasswell -Dark Lineage-",
+       "Flaring Aether Rain",
+       "Young Hero Zack"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 6,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001867,
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "art": {
+    "main": [
+     "20230627114345",
+     "7thAnnivSelectStepUpSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230627n5s7thAnniversarySummons.html",
+     "archived": "20230627113958"
+    }
+   ],
+   "notes": "Six steps, once per player, from the banner image: 4000/4000/4000/5000/6000/7000 Lapis with 1/1/1/2/3/6 NV guaranteed plus one NV from a curated pool at step 6; a 50% Super Trust Moogle at steps 2 and 3, two Mystery Crystals and two NV Fragment Select Tickets at step 4, three more at step 5 (the 7th Anniversary fragment ticket has no exchange in the client, so the NV Guaranteed Special one, 1209001670, stands in as in the earlier fragment step-ups), a Curated NV Unit Select Ticket (7th Anniversary) at step 6 (its exchange is served). The 2000 Celebratory Lapis Replica at step 5 is left out (its shop isn't here). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used.",
+   "pool_rule": {
+    "released_by": "2023-06-29",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503452,
+   "family": "step_up",
+   "name": "7th Anniversary Select Step-Up Summon II",
+   "release": "2023-08-17",
+   "until": "2023-08-29",
+   "lap_limit": 1,
+   "unit_select_tickets": [
+    1209001867
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      {
+       "kind": 10,
+       "id": 906000104,
+       "count": 1,
+       "affinity_points": [
+        "",
+        "500"
+       ]
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      {
+       "kind": 10,
+       "id": 906000104,
+       "count": 1,
+       "affinity_points": [
+        "",
+        "500"
+       ]
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 3
+      }
+     ]
+    },
+    {
+     "lapis": 7000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife",
+       "Materia Hunter Yuffie",
+       "Dioxus",
+       "Lasswell -Dark Lineage-",
+       "Flaring Aether Rain",
+       "Young Hero Zack"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 6,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001867,
+       "count": 1
+      }
+     ]
+    }
+   ],
+   "art": {
+    "main": [
+     "20230815133933",
+     "202308157thAnnivSelectStepUpSummonIIBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230815c3q7thAnniversarySummonsII.html",
+     "archived": "20230815132607"
+    }
+   ],
+   "notes": "Six steps, once per player, from the banner image: 4000/4000/4000/5000/6000/7000 Lapis with 1/1/1/2/3/6 NV guaranteed plus one NV from a curated pool at step 6; a 50% Super Trust Moogle at steps 2 and 3, two Mystery Crystals and two NV Fragment Select Tickets at step 4, three more at step 5 (the 7th Anniversary fragment ticket has no exchange in the client, so the NV Guaranteed Special one, 1209001670, stands in as in the earlier fragment step-ups), a Curated NV Unit Select Ticket (7th Anniversary) at step 6 (its exchange is served). The 2000 Celebratory Lapis Replica at step 5 is left out (its shop isn't here). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used. Same steps as the first, from its own image.",
+   "pool_rule": {
+    "released_by": "2023-08-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503453,
+   "family": "bonus_lapis",
+   "name": "7th Anniversary Bonus Lapis Summon",
+   "release": "2023-06-29",
+   "until": "2023-07-11",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 8,
+   "purchase_limit": 1,
+   "rates": [
+    0.07,
+    0.9299999999999999,
+    0,
+    0
+   ],
+   "min_rarity": 5,
+   "guarantee": {
+    "rarity": 5,
+    "count": 7
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "lapis:1200"
+   ],
+   "bonus_choice": [
+    [
+     0.001,
+     [
+      "lapis:10000"
+     ]
+    ],
+    [
+     0.003,
+     [
+      "lapis:7770"
+     ]
+    ],
+    [
+     0.005,
+     [
+      "lapis:5000"
+     ]
+    ],
+    [
+     0.06,
+     [
+      "lapis:1000"
+     ]
+    ],
+    [
+     0.931,
+     [
+      "lapis:770"
+     ]
+    ]
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230627n5s7thAnniversarySummons.html",
+     "archived": "20230627113958"
+    }
+   ],
+   "notes": "A 7+1, once per player: eight 5★/NV guaranteed (7% NV on the seven) and a random amount of bonus Lapis. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Bonus Lapis: Global drew one prize from pool A (10000 0.1%, 7770 0.3%, 5000 0.5%, 1000 6%, 770 93.1%) and seven from pool B (10000 0.05% ... 100 83.1%); here pool A is drawn and pool B's seven prizes are paid as their average, 1200 Lapis. Lapis prizes count as earned (multiplier applies). The eighth unit was 70% NV on Global; here it is a guaranteed NV. This first run's prize tables weren't printed; the second's are used.",
+   "art": {
+    "main": [
+     "20230627114328",
+     "7thAnnivBonusLapisSummon.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-06-29",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503454,
+   "family": "bonus_lapis",
+   "name": "7th Anniversary Bonus Lapis Summon II",
+   "release": "2023-07-20",
+   "until": "2023-08-15",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 8,
+   "purchase_limit": 1,
+   "rates": [
+    0.07,
+    0.9299999999999999,
+    0,
+    0
+   ],
+   "min_rarity": 5,
+   "guarantee": {
+    "rarity": 5,
+    "count": 7
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "lapis:1200"
+   ],
+   "bonus_choice": [
+    [
+     0.001,
+     [
+      "lapis:10000"
+     ]
+    ],
+    [
+     0.003,
+     [
+      "lapis:7770"
+     ]
+    ],
+    [
+     0.005,
+     [
+      "lapis:5000"
+     ]
+    ],
+    [
+     0.06,
+     [
+      "lapis:1000"
+     ]
+    ],
+    [
+     0.931,
+     [
+      "lapis:770"
+     ]
+    ]
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230718v0e7thAnniversaryBonusLapisSummonII.html",
+     "archived": "20230720182113"
+    }
+   ],
+   "notes": "A 7+1, once per player: eight 5★/NV guaranteed (7% NV on the seven) and a random amount of bonus Lapis. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Bonus Lapis: Global drew one prize from pool A (10000 0.1%, 7770 0.3%, 5000 0.5%, 1000 6%, 770 93.1%) and seven from pool B (10000 0.05% ... 100 83.1%); here pool A is drawn and pool B's seven prizes are paid as their average, 1200 Lapis. Lapis prizes count as earned (multiplier applies). The eighth unit was 70% NV on Global; here it is a guaranteed NV.",
+   "art": {
+    "main": [
+     "20230720182301",
+     "20230718v0e7thAnniversaryBonusLapisSummonIIBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-07-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503455,
+   "family": "value",
+   "name": "7th Anniversary Celebration Value Summon",
+   "release": "2023-07-13",
+   "until": "2023-07-18",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 20,
+   "purchase_limit": 1,
+   "guarantee": {
+    "units": [
+     "Cetra Descendant Aerith",
+     "Avalanche's Tifa",
+     "Legendary Hero Sephiroth",
+     "Summoner Yuna",
+     "Legendary Guardian Auron",
+     "Taivas",
+     "Storm Seeker Esther",
+     "Dark Rain",
+     "Fina -The Return-",
+     "Knights of Grandshelt",
+     "Wylk",
+     "Dark Fina -Warrior's Prayer-",
+     "New Guardian Tidus",
+     "Fabled Guardian Jecht",
+     "Cloud Strife",
+     "Materia Hunter Yuffie",
+     "Dioxus",
+     "Lasswell -Dark Lineage-",
+     "Flaring Aether Rain",
+     "Young Hero Zack"
+    ],
+    "count": 2
+   },
+   "slots": [
+    {
+     "count": 8,
+     "min_rarity": 7,
+     "label": "NV"
+    },
+    {
+     "count": 10,
+     "min_rarity": 5
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230711pwa7thAnniversaryCelebrationValueSummon.html",
+     "archived": "20230711120956"
+    }
+   ],
+   "notes": "One 20 summon: ten 5★/NV (3% NV), eight NV and two curated NV guaranteed, three Mystery Crystals. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used.",
+   "bonus": [
+    {
+     "kind": 20,
+     "id": 235037300,
+     "count": 3
+    }
+   ],
+   "art": {
+    "main": [
+     "20230711121120",
+     "20230711pwa7thAnnivCelebrationValueSummon.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-07-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503456,
+   "family": "value",
+   "name": "7th Anniversary Celebration Value Summon II",
+   "release": "2023-07-27",
+   "until": "2023-08-01",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 20,
+   "purchase_limit": 1,
+   "guarantee": {
+    "units": [
+     "Cetra Descendant Aerith",
+     "Avalanche's Tifa",
+     "Legendary Hero Sephiroth",
+     "Summoner Yuna",
+     "Legendary Guardian Auron",
+     "Taivas",
+     "Storm Seeker Esther",
+     "Dark Rain",
+     "Fina -The Return-",
+     "Knights of Grandshelt",
+     "Wylk",
+     "Dark Fina -Warrior's Prayer-",
+     "New Guardian Tidus",
+     "Fabled Guardian Jecht",
+     "Cloud Strife",
+     "Materia Hunter Yuffie",
+     "Dioxus",
+     "Lasswell -Dark Lineage-",
+     "Flaring Aether Rain",
+     "Young Hero Zack"
+    ],
+    "count": 2
+   },
+   "slots": [
+    {
+     "count": 8,
+     "min_rarity": 7,
+     "label": "NV"
+    },
+    {
+     "count": 10,
+     "min_rarity": 5
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230725ssg7thAnniversaryCelebrationValueSummonII.html",
+     "archived": "20230725101042"
+    }
+   ],
+   "notes": "Assumed the same as the first (the page names only the dates): ten 5★/NV, eight NV and two curated NV, three Mystery Crystals. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used.",
+   "bonus": [
+    {
+     "kind": 20,
+     "id": 235037300,
+     "count": 3
+    }
+   ],
+   "art": {
+    "main": [
+     "20230725101146",
+     "20230725ssg7thAnnivCelebrationValueSummonII.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-07-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503457,
+   "family": "value",
+   "name": "7th Anniversary Celebration Value Summon III",
+   "release": "2023-08-10",
+   "until": "2023-08-15",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 20,
+   "purchase_limit": 1,
+   "guarantee": {
+    "units": [
+     "Cetra Descendant Aerith",
+     "Avalanche's Tifa",
+     "Legendary Hero Sephiroth",
+     "Summoner Yuna",
+     "Legendary Guardian Auron",
+     "Taivas",
+     "Storm Seeker Esther",
+     "Dark Rain",
+     "Fina -The Return-",
+     "Knights of Grandshelt",
+     "Wylk",
+     "Dark Fina -Warrior's Prayer-",
+     "New Guardian Tidus",
+     "Fabled Guardian Jecht",
+     "Cloud Strife",
+     "Materia Hunter Yuffie",
+     "Dioxus",
+     "Lasswell -Dark Lineage-",
+     "Flaring Aether Rain",
+     "Young Hero Zack"
+    ],
+    "count": 2
+   },
+   "slots": [
+    {
+     "count": 8,
+     "min_rarity": 7,
+     "label": "NV"
+    },
+    {
+     "count": 10,
+     "min_rarity": 5
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230808u2a7thAnnivCelebrationValueSummonIII.html",
+     "archived": "20230808080248"
+    }
+   ],
+   "notes": "One 20 summon: ten 5★/NV, eight NV and two curated NV guaranteed; three Mystery Crystals assumed as in the first. The end date wasn't captured: six days assumed. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used.",
+   "bonus": [
+    {
+     "kind": 20,
+     "id": 235037300,
+     "count": 3
+    }
+   ],
+   "art": {
+    "main": [
+     "20230808084215",
+     "20230808u2a7thAnnivCelebrationValueSummonIIIBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-08-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503458,
+   "family": "value",
+   "name": "Post-Anniversary Value Summon",
+   "release": "2023-09-21",
+   "until": "2023-09-26",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 20,
+   "purchase_limit": 1,
+   "guarantee": {
+    "units": [
+     "Cetra Descendant Aerith",
+     "Avalanche's Tifa",
+     "Legendary Hero Sephiroth",
+     "Summoner Yuna",
+     "Legendary Guardian Auron",
+     "Taivas",
+     "Storm Seeker Esther",
+     "Dark Rain",
+     "Fina -The Return-",
+     "Knights of Grandshelt",
+     "Wylk",
+     "Dark Fina -Warrior's Prayer-",
+     "New Guardian Tidus",
+     "Fabled Guardian Jecht",
+     "Cloud Strife",
+     "Materia Hunter Yuffie",
+     "Dioxus",
+     "Lasswell -Dark Lineage-",
+     "Flaring Aether Rain",
+     "Young Hero Zack"
+    ],
+    "count": 2
+   },
+   "slots": [
+    {
+     "count": 8,
+     "min_rarity": 7,
+     "label": "NV"
+    },
+    {
+     "count": 10,
+     "min_rarity": 5
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230919np1PostAnniversarySummons.html",
+     "archived": "20240209073929"
+    }
+   ],
+   "notes": "The page and image didn't keep its contents: built as the 7th Anniversary Celebration Value Summon (ten 5★/NV, eight NV, two curated NV). Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used.",
+   "bonus": [
+    {
+     "kind": 20,
+     "id": 235037300,
+     "count": 3
+    }
+   ],
+   "art": {
+    "main": [
+     "20240209073958",
+     "20230919PostAnniversaryValueSummonBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-09-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503459,
+   "family": "bonus_lapis",
+   "name": "Sayonara Summer Bonus Lapis Summon",
+   "release": "2023-09-21",
+   "until": "2023-09-26",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 8,
+   "purchase_limit": 1,
+   "rates": [
+    0.07,
+    0.9299999999999999,
+    0,
+    0
+   ],
+   "min_rarity": 5,
+   "guarantee": {
+    "rarity": 5,
+    "count": 7
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "lapis:1200"
+   ],
+   "bonus_choice": [
+    [
+     0.001,
+     [
+      "lapis:10000"
+     ]
+    ],
+    [
+     0.003,
+     [
+      "lapis:7770"
+     ]
+    ],
+    [
+     0.005,
+     [
+      "lapis:5000"
+     ]
+    ],
+    [
+     0.06,
+     [
+      "lapis:1000"
+     ]
+    ],
+    [
+     0.931,
+     [
+      "lapis:770"
+     ]
+    ]
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230919np1PostAnniversarySummons.html",
+     "archived": "20240209073929"
+    }
+   ],
+   "notes": "A 7+1, once per player: eight 5★/NV guaranteed (7% NV on the seven) and a random amount of bonus Lapis. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Bonus Lapis: Global drew one prize from pool A (10000 0.1%, 7770 0.3%, 5000 0.5%, 1000 6%, 770 93.1%) and seven from pool B (10000 0.05% ... 100 83.1%); here pool A is drawn and pool B's seven prizes are paid as their average, 1200 Lapis. Lapis prizes count as earned (multiplier applies). The eighth unit was 70% NV on Global; here it is a guaranteed NV. Its prize tables weren't captured; the 7th Anniversary II tables are used.",
+   "art": {
+    "main": [
+     "20240209073949",
+     "20230919SayonaraSummerBonusLapisSummonBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-09-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503460,
+   "family": "value",
+   "name": "Guardian of the Underworld Value Summon",
+   "release": "2023-10-26",
+   "until": "2023-11-07",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 20,
+   "purchase_limit": 1,
+   "guarantee": {
+    "units": [
+     "Cetra Descendant Aerith",
+     "Avalanche's Tifa",
+     "Legendary Hero Sephiroth",
+     "Summoner Yuna",
+     "Legendary Guardian Auron",
+     "Taivas",
+     "Storm Seeker Esther",
+     "Dark Rain",
+     "Fina -The Return-",
+     "Knights of Grandshelt",
+     "Wylk",
+     "Dark Fina -Warrior's Prayer-",
+     "New Guardian Tidus",
+     "Fabled Guardian Jecht",
+     "Cloud Strife",
+     "Materia Hunter Yuffie",
+     "Dioxus",
+     "Lasswell -Dark Lineage-",
+     "Flaring Aether Rain",
+     "Young Hero Zack"
+    ],
+    "count": 1
+   },
+   "slots": [
+    {
+     "count": 7,
+     "min_rarity": 7,
+     "label": "NV"
+    },
+    {
+     "count": 12,
+     "min_rarity": 5
+    }
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20231024vp2HappyHalloweenValueSummon.html",
+     "archived": "20231024095021"
+    }
+   ],
+   "notes": "One 12+7+1: twelve 5★/NV and seven NV guaranteed, plus one NV from a curated pool; Guardian of the Underworld Chow in the pool. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). The curated NV pool isn't printed on the page; the 20 NV units of the client's Curated NV Unit Select Ticket (7th Anniversary) exchange are used.",
+   "featured": [
+    "Guardian of the Underworld Chow"
+   ],
+   "art": {
+    "main": [
+     "20231024101058",
+     "20231024vp2HappyHalloweenValueSummonBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-10-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
+  },
+  {
+   "id": 9503461,
+   "family": "bonus_lapis",
+   "name": "Black Friday Bonus Lapis Summon",
+   "release": "2023-11-23",
+   "until": "2023-12-12",
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 8,
+   "purchase_limit": 1,
+   "rates": [
+    0.07,
+    0.9299999999999999,
+    0,
+    0
+   ],
+   "min_rarity": 5,
+   "guarantee": {
+    "rarity": 5,
+    "count": 7
+   },
+   "slots": [
+    {
+     "count": 1,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "lapis:1200"
+   ],
+   "bonus_choice": [
+    [
+     0.001,
+     [
+      "lapis:10000"
+     ]
+    ],
+    [
+     0.003,
+     [
+      "lapis:7770"
+     ]
+    ],
+    [
+     0.005,
+     [
+      "lapis:5000"
+     ]
+    ],
+    [
+     0.06,
+     [
+      "lapis:1000"
+     ]
+    ],
+    [
+     0.931,
+     [
+      "lapis:770"
+     ]
+    ]
+   ],
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20231121SpecialSummons.html",
+     "archived": "20231127061426"
+    }
+   ],
+   "notes": "A 7+1, once per player: eight 5★/NV guaranteed (7% NV on the seven) and a random amount of bonus Lapis. Global sold it for real money: stand-in 10,000 Lapis, once per player (operator's rule). Bonus Lapis: Global drew one prize from pool A (10000 0.1%, 7770 0.3%, 5000 0.5%, 1000 6%, 770 93.1%) and seven from pool B (10000 0.05% ... 100 83.1%); here pool A is drawn and pool B's seven prizes are paid as their average, 1200 Lapis. Lapis prizes count as earned (multiplier applies). The eighth unit was 70% NV on Global; here it is a guaranteed NV. Its banner prints 100-10,000 Lapis on the seven and 770-10,000 on the eighth, matching the 7th Anniversary II tables, which are used.",
+   "art": {
+    "main": [
+     "20231127182344",
+     "BFBonusLapisSummonBanner.png"
+    ]
+   },
+   "pool_rule": {
+    "released_by": "2023-11-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   }
   }
  ]
 }

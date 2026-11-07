@@ -16,6 +16,19 @@ START = '2020-01-01 00:00:00'
 END = '2099-12-31 23:59:59'
 # Exchange shops tied to events (content/event_shops.json): detail id -> (event areas, cost kind, currency).
 EVENT_SHOPS = {}
+# NV Unit Select ticket exchanges (detail id -> (kind, ticket item id)), hidden while the player holds none.
+TICKET_SHOPS = {}
+
+
+def _deal_ticket_ids() -> list:
+    """The NV Unit Select tickets the deal summons pay (gacha_deals.json), whose exchanges the client ships in
+    F_MEDAL_EXCHANGE_MST (Unit Select 10+1 NV Guaranteed, 7th Anniversary Select Step-Up; 2026-11-07)."""
+    try:
+        doc = json.loads(Path(__file__).with_name('gacha_deals.json').read_text(encoding='utf-8'))
+    except (OSError, ValueError):
+        return []
+    found = {str(t) for banner in doc.get('banners', []) for t in banner.get('unit_select_tickets') or []}
+    return sorted(found, key=int)
 
 
 def catalogue():
@@ -82,6 +95,22 @@ def _catalogue(cutoff=None):
             product(900000000 + int(row['S21FT3L8']), did, row['7iJpH5zZ'], row['Qy5EvcK1'],
                     limit, (20, currency))
 
+    # NV Unit Select exchanges: trade the ticket a deal summon paid for one NV of the listed ones (the client's
+    # own rows). Units not yet released in the replay are left out by product() like everywhere else.
+    unit_rows = defaultdict(list)
+    tickets = set(_deal_ticket_ids())
+    for row in _rows('F_MEDAL_EXCHANGE_MST'):
+        if str(row.get('ak2dhKm3')) in tickets and str(row.get('7iJpH5zZ', '')).startswith('10:'):
+            unit_rows[str(row['ak2dhKm3'])].append(row)
+    for index, currency in enumerate(sorted(unit_rows, key=int)):
+        did = 850003000 + index
+        detail(did, names.get(currency, 'NV Unit Select').strip(), 20, currency, 5)
+        for row in unit_rows[currency]:
+            limit = int(row['x0NDnEC9']) if row['kR4n5DxP'] == '1' else 2147483647
+            product(900000000 + int(row['S21FT3L8']), did, row['7iJpH5zZ'], row['Qy5EvcK1'],
+                    limit, (20, currency))
+        TICKET_SHOPS[str(did)] = (20, currency)
+
     # Original monthly VIP stock and prices, recorded on the preservation wiki.
     # https://exvius.fandom.com/wiki/VIP_Coin#Exchange_Shop
     did = 850001000
@@ -129,14 +158,17 @@ def _catalogue(cutoff=None):
 def hidden_details():
     """Event exchanges to leave out now: their event is not in this week's Vortex and the player holds
     none of their currency."""
+    hidden = set()
+    for did, (kind, currency) in TICKET_SHOPS.items():
+        if not (State.player.item_count(kind, currency) if State.player is not None else 0):
+            hidden.add(did)
     if not EVENT_SHOPS:
-        return set()
+        return hidden
     try:
         import event_archive
         open_areas = {str(row['area']) for row in event_archive.weekly_events()}
     except Exception:  # noqa: BLE001 -- without the rotation, every event exchange shows
-        return set()
-    hidden = set()
+        return hidden
     for did, (areas, kind, currency) in EVENT_SHOPS.items():
         if open_areas.intersection(areas):
             continue

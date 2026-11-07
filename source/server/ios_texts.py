@@ -98,8 +98,8 @@ TICKET_LONG = " The summon appears on the Summon screen while you hold this tick
 # Raise by one whenever the text additions change: the phone only re-downloads a table whose advertised
 # version went UP, and the checksum part alone can go down. 1 = bundles/tickets/banners (2026-11-05),
 # 2 = item descriptions and the Android hook texts (2026-11-05), 3 = exchange shop product names (2026-11-07),
-# 4 = Bonus Present Ticket and Hill of Fortune bundles (2026-11-07).
-GENERATION = 4
+# 4 = Bonus Present Ticket and Hill of Fortune bundles (2026-11-07), 5 = NV Unit Select exchanges (2026-11-07).
+GENERATION = 5
 
 _CACHE: dict = {}
 _JAPANESE = re.compile("[\u3040-\u30ff\u3400-\u9fff]")

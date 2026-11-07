@@ -28,6 +28,8 @@ Spec fields (per banner):
   steps         [{lapis|free|item, draws, guarantee, slots, bonus, rainbow, featured_x}] for step-ups
   permanent     {"from": date, "until": date}: listed every replay week that overlaps the period (a permanent
                 Global summon such as the Bonus Present Ticket Summon, or a ticket summon open for weeks)
+  unit_select_tickets  [item ids]: NV Unit Select tickets the banner pays (in `bonus`), whose exchanges the
+                Shop then serves from the client's F_MEDAL_EXCHANGE_MST rows
   lap_limit / purchase_limit / daily_limit
   resummon      n: the paid pull can be redone n times for free (a second "Re-summon" button); each redo
                 replaces the last result in the box
@@ -340,6 +342,9 @@ def build(spec: dict, units: Units) -> dict:
         if spec.get('bonus_choice'):
             banner['bonus_choice'] = [{'rate': float(rate), 'rewards': [reward(t, units) for t in tokens]}
                                       for rate, tokens in spec['bonus_choice']]
+    if spec.get('unit_select_tickets'):
+        # NV Unit Select tickets this banner pays: their exchanges are served (exvius_shop_catalogue).
+        banner['unit_select_tickets'] = [int(t) for t in spec['unit_select_tickets']]
     if spec.get('permanent'):
         # Listed every replay week its Global period overlaps (gacha_archive.permanent_open), not one week.
         banner['permanent'] = dict(spec['permanent'])
