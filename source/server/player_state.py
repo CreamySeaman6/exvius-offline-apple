@@ -1170,6 +1170,22 @@ def expand_pool(banner: dict) -> list:
         allowed = lambda u: str(u) in featured_ids or replay.released_by(u, cutoff)  # noqa: E731
     else:
         allowed = lambda u: True  # noqa: E731
+    # A deal banner's printed pool rule (gacha_deals.json): "units released up to <date>, excluding
+    # limited/collab units". Applies to the units a tier draws by default, never to its featured units.
+    rule = banner.get('pool_rule') or {}
+    if rule:
+        from datetime import date as _date
+        import replay as _replay
+        upto = _date.fromisoformat(rule['released_by']) if rule.get('released_by') else None
+        excluded = set()
+        if {'limited', 'collab'} & set(rule.get('exclude') or []):
+            import gacha_archive
+            excluded = gacha_archive.limited_unit_ids()
+        base_allowed = allowed
+        rule_featured = {str(u) for t in ((pool or {}).get("tiers") or [] if isinstance(pool, dict) else [])
+                         for u in (t.get("featured") or [])}
+        allowed = lambda u: base_allowed(u) and (str(u) in rule_featured or (  # noqa: E731
+            (upto is None or _replay.released_by(u, upto)) and str(u) not in excluded))
     if isinstance(pool, list):
         return _only_named([row for row in pool if allowed(row.get("unit_id"))])
     roots = unit_roots_by_rarity()
@@ -1216,9 +1232,16 @@ def expand_pool(banner: dict) -> list:
     return _only_named(out)
 
 
-def summon_pool(banner: dict) -> list:
+def summon_pool(banner: dict, part: dict | None = None) -> list:
     """What one ordinary draw of `banner` picks from, by `rate`: its explicit reward list (items or units,
-    `reward_pool`) or its tiers expanded (`expand_pool`). `roll_gacha` and the drop-rate page both use this."""
+    `reward_pool`) or its tiers expanded (`expand_pool`). `roll_gacha` and the drop-rate page both use this.
+
+    `part` is the step or offer being pulled. When it carries its own `pool` (a step-up step with raised
+    rates: "5x rate", "doubled rainbow"), that pool replaces the banner's for this pull; the banner's
+    community/featured context and the replay cutoff still apply (2026-11-07, deal banners)."""
+    if part and part.get('pool') is not None:
+        banner = dict(banner, pool=part['pool'])
+        banner.pop('reward_pool', None)
     reward_pool = banner.get('reward_pool')
     if not reward_pool:
         return expand_pool(banner)
@@ -4135,7 +4158,8 @@ class PlayerState:
         reward_pool = banner.get('reward_pool')
         bonus_before, bonus_dirty = (copy.deepcopy(self.data), self.dirty) if bonus_rewards or reward_pool else (None, None)
         # The same pool the drop-rate page lists (gacha_rates.py): one function, so the two can't drift.
-        pool = summon_pool(banner)
+        # A step or offer with its own `pool` (raised rates) draws from that instead of the banner's.
+        pool = summon_pool(banner, offer if (offer or {}).get('pool') is not None else step)
         if not pool:
             return None
         if reward_pool:

@@ -252,7 +252,13 @@ def page(banner_id):
     for label, cost, draws, step, offer in _offers(banner):
         guarantee = (step.get('guarantee') or (offer or {}).get('guarantee') or banner.get('guarantee') or {})
         slots = summon_slots(banner, step)
-        text, tables = _guarantee_html(banner, pool, guarantee, draws, slots)
+        part = offer if (offer or {}).get('pool') is not None else step
+        own = summon_pool(banner, part) if (part or {}).get('pool') is not None else None
+        text, tables = _guarantee_html(banner, own or pool, guarantee, draws, slots)
+        if own:
+            # A step with raised rates draws from its own list: show it under that step.
+            tables = [(f'{label}: every draw', own)] + tables
+            text = (text + ' ' if text else '') + 'This step draws with its own, higher chances (listed below).'
         bonuses = (offer or {}).get('bonus_rewards', step.get('bonus_rewards', banner.get('bonus_rewards', [])))
         choices = (offer or {}).get('bonus_choice', step.get('bonus_choice', banner.get('bonus_choice', [])))
         rows.append((label, cost, draws, text, tables, bonuses, choices))

@@ -64,6 +64,8 @@ BANNER_ART_ROOTS = [os.path.join(data_paths.ART_ROOT, "en", "banner"),
                     os.path.join(data_paths.ART_ROOT, "common_lang", "gacha"),
                     # the COMMUNITY calendar's fetched art (harness/fetch_gacha_community.py; gitignored)
                     data_paths.COMMUNITY_ART_ROOT,
+                    # the DEAL banners' art, downloaded on startup (deal_art.py)
+                    data_paths.DEAL_ART_ROOT,
                     # Original loose cache images also answer the native basename requests.
                     os.path.join(data_paths.GAME_FILES, "en", "sd", "static_banner"),
                     os.path.join(data_paths.GAME_FILES, "common_lang", "sd", "static_banner"),
@@ -296,6 +298,10 @@ GACHA_COMMUNITY_LIMIT = int(os.environ.get("GACHA_COMMUNITY_LIMIT", "0"))
 # Global English banner image of the final client cache, with the name and steps printed on its art.
 GACHA_NAMED = os.path.join(HERE, "gacha_named.json")
 GACHA_NAMED_ON = os.environ.get("GACHA_NAMED", "1") == "1"
+# The DEAL banners (2026-11-07): Global's step-ups, once-per-player 10+1s, free dailies and the other deal
+# families, built from the archived news pages (`gacha_deals.json`, ids 95xxxxx). Off with `GACHA_DEALS=0`.
+GACHA_DEALS = os.path.join(HERE, "gacha_deals.json")
+GACHA_DEALS_ON = os.environ.get("GACHA_DEALS", "1") == "1"
 # A CAMPAIGN-SCOPED view (`harness/gen_gacha_campaigns.py` -> `server/gacha_campaigns.json`): serve the
 # evergreen STANDARD set + ONE campaign period's banners instead of all 649 -- which the in-game listing
 # cannot present readably. `GACHA_CAMPAIGN=<key>` (e.g. `2019-07`, the 3rd-anniversary month); **UNSET means
@@ -1446,6 +1452,8 @@ __all__ = [
     "GACHA_COMMUNITY_ON",
     "GACHA_NAMED",
     "GACHA_NAMED_ON",
+    "GACHA_DEALS",
+    "GACHA_DEALS_ON",
     "GACHA_COMMUNITY_LIMIT",
     "GACHA_CAMPAIGN_FILE",
     "GACHA_CAMPAIGN",

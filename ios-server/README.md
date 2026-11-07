@@ -268,6 +268,8 @@ The original game's Lapis income assumed you'd buy Lapis. These settings raise w
 | `EXVIUS_DAILY_QUEST_LAPIS` | Lapis paid by each daily quest (before the multiplier). Default `150`. `0` keeps the old gil/Lapis mix. |
 | `EXVIUS_DAILY_ALL_BONUS` | Extra Lapis for finishing all of a day's daily quests (before the multiplier). Default `200`. |
 | `EXVIUS_CALAMITY_WRIT_DROP` | Percent chance that an enemy also drops a Calamity Writ (an awakening material no enemy drops in the original game; it came only from events). Every enemy in a battle and every exploration battle rolls once. Default `0.5`, about one Writ per 20 story missions. `0` turns it off. |
+| `GACHA_DEALS` | The deal summons Global ran from 2018 on (step-ups with items and discounts, once-per-player free 10+1s, free daily summons, rate-ups and the rest), each on its real date in the replay. Default `1`; `0` leaves them out. |
+| `EXVIUS_DEAL_ART_FETCH` | On startup, download the deal summons' banner art from the Internet Archive into `server/deal_art/` (once per image; a lost image gets a plain titled banner). Default `1`; `0` skips it, and those summons show without art. |
 | `EXVIUS_WEEKLY_GIFT` | Mailed once per summon week, as `kind:id:count` items. Default `23:50:10,23:70:1`: 10 Rare Summon Tickets and a Guaranteed Ticket (4★/5★/NV), usable with any banner's Ticket Summon button. `""` turns it off. |
 
 **Explorations**
@@ -353,7 +355,7 @@ The weekly summon rotation is in `source/server/gacha_rotation.py`, the historic
 
    On Unraid with the template: remove `ffbe` in the Docker tab (icon → **Remove**), run `docker image rm ffbe-ios-server:local`, and delete `/boot/config/plugins/dockerMan/templates-user/my-ffbe.xml`.
 
-   Then delete the whole `exvius` folder (or your `FFBE_DIR`). That removes the game data (including the event banners the server downloads from the Brave Exvius wiki into `data/native/en/sd/area/`), your save, the certificates, the Tailscale state and this copy of the repo.
+   Then delete the whole `exvius` folder (or your `FFBE_DIR`). That removes the game data (including the event banners the server downloads from the Brave Exvius wiki into `data/native/en/sd/area/`, and the deal summons' art it downloads into `server/deal_art/`), your save, the certificates, the Tailscale state and this copy of the repo.
 2. In the Tailscale admin console:
    - **Machines → ffbe → ⋯ → Remove.**
    - **DNS:** delete the nameserver entries for `gumi.sg` and `exvius.com`.

@@ -14,7 +14,7 @@ The 2026-11-07 session ran out of context mid-debugging. Its notes below ("Story
 3. **Freezes.** The Lodin NPC freeze (woman, blue dress) and the sailor crash: fix pushed, not yet confirmed; see "Town quests with hidden rewards" at the end. Still not investigated (no log yet): tapping Details on the VIP Shop's vision card "Metal Gigantuar's Here!" (product 940000012, reward `27:900020101:1`; opens `VisionCardDetailScene`).
 4. **Farplane monument** always replays the first Farplane scene and returns him to Mitra. Not fixed; findings in the 2026-11-07 section (switches 10004001/10005001/10009001/10009002, map/event opcodes). Needs the server log of one monument touch.
 5. **Drop Rates button: waiting on the phone test** of 0ed2865 (address moved to the v910 host so the tapped summon is posted). If it still lands on the summon list, ask for `docker logs ffbe 2>&1 | grep DROP-RATES | tail -5`. See "Drop Rates page; Lapis multiplier 5".
-6. **Next task: the missing deal banners** (step-ups with items and discounts, once-per-player 10+1 deals, free dailies…). Research done, nothing built yet: `ios-server/BANNER_DEALS_RESEARCH.md`, and "Deal banners: research" at the end.
+6. **In progress: the missing deal banners.** See "Deal banners: building" at the end (research: `ios-server/BANNER_DEALS_RESEARCH.md`).
 7. **Unconfirmed from 2026-11-07:** expedition offers rework (tutorial chain, then 3 random regular offers, daily free refresh, supercites, Moogle Cave), shop product names (`ios_texts.py` GENERATION 3, `F_TEXT_NV_SHOP_PRODUCT_*` tables).
 
 He still runs the container with `docker compose up -d` (not yet moved to the Unraid template).
@@ -577,6 +577,17 @@ Operator: Global had more banner deals than the server serves (step-ups with ite
 - Findings, sources, how to fetch them, the engine gaps and a build plan: `ios-server/BANNER_DEALS_RESEARCH.md`.
 - Short version: the deals started in 2018. The replay (Dec 2016–Jan 2017 so far) hasn't reached any, so nothing is missing yet; the first gap is about 20 real weeks out. About 250–300 deal banners from 2018–2023 are missing from the data. The engine already supports most of the mechanics. Gaps: per-step pools are ignored by the pull (`summon_pool`), there is no limited/collab pool exclusion, used-up once-per-player banners may not hide, and there is no re-summon or real-money summon.
 - Operator: fine with release order, thinks building by mechanic in big batches is faster; JP history allowed to fill blanks when Global's is lost.
+
+## Deal banners: building (2026-11-07, afternoon)
+
+Operator's decisions: the real-money summons cost 10,000 Lapis (once per player); re-summon is to be built. Built by mechanic, earliest family first.
+
+- **Where:** specs in `source/server/content/deal_specs.json` (short form, one entry per Global deal, with the news page and Wayback capture it came from); `python3 ios-server/devtools/build_deals.py` expands them to `source/server/gacha_deals.json` (ids 95xxxxx, loaded last by `ffbe_gacha.all_banners()`, off with `GACHA_DEALS=0`). Edit the specs, not the JSON.
+- **Engine:** a step's or offer's own `pool` is now used by the pull and the Drop Rates page (`player_state.summon_pool(banner, part)`); `pool_rule {released_by, exclude: [limited, collab]}` filters a banner's default units (`gacha_archive.limited_unit_ids`: units up to Aug 2019 missing from banner 150's permanent list, later ones by seasonal/collab banner names; featured units always stay); a used-up deal (purchase limit or all step-up rounds) is left off the summon list (`gacha_archive.used_up`, only for banners with a `deal` key). Deal banners count as special sets in the rotation (`gacha_rotation._kind` = `deal`).
+- **Art:** each deal names `deal-<id>-main.png`/`-detail.png` with the Wayback URL of Global's news image (`art.urls`). `deal_art.fetch` (startup thread in `serve.py`) downloads missing ones into `server/deal_art/` (`DEAL_ART_ROOT`); a 404 or a deal with no archived image gets a titled stand-in drawn with Pillow. Not yet seen on the phone.
+- **Sources:** the official news pages via the Wayback CDX list plus the wiki's `News/Archives/2016 - 2021` page (date, title, file name for ~3,160 news items; it fills gaps in the CDX list). Step bonuses come from the step images.
+- **Batch 1 (2018), 15 banners:** Lunar New Year 14-day free summon, the cash summon, 30M DL free daily and celebratory summon, April/May/FFXV free dailies, the Sephiroth, Cloud and Raegen step-ups, the 5% rainbow free daily, the Special Rate Up summon, three once-per-player free 10+1s (Fan Festa x2, Kingdom Hearts). The replay reaches the first (Feb 2018 history) around mid-March 2027.
+- **Left out so far:** ticket summons fed by login bonuses (Summer/Halloween/Fan Festa 2018, 2nd Anniversary Ticket), the Special Return ticket summon, the Fan Festa Selection step-up (no details found), FFXV Special Ticket (nothing hands out the ticket).
 
 ## Starting a fresh session
 

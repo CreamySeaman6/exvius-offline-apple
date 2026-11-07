@@ -106,6 +106,8 @@ CERT_DIR = _rooted("certs") if DATA_ROOT else os.path.join(WORK, "harness", "cer
 # The community gacha art (harness/fetch_gacha_community.py; gitignored).
 COMMUNITY_ART_ROOT = _new("COMMUNITY_ART_ROOT", "gacha_community", "art",
                           legacy=os.path.join(LEGACY, "gacha_community", "art"))
+# The DEAL banners' art (gacha_deals.json), downloaded once from the Wayback Machine on startup (deal_art.py).
+DEAL_ART_ROOT = _new("DEAL_ART_ROOT", "deal_art", legacy=os.path.join(WORK, "out", "deal_art"))
 # The JP/Memorial battle oracle. OPTIONAL at serve time: the battle index ships in `server/content/battle/`.
 ORACLE_DIR = _rooted("jp_battle_oracle", "decoded") if DATA_ROOT \
     else os.path.join(LEGACY, "jp_battle_oracle", "decoded")
@@ -129,5 +131,6 @@ __all__ = [
     "REQUESTS_DIR",
     "CERT_DIR",
     "COMMUNITY_ART_ROOT",
+    "DEAL_ART_ROOT",
     "ORACLE_DIR",
 ]

@@ -1,0 +1,157 @@
+{
+ "_meta": {
+  "note": "Global deal banners as printed on the official news pages (read through the Wayback Machine). Source of ios-server/devtools/build_deals.py, which writes gacha_deals.json. Ids 95xxxxx. See ios-server/BANNER_DEALS_RESEARCH.md.",
+  "news": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/<page> (archived at web.archive.org/web/<capture>/<url>)"
+ },
+ "banners": [
+  {
+   "id": 9500001, "family": "free_daily", "name": "Lunar New Year: 14 Days of Free Summons",
+   "release": "2018-02-02", "until": "2018-02-15",
+   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180130_FreeGacha14days_2.html", "archived": "20191113230712"}],
+   "notes": "One free summon a day for 14 days. The page names no pool rule; this uses permanent units released before the start. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500002, "family": "cash", "name": "5★ Guaranteed Cash Summon",
+   "release": "2018-02-14", "until": "2018-02-21",
+   "cost": {"lapis": 10000}, "draws": 11, "guarantee": {"rarity": 5}, "purchase_limit": 1,
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180213_cashGacha_2.html", "archived": "20191113221015"}],
+   "notes": "Global sold this once-per-player 10+1 (5★ guaranteed, no limited units) for real money. Stand-in price 10,000 Lapis (operator's choice, 2026-11-07). Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500003, "family": "free_daily", "name": "30 Million Downloads: Free Daily Summon",
+   "release": "2018-03-01", "until": "2018-03-19",
+   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
+   "pool_rule": {"released_by": "2018-03-02", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20221229190901", "30m_2.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180228_30milDL_enV_12.html", "archived": "20210506091201"}],
+   "notes": "Round 1 of the 30M DL celebration: one free summon a day for 19 days; the pool took in the FFXV and FFIX units added on 3/1-3/2. Art is the celebration's general image."
+  },
+  {
+   "id": 9500004, "family": "free_daily", "name": "30 Million Downloads Celebratory Summon",
+   "release": "2018-03-22", "until": "2018-04-04",
+   "cost": {"free": true}, "draws": 2, "daily_limit": 1,
+   "bonus_choice": [[80, ["moogle5"]], [20, ["moogle10"]]],
+   "art": {"main": ["20221229190901", "30m_2.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180228_30milDL_enV_12.html", "archived": "20210506091201"}],
+   "notes": "Round 2: a daily login ticket gave 2 units (3-5★) and a 4★ Trust Moogle (ALL 5%) or 5★ Trust Moogle (ALL 10%). Served as a free daily summon instead of a ticket. The moogle odds weren't published: 80/20 is a guess."
+  },
+  {
+   "id": 9500005, "family": "free_daily", "name": "FREE DAILY SUMMON (April 2018)",
+   "release": "2018-04-06", "until": "2018-04-19",
+   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
+   "pool_rule": {"released_by": "2018-04-06", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20220809062157", "freeSummonLor_en.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180405_FreeSummon_4.html", "archived": "20191113221137"}],
+   "notes": "One free summon a day; the pool took in the FFX units (Yuna, Lulu, Seymour, Wakka) added 4/6."
+  },
+  {
+   "id": 9500006, "family": "free_daily", "name": "FREE DAILY SUMMON (May 2018)",
+   "release": "2018-05-04", "until": "2018-05-17",
+   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
+   "pool_rule": {"released_by": "2018-05-04", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20220809062157", "freeSummonLor_en.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180502FreeSummon3.html", "archived": "20210510045004"}],
+   "notes": "One free summon a day; the pool took in Nameless Gunner Jake, Emperor Shera, Ozetta, Camille and Riley."
+  },
+  {
+   "id": 9500010, "family": "step_up", "name": "STEP UP SUMMON (Sephiroth / Lila)",
+   "release": "2018-05-11", "until": "2018-05-24",
+   "featured": ["Sephiroth", "Lila"], "lap_limit": 3,
+   "steps": [
+    {"lapis": 5000, "draws": 11, "bonus": ["moogle10"]},
+    {"lapis": 5000, "draws": 11, "guarantee": {"unit": "Shylt"}},
+    {"lapis": 5000, "draws": 11, "guarantee": {"rarity": 5}},
+    {"lapis": 5000, "draws": 11, "bonus": ["ticket5_10"]},
+    {"lapis": 5000, "draws": 11, "guarantee": {"units": ["Sephiroth", "Lila"]}}
+   ],
+   "art": {"main": ["20220425205923", "en_maintop.png"], "detail": ["20220425205942", "en_mainbig.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180508StepUp5.html", "archived": "20191120223308"}],
+   "notes": "Global's first step-up: 5 steps of 5000 Lapis for 11 units, three rounds per player. Step bonuses read from the step image: 5★ Trust Moogle (ALL 10%), 4★ Shylt, a 5★ unit, a 10% 5★ Summon Ticket, then Sephiroth or Lila."
+  },
+  {
+   "id": 9500011, "family": "step_up", "name": "STEP UP SUMMON - CLOUD SPECIAL!",
+   "release": "2018-05-25", "until": "2018-06-07",
+   "featured": ["Cloud", "Elfreeda"], "lap_limit": 3,
+   "steps": [
+    {"lapis": 5000, "draws": 11, "bonus": ["moogle10"]},
+    {"lapis": 5000, "draws": 11, "guarantee": {"unit": "William"}},
+    {"lapis": 5000, "draws": 11, "guarantee": {"rarity": 5}},
+    {"lapis": 5000, "draws": 11, "bonus": ["ticket5_10"]},
+    {"lapis": 5000, "draws": 11, "guarantee": {"units": ["Cloud", "Elfreeda"]}}
+   ],
+   "art": {"detail": ["20220806134253", "en_TOPmainbigCL.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180523StepUpCloud2.html", "archived": "20210506093552"}],
+   "notes": "Same format as the Sephiroth step-up: 5 x 5000 Lapis, three rounds. Steps from the step image: 5★ Trust Moogle (ALL 10%), 4★ William, a 5★ unit, a 10% 5★ Summon Ticket, then Cloud or Elfreeda. The list banner isn't archived; the step image is used for both."
+  },
+  {
+   "id": 9500012, "family": "step_up", "name": "STEP UP SUMMON (Raegen)",
+   "release": "2018-07-13", "until": "2018-07-26",
+   "featured": ["Raegen"], "featured_share": 0.333, "lap_limit": 1,
+   "steps": [
+    {"lapis": 500, "draws": 1, "featured_x": 1.5},
+    {"lapis": 1000, "draws": 2, "bonus": ["moogle5"]},
+    {"lapis": 1500, "draws": 4, "bonus": ["ticket5_30"]},
+    {"lapis": 3000, "draws": 6, "bonus": ["moogle10"]},
+    {"lapis": 5000, "draws": 11, "featured_x": 3}
+   ],
+   "art": {"main": ["20220808084637", "20180712StepUpSkinny2.png"], "detail": ["20220808070954", "20180712mainbigStepup.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180712StepUp7.html", "archived": "20210506103716"}],
+   "notes": "The discounted step-up: 500/1000/1500/3000/5000 Lapis for 1/2/4/6/11 units, one round. Step 1 had 1.5x and step 5 5x the chance of a 5★ Raegen; Raegen's normal share of 5★ draws (a third) is raised 1.5x and 3x (5x would make every 5★ Raegen)."
+  },
+  {
+   "id": 9500013, "family": "free_daily", "name": "5% Rainbow Rate Free Daily Summon",
+   "release": "2018-08-03", "until": "2018-09-05",
+   "cost": {"free": true}, "draws": 1, "daily_limit": 1, "rates": [0.05, 0.19, 0.76],
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180731RateUpSummonVote4.html", "archived": "20191120213841"}],
+   "notes": "The Player's Voice prize: a free daily summon at a 5% rainbow rate, no limited units. Banner art not archived: titled stand-in."
+  },
+  {
+   "id": 9500014, "family": "rate_up", "name": "SPECIAL RATE UP SUMMON",
+   "release": "2018-08-10", "until": "2018-08-23",
+   "cost": {"lapis": 5000}, "draws": 11, "purchase_limit": 5, "rates": [0.05, 0.19, 0.76],
+   "pool_rule": {"released_by": "2018-08-10", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20220806123147", "5rateupnarul3.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180807NarulGachaRainbow5RateUp9.html", "archived": "20201111223130"}],
+   "notes": "5% rainbow rate on 11 summons (5000 Lapis), five per player; every 5★ up to the Nalu batch except limited units."
+  },
+  {
+   "id": 9500015, "family": "first_10_1", "name": "Free 10+1 Summon featuring Fan Festa Units (Malphasie / Circe)",
+   "release": "2018-09-28", "until": "2018-10-11",
+   "featured": ["Malphasie", "Circe"],
+   "cost": {"free": true}, "draws": 11, "purchase_limit": 1,
+   "pool_rule": {"released_by": "2018-09-30", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20220721204521", "20180927fanfesta11summon.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20180927FanFesta11FreeSummon5.html", "archived": "20210506101522"}],
+   "notes": "A free 10+1, once per player, with raised rates for Malphasie and Circe."
+  },
+  {
+   "id": 9500016, "family": "free_daily", "name": "DAILY FREE RARE SUMMON (FFXV)",
+   "release": "2018-10-05", "until": "2018-10-11",
+   "cost": {"free": true}, "draws": 1, "daily_limit": 1,
+   "pool_rule": {"released_by": "2018-10-04", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20220809062157", "freeSummonLor_en.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/FFXVdailyfreesummon3.html", "archived": "20210510050418"}],
+   "notes": "One free summon a day for a week, permanent units added before 10/5."
+  },
+  {
+   "id": 9500017, "family": "first_10_1", "name": "Free 10+1 Summon featuring Fan Festa Units (Beryl / Ellesperis)",
+   "release": "2018-11-16", "until": "2018-11-29",
+   "featured": ["Beryl", "Ellesperis"],
+   "cost": {"free": true}, "draws": 11, "purchase_limit": 1,
+   "pool_rule": {"released_by": "2018-11-15", "exclude": ["limited", "collab"]},
+   "art": {"main": ["20221003111623", "20181116fanfesta1.png"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20181116FanFesta10plus1.html", "archived": "20221003111548"}],
+   "notes": "A free 10+1, once per player, with raised rates for Beryl and Ellesperis."
+  },
+  {
+   "id": 9500018, "family": "first_10_1", "name": "Free 10+1 Summon featuring Kingdom Hearts Units",
+   "release": "2018-12-28", "until": "2019-01-10",
+   "featured": ["Sora", "Cloud (KH)"],
+   "cost": {"free": true}, "draws": 11, "purchase_limit": 1,
+   "pool_rule": {"released_by": "2018-12-27", "exclude": ["limited", "collab"]},
+   "sources": [{"url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20181226KH11FreeSummon.html", "archived": "20191113215331"}],
+   "notes": "A free 10+1, once per player, with raised rates for Sora and Cloud (KH). Banner art not archived: titled stand-in."
+  }
+ ]
+}

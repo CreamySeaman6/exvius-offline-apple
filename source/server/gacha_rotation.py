@@ -98,6 +98,8 @@ def _kind(banner: dict) -> str:
         return 'select'
     if banner.get('steps'):
         return 'step-up'
+    if banner.get('deal'):
+        return 'deal'      # gacha_deals.json: free dailies, once-per-player 10+1s, rate-ups...
     if banner.get('boxes'):
         return 'box'
     cost = banner.get('cost')

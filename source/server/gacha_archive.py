@@ -85,6 +85,62 @@ def _collaboration(banner):
     return next((name for name in COLLABORATIONS if name.lower() in search.lower()), None)
 
 
+SEASONAL_WORDS = ('halloween', 'christmas', 'holiday', 'festive', 'summer', 'swimsuit', 'valentine',
+                  'bride', 'wedding', 'lunar new year', 'new year', 'spring', 'winter', 'easter')
+LIMITED_SERIES = ('ffxv', 'final fantasy xv', 'ffvii remake', 'ff7r', 'final fantasy vii remake',
+                  'ffx-2', 'ffxiv', 'ff14', 'dissidia', 'ff brave exvius heroes')
+
+
+def limited_unit_ids() -> set:
+    """Units that came only from limited-time banners: seasonal, collaborations (incl. Final Fantasy
+    collabs such as FFXV), or marked `community.limited`. Most Global deal banners drew "units up to
+    <date>, excluding limited/collab units" (`pool_rule.exclude`). A heuristic from banner names: a unit
+    also featured on any ordinary banner is not counted (2026-11-07)."""
+    global _LIMITED
+    if _LIMITED is not None:
+        return _LIMITED
+    from ffbe_gacha import all_banners
+    limited, ordinary = set(), set()
+    for b in all_banners():
+        com = b.get('community') or {}
+        ids = {str(u) for u in (com.get('unit_ids') or [])}
+        for tier in ((b.get('pool') or {}).get('tiers') or [] if isinstance(b.get('pool'), dict) else []):
+            ids |= {str(u) for u in (tier.get('featured') or [])}
+        if not ids:
+            continue
+        search = (str(b.get('name', '')) + ' ' + str((b.get('art') or {}).get('banner', ''))).lower()
+        if (com.get('limited') or _collaboration(b) or any(w in search for w in SEASONAL_WORDS)
+                or any(w in search for w in LIMITED_SERIES)):
+            limited |= ids
+        else:
+            ordinary |= ids
+    limited -= ordinary
+    # Up to August 2019 there is a better list: banner 150 (40M DL Step-Up) carries every recovered
+    # PERMANENT Global unit released by then, so any summonable unit from that period missing from it was
+    # limited (FFVII, FFXV, the seasonal units...). Later units fall back to the name rule above.
+    by_id = {str(b['id']): b for b in all_banners()}
+    permanent = set()
+    for ref in ('150', '9100203', '49'):
+        pool = (by_id.get(ref) or {}).get('pool') or {}
+        for tier in (pool.get('tiers') or [] if isinstance(pool, dict) else []):
+            permanent |= {str(u) for u in (tier.get('units') or [])}
+    if permanent:
+        import replay
+        from player_state import unit_roots_by_rarity
+        dates = replay.unit_dates()
+        roots = unit_roots_by_rarity()
+        for ids in (roots.get('3', []), roots.get('4', []), roots.get('5', [])):
+            for uid in ids:
+                day = dates.get(str(uid))
+                if day and day <= '2019-08-31' and str(uid) not in permanent and not str(uid).startswith('9'):
+                    limited.add(str(uid))
+    _LIMITED = limited
+    return _LIMITED
+
+
+_LIMITED = None
+
+
 def _released(banner):
     try:
         release = (banner.get('community') or {}).get('release') or banner['release']
@@ -176,6 +232,20 @@ def held_ticket_ids(player, banners):
     return out
 
 
+def used_up(player, banner) -> bool:
+    """True when a deal banner can't be pulled again by this save: its per-player purchase limit is
+    reached, or (for a deal step-up) all its rounds are done. Only deal banners (`deal` key) are hidden."""
+    if not banner.get('deal') or player is None:
+        return False
+    gacha = (getattr(player, 'data', None) or {}).get('gacha', {})
+    state_id = str(banner.get('state_id', banner['id']))
+    limit = int(banner.get('purchase_limit') or 0)
+    if limit and int(((gacha.get('user_banners') or {}).get(state_id) or {}).get('total_exe_count', 0)) >= limit:
+        return True
+    laps = int(banner.get('lap_limit') or 0)
+    return bool(laps and int((gacha.get('completed_laps') or {}).get(state_id, 0)) >= laps)
+
+
 def visible_banners(player, banners):
     from gacha_rotation import enabled, rotation_ids
     if enabled():
@@ -183,6 +253,10 @@ def visible_banners(player, banners):
     else:
         ids = selected_group(player, catalogue(banners))['ids']
     by_id = {str(banner['id']): banner for banner in banners}
+    # A once-per-player deal (a "first 10+1" summon, the cash summon) leaves the list once it is used up,
+    # as on Global, rather than staying greyed out (2026-11-07, deal banners). Same for a step-up whose
+    # rounds are all done.
+    ids = [bid for bid in ids if bid in by_id and not used_up(player, by_id[bid])]
     # GL9 sorts schedule rows by descending display order. Publish the archive's
     # series/date order there, rather than preserving unrelated old campaign ranks.
     return [dict(by_id[bid], schedule=dict(by_id[bid].get('schedule') or {},

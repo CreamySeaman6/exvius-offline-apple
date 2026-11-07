@@ -60,6 +60,8 @@ def configure_engine() -> None:
                       ('CDN_ROOT', native), ('CDN_OVERLAY', native)):
         os.environ[key] = str(path)
     os.environ['FFBE_DATA'] = str(ROOT)
+    # The deal banners' art, downloaded once on startup (source/server/deal_art.py).
+    os.environ.setdefault('DEAL_ART_ROOT', str(ROOT / 'deal_art'))
     os.environ['OUT_REQUESTS'] = str(ROOT / 'requests')
     for key, value in (('GACHA_ONLY', 'all'), ('GACHA_CAMPAIGN', 'all'), ('EXVIUS_SUMMON_ARCHIVE', '1'),
                        ('EXVIUS_EVENT_ARCHIVE', '1'), ('GACHA_STANDARD', '1'), ('GACHA_CATALOGUE', '1'),
@@ -319,6 +321,11 @@ def main() -> int:
         event_archive.fetch_added_art(log=log)   # banners of events added by event_history.json (once)
         ios_tables.art()
     threading.Thread(target=build_art, name='ios-art', daemon=True).start()
+
+    def fetch_deal_art():
+        import deal_art
+        deal_art.fetch(log=log)   # the deal banners' art (gacha_deals.json), once; see source/server/deal_art.py
+    threading.Thread(target=fetch_deal_art, name='deal-art', daemon=True).start()
     tls = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     tls.minimum_version = ssl.TLSVersion.TLSv1_2
     tls.load_cert_chain(paths['leaf_chain'], paths['leaf_key'])
