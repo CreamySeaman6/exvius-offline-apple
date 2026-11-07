@@ -10606,6 +10606,1115 @@
     ]
    },
    "id": 9503123
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-01-24",
+   "until": "2022-01-26",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220120NeoRainbowRevolution.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-01-20"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-01-20). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503200
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-01-31",
+   "until": "2022-02-02",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220127NeoRainbowRevolution.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-01-27"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-01-27). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503201
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-02-21",
+   "until": "2022-02-23",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-02-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220217NeoRainbowRevolution.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-02-17"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-02-17). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503202
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-03-14",
+   "until": "2022-03-16",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220310NeoRainbowRevolution.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-03-10"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-03-10). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503203
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-04-18",
+   "until": "2022-04-20",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-14",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220414NeoRainbowRevolution.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-04-14"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-04-14). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503204
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-05-16",
+   "until": "2022-05-18",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-12",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220512NeoRainbowRevolution.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-05-12"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-05-12). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503205
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-06-20",
+   "until": "2022-06-22",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220616NeoRainbowRevolutionSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-06-16"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-06-16). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503206
+  },
+  {
+   "family": "neo_rainbow",
+   "name": "Neo Rainbow Revolution Summon",
+   "release": "2022-09-05",
+   "until": "2022-09-07",
+   "lap_limit": 4,
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "steps": [
+    {
+     "lapis": 500,
+     "draws": 1
+    },
+    {
+     "lapis": 1000,
+     "draws": 2,
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 6,
+     "bonus": [
+      "select5*5"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-09-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20221018101704",
+     "20220127NeoRainbowRevolutionSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220901NeoRainbowRevolutionSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-09-01"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-09-01). Dates follow the Oct 2022 run (Monday-Wednesday after the news), contents as the archived runs: 500/1000/3000 Lapis for 1/2/6 units, all 5★ or NV, a 5★ Trust Moogle (ALL 50%) at step 2 and five 5★ Select Summon Tickets at step 3; 4 rounds per player.",
+   "id": 9503207
+  },
+  {
+   "family": "neo_value",
+   "name": "March Neo Rainbow Value Summon",
+   "release": "2022-03-17",
+   "until": "2022-03-23",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220317MarchNeoRainbowValueSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-03-17"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-03-17). Contents and dates as the archived Black Friday 2021 and New Year 2022 runs: one 10+5 with five NV and ten 5★/NV guaranteed and two Transcension Pearls, Thursday to the next Wednesday. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in.",
+   "id": 9503208
+  },
+  {
+   "family": "neo_value",
+   "name": "April Neo Rainbow Value Summon",
+   "release": "2022-04-28",
+   "until": "2022-05-04",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-28",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220428AprilNeoRainbowValueSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-04-28"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-04-28). Contents and dates as the archived Black Friday 2021 and New Year 2022 runs: one 10+5 with five NV and ten 5★/NV guaranteed and two Transcension Pearls, Thursday to the next Wednesday. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in.",
+   "id": 9503209
+  },
+  {
+   "family": "neo_value",
+   "name": "June Neo Rainbow Value Summon",
+   "release": "2022-06-02",
+   "until": "2022-06-08",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202050602JuneNeoRainbowValueSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-06-02"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-06-02). Contents and dates as the archived Black Friday 2021 and New Year 2022 runs: one 10+5 with five NV and ten 5★/NV guaranteed and two Transcension Pearls, Thursday to the next Wednesday. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in.",
+   "id": 9503210
+  },
+  {
+   "family": "neo_value",
+   "name": "July Neo Rainbow Value Summon",
+   "release": "2022-07-07",
+   "until": "2022-07-13",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-07-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220707JulyNeoRainbowValueSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-07-07"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-07-07). Contents and dates as the archived Black Friday 2021 and New Year 2022 runs: one 10+5 with five NV and ten 5★/NV guaranteed and two Transcension Pearls, Thursday to the next Wednesday. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in.",
+   "id": 9503211
+  },
+  {
+   "family": "neo_value",
+   "name": "July Neo Rainbow Value Summon II",
+   "release": "2022-07-28",
+   "until": "2022-08-03",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-07-28",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220728JulyNeoRainbowSummonII.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-07-28"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-07-28). Contents and dates as the archived Black Friday 2021 and New Year 2022 runs: one 10+5 with five NV and ten 5★/NV guaranteed and two Transcension Pearls, Thursday to the next Wednesday. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in.",
+   "id": 9503212
+  },
+  {
+   "family": "neo_value",
+   "name": "August Neo Rainbow Value Summon",
+   "release": "2022-08-25",
+   "until": "2022-08-31",
+   "rates": [
+    0.03,
+    0.97,
+    0,
+    0
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 15,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 10
+   },
+   "slots": [
+    {
+     "count": 5,
+     "min_rarity": 7,
+     "label": "NV"
+    }
+   ],
+   "bonus": [
+    "pearl*2"
+   ],
+   "pool_rule": {
+    "released_by": "2022-08-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220825AugustNeoRainbowValueSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-08-25"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-08-25). Contents and dates as the archived Black Friday 2021 and New Year 2022 runs: one 10+5 with five NV and ten 5★/NV guaranteed and two Transcension Pearls, Thursday to the next Wednesday. Real money on Global: stand-in 10,000 Lapis, once per player. Banner art not archived: titled stand-in.",
+   "id": 9503213
+  },
+  {
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2022-01-17",
+   "until": "2022-01-19",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123155231",
+     "20211125NVGuaranteedStepUpSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220111NVGuaranteedStepUpSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-01-13"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-01-13). Dates and contents as the 2021 runs (Monday-Wednesday after the news; step 1 4000 Lapis 8+3 with three 5★/NV and 50 Super Trust Moogle Exchange Tickets, step 2 6000 Lapis 10+1 with ten 5★/NV plus one NV and a Transcension Pearl; 2 rounds per player). Art is the Nov 2021 banner (it says Cyber Monday).",
+   "id": 9503214
+  },
+  {
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2022-04-11",
+   "until": "2022-04-13",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123155231",
+     "20211125NVGuaranteedStepUpSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220405NVGuaranteedStepUpSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-04-07"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-04-07). Dates and contents as the 2021 runs (Monday-Wednesday after the news; step 1 4000 Lapis 8+3 with three 5★/NV and 50 Super Trust Moogle Exchange Tickets, step 2 6000 Lapis 10+1 with ten 5★/NV plus one NV and a Transcension Pearl; 2 rounds per player). Art is the Nov 2021 banner (it says Cyber Monday).",
+   "id": 9503215
+  },
+  {
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2022-05-23",
+   "until": "2022-05-25",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123155231",
+     "20211125NVGuaranteedStepUpSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220519NVGuaranteedStepUpSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-05-19"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-05-19). Dates and contents as the 2021 runs (Monday-Wednesday after the news; step 1 4000 Lapis 8+3 with three 5★/NV and 50 Super Trust Moogle Exchange Tickets, step 2 6000 Lapis 10+1 with ten 5★/NV plus one NV and a Transcension Pearl; 2 rounds per player). Art is the Nov 2021 banner (it says Cyber Monday).",
+   "id": 9503216
+  },
+  {
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2022-06-27",
+   "until": "2022-06-29",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123155231",
+     "20211125NVGuaranteedStepUpSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220623NVGuaranteedStepUpSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-06-23"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-06-23). Dates and contents as the 2021 runs (Monday-Wednesday after the news; step 1 4000 Lapis 8+3 with three 5★/NV and 50 Super Trust Moogle Exchange Tickets, step 2 6000 Lapis 10+1 with ten 5★/NV plus one NV and a Transcension Pearl; 2 rounds per player). Art is the Nov 2021 banner (it says Cyber Monday).",
+   "id": 9503217
+  },
+  {
+   "family": "nv_guaranteed_step_up",
+   "name": "NV Guaranteed Step-Up Summon",
+   "release": "2022-09-12",
+   "until": "2022-09-14",
+   "lap_limit": 2,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      "super_moogle_ex*50"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-09-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20211123155231",
+     "20211125NVGuaranteedStepUpSummon.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220906NVGuaranteedStepUpSummon.html",
+     "archived": "not archived"
+    },
+    {
+     "url": "https://exvius.fandom.com/wiki/News/Archives",
+     "archived": "news date 2022-09-08"
+    }
+   ],
+   "notes": "Not archived; known from the wiki's news archive (news 2022-09-08). Dates and contents as the 2021 runs (Monday-Wednesday after the news; step 1 4000 Lapis 8+3 with three 5★/NV and 50 Super Trust Moogle Exchange Tickets, step 2 6000 Lapis 10+1 with ten 5★/NV plus one NV and a Transcension Pearl; 2 rounds per player). Art is the Nov 2021 banner (it says Cyber Monday).",
+   "id": 9503218
   }
  ]
 }
