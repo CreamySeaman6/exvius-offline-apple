@@ -3298,6 +3298,3346 @@
     }
    ],
    "notes": "Five steps of 5000 Lapis (10+1, 9+2, 9+2, 8+3, 10+1) with 1/2/2/3 5★-or-NV guaranteed, a guaranteed NV at step 5, Super Trust Moogle Exchange Tickets x10 at steps 1-3 and x20 at step 4; one round per player."
+  },
+  {
+   "id": 9501001,
+   "family": "treasure",
+   "name": "Treasure Summon (Faris -Neo Vision-)",
+   "release": "2021-03-18",
+   "until": "2021-03-31",
+   "featured": [
+    "Faris -Neo Vision-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-03-18",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210316FFVTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501002,
+   "family": "treasure",
+   "name": "Treasure Summon (Melia)",
+   "release": "2021-04-01",
+   "until": "2021-04-14",
+   "featured": [
+    "Melia"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210330FFBESpringTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501003,
+   "family": "treasure",
+   "name": "Treasure Summon (Melo)",
+   "release": "2021-04-08",
+   "until": "2021-04-21",
+   "featured": [
+    "Melo"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210406NVMeloTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501004,
+   "family": "treasure",
+   "name": "Treasure Summon (Cobalt Blade Noctis)",
+   "release": "2021-04-15",
+   "until": "2021-04-28",
+   "featured": [
+    "Cobalt Blade Noctis"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210413NVCBNoctisTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501005,
+   "family": "treasure",
+   "name": "Treasure Summon (King Behemy)",
+   "release": "2021-04-22",
+   "until": "2021-05-05",
+   "featured": [
+    "King Behemy"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210420NVKingBehemyTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501006,
+   "family": "treasure",
+   "name": "Treasure Summon (Oracle Maiden Lunafreya)",
+   "release": "2021-04-29",
+   "until": "2021-05-12",
+   "featured": [
+    "Oracle Maiden Lunafreya"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-04-29",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210427FFXVNVOMLunafreyaTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501007,
+   "family": "treasure",
+   "name": "Treasure Summon (Vermilion Blade Ardyn)",
+   "release": "2021-05-06",
+   "until": "2021-05-19",
+   "featured": [
+    "Vermilion Blade Ardyn"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-05-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210504NVVBArdynTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501008,
+   "family": "treasure",
+   "name": "Treasure Summon (Edward Elric / Alphonse Elric / Edward & Alphonse Elric)",
+   "release": "2021-05-13",
+   "until": "2021-05-26",
+   "featured": [
+    "Edward Elric",
+    "Alphonse Elric",
+    "Edward & Alphonse Elric"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-05-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210511NVFMATreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501009,
+   "family": "treasure",
+   "name": "Treasure Summon (Lightning-Fast Zidane)",
+   "release": "2021-05-20",
+   "until": "2021-06-02",
+   "featured": [
+    "Lightning-Fast Zidane"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-05-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210518FFIXNVLFZidaneTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501010,
+   "family": "treasure",
+   "name": "Treasure Summon (Kaktiria)",
+   "release": "2021-05-27",
+   "until": "2021-06-09",
+   "featured": [
+    "Kaktiria"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-05-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210525FFBEKaktiriaTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501011,
+   "family": "treasure",
+   "name": "Treasure Summon (Pure-Hearted Vivi)",
+   "release": "2021-06-03",
+   "until": "2021-06-16",
+   "featured": [
+    "Pure-Hearted Vivi"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-03",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210601NVPHViviTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501012,
+   "family": "treasure",
+   "name": "Treasure Summon (Chorale / Diverti)",
+   "release": "2021-06-10",
+   "until": "2021-06-23",
+   "featured": [
+    "Chorale",
+    "Diverti"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210608NVChoraleDivertiTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501013,
+   "family": "treasure",
+   "name": "Treasure Summon (Noppy)",
+   "release": "2021-06-17",
+   "until": "2021-06-30",
+   "featured": [
+    "Noppy"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210615NVNoppyTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501014,
+   "family": "treasure",
+   "name": "Treasure Summon (Royal Puppeteer Aphmau)",
+   "release": "2021-06-24",
+   "until": "2021-07-07",
+   "featured": [
+    "Royal Puppeteer Aphmau"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-06-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210622NVRPAphmauTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501015,
+   "family": "treasure",
+   "name": "Treasure Summon (Louise / White Dragon Ling)",
+   "release": "2021-07-01",
+   "until": "2021-07-14",
+   "featured": [
+    "Louise",
+    "White Dragon Ling"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-01",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210629FFBELouiseWDLingTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501016,
+   "family": "treasure",
+   "name": "Treasure Summon (Guardian Blade Charlotte / Emperor Vlad)",
+   "release": "2021-07-08",
+   "until": "2021-07-21",
+   "featured": [
+    "Guardian Blade Charlotte",
+    "Emperor Vlad"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-08",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210706CharlotteVladTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501017,
+   "family": "treasure",
+   "name": "Treasure Summon (Lord of the Seas Nichol)",
+   "release": "2021-07-15",
+   "until": "2021-07-28",
+   "featured": [
+    "Lord of the Seas Nichol"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210713LSNicholTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501018,
+   "family": "treasure",
+   "name": "Treasure Summon (Cetra Descendant Aerith)",
+   "release": "2021-07-21",
+   "until": "2021-08-03",
+   "featured": [
+    "Cetra Descendant Aerith"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210719CDAerithTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501019,
+   "family": "treasure",
+   "name": "Treasure Summon (Avalanche's Tifa)",
+   "release": "2021-07-29",
+   "until": "2021-08-11",
+   "featured": [
+    "Avalanche's Tifa"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-29",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210727ATifaTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501020,
+   "family": "treasure",
+   "name": "Treasure Summon (Legendary Hero Sephiroth)",
+   "release": "2021-08-05",
+   "until": "2021-08-18",
+   "featured": [
+    "Legendary Hero Sephiroth"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-08-05",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210803LHSephirothTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501021,
+   "family": "treasure",
+   "name": "Treasure Summon (Skye)",
+   "release": "2021-08-12",
+   "until": "2021-08-25",
+   "featured": [
+    "Skye"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-08-12",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210810SkyeTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501022,
+   "family": "treasure",
+   "name": "Treasure Summon (Triumphant General Celes)",
+   "release": "2021-08-19",
+   "until": "2021-09-01",
+   "featured": [
+    "Triumphant General Celes"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-08-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210817TGCelesTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501023,
+   "family": "treasure",
+   "name": "Treasure Summon (Ygni)",
+   "release": "2021-08-26",
+   "until": "2021-09-08",
+   "featured": [
+    "Ygni"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 1
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-08-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210824YgniTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 10+1 with 1 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501024,
+   "family": "treasure",
+   "name": "Treasure Summon (Doma Samurai Cyan)",
+   "release": "2021-09-02",
+   "until": "2021-09-15",
+   "featured": [
+    "Doma Samurai Cyan"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210831DSCyanTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501025,
+   "family": "treasure",
+   "name": "Treasure Summon (Cressnik / Bulwark & the Melodic Mascots)",
+   "release": "2021-09-09",
+   "until": "2021-09-22",
+   "featured": [
+    "Cressnik",
+    "Bulwark & the Melodic Mascots"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210907CressnikBulwarkTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501026,
+   "family": "treasure",
+   "name": "Treasure Summon (Ice Reaper Kurasame)",
+   "release": "2021-09-16",
+   "until": "2021-09-29",
+   "featured": [
+    "Ice Reaper Kurasame"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210914IRKurasameTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501027,
+   "family": "treasure",
+   "name": "Treasure Summon (Sage of Thunder Sakura)",
+   "release": "2021-09-22",
+   "until": "2021-10-05",
+   "featured": [
+    "Sage of Thunder Sakura"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-22",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210920STSakuraTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501028,
+   "family": "treasure",
+   "name": "Treasure Summon (Lara Croft -Neo Vision-)",
+   "release": "2021-09-30",
+   "until": "2021-10-13",
+   "featured": [
+    "Lara Croft -Neo Vision-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210928LaraCroftTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501029,
+   "family": "treasure",
+   "name": "Treasure Summon (Roca)",
+   "release": "2021-10-07",
+   "until": "2021-10-20",
+   "featured": [
+    "Roca"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211005RocaTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501030,
+   "family": "treasure",
+   "name": "Treasure Summon (Paus)",
+   "release": "2021-10-14",
+   "until": "2021-10-27",
+   "featured": [
+    "Paus"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-14",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211012PausTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501031,
+   "family": "treasure",
+   "name": "Treasure Summon (Olivera)",
+   "release": "2021-10-21",
+   "until": "2021-11-03",
+   "featured": [
+    "Olivera"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211019OliveraTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501032,
+   "family": "treasure",
+   "name": "Treasure Summon (Full Moon Karten)",
+   "release": "2021-10-28",
+   "until": "2021-11-10",
+   "featured": [
+    "Full Moon Karten"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-28",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211026FMKartenTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501033,
+   "family": "treasure",
+   "name": "Treasure Summon (Ninja Master Hawkeye / Angela)",
+   "release": "2021-11-06",
+   "until": "2021-11-19",
+   "featured": [
+    "Ninja Master Hawkeye",
+    "Angela"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211104NMHawkeyeandAngelaTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501034,
+   "family": "treasure",
+   "name": "Treasure Summon (Riesz / Duran)",
+   "release": "2021-11-11",
+   "until": "2021-11-24",
+   "featured": [
+    "Riesz",
+    "Duran"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-11",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211109RieszDuranTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501035,
+   "family": "treasure",
+   "name": "Treasure Summon (Maeve)",
+   "release": "2021-11-18",
+   "until": "2021-12-01",
+   "featured": [
+    "Maeve"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-18",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211116MaeveTreasureSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501036,
+   "family": "treasure",
+   "name": "Treasure Summon (Summoner Yuna)",
+   "release": "2021-11-25",
+   "until": "2021-12-08",
+   "featured": [
+    "Summoner Yuna"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211123SYunaTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502001,
+   "family": "fortune",
+   "name": "Fortune Summon (Summoner Yuna)",
+   "release": "2021-11-25",
+   "until": "2021-12-08",
+   "featured": [
+    "Summoner Yuna"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2021-11-25",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211123SYunaTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501037,
+   "family": "treasure",
+   "name": "Treasure Summon (Legendary Guardian Auron)",
+   "release": "2021-12-02",
+   "until": "2021-12-15",
+   "featured": [
+    "Legendary Guardian Auron"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211130LGAuronTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502002,
+   "family": "fortune",
+   "name": "Fortune Summon (Legendary Guardian Auron)",
+   "release": "2021-12-02",
+   "until": "2021-12-15",
+   "featured": [
+    "Legendary Guardian Auron"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2021-12-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211130LGAuronTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501038,
+   "family": "treasure",
+   "name": "Treasure Summon (King of Destruction Zoma / Alena & Marquis de Léon)",
+   "release": "2021-12-16",
+   "until": "2021-12-29",
+   "featured": [
+    "King of Destruction Zoma",
+    "Alena & Marquis de Léon"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211214DQMSLTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502003,
+   "family": "fortune",
+   "name": "Fortune Summon (King of Destruction Zoma / Alena & Marquis de Léon)",
+   "release": "2021-12-16",
+   "until": "2021-12-29",
+   "featured": [
+    "King of Destruction Zoma",
+    "Alena & Marquis de Léon"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2021-12-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211214DQMSLTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501039,
+   "family": "treasure",
+   "name": "Treasure Summon (Taivas)",
+   "release": "2022-01-06",
+   "until": "2022-01-19",
+   "featured": [
+    "Taivas"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220104TaivasTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502004,
+   "family": "fortune",
+   "name": "Fortune Summon (Taivas)",
+   "release": "2022-01-06",
+   "until": "2022-01-19",
+   "featured": [
+    "Taivas"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-01-06",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220104TaivasTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501040,
+   "family": "treasure",
+   "name": "Treasure Summon (Tulien)",
+   "release": "2022-01-13",
+   "until": "2022-01-26",
+   "featured": [
+    "Tulien"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220111TulienTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502005,
+   "family": "fortune",
+   "name": "Fortune Summon (Tulien)",
+   "release": "2022-01-13",
+   "until": "2022-01-26",
+   "featured": [
+    "Tulien"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-01-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220111TulienTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501041,
+   "family": "treasure",
+   "name": "Treasure Summon (Summoner Lenna / Warrior of Dawn Dorgann)",
+   "release": "2022-01-20",
+   "until": "2022-02-02",
+   "featured": [
+    "Summoner Lenna",
+    "Warrior of Dawn Dorgann"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220118FFVTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502006,
+   "family": "fortune",
+   "name": "Fortune Summon (Summoner Lenna / Warrior of Dawn Dorgann)",
+   "release": "2022-01-20",
+   "until": "2022-02-02",
+   "featured": [
+    "Summoner Lenna",
+    "Warrior of Dawn Dorgann"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-01-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220118FFVTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501042,
+   "family": "treasure",
+   "name": "Treasure Summon (Divine Beast Chow)",
+   "release": "2022-01-27",
+   "until": "2022-02-09",
+   "featured": [
+    "Divine Beast Chow"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220125DBChowTreasureandFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502007,
+   "family": "fortune",
+   "name": "Fortune Summon (Divine Beast Chow)",
+   "release": "2022-01-27",
+   "until": "2022-02-09",
+   "featured": [
+    "Divine Beast Chow"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-01-27",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220125DBChowTreasureandFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501043,
+   "family": "treasure",
+   "name": "Treasure Summon (Id / Grahf)",
+   "release": "2022-02-10",
+   "until": "2022-02-23",
+   "featured": [
+    "Id",
+    "Grahf"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 1,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-02-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220208XenogearsTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 1 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502008,
+   "family": "fortune",
+   "name": "Fortune Summon (Id / Grahf)",
+   "release": "2022-02-10",
+   "until": "2022-02-23",
+   "featured": [
+    "Id",
+    "Grahf"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-02-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220208XenogearsTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501044,
+   "family": "treasure",
+   "name": "Treasure Summon (Dragoon Kain / Summoner Rydia)",
+   "release": "2022-02-17",
+   "until": "2022-03-02",
+   "featured": [
+    "Dragoon Kain",
+    "Summoner Rydia"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-02-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220215FFVTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502009,
+   "family": "fortune",
+   "name": "Fortune Summon (Dragoon Kain / Summoner Rydia)",
+   "release": "2022-02-17",
+   "until": "2022-03-02",
+   "featured": [
+    "Dragoon Kain",
+    "Summoner Rydia"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-02-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220215FFVTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501045,
+   "family": "treasure",
+   "name": "Treasure Summon (Storm Seeker Esther)",
+   "release": "2022-02-24",
+   "until": "2022-03-09",
+   "featured": [
+    "Storm Seeker Esther"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-02-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220222SSEstherTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502010,
+   "family": "fortune",
+   "name": "Fortune Summon (Storm Seeker Esther)",
+   "release": "2022-02-24",
+   "until": "2022-03-09",
+   "featured": [
+    "Storm Seeker Esther"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-02-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220222SSEstherTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501046,
+   "family": "treasure",
+   "name": "Treasure Summon (Ninja Edge)",
+   "release": "2022-03-03",
+   "until": "2022-03-16",
+   "featured": [
+    "Ninja Edge"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-03",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220301FFIVNEdgeTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502011,
+   "family": "fortune",
+   "name": "Fortune Summon (Ninja Edge)",
+   "release": "2022-03-03",
+   "until": "2022-03-16",
+   "featured": [
+    "Ninja Edge"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-03-03",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220301FFIVNEdgeTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501047,
+   "family": "treasure",
+   "name": "Treasure Summon (Lehftia / Haveh)",
+   "release": "2022-03-10",
+   "until": "2022-03-23",
+   "featured": [
+    "Lehftia",
+    "Haveh"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220308LehftiaHavehTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502012,
+   "family": "fortune",
+   "name": "Fortune Summon (Lehftia / Haveh)",
+   "release": "2022-03-10",
+   "until": "2022-03-23",
+   "featured": [
+    "Lehftia",
+    "Haveh"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-03-10",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220308LehftiaHavehTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501048,
+   "family": "treasure",
+   "name": "Treasure Summon (Dark Rain / Raegen -The Return-)",
+   "release": "2022-03-17",
+   "until": "2022-03-30",
+   "featured": [
+    "Dark Rain",
+    "Raegen -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220315DarkRainRaegenTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502013,
+   "family": "fortune",
+   "name": "Fortune Summon (Dark Rain / Raegen -The Return-)",
+   "release": "2022-03-17",
+   "until": "2022-03-30",
+   "featured": [
+    "Dark Rain",
+    "Raegen -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-03-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220315DarkRainRaegenTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501049,
+   "family": "treasure",
+   "name": "Treasure Summon (Reberta & Ignitos)",
+   "release": "2022-03-24",
+   "until": "2022-04-06",
+   "featured": [
+    "Reberta & Ignitos"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220322RebertaIgnitosTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502014,
+   "family": "fortune",
+   "name": "Fortune Summon (Reberta & Ignitos)",
+   "release": "2022-03-24",
+   "until": "2022-04-06",
+   "featured": [
+    "Reberta & Ignitos"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-03-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220322RebertaIgnitosTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501050,
+   "family": "treasure",
+   "name": "Treasure Summon (Akstar -The Return-)",
+   "release": "2022-03-31",
+   "until": "2022-04-13",
+   "featured": [
+    "Akstar -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-31",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220329AkstarTRTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502015,
+   "family": "fortune",
+   "name": "Fortune Summon (Akstar -The Return-)",
+   "release": "2022-03-31",
+   "until": "2022-04-13",
+   "featured": [
+    "Akstar -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-03-31",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220329AkstarTRTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501051,
+   "family": "treasure",
+   "name": "Treasure Summon (Fina -The Return-)",
+   "release": "2022-04-07",
+   "until": "2022-04-20",
+   "featured": [
+    "Fina -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220405FinaTRTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502016,
+   "family": "fortune",
+   "name": "Fortune Summon (Fina -The Return-)",
+   "release": "2022-04-07",
+   "until": "2022-04-20",
+   "featured": [
+    "Fina -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-04-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220405FinaTRTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501052,
+   "family": "treasure",
+   "name": "Treasure Summon (Nichol -The Return- / Sakura -The Return-)",
+   "release": "2022-04-14",
+   "until": "2022-04-27",
+   "featured": [
+    "Nichol -The Return-",
+    "Sakura -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-14",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220412SakuraNicholTRTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502017,
+   "family": "fortune",
+   "name": "Fortune Summon (Nichol -The Return- / Sakura -The Return-)",
+   "release": "2022-04-14",
+   "until": "2022-04-27",
+   "featured": [
+    "Nichol -The Return-",
+    "Sakura -The Return-"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-04-14",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220412SakuraNicholTRTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501053,
+   "family": "treasure",
+   "name": "Treasure Summon (Frostblade Fryevia)",
+   "release": "2022-04-21",
+   "until": "2022-05-04",
+   "featured": [
+    "Frostblade Fryevia"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220419NVFryeviaTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502018,
+   "family": "fortune",
+   "name": "Fortune Summon (Frostblade Fryevia)",
+   "release": "2022-04-21",
+   "until": "2022-05-04",
+   "featured": [
+    "Frostblade Fryevia"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-04-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220419NVFryeviaTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501054,
+   "family": "treasure",
+   "name": "Treasure Summon (Laguna / Kiros & Ward)",
+   "release": "2022-05-05",
+   "until": "2022-05-18",
+   "featured": [
+    "Laguna",
+    "Kiros & Ward"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-05",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220503FF8LagunaKirosTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502019,
+   "family": "fortune",
+   "name": "Fortune Summon (Laguna / Kiros & Ward)",
+   "release": "2022-05-05",
+   "until": "2022-05-18",
+   "featured": [
+    "Laguna",
+    "Kiros & Ward"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-05-05",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220503FF8LagunaKirosTreasureFortuneSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501055,
+   "family": "treasure",
+   "name": "Treasure Summon (King of Leonis Mont / Vinera Fennes)",
+   "release": "2022-05-12",
+   "until": "2022-05-25",
+   "featured": [
+    "King of Leonis Mont",
+    "Vinera Fennes"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-12",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220510WOTVTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502020,
+   "family": "fortune",
+   "name": "Fortune Summon (King of Leonis Mont / Vinera Fennes)",
+   "release": "2022-05-12",
+   "until": "2022-05-25",
+   "featured": [
+    "King of Leonis Mont",
+    "Vinera Fennes"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-05-12",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220510WOTVTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501056,
+   "family": "treasure",
+   "name": "Treasure Summon (Fledgling Warrior / Marilith)",
+   "release": "2022-05-19",
+   "until": "2022-06-01",
+   "featured": [
+    "Fledgling Warrior",
+    "Marilith"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220517FFITreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502021,
+   "family": "fortune",
+   "name": "Fortune Summon (Fledgling Warrior / Marilith)",
+   "release": "2022-05-19",
+   "until": "2022-06-01",
+   "featured": [
+    "Fledgling Warrior",
+    "Marilith"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-05-19",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220517FFITreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501057,
+   "family": "treasure",
+   "name": "Treasure Summon (Tide Bringer Kaito)",
+   "release": "2022-05-26",
+   "until": "2022-06-08",
+   "featured": [
+    "Tide Bringer Kaito"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220524TBKaitoTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502022,
+   "family": "fortune",
+   "name": "Fortune Summon (Tide Bringer Kaito)",
+   "release": "2022-05-26",
+   "until": "2022-06-08",
+   "featured": [
+    "Tide Bringer Kaito"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-05-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220524TBKaitoTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501058,
+   "family": "treasure",
+   "name": "Treasure Summon (Hero Dai / Mage Popp / Martial Artist Maam)",
+   "release": "2022-06-02",
+   "until": "2022-06-15",
+   "featured": [
+    "Hero Dai",
+    "Mage Popp",
+    "Martial Artist Maam"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220531DaiCollabW1TreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502023,
+   "family": "fortune",
+   "name": "Fortune Summon (Hero Dai / Mage Popp / Martial Artist Maam)",
+   "release": "2022-06-02",
+   "until": "2022-06-15",
+   "featured": [
+    "Hero Dai",
+    "Mage Popp",
+    "Martial Artist Maam"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-06-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220531DaiCollabW1TreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501059,
+   "family": "treasure",
+   "name": "Treasure Summon (Dragon Knight Baran / Immortal Hyunckel / Superior Being Hadlar)",
+   "release": "2022-06-09",
+   "until": "2022-06-22",
+   "featured": [
+    "Dragon Knight Baran",
+    "Immortal Hyunckel",
+    "Superior Being Hadlar"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220607BaranTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502024,
+   "family": "fortune",
+   "name": "Fortune Summon (Dragon Knight Baran / Immortal Hyunckel / Superior Being Hadlar)",
+   "release": "2022-06-09",
+   "until": "2022-06-22",
+   "featured": [
+    "Dragon Knight Baran",
+    "Immortal Hyunckel",
+    "Superior Being Hadlar"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-06-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220607BaranTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501060,
+   "family": "treasure",
+   "name": "Treasure Summon (Emperor of Palamecia / Ricard & Wyvern)",
+   "release": "2022-06-16",
+   "until": "2022-06-29",
+   "featured": [
+    "Emperor of Palamecia",
+    "Ricard & Wyvern"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220614FF2TreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502025,
+   "family": "fortune",
+   "name": "Fortune Summon (Emperor of Palamecia / Ricard & Wyvern)",
+   "release": "2022-06-16",
+   "until": "2022-06-29",
+   "featured": [
+    "Emperor of Palamecia",
+    "Ricard & Wyvern"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-06-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220614FF2TreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
+  },
+  {
+   "id": 9501061,
+   "family": "treasure",
+   "name": "Treasure Summon (Yshe / Kall / Ilmatalle)",
+   "release": "2022-06-23",
+   "until": "2022-07-06",
+   "featured": [
+    "Yshe",
+    "Kall",
+    "Ilmatalle"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 2
+   },
+   "bonus": [
+    {
+     "kind": 23,
+     "id": 110260,
+     "count": 1
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220621YsheTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 9+2 with 2 5★/NV guaranteed and boosted rates for the featured unit(s), 2 per player, with a 1/10 NV Summon Ticket each time. Global sold it for real money: stand-in 10,000 Lapis (operator's rule). Its Summon Coin (for the featured unit in an exchange shop) is left out. Dates: the news day + 2 to + 15 where the page's period wasn't read. Banner art: titled stand-in."
+  },
+  {
+   "id": 9502026,
+   "family": "fortune",
+   "name": "Fortune Summon (Yshe / Kall / Ilmatalle)",
+   "release": "2022-06-23",
+   "until": "2022-07-06",
+   "featured": [
+    "Yshe",
+    "Kall",
+    "Ilmatalle"
+   ],
+   "cost": {
+    "lapis": 10000
+   },
+   "draws": 11,
+   "purchase_limit": 2,
+   "guarantee": {
+    "rarity": 5,
+    "count": 4
+   },
+   "pool_rule": {
+    "released_by": "2022-06-23",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220621YsheTreasureFortuneSummons.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "A 7+4 with four 5★/NV guaranteed (featured not guaranteed), two per player. Global sold it for real money: stand-in 10,000 Lapis. Its bonus of 25 of the featured unit's fragments and 300 VIP Coins is left out. Banner art: titled stand-in."
   }
  ]
 }

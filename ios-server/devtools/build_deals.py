@@ -113,6 +113,9 @@ class Units:
                     out |= {str(u) for u in (t.get('units') or []) + (t.get('featured') or [])}
         return out
 
+    def known(self, name: str) -> bool:
+        return name.lower() in self.by_name
+
     def root(self, name: str) -> tuple[int, str]:
         rows = self.by_name.get(name.lower())
         if not rows:
@@ -156,7 +159,7 @@ def tiers(spec: dict, units: Units, rainbow=None, featured_x=None) -> dict:
         base = list(zip(rarities, rates))
     else:
         base = era_rates(spec['release'])
-    featured = [units.root(n) for n in spec.get('featured', [])]
+    featured = [units.root(n) for n in spec.get('featured', []) if units.known(n)]
     share = float(spec.get('featured_share', 0.5))
     if featured_x:
         share = min(1.0, share * float(featured_x))
@@ -254,8 +257,8 @@ def build(spec: dict, units: Units) -> dict:
         'tab': 'limited',
         'release': release,
         'community': {'release': release, 'until': spec.get('until', release), 'limited': True,
-                      'units': list(spec.get('featured', [])),
-                      'unit_ids': [units.root(n)[1] for n in spec.get('featured', [])]},
+                      'units': [n for n in spec.get('featured', []) if units.known(n)],
+                      'unit_ids': [units.root(n)[1] for n in spec.get('featured', []) if units.known(n)]},
         'campaign_identity': f'deal:{release}:{bid}',
         'name_override': True,
     }
