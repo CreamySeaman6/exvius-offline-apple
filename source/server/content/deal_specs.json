@@ -7853,6 +7853,2759 @@
     }
    ],
    "notes": "This run's page isn't archived: dates are a guess (Monday-Wednesday the week after the news), the rest as the other runs. Two steps, 2 rounds per player: step 1 4000 Lapis for 8+3 with three 5★/NV guaranteed (NV 3%) and 50 Super Trust Moogle Exchange Tickets; step 2 6000 Lapis for 10+1, ten 5★/NV plus one NV guaranteed, and a Transcension Pearl. Prices from the Nov 2021 banner image. Banner art not archived: titled stand-in."
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon II",
+   "release": "2021-09-13",
+   "until": "2021-09-15",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001466,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001466,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001466,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001466,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-09-09",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210909NVFragmentStepUpIISummonExchangeShop.html",
+     "archived": "20210909094053"
+    }
+   ],
+   "notes": "Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20210909094440",
+     "20210909NVFragmentStepUpIISummonBanner.png"
+    ]
+   },
+   "id": 9503100
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon III",
+   "release": "2021-10-25",
+   "until": "2021-10-27",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001489,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001489,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001489,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001489,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-10-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211021NVFragmentStepUpIIISummonExchangeShop.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates are a guess (Monday-Wednesday after the news, as II and V); the rest as the other runs. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images. Banner art not archived: titled stand-in.",
+   "id": 9503101
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon IV",
+   "release": "2021-11-08",
+   "until": "2021-11-10",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001505,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001505,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001505,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001505,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-11-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211104NVFragmentStepUpIVSummon.html",
+     "archived": "2"
+    }
+   ],
+   "notes": "This run's page isn't archived: dates are a guess (Monday-Wednesday after the news); the rest as the other runs. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images. Banner art not archived: titled stand-in.",
+   "id": 9503102
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon V",
+   "release": "2021-12-20",
+   "until": "2021-12-22",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001522,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001522,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001522,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001522,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2021-12-16",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20211216NVFragmentStepUpVSummon.html",
+     "archived": "20211219100412"
+    }
+   ],
+   "notes": "Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20211219100412",
+     "NVFragmentStepUpVSummonBanner.png"
+    ]
+   },
+   "id": 9503103
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon VI",
+   "release": "2022-01-14",
+   "until": "2022-01-17",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001536,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001536,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001536,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001536,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-13",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220111NVFragmentStepUpVISummon.html",
+     "archived": "wiki"
+    }
+   ],
+   "notes": "This run's page isn't archived (the wiki's news archive gives the news date, 2022-01-13): dates are a guess (Friday-Monday after the news, as VII-XIV); the rest as the other runs. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images. Banner art not archived: titled stand-in.",
+   "id": 9503104
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon VII",
+   "release": "2022-02-25",
+   "until": "2022-02-27",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001573,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001573,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001573,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001573,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-02-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220224NVFragmentStepUpVIISummon.html",
+     "archived": "20220326211137"
+    }
+   ],
+   "notes": "Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20220326211141",
+     "NVFragmentStepUpVIISummonBanner.png"
+    ]
+   },
+   "id": 9503105
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon VIII",
+   "release": "2022-03-25",
+   "until": "2022-03-28",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001574,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001574,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001574,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001574,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-03-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220322NVFragmentStepUpVIIISummon.html",
+     "archived": "20220326051756"
+    }
+   ],
+   "notes": "Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20220326051756",
+     "20220322NVFragmentStepUpVIIISummonBanner.png"
+    ]
+   },
+   "id": 9503106
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon IX",
+   "release": "2022-04-22",
+   "until": "2022-04-25",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001580,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001580,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001580,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001580,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-04-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220421NVFragmentStepUpIXSummonExchange.html",
+     "archived": "20220422230753"
+    }
+   ],
+   "notes": "Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20220422230753",
+     "20220421NVFragmentStepUpIXSummonBanner.png"
+    ]
+   },
+   "id": 9503107
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon X",
+   "release": "2022-05-27",
+   "until": "2022-05-30",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001605,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001605,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001605,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001605,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-05-26",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220526NVFragmentStepUpXSummonExchange.html",
+     "archived": "wiki"
+    }
+   ],
+   "notes": "This run's page isn't archived (wiki news date 2022-05-26): dates are a guess (Friday-Monday after the news); the rest as the other runs. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images. Banner art not archived: titled stand-in.",
+   "id": 9503108
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon XI",
+   "release": "2022-07-08",
+   "until": "2022-07-11",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001632,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001632,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001632,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001632,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-07-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220707NVFragmentUpXISummonExchange.html",
+     "archived": "wiki"
+    }
+   ],
+   "notes": "This run's page isn't archived (wiki news date 2022-07-07): dates are a guess (Friday-Monday after the news); the rest as the other runs. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images. Banner art not archived: titled stand-in.",
+   "id": 9503109
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon XII",
+   "release": "2022-08-05",
+   "until": "2022-08-08",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001653,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001653,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001653,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001653,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-08-04",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220804NVFragmentStepUpXIISummonExchange.html",
+     "archived": "wiki"
+    }
+   ],
+   "notes": "This run's page isn't archived (wiki news date 2022-08-04): dates are a guess (Friday-Monday after the news); the rest as the other runs. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images. Banner art not archived: titled stand-in.",
+   "id": 9503110
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon XIII",
+   "release": "2022-09-16",
+   "until": "2022-09-19",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001665,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001665,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001665,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001665,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-09-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220915NVFragmentStepUpXIIISummonExchange.html",
+     "archived": "20220916144542"
+    }
+   ],
+   "notes": "Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20220916144624",
+     "20220915NVFragmentStepUpXIIISummonBanner.png"
+    ]
+   },
+   "id": 9503111
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Step-Up Summon XIV",
+   "release": "2022-10-28",
+   "until": "2022-10-31",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 3
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110260,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 2000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-10-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221027YHNVFragmentStepUpXIVSummonExchange.html",
+     "archived": "20221027120820"
+    }
+   ],
+   "notes": "Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. Four steps, once per player, cost falling 5000/4000/3000/2000 Lapis (8+3, 9+2, 9+2, 9+2; NV 3%), with 3/2/2/2 5★/NV guaranteed; NV Fragment Select Tickets 1/1/1/2 (spent in the game's own fragment exchange) and a 1/10 NV Summon Ticket at step 1. Prices from the II, VII and XIII banner images.",
+   "art": {
+    "main": [
+     "20221027120820",
+     "20221027YHNVFragmentStepUpXIVSummonBanner.png"
+    ]
+   },
+   "id": 9503112
+  },
+  {
+   "family": "nv_fragment_step_up",
+   "name": "NV Fragment Special Step-Up Summon",
+   "release": "2022-04-04",
+   "until": "2022-04-06",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 2000,
+     "draws": 10
+    },
+    {
+     "lapis": 3000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 2
+     }
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 11
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001577,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 10
+     },
+     "slots": [
+      {
+       "count": 1,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 23,
+       "id": 110003,
+       "count": 200
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 5,
+      "count": 9
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001577,
+       "count": 1
+      },
+      {
+       "kind": 23,
+       "id": 110003,
+       "count": 300
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-02-24",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "main": [
+     "20220331161225",
+     "20220331NVFragmentEndofMarchSummonBanner.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220331NVFragmentEndofMarchSummonExchange.html",
+     "archived": "20220331161057"
+    }
+   ],
+   "notes": "Six steps, once per player (2000 Lapis 10 units, 3000 9+2, 5000 11, 5000 10+1, 5000 9+2, 6000 9+2). The page prints 41 guaranteed 5★/NV and 5 guaranteed NV in all; the image shows 2 at step 2, 11 at step 3, and 1/2/2 NV at steps 4-6. How the rest of steps 4-6 split isn't printed: steps 4 and 5 are all 5★/NV here, step 6 has only its 2 NV guaranteed (37 in all). Bonuses: fragment ticket at steps 3 and 6, 200 and 300 VIP Coins at steps 4 and 6, a Transcension Pearl at step 5.",
+   "id": 9503113
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "6th Anniversary NV Guaranteed Step-Up Summon",
+   "release": "2022-06-30",
+   "until": "2022-07-06",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001624,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202206286thAnniversaryGuaranteedStepUpSummonExchange.html",
+     "archived": "20220628125205"
+    }
+   ],
+   "notes": "Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 8+2+1) with 1/1/1/2/2/2 NV guaranteed plus one NV from a curated pool at step 6; a 5★ Super Trust Moogle (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5 and five NV Fragment Select Tickets at 6. Prices from the Jul 2022 banner image.",
+   "art": {
+    "main": [
+     "20220628125205",
+     "202206286thAnnivGuaranteedStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503114
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "Post 6th Anniversary NV Guaranteed Step-Up Summon",
+   "release": "2022-07-21",
+   "until": "2022-07-27",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001624,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-07-21",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220719PostAnnivGuaranteedStepUpSummonExchange.html",
+     "archived": "20220719123112"
+    }
+   ],
+   "notes": "Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 8+2+1) with 1/1/1/2/2/2 NV guaranteed plus one NV from a curated pool at step 6; a 5★ Super Trust Moogle (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5 and five NV Fragment Select Tickets at 6. Prices from the Jul 2022 banner image.",
+   "art": {
+    "main": [
+     "20220719123145",
+     "20220719PostAnnivGuaranteedStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503115
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "Post 6th Anniversary NV Guaranteed Step-Up Summon",
+   "release": "2022-08-18",
+   "until": "2022-08-24",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001624,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-08-18",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220816PostAnnivGuaranteedStepUpSummonExchange.html",
+     "archived": "20220816114226"
+    }
+   ],
+   "notes": "Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 8+2+1) with 1/1/1/2/2/2 NV guaranteed plus one NV from a curated pool at step 6; a 5★ Super Trust Moogle (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5 and five NV Fragment Select Tickets at 6. Prices from the Jul 2022 banner image.",
+   "art": {
+    "main": [
+     "20220719123145",
+     "20220719PostAnnivGuaranteedStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503116
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Guaranteed Special Step-Up Summon",
+   "release": "2022-09-08",
+   "until": "2022-09-14",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-08-18",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220906NVGuaranteedSpecialSummonExchange.html",
+     "archived": "20220906102824"
+    }
+   ],
+   "notes": "Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 8+2+1) with 1/1/1/2/2/2 NV guaranteed plus one NV from a curated pool at step 6; a 5★ Super Trust Moogle (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5 and five NV Fragment Select Tickets at 6. Prices from the Jul 2022 banner image.",
+   "art": {
+    "main": [
+     "20220906102824",
+     "20220908NVGuaranteedSpecialSummonBanner.png"
+    ]
+   },
+   "id": 9503117
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Guaranteed Special Step-Up Summon (Black Friday 2022)",
+   "release": "2022-11-24",
+   "until": "2022-11-30",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 3,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-11-17",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221122HGBF2022FragmentSelectBundleSummonExchange.html",
+     "archived": "20221122115552"
+    }
+   ],
+   "notes": "Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. The page's pool date is cut off in the archive; units up to a week before is assumed. The curated list is cut off too: the Holiday 2022 list is used. Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 7+3+1) with 1/1/1/2/2/3 NV guaranteed plus one NV from a curated pool at step 6; 5★ Super Trust Moogles (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5, and ten NV Fragment Select Tickets over steps 3-6 (1/2/2/5). Prices from the Nov 2022 and Apr 2023 banner images.",
+   "art": {
+    "main": [
+     "20221122115605",
+     "20221122NVGuaranteedSpecialStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503118
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Guaranteed Special Step-Up Summon (Holiday 2022)",
+   "release": "2022-12-22",
+   "until": "2023-01-04",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 3,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2022-12-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20221220HolidayNVFragmentSummonExchange.html",
+     "archived": "20221220111407"
+    }
+   ],
+   "notes": "Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 7+3+1) with 1/1/1/2/2/3 NV guaranteed plus one NV from a curated pool at step 6; 5★ Super Trust Moogles (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5, and ten NV Fragment Select Tickets over steps 3-6 (1/2/2/5). Prices from the Nov 2022 and Apr 2023 banner images.",
+   "art": {
+    "main": [
+     "20221122115605",
+     "20221122NVGuaranteedSpecialStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503119
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Guaranteed Special Step-Up Summon (48M Downloads)",
+   "release": "2023-02-02",
+   "until": "2023-02-08",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl"
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife",
+       "Materia Hunter Yuffie"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 2,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2023-02-02",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202301318hNVGuaranteedStepUpUnitFragmentExchange.html",
+     "archived": "20230131121811"
+    }
+   ],
+   "notes": "Bonuses differ on Global (NRG potions at step 1, two moogles at 2, Mystery Crystals and an Emperor Gigantuar at 3, 2/3/5 fragment tickets at 4-6 and an NV Unit Select Ticket at 6, and 2 NV at step 6): approximated by the usual set; the NV Unit Select Ticket has no exchange here and is left out. Prices assumed as the other runs. Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 8+2+1) with 1/1/1/2/2/2 NV guaranteed plus one NV from a curated pool at step 6; a 5★ Super Trust Moogle (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5 and five NV Fragment Select Tickets at 6. Prices from the Jul 2022 banner image. Banner art not archived: titled stand-in.",
+   "id": 9503120
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Fragment Step-Up Summon XIX",
+   "release": "2023-04-20",
+   "until": "2023-04-26",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife",
+       "Materia Hunter Yuffie"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 3,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2023-04-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230418NVFragmentStepUpXIXSummonExchange.html",
+     "archived": "20230418091139"
+    }
+   ],
+   "notes": "The curated pool is only on the Drop Rates page, not archived: the Feb 2023 list is used. Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 7+3+1) with 1/1/1/2/2/3 NV guaranteed plus one NV from a curated pool at step 6; 5★ Super Trust Moogles (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5, and ten NV Fragment Select Tickets over steps 3-6 (1/2/2/5). Prices from the Nov 2022 and Apr 2023 banner images.",
+   "art": {
+    "main": [
+     "20230418091249",
+     "20230418NVFragmentStepUpXIXSummonBanner.png"
+    ]
+   },
+   "id": 9503121
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Guaranteed Special Step-Up Summon (XXI)",
+   "release": "2023-09-07",
+   "until": "2023-09-13",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife",
+       "Materia Hunter Yuffie"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 3,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2023-09-07",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20230905c9lNVGuaranteedSpecialStepUpSummonExchangeXXIBundle.html",
+     "archived": "20231115225631"
+    }
+   ],
+   "notes": "The curated pool is only on the Drop Rates page, not archived: the Feb 2023 list is used. Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 7+3+1) with 1/1/1/2/2/3 NV guaranteed plus one NV from a curated pool at step 6; 5★ Super Trust Moogles (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5, and ten NV Fragment Select Tickets over steps 3-6 (1/2/2/5). Prices from the Nov 2022 and Apr 2023 banner images.",
+   "art": {
+    "main": [
+     "20231115230359",
+     "20230905c9lNVGuaranteedSpecialStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503122
+  },
+  {
+   "family": "nv_guaranteed_special",
+   "name": "NV Guaranteed Special Step-Up Summon (XXII)",
+   "release": "2023-10-05",
+   "until": "2023-10-11",
+   "lap_limit": 1,
+   "rates": [
+    0.03,
+    0.12,
+    0.425,
+    0.425
+   ],
+   "steps": [
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     }
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50"
+     ]
+    },
+    {
+     "lapis": 4000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 1
+     },
+     "bonus": [
+      "moogle50",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 1
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      "pearl",
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 5000,
+     "draws": 11,
+     "guarantee": {
+      "rarity": 7,
+      "count": 2
+     },
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 235037300,
+       "count": 2
+      },
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 2
+      }
+     ]
+    },
+    {
+     "lapis": 6000,
+     "draws": 11,
+     "guarantee": {
+      "units": [
+       "Cetra Descendant Aerith",
+       "Avalanche's Tifa",
+       "Legendary Hero Sephiroth",
+       "Summoner Yuna",
+       "Legendary Guardian Auron",
+       "Taivas",
+       "Storm Seeker Esther",
+       "Dark Rain",
+       "Fina -The Return-",
+       "Knights of Grandshelt",
+       "Wylk",
+       "Dark Fina -Warrior's Prayer-",
+       "New Guardian Tidus",
+       "Fabled Guardian Jecht",
+       "Cloud Strife",
+       "Materia Hunter Yuffie"
+      ],
+      "count": 1
+     },
+     "slots": [
+      {
+       "count": 3,
+       "min_rarity": 7,
+       "label": "NV"
+      }
+     ],
+     "bonus": [
+      {
+       "kind": 20,
+       "id": 1209001670,
+       "count": 5
+      }
+     ]
+    }
+   ],
+   "pool_rule": {
+    "released_by": "2023-09-28",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20231003NVGuaranteedSpecialStepUpSummonExchangeXXII.html",
+     "archived": "20240105221932"
+    }
+   ],
+   "notes": "The curated pool is only on the Drop Rates page, not archived: the Feb 2023 list is used. Ticket: the client has no exchange for this run's own NV Fragment Select Ticket, so the NV Guaranteed Special one (1209001670, the largest exchange, 84 units) stands in. Six steps, once per player: 4000/4000/4000/5000/5000/6000 Lapis (10+1, 10+1, 10+1, 9+2, 9+2, 7+3+1) with 1/1/1/2/2/3 NV guaranteed plus one NV from a curated pool at step 6; 5★ Super Trust Moogles (ALL 50%) at steps 2 and 3, a Transcension Pearl at 4, two Mystery Crystals at 5, and ten NV Fragment Select Tickets over steps 3-6 (1/2/2/5). Prices from the Nov 2022 and Apr 2023 banner images.",
+   "art": {
+    "main": [
+     "20231115230359",
+     "20230905c9lNVGuaranteedSpecialStepUpSummonBanner.png"
+    ]
+   },
+   "id": 9503123
   }
  ]
 }
