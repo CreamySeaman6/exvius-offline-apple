@@ -57,6 +57,8 @@ REWARDS = {
     'moogle5': {'kind': 10, 'id': 904000104, 'count': 1, 'affinity_points': ['50', '']},
     'moogle10': {'kind': 10, 'id': 904000105, 'count': 1, 'affinity_points': ['100', '']},
     'moogle20': {'kind': 10, 'id': 904000105, 'count': 1, 'affinity_points': ['200', '']},
+    'moogle50': {'kind': 10, 'id': 904000105, 'count': 1, 'affinity_points': ['500', '']},
+    'moogle100': {'kind': 10, 'id': 904000105, 'count': 1, 'affinity_points': ['1000', '']},
     'ticket5_10': {'kind': 23, 'id': 230, 'count': 1},
     'ticket5_30': {'kind': 23, 'id': 240, 'count': 1},
     'ticket5_50': {'kind': 23, 'id': 250, 'count': 1},

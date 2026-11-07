@@ -1177,6 +1177,9 @@ def expand_pool(banner: dict) -> list:
         from datetime import date as _date
         import replay as _replay
         upto = _date.fromisoformat(rule['released_by']) if rule.get('released_by') else None
+        since = str(rule.get('released_from') or '')   # "units added from <date> to <date>"
+        if since:
+            _dates = _replay.unit_dates()
         excluded = set()
         if {'limited', 'collab'} & set(rule.get('exclude') or []):
             import gacha_archive
@@ -1185,7 +1188,8 @@ def expand_pool(banner: dict) -> list:
         rule_featured = {str(u) for t in ((pool or {}).get("tiers") or [] if isinstance(pool, dict) else [])
                          for u in (t.get("featured") or [])}
         allowed = lambda u: base_allowed(u) and (str(u) in rule_featured or (  # noqa: E731
-            (upto is None or _replay.released_by(u, upto)) and str(u) not in excluded))
+            (upto is None or _replay.released_by(u, upto)) and str(u) not in excluded
+            and (not since or (_dates.get(str(u)) or '') >= since)))
     if isinstance(pool, list):
         return _only_named([row for row in pool if allowed(row.get("unit_id"))])
     roots = unit_roots_by_rarity()
