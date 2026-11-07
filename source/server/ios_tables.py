@@ -46,6 +46,9 @@ so the phone stops asking to download 0 KB on every start.
 7. HIDDEN QUEST REWARDS (2026-11-07). Taking on a town quest whose reward is hidden ("???" until it's done)
 freezes or closes the iPhone app on the quest screen. `F_QUEST_MST` is served with every reward marked shown
 (`quest_rewards_shown`, `EXVIUS_IOS_QUEST_REWARDS`).
+
+8. DROP RATES ADDRESS (2026-11-07). `F_URL_MST` is served with `GACHA_RATE_URL` as a full address on this server
+(`fix_web_urls`), so the summon Drop Rates button posts its banner id to the page `gacha_rates.py` builds.
 """
 from __future__ import annotations
 
@@ -63,6 +66,11 @@ RESOURCE_MAP_VERSION = ("F_RESOURCE_MAP_VERSION_MST_LOCALIZE", "YIgCpDKW", "geHl
 RESOURCE_CHECKSUM = ("F_RESOURCE_CHECKSUM_MST", "9Hwur83G", "92SkMNAx")
 QUEST = ("F_QUEST_MST", "2Px75LpY", "20mEeKo3")
 QUEST_REWARD_FIELD = "dX6cor8j"
+URL = ("F_URL_MST", "9wmd4iua", "UREmi85S")
+URL_KEY_FIELD = "gu8McTA6"
+# The web host the notice and drop-rate pages are served on (replay_notices.HOST).
+WEB_HOST = "https://v900-lapis.gumi.sg"
+DROP_RATE_PATH = "/lapisProd/app/php/web/statics/probability/sg_summons_list.php"
 
 TABLE, TOKEN, KEY = RESOURCE  # kept for older callers
 CLASS_FIELD = "81fTkEDP"
@@ -139,6 +147,26 @@ def show_quest_rewards(raw: bytes) -> tuple[bytes, int]:
     return ("\n".join(out) + "\n").encode("ascii"), changed
 
 
+def fix_web_urls(raw: bytes) -> tuple[bytes, int]:
+    """`F_URL_MST` with `GACHA_RATE_URL` (the summon Drop Rates page) made a full address on this server.
+
+    The shipped rows read `<WEB>/lapisProd/.../sg_summons_list.php`; the iPhone app has no `<WEB>` entry for its
+    environment (`UrlMst::getUrl` 0x1d1eb94 -> `EnvUrlMst::replaceUrlKey`), so it opened
+    `/en<WEB>/lapisProd/...` as a relative GET without the posted `gacha_id` (server log 2026-11-07 08:46) and
+    the page couldn't tell which summon was meant. Returns (table, rows changed)."""
+    out, changed = [], 0
+    for line, row, double in _rows(raw, URL[2]):
+        if row.get(URL_KEY_FIELD) == "GACHA_RATE_URL":
+            fixed = {k: (WEB_HOST + DROP_RATE_PATH if k not in (URL_KEY_FIELD, "G4L0YIB2") and v else v)
+                     for k, v in row.items()}
+            if fixed != row:
+                row = fixed
+                line = _encrypt(URL[2], row, double)
+                changed += 1
+        out.append(line)
+    return ("\n".join(out) + "\n").encode("ascii"), changed
+
+
 def version_bump() -> int:
     """Added to `F_RESOURCE_MST`'s advertised version, so a client holding the unpatched table fetches this
     one. Changes with the setting, so switching packs makes the client fetch again. The Vortex banner pack
@@ -183,6 +211,8 @@ def table_bump(spec, *roots) -> int:
         return _bump(_art_signature(*roots))
     if spec == QUEST:
         return 1000 if quest_rewards_shown() else 0
+    if spec == URL:
+        return 1000
     return 0
 
 
@@ -190,7 +220,7 @@ def version_bumps() -> dict[str, int]:
     """Table name -> amount to add to its advertised version (only tables served patched)."""
     import ios_texts
     out = {RESOURCE[0]: version_bump(), ios_texts.INDEX[0]: ios_texts.bump()}
-    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM, QUEST):
+    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM, QUEST, URL):
         out[spec[0]] = table_bump(spec)
     return {name: bump for name, bump in out.items() if bump}
 
@@ -207,7 +237,7 @@ def wants(rel: str) -> bool:
 def _which(rel: str):
     if version_bump() and _path(RESOURCE[1]).search(rel):
         return RESOURCE
-    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM, QUEST):
+    for spec in (RESOURCE_VERSION, RESOURCE_MAP_VERSION, RESOURCE_CHECKSUM, QUEST, URL):
         if _path(spec[1]).search(rel) and table_bump(spec):
             return spec
     return None
@@ -341,6 +371,9 @@ def serve(rel: str, *roots: str | None) -> tuple[bytes | None, str | None]:
         if spec == QUEST:
             data, changed = show_quest_rewards(open(src, "rb").read())
             return data, f"{os.path.basename(src)}, {changed} hidden quest reward(s) shown"
+        if spec == URL:
+            data, changed = fix_web_urls(open(src, "rb").read())
+            return data, f"{os.path.basename(src)}, Drop Rates address set ({changed} row)"
         import ios_art
         built = art(*roots)
         if spec == RESOURCE_CHECKSUM:

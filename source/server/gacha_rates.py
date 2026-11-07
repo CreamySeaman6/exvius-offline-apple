@@ -293,6 +293,27 @@ def page(banner_id):
     return _wrap(name, parts)
 
 
+def index_page() -> str:
+    """This week's summons, each linking to its rates page: the answer when a request names no banner."""
+    import gacha_rotation
+    from ffbe_gacha import all_banners
+    from urllib.parse import quote
+    banners = all_banners()
+    by_id = {str(b['id']): b for b in banners}
+    ids = [str(i) for i in gacha_rotation.rotation_ids(banners) if str(i) in by_id] or sorted(by_id)[:40]
+    parts = ['<header class="mast"><p class="eyebrow">Summon Rates</p><h1>This week\'s summons</h1></header>',
+             '<section class="offers">']
+    for bid in ids:
+        banner = by_id[bid]
+        art = (banner.get('art') or {}).get('banner') or ''
+        img = (f'<img class="art" src="/banner/en/sd/static_banner/gacha/main/{escape(quote(art))}" alt="" '
+               'loading="lazy" onerror="this.style.display=\'none\'">') if art else ''
+        parts.append(f'<a class="offer link" href="/exvius/gacha-rates/{escape(bid)}.html">{img}'
+                     f'<h3>{escape(str(banner.get("name") or bid))}<span>View rates &rsaquo;</span></h3></a>')
+    parts.append('</section>')
+    return _wrap('Summon Rates', parts)
+
+
 def _wrap(name: str, parts: list) -> str:
     return PAGE.replace('{{TITLE}}', escape(name)).replace('{{BODY}}', '\n'.join(parts))
 
@@ -326,6 +347,8 @@ font:700 16px/1.25 var(--display);color:var(--gilt)}
 .offer h3 span,.tier h3 span{font:600 12px/1.3 var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
 .offer p{margin:6px 0 0;font-size:14px;color:var(--ink)}
 .offer .bonus{color:var(--gilt)}
+.offer.link{display:grid;gap:8px;color:inherit;text-decoration:none}
+.offer.link .art{width:100%;height:auto;border-radius:3px}
 .note{margin:0;font-size:13px;color:var(--muted)}
 .tier{background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:10px 8px 6px}
 .tier h3{padding:0 4px 6px;border-bottom:1px solid rgba(232,196,106,.2)}

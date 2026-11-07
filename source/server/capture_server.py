@@ -499,7 +499,7 @@ class Handler(BaseHTTPRequestHandler):
         if rates_page is None and path.endswith('/statics/probability/sg_summons_list.php'):
             # The stock iPhone app's Drop Rates button: F_URL_MST GACHA_RATE_URL, with the banner posted as
             # `gacha_id` (sgGachaDropRateWebScene::setParameter). Same page as the Android hook's URL.
-            rates_page = re.fullmatch(r'(\d+)', self._form_field('gacha_id') or '')
+            rates_page = re.fullmatch(r'(\d+)', self._form_field('gacha_id') or '') or re.fullmatch(r'()', '')
         parade_page = path == '/exvius/parade-rewards.html'
         equip_page = path == '/exvius/equipment-enhancement.html'
         notice_page = re.fullmatch(r'/exvius/notices/(\d+)\.html', path)
@@ -541,8 +541,9 @@ class Handler(BaseHTTPRequestHandler):
                         st.save_state()
                     html = rewards_page(State.player, path.endswith('clash-ranking.html'))
                 else:
-                    from gacha_rates import page
-                    html = page(rates_page.group(rates_page.lastindex or 0))
+                    from gacha_rates import page, index_page
+                    # No banner named (the request lost its posted gacha_id): this week's summons, each linked.
+                    html = page(rates_page.group(1)) if rates_page.group(1) else index_page()
             if html is None:
                 self.send_error(404, 'Local content unavailable')
                 return
