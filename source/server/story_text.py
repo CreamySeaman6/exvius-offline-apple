@@ -20,7 +20,13 @@ No transcript of these scenes was found to check against; the mapping comes from
 
 The server serves those packs with the lines added, under a new file version (`F_RESOURCE_MAP_VERSION_MST_LOCALIZE`,
 patched in `ios_tables.py`), because the phone never fetches a `Ver<N>_` name it already holds. The built packs
-are cached in the server root (`ios-cache/`). `EXVIUS_STORY_TEXT_FIX=0` turns this off.
+are cached in the server root (`ios-cache/`).
+
+OFF BY DEFAULT since 2026-11-07: the iPhone refuses the rebuilt pack. Its own log (client report) shows
+`CRI LIB ERROR E06100301: Invalid IFF header (mismatched four_cc)` and `CPK Analyzer::Cannot possibly analyze
+the CPK File` for both builds (Ver1048 and Ver1049), then "A loading error has occurred" entering Port City
+Lodin. So something in `rebuild` leaves a chunk (TOC/ETOC) where the CRI loader doesn't find it; the header
+size fix (BUILDER 2) wasn't it. Not found yet. `EXVIUS_STORY_TEXT_FIX=1` turns it back on for testing only.
 """
 from __future__ import annotations
 
@@ -47,7 +53,16 @@ _PATH = re.compile(r"(^|/)common_lang/sd/event/([^/]+)/Ver(\d+)_(\d+)\.cpk$")
 
 
 def enabled() -> bool:
-    return os.environ.get("EXVIUS_STORY_TEXT_FIX", "1") == "1"
+    return os.environ.get("EXVIUS_STORY_TEXT_FIX", "0") == "1"
+
+
+def table_offset() -> int:
+    """Added (with the sound bump) to `F_RESOURCE_MAP_VERSION_MST_LOCALIZE`'s advertised version.
+
+    Phones that got the broken fix hold the table at +3000+1002 (BUILDER 2). Off, the table is advertised at
+    +4500 so those phones fetch it again (a table advertised lower than the phone's copy may never be fetched)
+    and go back to the shipped scene packs."""
+    return 3000 + (bump() if enabled() else 1500)
 
 
 def bump() -> int:

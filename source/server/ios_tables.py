@@ -36,7 +36,9 @@ the rewrites keep every bank's size.
 English version (`F_RESOURCE_VERSION_MST_LOCALIZE`) and size (`F_RESOURCE_CHECKSUM_MST`).
 
 5. MISSING STORY LINES. Three story scene packs are served with lines their scripts name but their text files
-lack (`story_text.py`); `F_RESOURCE_MAP_VERSION_MST_LOCALIZE` gives those packs new versions.
+lack (`story_text.py`); `F_RESOURCE_MAP_VERSION_MST_LOCALIZE` gives those packs new versions. Off by default
+since 2026-11-07 (the iPhone can't load the rebuilt pack); the table is still served, above the versions
+phones were given while it was on, so they return to the shipped packs.
 
 6. ROWS WITH NO FILE. `F_RESOURCE_MST` rows with no version in any language are left out (`drop_unversioned`),
 so the phone stops asking to download 0 KB on every start.
@@ -135,8 +137,8 @@ def table_bump(spec, *roots) -> int:
         return sound_bump() + (2000 + zlib.crc32(art_sig.encode()) % 1000 if art_sig else 0)
     if spec == RESOURCE_MAP_VERSION:
         import story_text
-        # Kept above the sound-only bump (1000-1999) that phones may already hold.
-        return sound_bump() + (3000 + story_text.bump() if story_text.enabled() else 0)
+        # Kept above the sound-only bump (1000-1999) and the story-fix bumps that phones may already hold.
+        return sound_bump() + story_text.table_offset()
     if spec == RESOURCE_CHECKSUM:
         return _bump(_art_signature(*roots))
     return 0
