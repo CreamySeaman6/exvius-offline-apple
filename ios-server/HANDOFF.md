@@ -564,6 +564,10 @@ Operator's requests: every summon's Drop Rates button should show what that summ
 - **Page.** Notice-page look (`replay_notices` palette and sprites: `/exvius/notice-art/unit/<id>.png` with the wiki fallbacks). Sections: How it pulls (each offer/step: draws, cost, its guarantee in words, bonus rewards), Every draw (rarity groups lowest first, likeliest first within a group, chance per draw), then one section per distinct guaranteed-slot pool. Selection and box banners keep a short explanation. Preview published as an artifact ("Noctis Summon Rates", stand-in crystals for sprites, since the sandbox can't reach the wiki).
 - **Lapis.** `EXVIUS_LAPIS_MULTIPLIER` default 5 (was 1.5) in `lapis_economy.py`, `docker-compose.yml` and `unraid/my-ffbe.xml`. Story missions' challenges total 50 Lapis in 416 of the first world's 708 story missions (30 in 238), so 250 each. It applies to all earned Lapis, so a full day of dailies is now (3 x 150 + 200) x 5 = 3,250. The challenge screen still shows the original amounts.
 
+## Calamity Writ as a rare drop (2026-11-07)
+
+Operator: 0 Calamity Writs (290060400) while every other awakening material is at 50+. Checked: it is on no monster's drop list (battle data, and Global: an event-only material, e.g. Scala ad Caelum's exchange); here it comes from about 18 event exploration chests (`content/field_treasures.json`), the Skeleton Key Exchange and one event mission (9110201, 20). 471 `F_UNIT_CLASS_UP_MST` rows need it (usually 20). Operator's request: a very rare drop. `ffbe_battle._roll_items` now adds `20:290060400:1:100` with `EXVIUS_CALAMITY_WRIT_DROP` percent (default 0.5) per roll, i.e. per enemy drop row in a wave and per exploration encounter row; the client reports it at MissionEnd like any drop and `credit_mission_rewards` pays it. Tested: 0.49% of 100,000 rolls. Not yet seen on the phone.
+
 ## Starting a fresh session
 
 Paste this as the first message of a new session:

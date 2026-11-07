@@ -57,7 +57,24 @@ def _roll_items(src: str | None) -> str:
             rolled.append(it)
     if not rolled and items:
         rolled = [items[-1]]
+    # A rare extra: Calamity Writ is on no enemy's drop list (in Global it came only from events), but
+    # 471 awakenings need it. Operator's request (2026-11-07): a very rare drop to slowly collect.
+    writ = calamity_writ_chance()
+    if writ > 0 and random.random() * 100 < writ:
+        rolled.append(CALAMITY_WRIT + ":1:100")
     return ",".join(rolled)
+
+
+CALAMITY_WRIT = "20:290060400"
+
+
+def calamity_writ_chance() -> float:
+    """`EXVIUS_CALAMITY_WRIT_DROP`: percent chance per enemy drop roll (default 0.5; 0 turns it off). Each enemy
+    in a battle wave and each exploration battle rolls once: about 1 Writ per 20 story missions."""
+    try:
+        return max(0.0, min(100.0, float(os.environ.get("EXVIUS_CALAMITY_WRIT_DROP", "0.5"))))
+    except ValueError:
+        return 0.5
 
 
 def roll_drops(spec, mid: str | None = None, is_battle_bundle: bool = False):
