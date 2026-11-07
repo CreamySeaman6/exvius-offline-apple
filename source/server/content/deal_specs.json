@@ -13233,6 +13233,415 @@
      "archived": "20231031090245"
     }
    ]
+  },
+  {
+   "id": 9200026,
+   "family": "ticket",
+   "name": "Guaranteed NV Summon",
+   "release": "2021-01-21",
+   "until": "2021-01-21",
+   "permanent": {
+    "from": "2021-01-21"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001319,
+     1
+    ]
+   },
+   "draws": 1,
+   "pool_units": [
+    "Sol -Neo Vision-",
+    "Rain -Neo Vision-",
+    "Cloud (FFVII REMAKE)",
+    "Awakened Dragon Akstar",
+    "Firion -Neo Vision-"
+   ],
+   "rates": [
+    1,
+    0,
+    0,
+    0
+   ],
+   "pool_rule": null,
+   "guarantee": {
+    "rarity": 7
+   },
+   "art": {
+    "cache": [
+     "1e977f876d0870cc87d93576fe540a0c.png",
+     "1e977f876d0870cc87d93576fe540a0c_01.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210119GuaranteedNVSummon.html",
+     "archived": "20210119133850"
+    }
+   ],
+   "notes": "Replaces gacha_named.json's copy (dated Jan 2023, all NV units). Global: permanent from 1/21/2021, one of five selected NV units for a Guaranteed NV Summon Ticket, which every account got by mail on 1/21 (content/replay_mails.json) and the Early Bird Offer also gives. Even odds among the five (not printed)."
+  },
+  {
+   "id": 9200029,
+   "family": "ticket",
+   "name": "Bonus Present Ticket Summon",
+   "release": "2021-03-25",
+   "until": "2023-01-18",
+   "permanent": {
+    "from": "2021-03-25",
+    "until": "2023-01-18"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001344,
+     1
+    ]
+   },
+   "draws": 1,
+   "reward_pool": [
+    [
+     0.1,
+     {
+      "kind": 23,
+      "id": 110180,
+      "count": 1
+     }
+    ],
+    [
+     0.1,
+     {
+      "kind": 23,
+      "id": 110260,
+      "count": 1
+     }
+    ],
+    [
+     0.1,
+     "select5"
+    ],
+    [
+     0.1,
+     {
+      "kind": 20,
+      "id": 293000200,
+      "count": 1
+     }
+    ],
+    [
+     0.1,
+     "pearl"
+    ],
+    [
+     0.1,
+     "moogle10*2"
+    ],
+    [
+     0.1,
+     "super_moogle_ex*10"
+    ],
+    [
+     0.1,
+     {
+      "kind": 10,
+      "id": 906000104,
+      "count": 1,
+      "affinity_points": [
+       "",
+       "500"
+      ]
+     }
+    ],
+    [
+     0.1,
+     "lapis:500"
+    ],
+    [
+     0.1,
+     "lapis:100"
+    ]
+   ],
+   "pool_rule": null,
+   "art": {
+    "cache": [
+     "d8ca4b999bebca646b94537786e950d6.png",
+     "d8ca4b999bebca646b94537786e950d6_01.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210323BonusPresentTicketSummon.html",
+     "archived": "20211020134017"
+    }
+   ],
+   "notes": "Replaces gacha_named.json's copy (dated Dec 2022). Global: permanent from 3/25/2021; one Bonus Present Ticket draws one of ten prizes: NV EX Ticket (5★/NV), 1/10 NV Summon Ticket, 5★ Select Summon Ticket, Ascension Pearl, Transcension Pearl, two 10% Trust Moogles, 10 Super Trust Moogle Exchange Tickets, a 50% Super Trust Moogle, 500 or 100 Lapis. The odds weren't printed: equal. Global sold the tickets only in paid chests; here the Shop sells them (Bonus Present Ticket, 1000 Lapis, global_bundles.json 990000114). Until 1/18/2023, when the prize list changed (9503470)."
+  },
+  {
+   "id": 9503470,
+   "family": "ticket",
+   "name": "Bonus Present Ticket Summon",
+   "release": "2023-01-19",
+   "until": "2023-01-19",
+   "permanent": {
+    "from": "2023-01-19"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001344,
+     1
+    ]
+   },
+   "draws": 1,
+   "reward_pool": [
+    [
+     0.1,
+     {
+      "kind": 23,
+      "id": 110180,
+      "count": 2
+     }
+    ],
+    [
+     0.1,
+     {
+      "kind": 23,
+      "id": 110260,
+      "count": 3
+     }
+    ],
+    [
+     0.1,
+     "select5*10"
+    ],
+    [
+     0.1,
+     {
+      "kind": 20,
+      "id": 293000200,
+      "count": 2
+     }
+    ],
+    [
+     0.1,
+     "pearl"
+    ],
+    [
+     0.1,
+     "moogle10*5"
+    ],
+    [
+     0.1,
+     "super_moogle_ex*20"
+    ],
+    [
+     0.1,
+     {
+      "kind": 10,
+      "id": 906000104,
+      "count": 1,
+      "affinity_points": [
+       "",
+       "500"
+      ]
+     }
+    ],
+    [
+     0.1,
+     "lapis:800"
+    ],
+    [
+     0.1,
+     "lapis:150"
+    ]
+   ],
+   "pool_rule": null,
+   "art": {
+    "cache": [
+     "d8ca4b999bebca646b94537786e950d6.png",
+     "d8ca4b999bebca646b94537786e950d6_01.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202212276JBonusPresentTicketSummonUpdate.html",
+     "archived": "20221227101312"
+    }
+   ],
+   "notes": "The Bonus Present Ticket Summon after Global's 1/19/2023 update: NV EX Ticket (5★/NV) x2, 1/10 NV Summon Ticket x3, 5★ Select Summon Ticket x10, Ascension Pearl x2, 10% Trust Moogle x5, Super Trust Moogle Exchange Ticket x20, Lapis 800 or 150. The capture lost the 'before' column, so the Transcension Pearl and the 50% Super Trust Moogle rows are assumed unchanged. Equal odds (not printed)."
+  },
+  {
+   "id": 9200019,
+   "family": "ticket",
+   "name": "NV Guaranteed 10+1 Summon",
+   "release": "2022-06-30",
+   "until": "2022-06-30",
+   "permanent": {
+    "from": "2022-06-30"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001623,
+     1
+    ]
+   },
+   "draws": 11,
+   "guarantee": {
+    "rarity": 7
+   },
+   "pool_rule": {
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "art": {
+    "cache": [
+     "8da769b46e600673fed70da57f505f62.png",
+     "8da769b46e600673fed70da57f505f62_01.png"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220628NV10plus1GuaranteedSummon.html",
+     "archived": "20220628125203"
+    }
+   ],
+   "notes": "Replaces gacha_named.json's copy (dated Apr 2023). Global: a permanent standard summon from 6/30/2022; an NV Guaranteed 10+1 Summon Ticket gives ten 3★+/NV units and one NV. The tickets came from paid bundles (Hot and Spicy Six, Hill of Fortune); here from the Hill of Fortune bundles (global_bundles.json) and anything else that pays them. The pool follows the replay's unit cut-off."
+  },
+  {
+   "id": 9503436,
+   "family": "ticket",
+   "name": "2021 Player Appreciation Summon",
+   "release": "2021-09-02",
+   "until": "2021-11-09",
+   "permanent": {
+    "from": "2021-09-02",
+    "until": "2021-11-09"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001468,
+     1
+    ]
+   },
+   "draws": 10,
+   "min_rarity": 4,
+   "rates": [
+    0.01,
+    0.12,
+    0.87,
+    0
+   ],
+   "pool_rule": {
+    "released_by": "2021-07-15",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20210831PlayerAppreciationCampaign.html",
+     "archived": "20211023210157"
+    }
+   ],
+   "notes": "Global mailed every player 3 to 15 tickets by total login days (3 per 365 days, 15 from 1,461); each is a ten-unit 4★+/NV summon (1% NV; the 5★ rate isn't printed, so 12%). Here the tickets come by mail when the replay reaches 2021-09-02 (content/replay_mails.json), counted by days of history played since the replay start, and the summon is listed every replay week its Global period (2021-09-02 to 2021-11-09) overlaps."
+  },
+  {
+   "id": 9503413,
+   "family": "ticket",
+   "name": "Player Appreciation Ticket Summon",
+   "release": "2022-02-24",
+   "until": "2022-03-22",
+   "permanent": {
+    "from": "2022-02-24",
+    "until": "2022-03-22"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001572,
+     1
+    ]
+   },
+   "draws": 10,
+   "min_rarity": 4,
+   "rates": [
+    0.03,
+    0.12,
+    0.85,
+    0
+   ],
+   "pool_rule": {
+    "released_by": "2022-01-20",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/20220222PlayerAppreciationSummon.html",
+     "archived": "20220222110829"
+    }
+   ],
+   "notes": "Global mailed every player 3 to 15 tickets by total login days (3 per 365 days, 15 from 1,461); each is a ten-unit 4★+/NV summon (3% NV; the 5★ rate isn't printed, so 12%). Here the tickets come by mail when the replay reaches 2022-02-24 (content/replay_mails.json), counted by days of history played since the replay start, and the summon is listed every replay week its Global period (2022-02-24 to 2022-03-22) overlaps.",
+   "art": {
+    "main": [
+     "20220222110921",
+     "20220222PlayerAppreciationTicketSummonBanner.png"
+    ]
+   }
+  },
+  {
+   "id": 9503420,
+   "family": "ticket",
+   "name": "6th Anniversary Player Appreciation Summon",
+   "release": "2022-06-30",
+   "until": "2022-08-30",
+   "permanent": {
+    "from": "2022-06-30",
+    "until": "2022-08-30"
+   },
+   "cost": {
+    "item": [
+     20,
+     1209001629,
+     1
+    ]
+   },
+   "draws": 10,
+   "min_rarity": 4,
+   "rates": [
+    0.03,
+    0.12,
+    0.85,
+    0
+   ],
+   "pool_rule": {
+    "released_by": "2022-06-30",
+    "exclude": [
+     "limited",
+     "collab"
+    ]
+   },
+   "sources": [
+    {
+     "url": "https://lapis-prod-staticnews-gumi-sg.akamaized.net/prod/en/content/202206306thAnniversaryCelebrationCampaigns0824Update.html",
+     "archived": "20220825123224"
+    }
+   ],
+   "notes": "Global mailed every player 3 to 15 tickets by total login days (3 per 365 days, 15 from 1,461); each is a ten-unit 4★+/NV summon (3% NV; the 5★ rate isn't printed, so 12%). Here the tickets come by mail when the replay reaches 2022-06-30 (content/replay_mails.json), counted by days of history played since the replay start, and the summon is listed every replay week its Global period (2022-06-30 to 2022-08-30) overlaps.",
+   "art": {
+    "main": [
+     "20220825123224",
+     "20220628PlayerAppreciationSummonBanner.png"
+    ]
+   }
   }
  ]
 }

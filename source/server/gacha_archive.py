@@ -77,7 +77,20 @@ def _standard_families():
 def permanent(banner, families=None):
     families = _standard_families() if families is None else families
     return (str(banner['id']) in families or banner.get('name') in PERMANENT_NAMES
-            or banner.get('type') == 'friend')
+            or banner.get('type') == 'friend' or bool(banner.get('permanent')))
+
+
+def permanent_open(banner, begin=None, end=None) -> bool:
+    """Whether a dated permanent banner (`permanent: {from, until}`, YYYY-MM-DD, e.g. the Bonus Present
+    Ticket Summon from Mar 2021) is on offer. With the replay, it is listed every week whose slice of history
+    [begin, end) overlaps its Global period; without it, only an open-ended one is listed (2026-11-07)."""
+    span = banner.get('permanent')
+    if not isinstance(span, dict):
+        return True
+    start, until = span.get('from'), span.get('until')
+    if begin is None or end is None:
+        return not until
+    return (not start or start < end.isoformat()) and (not until or until >= begin.isoformat())
 
 
 def _collaboration(banner):

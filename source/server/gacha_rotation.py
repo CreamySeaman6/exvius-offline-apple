@@ -317,6 +317,8 @@ def plan(banners: list, now: datetime | None = None, record: bool = False, first
         special, featured = split(special), split(featured)
     if win:
         return _replay_plan(number, start, nxt, fixed, special, featured, by_id, holiday_sets, win)
+    from gacha_archive import permanent_open
+    fixed = [bid for bid in fixed if permanent_open(by_id[bid])]
     picked_special = _pick(special, cfg['special'], number, cfg['seed'], 'special')
     picked_featured = _pick(featured, cfg['featured'], number, cfg['seed'], 'featured')
     pins = _pinned(cfg)
@@ -368,6 +370,8 @@ def _replay_plan(number, start, nxt, fixed, special, featured, by_id, holiday_se
             sets = chosen + [entry for entry in sets if entry[0] not in {k for k, _ in chosen}]
     if win['to'] <= replay.nv_era():
         fixed = [bid for bid in fixed if 'NV' not in str(by_id[bid].get('name', ''))]
+    from gacha_archive import permanent_open
+    fixed = [bid for bid in fixed if permanent_open(by_id[bid], win['from'], win['to'])]
     return {'week': number, 'starts': start, 'ends': nxt, 'permanent': fixed, 'sets': sets,
             'by_id': by_id, 'pool_sizes': {'special': len(special), 'featured': len(featured)},
             'holiday': shown_holiday, 'replay': win,

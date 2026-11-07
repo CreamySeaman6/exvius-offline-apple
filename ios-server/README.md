@@ -271,6 +271,7 @@ The original game's Lapis income assumed you'd buy Lapis. These settings raise w
 | `GACHA_DEALS` | The deal summons Global ran from 2018 on (step-ups with items and discounts, once-per-player free 10+1s, free daily summons, rate-ups and the rest), each on its real date in the replay. Default `1`; `0` leaves them out. |
 | `EXVIUS_DEAL_ART_FETCH` | On startup, download the deal summons' banner art from the Internet Archive into `server/deal_art/` (once per image; a lost image gets a plain titled banner). Default `1`; `0` skips it, and those summons show without art. |
 | `EXVIUS_WEEKLY_GIFT` | Mailed once per summon week, as `kind:id:count` items. Default `23:50:10,23:70:1`: 10 Rare Summon Tickets and a Guaranteed Ticket (4★/5★/NV), usable with any banner's Ticket Summon button. `""` turns it off. |
+| `EXVIUS_REPLAY_MAILS` | Global's mails to every player (the Guaranteed NV Summon Ticket in Jan 2021, the Player Appreciation tickets in Sep 2021, Feb 2022 and Jun 2022), each sent once when the replay reaches its date. Default `1`; `0` turns them off. |
 
 **Explorations**
 

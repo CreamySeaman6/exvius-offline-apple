@@ -26,11 +26,14 @@ Spec fields (per banner):
   bonus         reward tokens paid with every pull (see REWARDS)
   bonus_choice  [[weight, [tokens]], ...]: one of these paid with every pull
   steps         [{lapis|free|item, draws, guarantee, slots, bonus, rainbow, featured_x}] for step-ups
+  permanent     {"from": date, "until": date}: listed every replay week that overlaps the period (a permanent
+                Global summon such as the Bonus Present Ticket Summon, or a ticket summon open for weeks)
   lap_limit / purchase_limit / daily_limit
   resummon      n: the paid pull can be redone n times for free (a second "Re-summon" button); each redo
                 replaces the last result in the box
   art           {"main": [capture, file], "detail": [capture, file]}: the list (640x160) and detail (640x392)
-                news images by Wayback capture timestamp (or [_, full url]); a missing one gets a titled stand-in
+                news images by Wayback capture timestamp (or [_, full url]); a missing one gets a titled stand-in;
+                or {"cache": [list file, detail file]} for Global art already in the client's cache
   sources       [{"url", "archived"}] news pages read (Wayback captures)
   notes         what was guessed or taken from JP
 
@@ -283,19 +286,26 @@ def build(spec: dict, units: Units) -> dict:
     # titled stand-in drawn on the server (deal_art.render). Files are named per banner, since Global reused
     # file names like en_mainbig.png for different summons.
     art = spec.get('art') or {}
-    main_url, detail_url = wb(art.get('main')), wb(art.get('detail'))
-    main_name, detail_name = f'deal-{bid}-main.png', f'deal-{bid}-detail.png'
-    if not detail_url and main_url:
-        detail_name, detail_url = main_name, main_url
-    if not main_url and detail_url:
-        main_name, main_url = detail_name, detail_url
-    banner['art'] = {
-        'banner': main_name, 'detail_banner': detail_name, 'detail_extra': [],
-        'anime_file': 'gacha_animation',
-        'anime_name': 'gacha_moogle_rare/anime' if steps or spec.get('guarantee') else 'gacha_moogle_normal/anime',
-        'img_btn': 'gacha_btn_r',
-        'urls': {main_name: main_url, detail_name: detail_url},
-    }
+    if art.get('cache'):
+        # Global art already in the client's cache (as gacha_named.json uses it): file names, nothing to fetch.
+        main_name, detail_name = art['cache']
+        banner['art'] = {'banner': main_name, 'detail_banner': detail_name, 'detail_extra': [],
+                         'anime_file': 'gacha_animation', 'anime_name': 'gacha_moogle_rare/anime',
+                         'img_btn': 'gacha_btn_n'}
+    else:
+        main_url, detail_url = wb(art.get('main')), wb(art.get('detail'))
+        main_name, detail_name = f'deal-{bid}-main.png', f'deal-{bid}-detail.png'
+        if not detail_url and main_url:
+            detail_name, detail_url = main_name, main_url
+        if not main_url and detail_url:
+            main_name, main_url = detail_name, detail_url
+        banner['art'] = {
+            'banner': main_name, 'detail_banner': detail_name, 'detail_extra': [],
+            'anime_file': 'gacha_animation',
+            'anime_name': 'gacha_moogle_rare/anime' if steps or spec.get('guarantee') else 'gacha_moogle_normal/anime',
+            'img_btn': 'gacha_btn_r',
+            'urls': {main_name: main_url, detail_name: detail_url},
+        }
     if steps:
         out_steps = []
         for step in steps:
@@ -330,6 +340,9 @@ def build(spec: dict, units: Units) -> dict:
         if spec.get('bonus_choice'):
             banner['bonus_choice'] = [{'rate': float(rate), 'rewards': [reward(t, units) for t in tokens]}
                                       for rate, tokens in spec['bonus_choice']]
+    if spec.get('permanent'):
+        # Listed every replay week its Global period overlaps (gacha_archive.permanent_open), not one week.
+        banner['permanent'] = dict(spec['permanent'])
     for key in ('lap_limit', 'purchase_limit', 'daily_limit', 'weekly_limit'):
         if spec.get(key):
             banner[key] = int(spec[key])

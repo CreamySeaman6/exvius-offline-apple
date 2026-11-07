@@ -35,6 +35,23 @@ from ffbe_battle import _lv_half, _switch_container
 _GLOBAL_BUNDLES = []
 
 
+def _bundle_on_offer(bundle) -> bool:
+    """A dated bundle (`from`/`until`, YYYY-MM-DD Global dates, e.g. each Hill of Fortune run) is sold in the
+    replay weeks whose slice of history overlaps those dates; without the replay, only one with no `until`
+    (2026-11-07). Undated bundles are always sold."""
+    start, until = bundle.get('from'), bundle.get('until')
+    if not start and not until:
+        return True
+    try:
+        import replay
+        win = replay.window() if replay.enabled() else None
+    except Exception:  # noqa: BLE001 -- no replay: treat as off
+        win = None
+    if not win or win.get('finished'):
+        return not until
+    return (not start or start < win['to'].isoformat()) and (not until or until >= win['from'].isoformat())
+
+
 def _global_bundles():
     """The Global Premium Bundles from global_bundles.json (loaded once)."""
     if not _GLOBAL_BUNDLES:
@@ -132,7 +149,7 @@ def serve_lapis_shop(spec, reply_id, plaintext=None):
     for bundle in _global_bundles():
         bid = str(bundle['id'])
         limits[bid] = bundle.get('limit')
-        if _bundle_bought(bid, bundle.get('limit')):
+        if _bundle_bought(bid, bundle.get('limit')) or not _bundle_on_offer(bundle):
             continue
         if 'usd' in bundle:
             cost_type = '50'
