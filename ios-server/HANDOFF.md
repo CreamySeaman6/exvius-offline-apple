@@ -1,8 +1,20 @@
 # Handoff: Exvius Offline on the iPhone
 
-Notes for a new Claude session picking up this work. Last updated 2026-11-06 (evening).
+Notes for a new Claude session picking up this work. Last updated 2026-11-07 (morning). **Start with "Open problems (2026-11-07)" just below.**
 
 Read **Current state** first. The dated sections below it are the history: each records what was found and why, and later sections can supersede earlier ones (noted where they do).
+
+## Open problems (2026-11-07) — read first
+
+The 2026-11-07 session ran out of context mid-debugging. Its notes below ("Story text keys, expeditions") were written quickly; **check them against the code and the repo history (`git log -p` for commits 1442ed0, 3e33480, 5ac9a60) before relying on them.** Nothing from that session is confirmed on the phone, and the operator reports things got worse, not better.
+
+1. **Port City Lodin (town 1103): "A loading error has occurred", back to Home. Still happening after 5ac9a60.** It started after 1442ed0. His log (07:59, 2026-11-07): login fetched the patched map version table (`Ver205869_YIgCpDKW.dat`, "3 story pack(s) with missing lines"), then entering Lodin fetched the rebuilt scene `common_lang/sd/event/11/Ver1048_111020301.cpk` (104448 B), then TownIn 1103, then the error. 5ac9a60 set the rebuilt pack's header `FileSize`/`TotalDataSize` (version now Ver1049) and did **not** fix it. Unknown whether his phone had re-fetched the table and the Ver1049 pack when he retried. First steps: get the matching client report (`FFBE_DIR/server/client-reports/`, uploaded at the next launch) and the log of a retry; quickest test of the cause is `EXVIUS_STORY_TEXT_FIX=0` (serves the shipped scene; if Lodin loads, the rebuilt pack is the cause). Other suspects: the client checking `F_RESOURCE_MAP_CHECKSUM_MST` (`JwbkKrjA`/`mYtcPkQQ`, 28064 for this pack, not changed) against the download; something in `story_text.rebuild` (it re-lays the files at 2048 alignment and moves the ETOC; compare byte-for-byte with the original apart from the two text files). Reverting `story_text.py` (and its hooks in `ios_tables.py`) is a reasonable fallback; the operator prefers working over complete.
+2. **"Download while playing tutorial?" prompt is back** at launch (it was gone after the 2026-11-06 drop-unversioned fix). Suspect, unverified: real files to fetch, not the old 0 KB rows: 5ac9a60 bumped `ios_art.BUILDER` to 2, so the Vortex banner pack (`spdungeon1.cpk`, about 240 MB, class TUTO so up-front) was rebuilt under a new version, and the three story packs got new versions. Check what size the prompt shows and what the next CDN requests are. If the `ios_art` change is the cause and not needed, revert it (it added `FileSize`/`TotalDataSize` to that pack's header; the Vortex tiles were never confirmed either way).
+3. **Freezes, not investigated** (no log yet): tapping Details on the VIP Shop's vision card "Metal Gigantuar's Here!" (product 940000012, reward `27:900020101:1`; opens `VisionCardDetailScene`); talking for the first time to a woman NPC in Port City Lodin (screenshot: blue dress, by a lamp post; music plays, input dead).
+4. **Farplane monument** always replays the first Farplane scene and returns him to Mitra. Not fixed; findings in the 2026-11-07 section (switches 10004001/10005001/10009001/10009002, map/event opcodes). Needs the server log of one monument touch.
+5. **Unconfirmed from 2026-11-07:** expedition offers rework (tutorial chain, then 3 random regular offers, daily free refresh, supercites, Moogle Cave), shop product names (`ios_texts.py` GENERATION 3, `F_TEXT_NV_SHOP_PRODUCT_*` tables).
+
+He still runs the container with `docker compose up -d` (not yet moved to the Unraid template).
 
 ## Current state (2026-11-06)
 
